@@ -66,6 +66,9 @@
         "symfony/web-profiler-bundle": "5.3.*"
     },
     "extra": {
+        "branch-alias": {
+            "dev-master": "0.1.x-dev"
+        },
         "symfony": {
             "allow-contrib": true,
             "require": "5.3.*"

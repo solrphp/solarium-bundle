@@ -29,5 +29,9 @@
 ###> phpmetrics ###
 /metrics.json
 /metrics/
-###> phpmetrics ###
+###< phpmetrics ###
+
+###> sphinx ###
+/docs/build/
+###< sphinx ###
 
