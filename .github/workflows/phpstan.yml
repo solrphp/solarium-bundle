@@ -56,8 +56,5 @@ jobs:
         if: ${{ matrix.dependencies == 'locked' }}
         run: "composer install --no-interaction --no-progress --ignore-platform-req=php"
 
-      - name: "generate test containter"
-        run: "bin/console cache:clear --env=test"
-
       - name: "tests"
         run: "vendor/bin/phpstan --error-format=checkstyle | cs2pr"
