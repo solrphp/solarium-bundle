@@ -1,0 +1,74 @@
+{
+    "name": "solrphp/solarium-bundle",
+    "description": "symfony solarium integration",
+    "type": "symfony-bundle",
+    "keywords": ["solr", "solarium", "symfony", "search"],
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Solrphp\\SolariumBundle\\": "src/",
+            "Eloo\\TransifyBundle\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Solrphp\\SolariumBundle\\Tests\\": "tests/"
+        }
+    },
+    "authors": [
+        {
+            "name": "wicliff",
+            "email": "wicliff.wolda@gmail.com"
+        }
+    ],
+    "minimum-stability": "stable",
+    "prefer-stable": true,
+    "config": {
+        "optimize-autoloader": true,
+        "preferred-install": {
+            "*": "dist"
+        },
+        "sort-packages": true
+    },
+    "require": {
+        "php": ">=7.4 || ^8.0",
+        "doctrine/collections": "^1.6",
+        "solarium/solarium": "^6.1",
+        "symfony/config": "5.3.*",
+        "symfony/console": "5.3.*",
+        "symfony/dotenv": "^5.3",
+        "symfony/filesystem": "5.3.*",
+        "symfony/framework-bundle": "5.3.*",
+        "symfony/http-kernel": "^5.3",
+        "symfony/property-access": "5.3.*",
+        "symfony/property-info": "5.3.*",
+        "symfony/serializer": "5.3.*",
+        "symfony/yaml": "5.3.*",
+        "ext-json": "*"
+    },
+    "require-dev": {
+        "escapestudios/symfony2-coding-standard": "^3.12",
+        "friendsofphp/php-cs-fixer": "^3.1",
+        "icanhazstring/composer-unused": "^0.7.7",
+        "infection/infection": "^0.25.0",
+        "matthiasnoback/symfony-dependency-injection-test": "^4.2",
+        "phpmetrics/phpmetrics": "^2.7",
+        "phpstan/phpstan": "^0.12.98",
+        "phpstan/phpstan-deprecation-rules": "^0.12.6",
+        "phpstan/phpstan-php-parser": "^0.12.3",
+        "phpstan/phpstan-phpunit": "^0.12.22",
+        "phpstan/phpstan-strict-rules": "^0.12.11",
+        "phpstan/phpstan-symfony": "^0.12.44",
+        "phpunit/phpunit": "^9.5",
+        "roave/security-advisories": "dev-latest",
+        "symfony/runtime": "^5.3",
+        "symfony/stopwatch": "5.3.*",
+        "symfony/web-profiler-bundle": "5.3.*"
+    },
+    "extra": {
+        "symfony": {
+            "allow-contrib": true,
+            "require": "5.3.*"
+        }
+    }
+}

@@ -1,0 +1,78 @@
+solrphp_solarium:
+  endpoints:
+    default:
+      scheme: 'https'
+      host: '127.0.0.1'
+      port: 8983
+      path: solr
+      core: demo
+    managed_schemas:
+      - cores:
+        - demo
+        unique_key: id
+        fields:
+          - { name: '_root_', type: 'string', doc_values: false, indexed: true, stored: false }
+          - { name: '_text_', type: 'text_general', multi_valued: true, indexed: true, stored: false }
+          - { name: '_version_', type: 'plong', indexed: false, stored: false }
+          - { name: 'author', type: 'text_general' }
+          - { name: 'cat', type: 'text_general' }
+          - { name: 'features', type: 'text_general' }
+          - { name: 'id', type: 'string', multi_valued: false, indexed: true, required: true, stored: true }
+          - { name: 'inStock', type: 'booleans' }
+          - { name: 'includes', type: 'text_general' }
+          - { name: 'manu', type: 'text_general' }
+          - { name: 'name', type: 'text_general' }
+          - { name: 'payloads', type: 'text_general' }
+          - { name: 'popularity', type: 'plongs' }
+          - { name: 'price', type: 'pdoubles' }
+          - { name: 'price_c', type: 'text_general' }
+          - { name: 'store', type: 'text_general' }
+          - { name: 'weight', type: 'pdoubles' }
+        copy_fields:
+          - { source: 'features', dest: 'features_str', max_chars: 256 }
+          - { source: 'name', dest: 'name_str', max_chars: 256 }
+          - { source: 'cat', dest: 'cat_str', max_chars: 256 }
+          - { source: 'manu', dest: 'manu_str', max_chars: 256 }
+          - { source: 'store', dest: 'store_str', max_chars: 256 }
+          - { source: 'includes', dest: 'includes_str', max_chars: 256 }
+          - { source: 'payloads', dest: 'payloads_str', max_chars: 256 }
+          - { source: 'price_c', dest: 'price_c_str', max_chars: 256 }
+          - { source: 'author', dest: 'author_str', max_chars: 256 }
+        dynamic_fields:
+          - { name: '*_txt_en_split_tight', type: 'text_en_splitting_tight', indexed: true, stored: true }
+          - { name: '*_descendent_path', type: 'descendent_path', indexed: true, stored: true }
+          - { name: '*_ancestor_path', type: 'ancestor_path', indexed: true, stored: true }
+    solr_configs:
+      - cores:
+          - demo
+        search_components:
+          - { name: 'analytics', class: 'org.apache.solr.handler.component.AnalyticsComponent' }
+        request_handlers:
+          - { name: '/analytics', class: 'org.apache.solr.handler.AnalyticsHandler' }
+          - name: '/select'
+            class: 'solr.SearchHandler'
+            last_components:
+              - 'analytics'
+          - name: '/dataimport'
+            class: 'org.apache.solr.handler.dataimport.DataImportHandler'
+            defaults:
+              - { name: 'config', value: 'solr-data-config.xml' }
+        query:
+          filter_cache:
+            autowarm_count: '50%'
+            size: 30000
+            initial_size: 1512
+            class: 'solr.CaffeineCache'
+            name: filterCache
+          query_result_cache:
+            autowarm_count: '0'
+            size: 512
+            initial_size: 512
+            class: 'solr.LRUCache'
+            name: queryResultCache
+          document_cache:
+            autowarm_count: '0'
+            size: 512
+            initial_size: 512
+            class: 'solr.LRUCache'
+            name: documentCache

@@ -1,2 +1,2 @@
-# solarium-bunde
+# solarium-bundle
 symfony solarium integration
