@@ -15,7 +15,7 @@ namespace Solrphp\SolariumBundle\Tests\Unit\DependencyInjection;
 use PHPUnit\Framework\TestCase;
 use Solarium\Core\Client\Client;
 use Solrphp\SolariumBundle\DependencyInjection\SolrphpSolariumExtension;
-use Solrphp\SolariumBundle\SolrApi\Config\SolrConfigurationStore;
+use Solrphp\SolariumBundle\SolrApi\SolrConfigurationStore;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBag;
 

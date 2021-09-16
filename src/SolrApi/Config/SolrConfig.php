@@ -14,6 +14,9 @@ namespace Solrphp\SolariumBundle\SolrApi\Config;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Solrphp\SolariumBundle\Contract\SolrApi\CoreDependentConfigInterface;
+use Solrphp\SolariumBundle\SolrApi\Config\Model\Query;
+use Solrphp\SolariumBundle\SolrApi\Config\Model\RequestHandler;
+use Solrphp\SolariumBundle\SolrApi\Config\Model\SearchComponent;
 
 /**
  * Solr Config.
@@ -28,25 +31,25 @@ class SolrConfig implements CoreDependentConfigInterface
     private ArrayCollection $cores;
 
     /**
-     * @var ArrayCollection<int, \Solrphp\SolariumBundle\SolrApi\Config\SearchComponent>
+     * @var ArrayCollection<int, \Solrphp\SolariumBundle\SolrApi\Config\Model\SearchComponent>
      */
     private ArrayCollection $searchComponents;
 
     /**
-     * @var ArrayCollection<int, \Solrphp\SolariumBundle\SolrApi\Config\RequestHandler>
+     * @var ArrayCollection<int, \Solrphp\SolariumBundle\SolrApi\Config\Model\RequestHandler>
      */
     private ArrayCollection $requestHandlers;
 
     /**
-     * @var \Solrphp\SolariumBundle\SolrApi\Config\Query|null
+     * @var \Solrphp\SolariumBundle\SolrApi\Config\Model\Query|null
      */
     private ?Query $query;
 
     /**
-     * @param ArrayCollection<int, string>                                                      $cores
-     * @param ArrayCollection<int, \Solrphp\SolariumBundle\SolrApi\Config\SearchComponent>|null $searchComponents
-     * @param ArrayCollection<int, \Solrphp\SolariumBundle\SolrApi\Config\RequestHandler>|null  $requestHandlers
-     * @param \Solrphp\SolariumBundle\SolrApi\Config\Query|null                                 $query
+     * @param ArrayCollection<int, string>                                                            $cores
+     * @param ArrayCollection<int, \Solrphp\SolariumBundle\SolrApi\Config\Model\SearchComponent>|null $searchComponents
+     * @param ArrayCollection<int, \Solrphp\SolariumBundle\SolrApi\Config\Model\RequestHandler>|null  $requestHandlers
+     * @param \Solrphp\SolariumBundle\SolrApi\Config\Model\Query|null                                 $query
      */
     public function __construct(ArrayCollection $cores, ArrayCollection $searchComponents = null, ArrayCollection $requestHandlers = null, Query $query = null)
     {
@@ -73,7 +76,7 @@ class SolrConfig implements CoreDependentConfigInterface
     }
 
     /**
-     * @return ArrayCollection<int, \Solrphp\SolariumBundle\SolrApi\Config\SearchComponent>
+     * @return ArrayCollection<int, \Solrphp\SolariumBundle\SolrApi\Config\Model\SearchComponent>
      */
     public function getSearchComponents(): ArrayCollection
     {
@@ -81,7 +84,7 @@ class SolrConfig implements CoreDependentConfigInterface
     }
 
     /**
-     * @param \Solrphp\SolariumBundle\SolrApi\Config\SearchComponent $searchComponent
+     * @param \Solrphp\SolariumBundle\SolrApi\Config\Model\SearchComponent $searchComponent
      */
     public function addSearchComponent(SearchComponent $searchComponent): void
     {
@@ -89,7 +92,7 @@ class SolrConfig implements CoreDependentConfigInterface
     }
 
     /**
-     * @param \Solrphp\SolariumBundle\SolrApi\Config\SearchComponent $searchComponent
+     * @param \Solrphp\SolariumBundle\SolrApi\Config\Model\SearchComponent $searchComponent
      */
     public function removeSearchComponent(SearchComponent $searchComponent): void
     {
@@ -97,7 +100,7 @@ class SolrConfig implements CoreDependentConfigInterface
     }
 
     /**
-     * @return ArrayCollection<int, \Solrphp\SolariumBundle\SolrApi\Config\RequestHandler>
+     * @return ArrayCollection<int, \Solrphp\SolariumBundle\SolrApi\Config\Model\RequestHandler>
      */
     public function getRequestHandlers(): ArrayCollection
     {
@@ -105,7 +108,7 @@ class SolrConfig implements CoreDependentConfigInterface
     }
 
     /**
-     * @param \Solrphp\SolariumBundle\SolrApi\Config\RequestHandler $requestHandler
+     * @param \Solrphp\SolariumBundle\SolrApi\Config\Model\RequestHandler $requestHandler
      */
     public function addRequestHandler(RequestHandler $requestHandler): void
     {
@@ -113,7 +116,7 @@ class SolrConfig implements CoreDependentConfigInterface
     }
 
     /**
-     * @param \Solrphp\SolariumBundle\SolrApi\Config\RequestHandler $requestHandler
+     * @param \Solrphp\SolariumBundle\SolrApi\Config\Model\RequestHandler $requestHandler
      */
     public function removeRequestHandler(RequestHandler $requestHandler): void
     {
@@ -121,7 +124,7 @@ class SolrConfig implements CoreDependentConfigInterface
     }
 
     /**
-     * @return \Solrphp\SolariumBundle\SolrApi\Config\Query|null
+     * @return \Solrphp\SolariumBundle\SolrApi\Config\Model\Query|null
      */
     public function getQuery(): ?Query
     {
@@ -129,7 +132,7 @@ class SolrConfig implements CoreDependentConfigInterface
     }
 
     /**
-     * @param \Solrphp\SolariumBundle\SolrApi\Config\Query|null $query
+     * @param \Solrphp\SolariumBundle\SolrApi\Config\Model\Query|null $query
      */
     public function setQuery(?Query $query): void
     {

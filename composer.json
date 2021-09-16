@@ -32,6 +32,7 @@
     },
     "require": {
         "php": ">=7.4 || ^8.0",
+        "ext-json": "*",
         "doctrine/collections": "^1.6",
         "solarium/solarium": "^6.1",
         "symfony/config": "5.3.*",
@@ -43,8 +44,7 @@
         "symfony/property-access": "5.3.*",
         "symfony/property-info": "5.3.*",
         "symfony/serializer": "5.3.*",
-        "symfony/yaml": "5.3.*",
-        "ext-json": "*"
+        "symfony/yaml": "5.3.*"
     },
     "require-dev": {
         "escapestudios/symfony2-coding-standard": "^3.12",
@@ -60,6 +60,7 @@
         "phpstan/phpstan-strict-rules": "^0.12.11",
         "phpstan/phpstan-symfony": "^0.12.44",
         "phpunit/phpunit": "^9.5",
+        "roave/better-reflection": "^4.12",
         "roave/security-advisories": "dev-latest",
         "symfony/runtime": "^5.3",
         "symfony/stopwatch": "5.3.*",

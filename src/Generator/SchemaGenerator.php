@@ -12,12 +12,17 @@ declare(strict_types=1);
 
 namespace Solrphp\SolariumBundle\Generator;
 
+use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\Common\Collections\ArrayCollection;
-use Solrphp\SolariumBundle\SolrApi\Config\CopyField;
-use Solrphp\SolariumBundle\SolrApi\Config\FieldType;
-use Solrphp\SolariumBundle\SolrApi\Config\ManagedSchema;
+use Solrphp\SolariumBundle\SolrApi\Schema\ManagedSchema;
+use Solrphp\SolariumBundle\SolrApi\Schema\Model\CopyField;
+use Solrphp\SolariumBundle\SolrApi\Schema\Model\FieldType;
 use Symfony\Component\PropertyInfo\Extractor\ReflectionExtractor;
+use Symfony\Component\Serializer\Mapping\ClassDiscriminatorFromClassMetadata;
+use Symfony\Component\Serializer\Mapping\Factory\ClassMetadataFactory;
+use Symfony\Component\Serializer\Mapping\Loader\AnnotationLoader;
 use Symfony\Component\Serializer\NameConverter\CamelCaseToSnakeCaseNameConverter;
+use Symfony\Component\Serializer\Normalizer\ArrayDenormalizer;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Serializer\Serializer;
 
@@ -29,25 +34,38 @@ use Symfony\Component\Serializer\Serializer;
 class SchemaGenerator
 {
     /**
+     * @var \Symfony\Component\Serializer\Serializer
+     */
+    private Serializer $serializer;
+
+    /**
+     * construct.
+     */
+    public function __construct()
+    {
+        $classMetadataFactory = new ClassMetadataFactory(new AnnotationLoader(new AnnotationReader()));
+        $discriminator = new ClassDiscriminatorFromClassMetadata($classMetadataFactory);
+        $this->serializer = new Serializer([new ArrayDenormalizer(), new ObjectNormalizer(null, new CamelCaseToSnakeCaseNameConverter(), null, new ReflectionExtractor(), $discriminator)]);
+    }
+
+    /**
      * @param array<int, array> $schemas
      *
      * @return \Generator<int, \Solrphp\SolariumBundle\Contract\SolrApi\CoreDependentConfigInterface>
      */
     public function generate(array $schemas): \Generator
     {
-        $serializer = new Serializer([new ObjectNormalizer(null, new CamelCaseToSnakeCaseNameConverter(), null, new ReflectionExtractor())]);
-
         foreach ($schemas as $schema) {
             foreach ($schema['fields'] as $name => $field) {
-                $schema['fields'][$name] = $serializer->denormalize($field, FieldType::class);
+                $schema['fields'][$name] = $this->serializer->denormalize($field, FieldType::class);
             }
 
             foreach ($schema['dynamic_fields'] as $name => $field) {
-                $schema['dynamic_fields'][$name] = $serializer->denormalize($field, FieldType::class);
+                $schema['dynamic_fields'][$name] = $this->serializer->denormalize($field, FieldType::class);
             }
 
             foreach ($schema['copy_fields'] as $index => $copyField) {
-                $schema['copy_fields'][$index] = $serializer->denormalize($copyField, CopyField::class);
+                $schema['copy_fields'][$index] = $this->serializer->denormalize($copyField, CopyField::class);
             }
 
             yield new ManagedSchema($schema['unique_key'], new ArrayCollection($schema['cores']), new ArrayCollection($schema['fields']), new ArrayCollection($schema['copy_fields']), new ArrayCollection($schema['dynamic_fields']));

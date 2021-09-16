@@ -13,7 +13,7 @@ declare(strict_types=1);
 namespace Solrphp\SolariumBundle\DependencyInjection;
 
 use Solarium\Core\Client\Endpoint;
-use Solrphp\SolariumBundle\SolrApi\Config\SolrConfigurationStore;
+use Solrphp\SolariumBundle\SolrApi\SolrConfigurationStore;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\Alias;
 use Symfony\Component\DependencyInjection\ContainerBuilder;

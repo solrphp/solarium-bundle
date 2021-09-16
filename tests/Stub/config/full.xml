@@ -18,13 +18,7 @@
             <field
                     name="foo"
                     type="bar"
-                    class="baz"
-                    position_increment_gap="1"
-                    auto_generate_phrase_queries="true"
-                    synonym_query_style="qux"
-                    enable_graph_queries="true"
-                    doc_values_format="foo"
-                    postings_format="bar"
+                    default="baz"
                     sort_missing_first="true"
                     sort_missing_last="false"
                     multi_valued="true"
@@ -42,14 +36,33 @@
                     doc_values="false"
                     indexed="true"
                     stored="false" />
-            <copy_field
-                source="foo"
-                dest="bar"
-                max_chars="24"
-            />
+
+            <copy_field source="foo" dest="bar" max_chars="24" />
+
             <dynamic_field
                     name="*_foo"
                     type="bar"
+                    default="baz"
+                    sort_missing_first="true"
+                    sort_missing_last="false"
+                    multi_valued="true"
+                    uninvertible="true"
+                    omit_norms="true"
+                    omit_term_freq_and_positions="true"
+                    omit_positions="true"
+                    term_vectors="true"
+                    term_positions="false"
+                    term_offsets="true"
+                    term_payloads="false"
+                    required="false"
+                    use_doc_values_as_stored="false"
+                    large="false"
+                    doc_values="false"
+                    indexed="true"
+                    stored="false" />
+
+            <field_type
+                    name="foo"
                     class="baz"
                     position_increment_gap="1"
                     auto_generate_phrase_queries="true"
@@ -73,7 +86,15 @@
                     large="false"
                     doc_values="false"
                     indexed="true"
-                    stored="false" />
+                    stored="false" >
+
+                <analyzer class="foo" type="bar">
+                    <char_filter class="foo" pattern="bar" replacement="baz" />
+                    <tokenizer class="foo" pattern="pattern" min_gram_size="1" max_gram_size="2" delimiter="|" replace=":" group="1" rule="bar" />
+                    <filter class="bar" min_gram_size="1" max_gram_size="2" preserve_original="true" />
+                </analyzer>
+
+            </field_type>
         </managed_schema>
         <solr_config>
             <core>foo</core>
@@ -94,6 +115,8 @@
                 query_result_max_docs_cached="10"
                 enable_lazy_field_loading="false"
                 max_boolean_clauses="10"
+                use_circuit_breakers="true"
+                memory_circuit_breaker_threshold_pct="75"
             >
                 <filter_cache autowarm_count="10" size="10" initial_size="10" class="foo" name="bar" />
                 <query_result_cache autowarm_count="10" size="10" initial_size="10" class="foo" name="bar" />

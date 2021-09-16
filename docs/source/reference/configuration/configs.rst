@@ -32,6 +32,8 @@ configs
                         name: filterCache
                     query_result_cache: ~
                     document_cache: ~
+                    use_circuit_breakers: true
+                    memory_circuit_breaker_threshold_pct: 75
 
 ``cores``
 ---------

@@ -28,8 +28,9 @@
             <directory suffix=".php">src</directory>
         </include>
         <exclude>
-            <directory>src/SolrApi/Enum</directory>
-            <directory>src/SolrApi/Response</directory>
+            <directory>src/SolrApi/*/Enum</directory>
+            <directory>src/SolrApi/*/Response</directory>
+            <directory>src/Response</directory>
         </exclude>
     </coverage>
 </phpunit>
