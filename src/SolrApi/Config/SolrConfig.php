@@ -93,10 +93,12 @@ class SolrConfig implements CoreDependentConfigInterface
 
     /**
      * @param \Solrphp\SolariumBundle\SolrApi\Config\Model\SearchComponent $searchComponent
+     *
+     * @return bool
      */
-    public function removeSearchComponent(SearchComponent $searchComponent): void
+    public function removeSearchComponent(SearchComponent $searchComponent): bool
     {
-        $this->searchComponents->removeElement($searchComponent);
+        return $this->searchComponents->removeElement($searchComponent);
     }
 
     /**
@@ -117,10 +119,12 @@ class SolrConfig implements CoreDependentConfigInterface
 
     /**
      * @param \Solrphp\SolariumBundle\SolrApi\Config\Model\RequestHandler $requestHandler
+     *
+     * @return bool
      */
-    public function removeRequestHandler(RequestHandler $requestHandler): void
+    public function removeRequestHandler(RequestHandler $requestHandler): bool
     {
-        $this->requestHandlers->removeElement($requestHandler);
+        return $this->requestHandlers->removeElement($requestHandler);
     }
 
     /**

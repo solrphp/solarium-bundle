@@ -54,9 +54,11 @@ class CopyFieldsResponse extends AbstractResponse
 
     /**
      * @param \Solrphp\SolariumBundle\SolrApi\Schema\Model\CopyField $copyField
+     *
+     * @return bool
      */
-    public function removeCopyField(CopyField $copyField): void
+    public function removeCopyField(CopyField $copyField): bool
     {
-        $this->copyFields->removeElement($copyField);
+        return $this->copyFields->removeElement($copyField);
     }
 }

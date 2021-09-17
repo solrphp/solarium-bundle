@@ -25,9 +25,19 @@ class Property implements \JsonSerializable
     private string $name;
 
     /**
-     * @var mixed|null
+     * @var mixed
      */
     private $value;
+
+    /**
+     * @param string $name
+     * @param mixed  $value
+     */
+    public function __construct(string $name, $value)
+    {
+        $this->name = $name;
+        $this->value = $value;
+    }
 
     /**
      * @return string
@@ -66,14 +76,6 @@ class Property implements \JsonSerializable
      */
     public function jsonSerialize(): array
     {
-        return array_filter(
-            [
-                $this->name => $this->value,
-            ],
-            static function ($v, $k) {
-                return null !== $v && null !== $k;
-            },
-            \ARRAY_FILTER_USE_BOTH
-        );
+        return [$this->name => $this->value];
     }
 }

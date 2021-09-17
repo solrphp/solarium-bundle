@@ -50,6 +50,7 @@ class Value
                 return \is_float($value);
             case 'array':
             case ArrayCollection::class:
+                $value = $value[0];
                 $types = $property->getDocBlockTypes();
 
                 if (!isset($types[0])) {
@@ -70,5 +71,34 @@ class Value
 
                 return false;
         }
+    }
+
+    /**
+     * @param array $array
+     *
+     * @return array
+     */
+    public static function keysort(array $array): array
+    {
+        ksort($array);
+
+        return $array;
+    }
+
+    /**
+     * @param array $array
+     *
+     * @return array
+     */
+    public static function ksortnormalized(array $array): array
+    {
+        $array = self::keysort($array);
+
+        return array_map(
+            static function ($key) {
+                return strtolower(preg_replace('/(?<=[a-z])(?=[A-Z])/', '-', $key));
+            },
+            array_keys($array)
+        );
     }
 }

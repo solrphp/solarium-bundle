@@ -107,10 +107,12 @@ final class ManagedSchema implements CoreDependentConfigInterface
 
     /**
      * @param string $core
+     *
+     * @return bool
      */
-    public function removeCore(string $core): void
+    public function removeCore(string $core): bool
     {
-        $this->cores->removeElement($core);
+        return $this->cores->removeElement($core);
     }
 
     /**
@@ -131,10 +133,12 @@ final class ManagedSchema implements CoreDependentConfigInterface
 
     /**
      * @param \Solrphp\SolariumBundle\SolrApi\Schema\Model\Field $field
+     *
+     * @return bool
      */
-    public function removeField(Field $field): void
+    public function removeField(Field $field): bool
     {
-        $this->fields->removeElement($field);
+        return $this->fields->removeElement($field);
     }
 
     /**
@@ -155,10 +159,12 @@ final class ManagedSchema implements CoreDependentConfigInterface
 
     /**
      * @param \Solrphp\SolariumBundle\SolrApi\Schema\Model\CopyField $field
+     *
+     * @return bool
      */
-    public function removeCopyField(CopyField $field): void
+    public function removeCopyField(CopyField $field): bool
     {
-        $this->copyFields->removeElement($field);
+        return $this->copyFields->removeElement($field);
     }
 
     /**
@@ -179,10 +185,12 @@ final class ManagedSchema implements CoreDependentConfigInterface
 
     /**
      * @param \Solrphp\SolariumBundle\SolrApi\Schema\Model\Field $field
+     *
+     * @return bool
      */
-    public function removeDynamicField(Field $field): void
+    public function removeDynamicField(Field $field): bool
     {
-        $this->dynamicFields->removeElement($field);
+        return $this->dynamicFields->removeElement($field);
     }
 
     /**
@@ -203,9 +211,11 @@ final class ManagedSchema implements CoreDependentConfigInterface
 
     /**
      * @param \Solrphp\SolariumBundle\SolrApi\Schema\Model\FieldType $fieldType
+     *
+     * @return bool
      */
-    public function removeFieldType(FieldType $fieldType): void
+    public function removeFieldType(FieldType $fieldType): bool
     {
-        $this->fieldTypes->removeElement($fieldType);
+        return $this->fieldTypes->removeElement($fieldType);
     }
 }

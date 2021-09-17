@@ -13,6 +13,7 @@ declare(strict_types=1);
 namespace Solrphp\SolariumBundle\Tests\Helper;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Roave\BetterReflection\BetterReflection;
 use Roave\BetterReflection\Reflection\ReflectionProperty;
 use Solrphp\SolariumBundle\Contract\SolrApi\FilterInterface;
 use Solrphp\SolariumBundle\SolrApi\Schema\Model\Filter\CommonGramsFilter;
@@ -32,8 +33,41 @@ class Dummy
     ];
 
     /**
+     * @param string $class
+     * @param bool   $includeNullable
+     * @param bool   $initComposite
+     *
+     * @return array
+     *
+     * @throws \ReflectionException
+     * @throws \Roave\BetterReflection\Reflector\Exception\IdentifierNotFound
+     * @throws \RuntimeException
+     */
+    public static function properties(string $class, bool $includeNullable = true, bool $initComposite = true): array
+    {
+        $properties = [];
+        $refClass = (new BetterReflection())->classReflector()->reflect($class);
+
+        foreach ($refClass->getProperties(\ReflectionProperty::IS_PRIVATE) as $property) {
+            if (false === $includeNullable && $property->allowsNull()) {
+                continue;
+            }
+
+            if (false === $includeNullable && \in_array($property->getType()->getName(), ['array', ArrayCollection::class], true)) {
+                continue;
+            }
+
+            $value = $initComposite || !class_exists((string) $property->getType()) ? self::getValue($property, $includeNullable, $initComposite) : (string) $property->getType();
+            $properties[$property->getName()] = $value;
+        }
+
+        return $properties;
+    }
+
+    /**
      * @param \Roave\BetterReflection\Reflection\ReflectionProperty $property
-     * @param bool                                                  $includeNull
+     * @param bool                                                  $includeNullable
+     * @param bool                                                  $initComposite
      *
      * @return false|float|int|object|string|null
      *
@@ -41,9 +75,13 @@ class Dummy
      * @throws \Roave\BetterReflection\Reflector\Exception\IdentifierNotFound
      * @throws \RuntimeException
      */
-    public static function getValue(ReflectionProperty $property, bool $includeNull = false)
+    public static function getValue(ReflectionProperty $property, bool $includeNullable = true, bool $initComposite = true)
     {
-        if ($includeNull && $property->allowsNull()) {
+        if (!$includeNullable && $property->allowsNull()) {
+            return null;
+        }
+
+        if (!$includeNullable && \in_array((string) $property->getType(), ['array', ArrayCollection::class], true)) {
             return null;
         }
 
@@ -69,17 +107,17 @@ class Dummy
                 if (\array_key_exists($valueType, self::$interfaces)) {
                     $class = self::$interfaces[$valueType];
 
-                    return self::reflect(new $class());
+                    return $initComposite ? self::reflect(new $class()) : $class;
                 }
 
                 if (class_exists($valueType)) {
-                    return self::reflect(new $valueType());
+                    return $initComposite ? self::reflect(new $valueType()) : $valueType;
                 }
 
                 return self::scalarToValue($valueType);
             default:
                 if (class_exists($namedType)) {
-                    return self::reflect(new $namedType());
+                    return $initComposite ? self::reflect(new $namedType()) : $namedType;
                 }
 
                 throw new \RuntimeException(sprintf('unable to generate dummy value for %s', $namedType));
@@ -97,13 +135,13 @@ class Dummy
             case '':
                 return 'qux';
             case 'int':
-                return 1;
+                return random_int(1, 5);
             case 'string':
                 return 'foo';
             case 'bool':
                 return false;
             case 'float':
-                return 0.2;
+                return mt_rand() / mt_getrandmax();
             default:
                 return null;
         }

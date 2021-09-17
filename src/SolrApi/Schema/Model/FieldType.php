@@ -220,14 +220,20 @@ final class FieldType implements \JsonSerializable
 
     /**
      * @param \Solrphp\SolariumBundle\SolrApi\Schema\Model\Analyzer $analyzer
+     *
+     * @return bool
      */
-    public function removeAnalyzer(Analyzer $analyzer): void
+    public function removeAnalyzer(Analyzer $analyzer): bool
     {
-        if (false === $key = array_search($analyzer, $this->analyzers, true)) {
-            return;
+        $key = array_search($analyzer, $this->analyzers, true);
+
+        if (false === $key) {
+            return false;
         }
 
         unset($this->analyzers[$key]);
+
+        return true;
     }
 
     /**

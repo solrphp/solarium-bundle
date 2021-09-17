@@ -112,14 +112,20 @@ final class Analyzer implements \JsonSerializable
 
     /**
      * @param \Solrphp\SolariumBundle\Contract\SolrApi\FilterInterface $filter
+     *
+     * @return bool
      */
-    public function removeFilter(FilterInterface $filter): void
+    public function removeFilter(FilterInterface $filter): bool
     {
-        if (false === $key = array_search($filter, $this->filters, true)) {
-            return;
+        $key = array_search($filter, $this->filters, true);
+
+        if (false === $key) {
+            return false;
         }
 
         unset($this->filters[$key]);
+
+        return true;
     }
 
     /**
@@ -140,14 +146,20 @@ final class Analyzer implements \JsonSerializable
 
     /**
      * @param \Solrphp\SolariumBundle\Contract\SolrApi\FilterInterface $filter
+     *
+     * @return bool
      */
-    public function removeCharFilter(FilterInterface $filter): void
+    public function removeCharFilter(FilterInterface $filter): bool
     {
-        if (false === $key = array_search($filter, $this->charFilters, true)) {
-            return;
+        $key = array_search($filter, $this->charFilters, true);
+
+        if (false === $key) {
+            return false;
         }
 
         unset($this->charFilters[$key]);
+
+        return true;
     }
 
     /**

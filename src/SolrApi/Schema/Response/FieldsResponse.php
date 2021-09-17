@@ -54,9 +54,11 @@ class FieldsResponse extends AbstractResponse
 
     /**
      * @param \Solrphp\SolariumBundle\SolrApi\Schema\Model\FieldType $field
+     *
+     * @return bool
      */
-    public function removeField(FieldType $field): void
+    public function removeField(FieldType $field): bool
     {
-        $this->fields->removeElement($field);
+        return $this->fields->removeElement($field);
     }
 }

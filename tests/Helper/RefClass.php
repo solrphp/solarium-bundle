@@ -46,4 +46,31 @@ class RefClass
 
         return $properties;
     }
+
+    /**
+     * @param string $class
+     *
+     * @return \ArrayObject
+     *
+     * @throws \ReflectionException
+     */
+    public static function composites(string $class): \ArrayObject
+    {
+        $refClass = new \ReflectionClass($class);
+        $composites = [$class => $refClass->newInstanceWithoutConstructor()];
+
+        foreach ($refClass->getProperties(\ReflectionProperty::IS_PRIVATE) as $property) {
+            if (null === $type = $property->getType()) {
+                continue;
+            }
+
+            $name = $type->getName();
+
+            if (class_exists($name)) {
+                $composites[$name] = new $name();
+            }
+        }
+
+        return new \ArrayObject($composites);
+    }
 }
