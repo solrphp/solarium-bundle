@@ -25,12 +25,12 @@ use ArrayIterator;
 final class CommandCollection implements \ArrayAccess, \IteratorAggregate, \JsonSerializable
 {
     /**
-     * @var array<string, array>
+     * @var array<string, array<\JsonSerializable>|null>
      */
     private array $commands;
 
     /**
-     * @param array<string, array> $commands
+     * @param array<string, array<\JsonSerializable>|null> $commands
      */
     public function __construct(array $commands = [])
     {
@@ -38,8 +38,8 @@ final class CommandCollection implements \ArrayAccess, \IteratorAggregate, \Json
     }
 
     /**
-     * @param string                             $command
-     * @param array<int, \JsonSerializable|null> $value
+     * @param string                   $command
+     * @param array<\JsonSerializable> $value
      */
     public function set(string $command, array $value): void
     {
@@ -58,9 +58,9 @@ final class CommandCollection implements \ArrayAccess, \IteratorAggregate, \Json
     /**
      * @param mixed $command
      *
-     * @return \JsonSerializable[]|\JsonSerializable|null
+     * @return array<\JsonSerializable>|null
      */
-    public function remove($command)
+    public function remove($command): ?array
     {
         if (false === $this->containsCommand($command)) {
             return null;
@@ -92,7 +92,7 @@ final class CommandCollection implements \ArrayAccess, \IteratorAggregate, \Json
     }
 
     /**
-     * @return ArrayIterator<string, array>
+     * @return ArrayIterator<string, array<\JsonSerializable>|null>
      */
     public function getIterator(): ArrayIterator
     {
@@ -108,7 +108,7 @@ final class CommandCollection implements \ArrayAccess, \IteratorAggregate, \Json
     }
 
     /**
-     * @return array<string>|null
+     * @return array<\JsonSerializable>|null
      *
      * @param mixed $offset
      */
@@ -145,7 +145,7 @@ final class CommandCollection implements \ArrayAccess, \IteratorAggregate, \Json
     /**
      * @param string $command
      *
-     * @return array<string>|null
+     * @return array<\JsonSerializable>|null
      */
     public function get(string $command): ?array
     {

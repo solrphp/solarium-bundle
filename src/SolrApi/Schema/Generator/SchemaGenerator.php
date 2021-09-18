@@ -17,6 +17,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Solrphp\SolariumBundle\SolrApi\Schema\Config\ManagedSchema;
 use Solrphp\SolariumBundle\SolrApi\Schema\Model\CopyField;
 use Solrphp\SolariumBundle\SolrApi\Schema\Model\Field;
+use Solrphp\SolariumBundle\SolrApi\Schema\Model\FieldType;
 use Symfony\Component\PropertyInfo\Extractor\ReflectionExtractor;
 use Symfony\Component\Serializer\Mapping\ClassDiscriminatorFromClassMetadata;
 use Symfony\Component\Serializer\Mapping\Factory\ClassMetadataFactory;
@@ -49,7 +50,7 @@ class SchemaGenerator
     }
 
     /**
-     * @param array<int, array> $schemas
+     * @param array<int, array<string, mixed>> $schemas
      *
      * @return \Generator<int, \Solrphp\SolariumBundle\Contract\SolrApi\CoreDependentConfigInterface>
      */
@@ -68,7 +69,11 @@ class SchemaGenerator
                 $schema['copy_fields'][$index] = $this->serializer->denormalize($copyField, CopyField::class);
             }
 
-            yield new ManagedSchema($schema['unique_key'], new ArrayCollection($schema['cores']), new ArrayCollection($schema['fields']), new ArrayCollection($schema['copy_fields']), new ArrayCollection($schema['dynamic_fields']));
+            foreach ($schema['field_types'] as $index => $copyField) {
+                $schema['field_types'][$index] = $this->serializer->denormalize($copyField, FieldType::class);
+            }
+
+            yield new ManagedSchema($schema['unique_key'], new ArrayCollection($schema['cores']), new ArrayCollection($schema['fields']), new ArrayCollection($schema['copy_fields']), new ArrayCollection($schema['dynamic_fields']), new ArrayCollection($schema['field_types']));
         }
     }
 }

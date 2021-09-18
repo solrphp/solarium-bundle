@@ -34,7 +34,7 @@ abstract class AbstractApiManager implements SolrApiManagerInterface
     /**
      * Available commands for API v2 endpoint.
      *
-     * @var array<string, array>
+     * @var array<string, array<\JsonSerializable>|null>
      */
     protected static array $availableCommands = [];
 

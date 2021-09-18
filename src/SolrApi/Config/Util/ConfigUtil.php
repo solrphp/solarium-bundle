@@ -33,7 +33,7 @@ final class ConfigUtil
         $refClass = new \ReflectionClass($object);
         $separator = $separator ?? self::DEFAULT_SEPARATOR;
 
-        $array = [[]];
+        $array = [];
 
         foreach ($refClass->getProperties() as $property) {
             $property->setAccessible(true);
@@ -41,7 +41,15 @@ final class ConfigUtil
 
             $name = (null !== $prefix) ? sprintf('%s%s%s', $prefix, $separator, $property->getName()) : $property->getName();
 
-            if (true === \is_object($value)) {
+            if (true === \is_array($value)) {
+                foreach ($value as $key => $composite) {
+                    if (true === \is_object($composite)) {
+                        $array[] = self::toPropertyPaths($composite, $name.$separator.$key, $separator);
+                    } else {
+                        $array[][$name] = $value;
+                    }
+                }
+            } elseif (true === \is_object($value)) {
                 $array[] = self::toPropertyPaths($value, $name, $separator);
             } else {
                 $array[][$name] = $value;

@@ -39,7 +39,7 @@ final class Analyzer implements \JsonSerializable
     /**
      * @var \Solrphp\SolariumBundle\SolrApi\Schema\Model\Tokenizer|null
      */
-    private ?Tokenizer  $tokenizer = null;
+    private ?Tokenizer $tokenizer = null;
 
     /**
      * @var \Solrphp\SolariumBundle\Contract\SolrApi\FilterInterface[]

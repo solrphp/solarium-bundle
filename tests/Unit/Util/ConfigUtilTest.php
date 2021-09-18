@@ -15,6 +15,7 @@ namespace Solrphp\SolariumBundle\Tests\Unit\Util;
 use PHPUnit\Framework\TestCase;
 use Solrphp\SolariumBundle\SolrApi\Config\Util\ConfigUtil;
 use Solrphp\SolariumBundle\SolrApi\Schema\Model\Field;
+use Solrphp\SolariumBundle\SolrApi\Schema\Model\FieldType;
 use Solrphp\SolariumBundle\Tests\Helper\ObjectUtil;
 
 /**
@@ -56,6 +57,11 @@ class ConfigUtilTest extends TestCase
 
         self::assertArrayHasKey('foo.name', $paths);
         self::assertArrayHasKey('foo.bar.name', $paths);
+
+        $fieldType = ObjectUtil::reflect(new FieldType());
+        $paths = ConfigUtil::toPropertyPaths($fieldType, 'field_type');
+
+        self::assertArrayHasKey('field_type.analyzers.0.class', $paths);
     }
 
     /**
@@ -65,13 +71,13 @@ class ConfigUtilTest extends TestCase
     {
         yield 'default_separator' => [
             'class' => Field::class,
-            'prefix' => 'field_type',
+            'prefix' => 'field',
             'separator' => null,
         ];
 
         yield 'custom_separator' => [
             'class' => Field::class,
-            'prefix' => 'field_type',
+            'prefix' => 'field',
             'separator' => '|',
         ];
 

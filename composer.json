@@ -76,10 +76,14 @@
         }
     },
     "scripts": {
-        "run-phpunit": "XDEBUG_MODE=coverage vendor/bin/phpunit --testsuite=unit --coverage-xml=build/coverage/coverage-xml --log-junit=build/coverage/junit.xml --coverage-html=build/coverage/html/",
+        "run-phpunit": "vendor/bin/phpunit --testsuite=unit",
+        "run-phpunitc": "XDEBUG_MODE=coverage vendor/bin/phpunit --testsuite=unit --coverage-xml=build/coverage/coverage-xml --log-junit=build/coverage/junit.xml --coverage-html=build/coverage/html/",
+        "run-phpstan": "vendor/bin/phpstan",
+        "run-phpcs": "vendor/bin/phpcs",
+        "run-phpcsf": "vendor/bin/php-cs-fixer fix",
         "run-phpmetrics": "vendor/bin/phpmetrics --config=metrics.json --report-html=build/phpmetrics --quiet",
         "run-sphinx":  "cd docs && make html",
-        "run-infection": "vendor/bin/infection --coverage=build/coverage -s -vv",
-        "run-all": ["@run-phpunit", "@run-phpmetrics", "@run-sphinx", "@run-infection"]
+        "run-infection": ["@run-phpunitc", "vendor/bin/infection --coverage=build/coverage -j$(sysctl -n hw.ncpu) -s -vv"],
+        "run-all": ["@run-phpunitc", "@run-phpstan", "@run-phpcsf", "@run-phpcs" ,"@run-phpmetrics", "@run-sphinx", "@run-infection"]
     }
 }

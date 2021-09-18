@@ -5,7 +5,7 @@ on:
   push:
 
 env:
-  MIN_MSI: 93.00
+  MIN_MSI: 98.00
   MIN_COVERED_MSI: 98.00
 
 jobs:
@@ -57,4 +57,4 @@ jobs:
         run: "composer install --no-interaction --no-progress --no-suggest"
 
       - name: "infection"
-        run: "./vendor/bin/infection --logger-github --min-msi=$MIN_MSI --min-covered-msi=$MIN_COVERED_MSI --test-framework-options='--testsuite=unit'"
+        run: "./vendor/bin/infection -j$(nproc) --logger-github --min-msi=$MIN_MSI --min-covered-msi=$MIN_COVERED_MSI --test-framework-options='--testsuite=unit'"

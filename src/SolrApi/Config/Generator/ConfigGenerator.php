@@ -50,7 +50,7 @@ class ConfigGenerator
     }
 
     /**
-     * @param array<int, array> $configs
+     * @param array<int, array<string, mixed>> $configs
      *
      * @return \Generator<int, \Solrphp\SolariumBundle\Contract\SolrApi\CoreDependentConfigInterface>
      */

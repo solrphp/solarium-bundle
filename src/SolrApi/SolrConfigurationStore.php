@@ -26,18 +26,18 @@ use Solrphp\SolariumBundle\SolrApi\Schema\Generator\SchemaGenerator;
 final class SolrConfigurationStore
 {
     /**
-     * @var \Solrphp\SolariumBundle\Common\Generator\LazyLoadingGenerator<\Generator>
+     * @var LazyLoadingGenerator<\Generator<int, \Solrphp\SolariumBundle\Contract\SolrApi\CoreDependentConfigInterface>>
      */
     private LazyLoadingGenerator $managedSchemas;
 
     /**
-     * @var \Solrphp\SolariumBundle\Common\Generator\LazyLoadingGenerator<\Generator>
+     * @var LazyLoadingGenerator<\Generator<int, \Solrphp\SolariumBundle\Contract\SolrApi\CoreDependentConfigInterface>>
      */
     private LazyLoadingGenerator $solrConfigs;
 
     /**
-     * @param array<int, array> $managedSchemas
-     * @param array<int, array> $solrConfigs
+     * @param array<int, array<string, mixed>> $managedSchemas
+     * @param array<int, array<string, mixed>> $solrConfigs
      */
     public function __construct(array $managedSchemas, array $solrConfigs)
     {
@@ -78,7 +78,7 @@ final class SolrConfigurationStore
     }
 
     /**
-     * @param array<int, array> $configs
+     * @param array<int, array<string, mixed>> $configs
      *
      * @return \Generator<int, \Solrphp\SolariumBundle\Contract\SolrApi\CoreDependentConfigInterface>
      */
@@ -88,7 +88,7 @@ final class SolrConfigurationStore
     }
 
     /**
-     * @param array<int, array> $schemas
+     * @param array<int, array<string, mixed>> $schemas
      *
      * @return \Generator<int, \Solrphp\SolariumBundle\Contract\SolrApi\CoreDependentConfigInterface>
      */

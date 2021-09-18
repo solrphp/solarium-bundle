@@ -18,8 +18,13 @@ use Solrphp\SolariumBundle\SolrApi\Config\Model\Property;
 use Solrphp\SolariumBundle\SolrApi\Config\Model\RequestHandler;
 use Solrphp\SolariumBundle\SolrApi\Config\Model\SearchComponent;
 use Solrphp\SolariumBundle\SolrApi\Schema\Config\ManagedSchema;
+use Solrphp\SolariumBundle\SolrApi\Schema\Model\CharFilter\ICUNormalizer2CharFilter;
 use Solrphp\SolariumBundle\SolrApi\Schema\Model\CopyField;
 use Solrphp\SolariumBundle\SolrApi\Schema\Model\Field;
+use Solrphp\SolariumBundle\SolrApi\Schema\Model\FieldType;
+use Solrphp\SolariumBundle\SolrApi\Schema\Model\Filter\DoubleMetaphoneFilter;
+use Solrphp\SolariumBundle\SolrApi\Schema\Model\Filter\FlattenGraphFilter;
+use Solrphp\SolariumBundle\SolrApi\Schema\Model\Tokenizer;
 use Solrphp\SolariumBundle\SolrApi\SolrConfigurationStore;
 
 /**
@@ -66,8 +71,11 @@ class SolrConfigurationStoreTest extends TestCase
      * @param int    $fieldCount
      * @param int    $dynamicFieldCount
      * @param int    $copyFieldCount
+     * @param int    $fieldTypeCount
+     *
+     * @throws \PHPUnit\Framework\ExpectationFailedException
      */
-    public function testManagedSchemaInitialization(array $schemas, string $coreConfig, string $key, int $fieldCount, int $dynamicFieldCount, int $copyFieldCount): void
+    public function testManagedSchemaInitialization(array $schemas, string $coreConfig, string $key, int $fieldCount, int $dynamicFieldCount, int $copyFieldCount, int $fieldTypeCount): void
     {
         $schema = (new SolrConfigurationStore($schemas, []))
             ->getSchemaForCore($coreConfig);
@@ -76,6 +84,7 @@ class SolrConfigurationStoreTest extends TestCase
         self::assertCount($fieldCount, $schema->getFields());
         self::assertCount($dynamicFieldCount, $schema->getDynamicFields());
         self::assertCount($copyFieldCount, $schema->getCopyFields());
+        self::assertCount($fieldTypeCount, $schema->getFieldTypes());
         self::assertSame($key, $schema->getUniqueKey());
 
         if (0 !== $fieldCount) {
@@ -88,6 +97,10 @@ class SolrConfigurationStoreTest extends TestCase
 
         if (0 !== $copyFieldCount) {
             self::assertInstanceOf(CopyField::class, $schema->getCopyFields()[0]);
+        }
+
+        if (0 !== $fieldTypeCount) {
+            self::assertInstanceOf(FieldType::class, $schema->getFieldTypes()[0]);
         }
     }
 
@@ -145,6 +158,9 @@ class SolrConfigurationStoreTest extends TestCase
             'copy_fields' => [
                 ['source' => 'foo', 'dest' => 'bar', 'max_chars' => 24],
             ],
+            'field_types' => [
+                ['name' => 'foo', 'class' => 'bar'],
+            ],
             'unique_key' => 'foo',
         ];
 
@@ -154,6 +170,81 @@ class SolrConfigurationStoreTest extends TestCase
         self::assertFalse($schema->getFields()[0]->getTermPayloads());
         self::assertTrue($schema->getDynamicFields()[0]->getTermVectors());
         self::assertSame(24, $schema->getCopyFields()[0]->getMaxChars());
+        self::assertSame('foo', $schema->getFieldTypes()[0]->getName());
+    }
+
+    /**
+     * test object nesting and discriminator deserialization.
+     */
+    public function testObjectNestingDeserializationAndDiscriminator(): void
+    {
+        $schema = [
+            'cores' => [
+                'foo',
+            ],
+            'fields' => [],
+            'dynamic_fields' => [],
+            'copy_fields' => [],
+            'field_types' => [
+                [
+                    'name' => 'foo',
+                    'class' => 'bar',
+                    'analyzers' => [
+                        [
+                            'class' => 'foo',
+                            'type' => 'bar',
+                            'char_filters' => [
+                                [
+                                    'class' => 'solr.ICUNormalizer2CharFilterFactory',
+                                    'name' => 'foo',
+                                ],
+                            ],
+                            'tokenizer' => [
+                                'class' => 'foo',
+                                'pattern' => 'bar',
+                            ],
+                            'filters' => [
+                                [
+                                    'class' => 'solr.DoubleMetaphoneFilterFactory',
+                                    'inject' => false,
+                                ],
+                                [
+                                    'class' => 'solr.FlattenGraphFilterFactory',
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            'unique_key' => 'foo',
+        ];
+
+        $schema = (new SolrConfigurationStore([$schema], []))
+            ->getSchemaForCore('foo');
+
+        /** @var FieldType $fieldType */
+        $fieldType = $schema->getFieldTypes()[0];
+
+        self::assertCount(1, $fieldType->getAnalyzers());
+
+        $analyzer = $fieldType->getAnalyzers()[0];
+
+        self::assertCount(1, $analyzer->getCharFilters());
+        self::assertCount(2, $analyzer->getFilters());
+
+        $charFilter = $analyzer->getCharFilters()[0];
+
+        self::assertInstanceOf(ICUNormalizer2CharFilter::class, $charFilter);
+        self::assertSame('foo', $charFilter->getName());
+
+        $filter = $analyzer->getFilters()[0];
+        self::assertInstanceOf(DoubleMetaphoneFilter::class, $filter);
+        self::assertFalse($filter->isInject());
+
+        $filter = $analyzer->getFilters()[1];
+        self::assertInstanceOf(FlattenGraphFilter::class, $filter);
+
+        self::assertInstanceOf(Tokenizer::class, $analyzer->getTokenizer());
     }
 
     /**
@@ -189,6 +280,9 @@ class SolrConfigurationStoreTest extends TestCase
                     'copy_fields' => [
                         ['source' => 'foo', 'dest' => 'bar', 'max_chars' => 24],
                     ],
+                    'field_types' => [
+                        ['name' => 'foo', 'class' => 'bar'],
+                    ],
                     'unique_key' => 'foo',
                 ],
             ],
@@ -197,6 +291,7 @@ class SolrConfigurationStoreTest extends TestCase
             'fields_count' => 2,
             'dynamic_fields_count' => 1,
             'copy_fields_count' => 1,
+            'field_type_count' => 1,
         ];
 
         yield 'one_core_one_field_schema' => [
@@ -210,6 +305,7 @@ class SolrConfigurationStoreTest extends TestCase
                     ],
                     'dynamic_fields' => [],
                     'copy_fields' => [],
+                    'field_types' => [],
                     'unique_key' => 'foo',
                 ],
             ],
@@ -218,6 +314,7 @@ class SolrConfigurationStoreTest extends TestCase
             'fields_count' => 1,
             'dynamic_fields_count' => 0,
             'copy_fields_count' => 0,
+            'field_type_count' => 0,
         ];
 
         yield 'one_core_one_dynamic_field_schema' => [
@@ -231,6 +328,7 @@ class SolrConfigurationStoreTest extends TestCase
                         ['name' => 'foo', 'type' => 'bar'],
                     ],
                     'copy_fields' => [],
+                    'field_types' => [],
                     'unique_key' => 'foo',
                 ],
             ],
@@ -239,6 +337,7 @@ class SolrConfigurationStoreTest extends TestCase
             'fields_count' => 0,
             'dynamic_fields_count' => 1,
             'copy_fields_count' => 0,
+            'field_type_count' => 0,
         ];
 
         yield 'one_core_one_copy_field_schema' => [
@@ -252,6 +351,7 @@ class SolrConfigurationStoreTest extends TestCase
                     'copy_fields' => [
                         ['source' => 'foo', 'dest' => 'bar'],
                     ],
+                    'field_types' => [],
                     'unique_key' => 'foo',
                 ],
             ],
@@ -260,6 +360,30 @@ class SolrConfigurationStoreTest extends TestCase
             'fields_count' => 0,
             'dynamic_fields_count' => 0,
             'copy_fields_count' => 1,
+            'field_type_count' => 0,
+        ];
+
+        yield 'one_core_one_field_type_schema' => [
+            'schemas' => [
+                [
+                    'cores' => [
+                        'foo',
+                    ],
+                    'fields' => [],
+                    'dynamic_fields' => [],
+                    'copy_fields' => [],
+                    'field_types' => [
+                        ['name' => 'foo', 'class' => 'bar'],
+                    ],
+                    'unique_key' => 'foo',
+                ],
+            ],
+            'core_config' => 'foo',
+            'key' => 'foo',
+            'fields_count' => 0,
+            'dynamic_fields_count' => 0,
+            'copy_fields_count' => 0,
+            'field_type_count' => 1,
         ];
 
         yield 'multiple_schemas' => [
@@ -273,6 +397,7 @@ class SolrConfigurationStoreTest extends TestCase
                     'copy_fields' => [
                         ['source' => 'foo', 'dest' => 'bar'],
                     ],
+                    'field_types' => [],
                     'unique_key' => 'foo',
                 ],
                 [
@@ -289,6 +414,9 @@ class SolrConfigurationStoreTest extends TestCase
                     'copy_fields' => [
                         ['source' => 'foo', 'dest' => 'bar'],
                     ],
+                    'field_types' => [
+                        ['name' => 'foo', 'class' => 'bar'],
+                    ],
                     'unique_key' => 'baz',
                 ],
             ],
@@ -297,6 +425,7 @@ class SolrConfigurationStoreTest extends TestCase
             'fields_count' => 2,
             'dynamic_fields_count' => 1,
             'copy_fields_count' => 1,
+            'field_type_count' => 1,
         ];
     }
 

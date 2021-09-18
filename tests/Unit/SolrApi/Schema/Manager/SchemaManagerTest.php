@@ -162,22 +162,28 @@ class SchemaManagerTest extends TestCase
      */
     public function testPersist(): void
     {
+        $field = new Field();
+        $field->setName('foo');
+        $field->setType('bar');
+
         $options = [
             'version' => Request::API_V2,
             'method' => Request::METHOD_POST,
             'resultclass' => QueryType::class,
             'contenttype' => 'application/json',
             'handler' => 'cores/foo/schema',
-            'rawdata' => '[]',
+            'rawdata' => '{"add-field":[{"name":"foo","type":"bar"}]}',
         ];
 
         $client = $this->getExecutingClient($options);
         $serializer = $this->getSerializer();
 
         $coreManager = new CoreManager($client, $serializer);
-        $configManager = (new SchemaManager($client, $coreManager, $serializer))->setCore('foo');
+        $schemaManager = (new SchemaManager($client, $coreManager, $serializer))->setCore('foo');
 
-        $response = $configManager->persist();
+        $schemaManager->addCommand(Command::ADD_FIELD, $field);
+
+        $response = $schemaManager->persist();
 
         self::assertInstanceOf(Result::class, $response);
     }
@@ -215,7 +221,7 @@ class SchemaManagerTest extends TestCase
     }
 
     /**
-     * @param array $options
+     * @param array<string> $options
      *
      * @return mixed|\PHPUnit\Framework\MockObject\MockObject|\Solarium\Client
      */
@@ -246,72 +252,6 @@ class SchemaManagerTest extends TestCase
             )
             ->willReturn($result)
         ;
-
-        return $client;
-    }
-
-    /**
-     * @param int         $createApiCalls
-     * @param string|null $responseBody
-     * @param string|null $executeBody
-     * @param array|null  $initOptions
-     *
-     * @return mixed|\PHPUnit\Framework\MockObject\MockObject|\Solarium\Client
-     */
-    private function getClient(int $createApiCalls = 1, string $responseBody = null, string $executeBody = null, array $initOptions = null)
-    {
-        $client = $this->getMockBuilder(Client::class)->disableOriginalConstructor()->getMock();
-
-        $initQuery = $this->getMockBuilder(Query::class)->getMock();
-        $initQuery->expects(self::once())
-            ->method('setVersion')
-            ->with(Request::API_V2)
-            ->willReturnSelf();
-
-        $initQuery->expects(self::once())
-            ->method('setMethod')
-            ->with(Request::METHOD_POST)
-            ->willReturnSelf();
-
-        $initQuery->expects(self::once())
-            ->method('setContentType')
-            ->with('application/json')
-            ->willReturnSelf();
-
-        if (null !== $initOptions) {
-            $initQuery->expects(self::once())
-                ->method('setOptions')
-                ->with(self::anything(), false);
-        }
-
-        $client->expects(self::exactly($createApiCalls))
-            ->method('createApi')
-            ->willReturnCallback(static function ($arguments) use ($initQuery) {
-                // abstract manager constructor call has no arguments
-                if (empty($arguments)) {
-                    return $initQuery;
-                }
-
-                if (\is_array($arguments)) {
-                    return new Query();
-                }
-            });
-
-        if (null !== $responseBody) {
-            $response = new Response($responseBody, ['HTTP 200 OK']);
-            $result = new Result(new Query(), $response);
-            $client->expects(self::once())
-                ->method('execute')
-                ->willReturn($result);
-        }
-
-        if (null !== $executeBody) {
-            $response = new Response($executeBody, ['HTTP 200 OK']);
-
-            $client->expects(self::once())
-                ->method('executeRequest')
-                ->willReturn($response);
-        }
 
         return $client;
     }

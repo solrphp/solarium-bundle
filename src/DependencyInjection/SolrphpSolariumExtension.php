@@ -48,8 +48,9 @@ class SolrphpSolariumExtension extends Extension
         $configuration = $this->getConfiguration($configs, $container);
         $config = $this->processConfiguration($configuration, $configs);
 
-        $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../../config'));
-        $loader->load('services.yaml');
+        // no service definitions for now
+        // $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../../config'));
+        // $loader->load('services.yaml');
 
         $endpointReferences = $this->loadSolrEndpoints($container, $config);
 
@@ -126,7 +127,7 @@ class SolrphpSolariumExtension extends Extension
 
             $adapterName = $clientOptions['adapter_service'] ?? sprintf('solarium.adapter.%s', $name);
 
-            if (!$container->hasDefinition($adapterName)) {
+            if (!isset($clientOptions['adapter_service']) && !$container->hasDefinition($adapterName)) {
                 $container->register($adapterName, $clientOptions['adapter_class']);
             }
 
