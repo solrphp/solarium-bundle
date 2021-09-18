@@ -20,14 +20,15 @@ use Solarium\Core\Client\Response;
 use Solarium\Core\Query\Result\QueryType;
 use Solarium\Core\Query\Result\Result;
 use Solarium\QueryType\Server\Api\Query;
+use Solrphp\SolariumBundle\Contract\SolrApi\Response\ResponseInterface;
 use Solrphp\SolariumBundle\Exception\UnexpectedValueException;
-use Solrphp\SolariumBundle\SolrApi\Config\ConfigManager;
 use Solrphp\SolariumBundle\SolrApi\Config\Enum\Command;
 use Solrphp\SolariumBundle\SolrApi\Config\Enum\SubPath as SubPathConfig;
+use Solrphp\SolariumBundle\SolrApi\Config\Manager\ConfigManager;
 use Solrphp\SolariumBundle\SolrApi\Config\Response\ConfigResponse;
-use Solrphp\SolariumBundle\SolrApi\CoreAdmin\CoreManager;
+use Solrphp\SolariumBundle\SolrApi\CoreAdmin\Manager\CoreManager;
 use Solrphp\SolariumBundle\SolrApi\CoreAdmin\Response\CoreResponse;
-use Solrphp\SolariumBundle\SolrApi\Schema\Model\FieldType;
+use Solrphp\SolariumBundle\SolrApi\Schema\Model\Field;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\Serializer\SerializerInterface;
 
@@ -48,7 +49,7 @@ class ConfigManagerTest extends TestCase
         $client = $this->getExecutingClient([]);
         $serializer = $this->getSerializer();
 
-        $coreManager = new \Solrphp\SolariumBundle\SolrApi\CoreAdmin\CoreManager($client, $serializer);
+        $coreManager = new CoreManager($client, $serializer);
         $configManager = new ConfigManager($client, $coreManager, $serializer);
 
         $configManager->call('foo');
@@ -69,13 +70,13 @@ class ConfigManagerTest extends TestCase
         $client = $this->getExecutingClient($options);
         $serializer = $this->getSerializer();
 
-        $coreManager = new \Solrphp\SolariumBundle\SolrApi\CoreAdmin\CoreManager($client, $serializer);
-        $configManager = new \Solrphp\SolariumBundle\SolrApi\Config\ConfigManager($client, $coreManager, $serializer);
+        $coreManager = new CoreManager($client, $serializer);
+        $configManager = new ConfigManager($client, $coreManager, $serializer);
         $configManager->setCore('foo');
 
         $response = $configManager->call(SubPathConfig::GET_OVERLAY);
 
-        self::assertInstanceOf(Response::class, $response);
+        self::assertInstanceOf(ResponseInterface::class, $response);
     }
 
     /**
@@ -97,7 +98,9 @@ class ConfigManagerTest extends TestCase
         $configManager = new ConfigManager($client, $coreManager, $serializer);
         $configManager->setCore('foo');
 
-        $configManager->call(SubPathConfig::GET_REQUEST_HANDLERS);
+        $response = $configManager->call(SubPathConfig::GET_REQUEST_HANDLERS);
+
+        self::assertInstanceOf(ConfigResponse::class, $response);
     }
 
     /**
@@ -110,10 +113,10 @@ class ConfigManagerTest extends TestCase
         $client = $this->getExecutingClient([]);
         $serializer = $this->getSerializer();
 
-        $coreManager = new \Solrphp\SolariumBundle\SolrApi\CoreAdmin\CoreManager($client, $serializer);
-        $schemaManager = new ConfigManager($client, $coreManager, $serializer);
+        $coreManager = new CoreManager($client, $serializer);
+        $schemaManager = new \Solrphp\SolariumBundle\SolrApi\Config\Manager\ConfigManager($client, $coreManager, $serializer);
 
-        $schemaManager->addCommand('foo', new FieldType());
+        $schemaManager->addCommand('foo', new Field());
     }
 
     /**
@@ -124,10 +127,10 @@ class ConfigManagerTest extends TestCase
         $client = $this->getExecutingClient([]);
         $serializer = $this->getSerializer();
 
-        $coreManager = new \Solrphp\SolariumBundle\SolrApi\CoreAdmin\CoreManager($client, $serializer);
-        $configManager = new ConfigManager($client, $coreManager, $serializer);
+        $coreManager = new CoreManager($client, $serializer);
+        $configManager = new \Solrphp\SolariumBundle\SolrApi\Config\Manager\ConfigManager($client, $coreManager, $serializer);
 
-        $configManager = $configManager->addCommand(Command::ADD_INIT_PARAMS, new FieldType());
+        $configManager = $configManager->addCommand(Command::ADD_INIT_PARAMS, new Field());
 
         self::assertInstanceOf(ConfigManager::class, $configManager);
     }
@@ -150,7 +153,7 @@ class ConfigManagerTest extends TestCase
         );
         $serializer = $this->getSerializer(1, '', CoreResponse::class);
 
-        $coreManager = new \Solrphp\SolariumBundle\SolrApi\CoreAdmin\CoreManager($client, $serializer);
+        $coreManager = new CoreManager($client, $serializer);
         $configManager = (new ConfigManager($client, $coreManager, $serializer))->setCore('foo');
 
         $response = $configManager->flush();
@@ -175,7 +178,7 @@ class ConfigManagerTest extends TestCase
         $serializer = $this->getSerializer();
         $client = $this->getExecutingClient($options);
 
-        $coreManager = new \Solrphp\SolariumBundle\SolrApi\CoreAdmin\CoreManager($client, $serializer);
+        $coreManager = new CoreManager($client, $serializer);
         $configManager = (new ConfigManager($client, $coreManager, $serializer))->setCore('foo');
 
         $response = $configManager->persist();

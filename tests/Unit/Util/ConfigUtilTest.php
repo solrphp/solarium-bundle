@@ -14,7 +14,7 @@ namespace Solrphp\SolariumBundle\Tests\Unit\Util;
 
 use PHPUnit\Framework\TestCase;
 use Solrphp\SolariumBundle\SolrApi\Config\Util\ConfigUtil;
-use Solrphp\SolariumBundle\SolrApi\Schema\Model\FieldType;
+use Solrphp\SolariumBundle\SolrApi\Schema\Model\Field;
 use Solrphp\SolariumBundle\Tests\Helper\ObjectUtil;
 
 /**
@@ -64,19 +64,19 @@ class ConfigUtilTest extends TestCase
     public function propertyPathProvider(): \Generator
     {
         yield 'default_separator' => [
-            'class' => FieldType::class,
+            'class' => Field::class,
             'prefix' => 'field_type',
             'separator' => null,
         ];
 
         yield 'custom_separator' => [
-            'class' => FieldType::class,
+            'class' => Field::class,
             'prefix' => 'field_type',
             'separator' => '|',
         ];
 
         yield 'no_prefix' => [
-            'class' => FieldType::class,
+            'class' => Field::class,
             'prefix' => null,
             'separator' => null,
         ];

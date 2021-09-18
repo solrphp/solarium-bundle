@@ -23,9 +23,15 @@ use Solrphp\SolariumBundle\Tests\Helper\Value;
  */
 final class CacheTest extends TestCase
 {
-    private static $class = 'Solrphp\\SolariumBundle\\SolrApi\\Config\\Model\\Cache';
+    /**
+     * @var string
+     */
+    private static string $class = Cache::class;
 
-    private $values = [
+    /**
+     * @var array<string, mixed>
+     */
+    private array $values = [
         'autowarmCount' => 'foo',
         'size' => 1,
         'initialSize' => 5,
@@ -33,10 +39,15 @@ final class CacheTest extends TestCase
         'name' => 'foo',
     ];
 
-    private static $nonNullable = [
-    ];
+    /**
+     * @var array
+     */
+    private static array $nonNullable = [];
 
-    private static $accessors = [
+    /**
+     * @var array|array[]
+     */
+    private static array $accessors = [
         'autowarmCount' => [
             'reader' => 'getAutowarmCount',
             'writer' => 'setAutowarmCount',

@@ -13,6 +13,7 @@ declare(strict_types=1);
 namespace Solrphp\SolariumBundle\Tests\Unit\SolrApi\Schema\Model;
 
 use PHPUnit\Framework\TestCase;
+use Solrphp\SolariumBundle\SolrApi\Schema\Model\CopyField;
 use Solrphp\SolariumBundle\Tests\Helper\Value;
 
 /**
@@ -22,20 +23,32 @@ use Solrphp\SolariumBundle\Tests\Helper\Value;
  */
 final class CopyFieldTest extends TestCase
 {
-    private static $class = 'Solrphp\\SolariumBundle\\SolrApi\\Schema\\Model\\CopyField';
+    /**
+     * @var string
+     */
+    private static string $class = CopyField::class;
 
-    private $values = [
+    /**
+     * @var array<string, mixed>
+     */
+    private array $values = [
         'source' => 'foo',
         'dest' => 'foo',
         'maxChars' => 4,
     ];
 
-    private static $nonNullable = [
+    /**
+     * @var array|string[]
+     */
+    private static array $nonNullable = [
         'source' => 'foo',
         'dest' => 'foo',
     ];
 
-    private static $accessors = [
+    /**
+     * @var array|array[]
+     */
+    private static array $accessors = [
         'source' => [
             'reader' => 'getSource',
             'writer' => 'setSource',

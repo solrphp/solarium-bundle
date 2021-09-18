@@ -10,16 +10,18 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Solrphp\SolariumBundle\Manager;
+namespace Solrphp\SolariumBundle\Common\Manager;
 
 use Solarium\Client;
 use Solarium\Core\Client\Request;
 use Solarium\Core\Query\Result\ResultInterface;
 use Solarium\QueryType\Server\Api\Query;
-use Solrphp\SolariumBundle\Collection\CommandCollection;
+use Solrphp\SolariumBundle\Common\Collection\CommandCollection;
+use Solrphp\SolariumBundle\Contract\SolrApi\Manager\SolrApiManagerInterface;
+use Solrphp\SolariumBundle\Contract\SolrApi\Response\ResponseInterface;
 use Solrphp\SolariumBundle\Exception\UnexpectedValueException;
-use Solrphp\SolariumBundle\Response\AbstractResponse;
-use Solrphp\SolariumBundle\SolrApi\CoreAdmin\CoreManager;
+use Solrphp\SolariumBundle\SolrApi\CoreAdmin\Manager\CoreManager;
+use Solrphp\SolariumBundle\SolrApi\Schema\Response\SchemaResponse;
 use Symfony\Component\Serializer\SerializerInterface;
 
 /**
@@ -27,7 +29,7 @@ use Symfony\Component\Serializer\SerializerInterface;
  *
  * @author wicliff <wicliff.wolda@gmail.com>
  */
-abstract class AbstractApiManager
+abstract class AbstractApiManager implements SolrApiManagerInterface
 {
     /**
      * Available commands for API v2 endpoint.
@@ -63,7 +65,7 @@ abstract class AbstractApiManager
     protected Query $query;
 
     /**
-     * @var \Solrphp\SolariumBundle\SolrApi\CoreAdmin\CoreManager
+     * @var \Solrphp\SolariumBundle\SolrApi\CoreAdmin\Manager\CoreManager
      */
     protected CoreManager $coreManager;
 
@@ -73,7 +75,7 @@ abstract class AbstractApiManager
     protected string $core;
 
     /**
-     * @var \Solrphp\SolariumBundle\Collection\CommandCollection
+     * @var \Solrphp\SolariumBundle\Common\Collection\CommandCollection
      */
     protected CommandCollection $commands;
 
@@ -83,9 +85,9 @@ abstract class AbstractApiManager
     protected SerializerInterface $serializer;
 
     /**
-     * @param \Solarium\Client                                      $client
-     * @param \Solrphp\SolariumBundle\SolrApi\CoreAdmin\CoreManager $coreManager
-     * @param \Symfony\Component\Serializer\SerializerInterface     $serializer
+     * @param \Solarium\Client                                              $client
+     * @param \Solrphp\SolariumBundle\SolrApi\CoreAdmin\Manager\CoreManager $coreManager
+     * @param \Symfony\Component\Serializer\SerializerInterface             $serializer
      */
     public function __construct(Client $client, CoreManager $coreManager, SerializerInterface $serializer)
     {
@@ -97,9 +99,7 @@ abstract class AbstractApiManager
     }
 
     /**
-     * @param string $core
-     *
-     * @return static
+     * {@inheritdoc}
      */
     public function setCore(string $core): self
     {
@@ -110,12 +110,7 @@ abstract class AbstractApiManager
     }
 
     /**
-     * @param string            $command
-     * @param \JsonSerializable $data
-     *
-     * @return static
-     *
-     * @throws \Solrphp\SolariumBundle\Exception\UnexpectedValueException
+     * {@inheritdoc}
      */
     public function addCommand(string $command, \JsonSerializable $data): self
     {
@@ -129,7 +124,7 @@ abstract class AbstractApiManager
     }
 
     /**
-     * @return \Solarium\Core\Query\Result\ResultInterface
+     * {@inheritdoc}
      */
     public function persist(): ResultInterface
     {
@@ -146,24 +141,20 @@ abstract class AbstractApiManager
     }
 
     /**
-     * @return \Solrphp\SolariumBundle\Response\AbstractResponse
+     * @return \Solrphp\SolariumBundle\Contract\SolrApi\Response\ResponseInterface
      */
-    public function flush(): AbstractResponse
+    public function flush(): ResponseInterface
     {
         return $this->coreManager->reload();
     }
 
     /**
-     * @param string $subPath
-     *
-     * @return \Solarium\Core\Client\Response
-     *
-     * @throws \Solrphp\SolariumBundle\Exception\UnexpectedValueException
+     * {@inheritdoc}
      */
-    protected function call(string $subPath)
+    public function call(string $path): ResponseInterface
     {
-        if (false === \in_array($subPath, static::$availableSubPaths, true)) {
-            throw new UnexpectedValueException(sprintf('unknown sub path: %s. available sub paths: %s', $subPath, implode(', ', static::$availableSubPaths)));
+        if (false === \in_array($path, static::$availableSubPaths, true)) {
+            throw new UnexpectedValueException(sprintf('unknown sub path: %s. available sub paths: %s', $path, implode(', ', static::$availableSubPaths)));
         }
 
         // todo: use setters once typehints are fixed
@@ -171,11 +162,13 @@ abstract class AbstractApiManager
             ->createApi([
                 'version' => Request::API_V2,
                 'method' => Request::METHOD_GET,
-                'handler' => sprintf('%s/%s', $this->getHandler(), $subPath),
+                'handler' => sprintf('%s/%s', $this->getHandler(), $path),
             ])
         ;
 
-        return $this->client->execute($query, $this->core)->getResponse();
+        $response = $this->client->execute($query, $this->core)->getResponse();
+
+        return SchemaResponse::fromSolariumResponse($response);
     }
 
     /**

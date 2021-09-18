@@ -13,9 +13,9 @@ declare(strict_types=1);
 namespace Solrphp\SolariumBundle\Tests\Unit\Collection;
 
 use PHPUnit\Framework\TestCase;
-use Solrphp\SolariumBundle\Collection\CommandCollection;
+use Solrphp\SolariumBundle\Common\Collection\CommandCollection;
 use Solrphp\SolariumBundle\SolrApi\Config\Model\Property;
-use Solrphp\SolariumBundle\SolrApi\Schema\Model\FieldType;
+use Solrphp\SolariumBundle\SolrApi\Schema\Model\Field;
 
 /**
  * CommandCollection Test.
@@ -25,7 +25,7 @@ use Solrphp\SolariumBundle\SolrApi\Schema\Model\FieldType;
 class CommandCollectionTest extends TestCase
 {
     /**
-     * @var \Solrphp\SolariumBundle\Collection\CommandCollection
+     * @var \Solrphp\SolariumBundle\Common\Collection\CommandCollection
      */
     private CommandCollection $collection;
 
@@ -53,10 +53,10 @@ class CommandCollectionTest extends TestCase
      */
     public function testAdd(): void
     {
-        $this->collection->add('foo', new FieldType());
+        $this->collection->add('foo', new Field());
 
         self::assertTrue($this->collection->containsCommand('foo'));
-        self::assertInstanceOf(FieldType::class, $this->collection->get('foo')[0]);
+        self::assertInstanceOf(Field::class, $this->collection->get('foo')[0]);
     }
 
     /**
@@ -64,11 +64,11 @@ class CommandCollectionTest extends TestCase
      */
     public function testRemove(): void
     {
-        $this->collection->add('foo', new FieldType());
+        $this->collection->add('foo', new Field());
 
         $removed = $this->collection->remove('foo');
 
-        self::assertInstanceOf(FieldType::class, $removed[0]);
+        self::assertInstanceOf(Field::class, $removed[0]);
         self::assertFalse($this->collection->containsCommand('foo'));
     }
 
@@ -88,7 +88,7 @@ class CommandCollectionTest extends TestCase
     public function testContains(): void
     {
         $collection = new CommandCollection([null]);
-        $collection->add('foo', new FieldType());
+        $collection->add('foo', new Field());
 
         self::assertTrue($collection->containsCommand('foo'));
         self::assertTrue($collection->containsCommand(0));
@@ -99,7 +99,7 @@ class CommandCollectionTest extends TestCase
      */
     public function testClear(): void
     {
-        $this->collection->add('foo', new FieldType());
+        $this->collection->add('foo', new Field());
 
         $this->collection->clear();
 
@@ -111,7 +111,7 @@ class CommandCollectionTest extends TestCase
      */
     public function testOffsetExists(): void
     {
-        $this->collection->add('foo', new FieldType());
+        $this->collection->add('foo', new Field());
 
         self::assertTrue($this->collection->offsetExists('foo'));
     }
@@ -121,7 +121,7 @@ class CommandCollectionTest extends TestCase
      */
     public function testOffsetGet(): void
     {
-        $field = new FieldType();
+        $field = new Field();
         $this->collection->add('foo', $field);
 
         self::assertSame($field, $this->collection->offsetGet('foo')[0]);
@@ -132,7 +132,7 @@ class CommandCollectionTest extends TestCase
      */
     public function testOffsetSet(): void
     {
-        $field = new FieldType();
+        $field = new Field();
         $property = new Property('foo', 'bar');
 
         $this->collection->add('foo', $field);
@@ -146,7 +146,7 @@ class CommandCollectionTest extends TestCase
      */
     public function testOffsetUnset(): void
     {
-        $field = new FieldType();
+        $field = new Field();
 
         $this->collection->offsetSet('foo', [$field]);
 
@@ -163,7 +163,7 @@ class CommandCollectionTest extends TestCase
     {
         $collection = new CommandCollection([
             'foo' => null,
-            'bar' => new FieldType(),
+            'bar' => new Field(),
         ]);
 
         self::assertArrayHasKey('bar', $collection->jsonSerialize());

@@ -10,13 +10,14 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Solrphp\SolariumBundle\Generator;
+namespace Solrphp\SolariumBundle\SolrApi\Config\Generator;
 
 use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\Common\Collections\ArrayCollection;
-use Solrphp\SolariumBundle\SolrApi\Schema\ManagedSchema;
-use Solrphp\SolariumBundle\SolrApi\Schema\Model\CopyField;
-use Solrphp\SolariumBundle\SolrApi\Schema\Model\FieldType;
+use Solrphp\SolariumBundle\SolrApi\Config\Config\SolrConfig;
+use Solrphp\SolariumBundle\SolrApi\Config\Model\Query;
+use Solrphp\SolariumBundle\SolrApi\Config\Model\RequestHandler;
+use Solrphp\SolariumBundle\SolrApi\Config\Model\SearchComponent;
 use Symfony\Component\PropertyInfo\Extractor\ReflectionExtractor;
 use Symfony\Component\Serializer\Mapping\ClassDiscriminatorFromClassMetadata;
 use Symfony\Component\Serializer\Mapping\Factory\ClassMetadataFactory;
@@ -27,11 +28,11 @@ use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Serializer\Serializer;
 
 /**
- * Schema Generator.
+ * Config Generator.
  *
  * @author wicliff <wwolda@gmail.com>
  */
-class SchemaGenerator
+class ConfigGenerator
 {
     /**
      * @var \Symfony\Component\Serializer\Serializer
@@ -39,7 +40,7 @@ class SchemaGenerator
     private Serializer $serializer;
 
     /**
-     * construct.
+     * constructor.
      */
     public function __construct()
     {
@@ -49,26 +50,28 @@ class SchemaGenerator
     }
 
     /**
-     * @param array<int, array> $schemas
+     * @param array<int, array> $configs
      *
      * @return \Generator<int, \Solrphp\SolariumBundle\Contract\SolrApi\CoreDependentConfigInterface>
      */
-    public function generate(array $schemas): \Generator
+    public function generate(array $configs): \Generator
     {
-        foreach ($schemas as $schema) {
-            foreach ($schema['fields'] as $name => $field) {
-                $schema['fields'][$name] = $this->serializer->denormalize($field, FieldType::class);
+        foreach ($configs as $config) {
+            foreach ($config['search_components'] as $key => $searchComponent) {
+                $config['search_components'][$key] = $this->serializer->denormalize($searchComponent, SearchComponent::class);
             }
 
-            foreach ($schema['dynamic_fields'] as $name => $field) {
-                $schema['dynamic_fields'][$name] = $this->serializer->denormalize($field, FieldType::class);
+            foreach ($config['request_handlers'] as $key => $requestHandler) {
+                $config['request_handlers'][$key] = $this->serializer->denormalize($requestHandler, RequestHandler::class);
             }
 
-            foreach ($schema['copy_fields'] as $index => $copyField) {
-                $schema['copy_fields'][$index] = $this->serializer->denormalize($copyField, CopyField::class);
+            if (false === empty($config['query'])) {
+                $config['query'] = $this->serializer->denormalize($config['query'], Query::class);
+            } else {
+                $config['query'] = null;
             }
 
-            yield new ManagedSchema($schema['unique_key'], new ArrayCollection($schema['cores']), new ArrayCollection($schema['fields']), new ArrayCollection($schema['copy_fields']), new ArrayCollection($schema['dynamic_fields']));
+            yield new SolrConfig(new ArrayCollection($config['cores']), new ArrayCollection($config['search_components']), new ArrayCollection($config['request_handlers']), $config['query']);
         }
     }
 }

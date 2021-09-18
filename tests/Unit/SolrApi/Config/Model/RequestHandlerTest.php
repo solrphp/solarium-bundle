@@ -14,6 +14,7 @@ namespace Solrphp\SolariumBundle\Tests\Unit\SolrApi\Config\Model;
 
 use PHPUnit\Framework\TestCase;
 use Solrphp\SolariumBundle\SolrApi\Config\Model\Property;
+use Solrphp\SolariumBundle\SolrApi\Config\Model\RequestHandler;
 use Solrphp\SolariumBundle\Tests\Helper\Value;
 
 /**
@@ -23,25 +24,37 @@ use Solrphp\SolariumBundle\Tests\Helper\Value;
  */
 final class RequestHandlerTest extends TestCase
 {
-    private static $class = 'Solrphp\\SolariumBundle\\SolrApi\\Config\\Model\\RequestHandler';
+    /**
+     * @var string
+     */
+    private static string $class = RequestHandler::class;
 
-    private $values = [
+    /**
+     * @var array|string[]
+     */
+    private array $values = [
         'name' => 'foo',
         'class' => 'foo',
-        'defaults' => '\\Solrphp\\SolariumBundle\\SolrApi\\Config\\Model\\Property',
-        'appends' => '\\Solrphp\\SolariumBundle\\SolrApi\\Config\\Model\\Property',
-        'invariants' => '\\Solrphp\\SolariumBundle\\SolrApi\\Config\\Model\\Property',
+        'defaults' => Property::class,
+        'appends' => Property::class,
+        'invariants' => Property::class,
         'components' => 'foo',
         'firstComponents' => 'foo',
         'lastComponents' => 'foo',
     ];
 
-    private static $nonNullable = [
+    /**
+     * @var array|string[]
+     */
+    private static array $nonNullable = [
         'name' => 'foo',
         'class' => 'foo',
     ];
 
-    private static $accessors = [
+    /**
+     * @var array<string, array>
+     */
+    private static array $accessors = [
         'name' => [
             'reader' => 'getName',
             'writer' => 'setName',

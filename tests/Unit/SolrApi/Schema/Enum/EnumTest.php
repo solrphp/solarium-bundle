@@ -36,7 +36,7 @@ class EnumTest extends TestCase
                 continue;
             }
 
-            self::assertArrayHasKey($constant, Command::COMMANDS);
+            self::assertArrayHasKey($constant, Command::ALL);
         }
     }
 
@@ -52,7 +52,7 @@ class EnumTest extends TestCase
                 continue;
             }
 
-            self::assertContains($constant, SubPath::SUB_PATHS);
+            self::assertContains($constant, SubPath::ALL);
         }
     }
 }

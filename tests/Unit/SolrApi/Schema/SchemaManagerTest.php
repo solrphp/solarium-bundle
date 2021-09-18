@@ -20,13 +20,15 @@ use Solarium\Core\Client\Response;
 use Solarium\Core\Query\Result\QueryType;
 use Solarium\Core\Query\Result\Result;
 use Solarium\QueryType\Server\Api\Query;
+use Solrphp\SolariumBundle\Contract\SolrApi\Response\ResponseInterface;
 use Solrphp\SolariumBundle\Exception\UnexpectedValueException;
+use Solrphp\SolariumBundle\SolrApi\CoreAdmin\Manager\CoreManager;
 use Solrphp\SolariumBundle\SolrApi\CoreAdmin\Response\CoreResponse;
 use Solrphp\SolariumBundle\SolrApi\Schema\Enum\Command;
 use Solrphp\SolariumBundle\SolrApi\Schema\Enum\SubPath as SubPathSchema;
-use Solrphp\SolariumBundle\SolrApi\Schema\Model\FieldType;
+use Solrphp\SolariumBundle\SolrApi\Schema\Manager\SchemaManager;
+use Solrphp\SolariumBundle\SolrApi\Schema\Model\Field;
 use Solrphp\SolariumBundle\SolrApi\Schema\Response\FieldsResponse;
-use Solrphp\SolariumBundle\SolrApi\Schema\SchemaManager;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\Serializer\SerializerInterface;
 
@@ -46,7 +48,7 @@ class SchemaManagerTest extends TestCase
 
         $client = $this->getExecutingClient([]);
         $serializer = $this->getSerializer();
-        $coreManager = new \Solrphp\SolariumBundle\SolrApi\CoreAdmin\CoreManager($client, $serializer);
+        $coreManager = new CoreManager($client, $serializer);
         $schemaManager = new SchemaManager($client, $coreManager, $serializer);
 
         $schemaManager->call('foo');
@@ -66,14 +68,14 @@ class SchemaManagerTest extends TestCase
 
         $client = $this->getExecutingClient($options);
         $serializer = $this->getSerializer();
-        $coreManager = new \Solrphp\SolariumBundle\SolrApi\CoreAdmin\CoreManager($client, $serializer);
+        $coreManager = new CoreManager($client, $serializer);
         $schemaManager = new SchemaManager($client, $coreManager, $serializer);
         $schemaManager
             ->setCore('foo');
 
         $response = $schemaManager->call(SubPathSchema::SHOW_GLOBAL_SIMILARITY);
 
-        self::assertInstanceOf(Response::class, $response);
+        self::assertInstanceOf(ResponseInterface::class, $response);
     }
 
     /**
@@ -90,12 +92,14 @@ class SchemaManagerTest extends TestCase
 
         $client = $this->getExecutingClient($options);
         $serializer = $this->getSerializer(1, '', FieldsResponse::class);
-        $coreManager = new \Solrphp\SolariumBundle\SolrApi\CoreAdmin\CoreManager($client, $serializer);
+        $coreManager = new CoreManager($client, $serializer);
         $schemaManager = new SchemaManager($client, $coreManager, $serializer);
         $schemaManager
             ->setCore('foo');
 
-        $schemaManager->call(SubPathSchema::LIST_FIELDS);
+        $response = $schemaManager->call(SubPathSchema::LIST_FIELDS);
+
+        self::assertInstanceOf(FieldsResponse::class, $response);
     }
 
     /**
@@ -107,9 +111,9 @@ class SchemaManagerTest extends TestCase
 
         $client = $this->getExecutingClient([]);
         $serializer = $this->getSerializer();
-        $coreManager = new \Solrphp\SolariumBundle\SolrApi\CoreAdmin\CoreManager($client, $serializer);
-        $schemaManager = new \Solrphp\SolariumBundle\SolrApi\Schema\SchemaManager($client, $coreManager, $serializer);
-        $schemaManager->addCommand('foo', new FieldType());
+        $coreManager = new CoreManager($client, $serializer);
+        $schemaManager = new SchemaManager($client, $coreManager, $serializer);
+        $schemaManager->addCommand('foo', new Field());
     }
 
     /**
@@ -119,10 +123,10 @@ class SchemaManagerTest extends TestCase
     {
         $client = $this->getExecutingClient([]);
         $serializer = $this->getSerializer();
-        $coreManager = new \Solrphp\SolariumBundle\SolrApi\CoreAdmin\CoreManager($client, $serializer);
-        $schemaManager = new \Solrphp\SolariumBundle\SolrApi\Schema\SchemaManager($client, $coreManager, $serializer);
+        $coreManager = new CoreManager($client, $serializer);
+        $schemaManager = new SchemaManager($client, $coreManager, $serializer);
 
-        $schemaManager = $schemaManager->addCommand(Command::ADD_COPY_FIELD, new FieldType());
+        $schemaManager = $schemaManager->addCommand(Command::ADD_COPY_FIELD, new Field());
 
         self::assertInstanceOf(SchemaManager::class, $schemaManager);
     }
@@ -145,7 +149,7 @@ class SchemaManagerTest extends TestCase
         );
 
         $serializer = $this->getSerializer(1, '', CoreResponse::class);
-        $coreManager = new \Solrphp\SolariumBundle\SolrApi\CoreAdmin\CoreManager($client, $serializer);
+        $coreManager = new CoreManager($client, $serializer);
         $configManager = (new SchemaManager($client, $coreManager, $serializer))->setCore('foo');
 
         $response = $configManager->flush();
@@ -170,7 +174,7 @@ class SchemaManagerTest extends TestCase
         $client = $this->getExecutingClient($options);
         $serializer = $this->getSerializer();
 
-        $coreManager = new \Solrphp\SolariumBundle\SolrApi\CoreAdmin\CoreManager($client, $serializer);
+        $coreManager = new CoreManager($client, $serializer);
         $configManager = (new SchemaManager($client, $coreManager, $serializer))->setCore('foo');
 
         $response = $configManager->persist();

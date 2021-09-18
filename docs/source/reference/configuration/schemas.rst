@@ -18,6 +18,19 @@ schemas
                 copy_fields:
                     - { source: 'features', dest: 'features_str', max_chars: 256 }
                     - ...
+                field_types:
+                    - name: 'text_fa'
+                      class: 'solr.TextField'
+                      positionIncrementGap: 100
+                      analyzers:
+                        char_filter: {class: 'solr.PersianCharFilterFactory' }
+                        tokenizer: { class: 'solr.StandardTokenizerFactory' }
+                        filters:
+                            - { class: 'solr.LowerCaseFilterFactory' }
+                            - { class: 'solr.ArabicNormalizationFilterFactory' }
+                            - { class: 'solr.PersianNormalizationFilterFactory' }
+                            - { class: 'solr.StopFilterFactory', words: 'lang/stopwords_fa.txt', ignore_case: true }
+                    - ...
 
 ``cores``
 ---------
@@ -41,3 +54,9 @@ be aware that the value for property ``name`` should contain a wildcard.
 ``copy_fields``
 ---------------
 the copy field definitions for your schema.
+
+``field_types``
+---------------
+the field type definitions for your schema.
+most properties defined in `field type definitions and properties <https://solr.apache.org/guide/field-type-definitions-and-properties.html>`_ are available as a snake case representation.
+todo: `field type similarity <https://solr.apache.org/guide/8_9/field-type-definitions-and-properties.html#field-type-similarity>`_

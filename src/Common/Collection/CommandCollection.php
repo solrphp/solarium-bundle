@@ -10,7 +10,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Solrphp\SolariumBundle\Collection;
+namespace Solrphp\SolariumBundle\Common\Collection;
 
 use ArrayIterator;
 

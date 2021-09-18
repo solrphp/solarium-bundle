@@ -13,7 +13,7 @@ declare(strict_types=1);
 namespace Solrphp\SolariumBundle\Tests\Unit\Generator;
 
 use PHPUnit\Framework\TestCase;
-use Solrphp\SolariumBundle\Generator\LazyLoadingGenerator;
+use Solrphp\SolariumBundle\Common\Generator\LazyLoadingGenerator;
 
 /**
  * LazyLoadingGeneratorTest.

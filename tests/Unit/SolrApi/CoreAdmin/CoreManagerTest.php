@@ -15,7 +15,6 @@ namespace Solrphp\SolariumBundle\Tests\Unit\SolrApi\CoreAdmin;
 use PHPUnit\Framework\TestCase;
 use Solarium\Client;
 use Solarium\Core\Client\Response;
-use Solrphp\SolariumBundle\SolrApi\CoreAdmin\CoreManager;
 use Solrphp\SolariumBundle\SolrApi\CoreAdmin\Response\CoreResponse;
 use Symfony\Component\Serializer\SerializerInterface;
 
@@ -34,7 +33,7 @@ class CoreManagerTest extends TestCase
         $serializer = $this->getSerializer(1);
         $client = $this->getClient(['core' => 'foo', 'action' => 'RELOAD']);
 
-        $manager = (new CoreManager($client, $serializer))->setCore('foo');
+        $manager = (new \Solrphp\SolariumBundle\SolrApi\CoreAdmin\Manager\CoreManager($client, $serializer))->setCore('foo');
 
         self::assertInstanceOf(CoreResponse::class, $manager->reload());
     }
@@ -47,7 +46,7 @@ class CoreManagerTest extends TestCase
         $serializer = $this->getSerializer(1);
         $client = $this->getClient(['core' => 'foo', 'action' => 'STATUS']);
 
-        $manager = (new CoreManager($client, $serializer))->setCore('foo');
+        $manager = (new \Solrphp\SolariumBundle\SolrApi\CoreAdmin\Manager\CoreManager($client, $serializer))->setCore('foo');
 
         self::assertInstanceOf(CoreResponse::class, $manager->status());
     }
@@ -64,7 +63,7 @@ class CoreManagerTest extends TestCase
             'instanceDir' => '/var/solr/data/foo',
         ]);
 
-        $manager = (new CoreManager($client, $serializer))->setCore('foo');
+        $manager = (new \Solrphp\SolariumBundle\SolrApi\CoreAdmin\Manager\CoreManager($client, $serializer))->setCore('foo');
 
         self::assertInstanceOf(CoreResponse::class, $manager->create());
     }
@@ -81,7 +80,7 @@ class CoreManagerTest extends TestCase
             'deleteDataDir' => 'false',
         ]);
 
-        $manager = (new CoreManager($client, $serializer))->setCore('foo');
+        $manager = (new \Solrphp\SolariumBundle\SolrApi\CoreAdmin\Manager\CoreManager($client, $serializer))->setCore('foo');
 
         self::assertInstanceOf(CoreResponse::class, $manager->unload());
     }
@@ -98,7 +97,7 @@ class CoreManagerTest extends TestCase
             'deleteDataDir' => 'true',
         ]);
 
-        $manager = (new CoreManager($client, $serializer))->setCore('foo');
+        $manager = (new \Solrphp\SolariumBundle\SolrApi\CoreAdmin\Manager\CoreManager($client, $serializer))->setCore('foo');
 
         self::assertInstanceOf(CoreResponse::class, $manager->unload(true));
     }

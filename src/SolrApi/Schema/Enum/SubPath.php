@@ -83,7 +83,7 @@ final class SubPath
      */
     public const SHOW_GLOBAL_SIMILARITY = 'similarity';
 
-    public const SUB_PATHS = [
+    public const ALL = [
         self::GET_SCHEMA,
         self::LIST_FIELDS,
         self::LIST_FIELD,

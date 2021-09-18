@@ -10,14 +10,16 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Solrphp\SolariumBundle\Response;
+namespace Solrphp\SolariumBundle\Common\Response;
+
+use Solrphp\SolariumBundle\Contract\SolrApi\Response\ResponseHeaderInterface;
 
 /**
  * Header.
  *
  * @author wicliff <wicliff.wolda@gmail.com>
  */
-class Header
+class Header implements ResponseHeaderInterface
 {
     /**
      * @var int
@@ -30,11 +32,9 @@ class Header
     private int $qTime;
 
     /**
-     * Solr status 0 means ok.
-     *
-     * @return int
+     * {@inheritdoc}
      */
-    public function getStatus(): int
+    public function getStatusCode(): int
     {
         return $this->status;
     }
@@ -42,13 +42,13 @@ class Header
     /**
      * @param int $status
      */
-    public function setStatus(int $status): void
+    public function setStatusCode(int $status): void
     {
         $this->status = $status;
     }
 
     /**
-     * @return int
+     * {@inheritdoc}
      */
     public function getQTime(): int
     {

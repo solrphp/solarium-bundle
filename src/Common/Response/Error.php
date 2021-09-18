@@ -10,14 +10,16 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Solrphp\SolariumBundle\Response;
+namespace Solrphp\SolariumBundle\Common\Response;
+
+use Solrphp\SolariumBundle\Contract\SolrApi\Response\ResponseErrorInterface;
 
 /**
  * Error.
  *
  * @author wicliff <wicliff.wolda@gmail.com>
  */
-class Error
+class Error implements ResponseErrorInterface
 {
     /**
      * @var string[]

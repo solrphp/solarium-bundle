@@ -80,7 +80,7 @@ final class Command
     public const UPDATE_RUNTIME_LIB = 'update-runtimelib';
     public const DELETE_RUNTIME_LIB = 'delete-runtimelib';
 
-    public const COMMANDS = [
+    public const ALL = [
         self::SET_PROPERTY => [],
         self::UNSET_PROPERTY => [],
         self::SET_USER_PROPERTY => [],

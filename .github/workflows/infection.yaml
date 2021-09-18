@@ -5,8 +5,8 @@ on:
   push:
 
 env:
-  MIN_MSI: 80.00
-  MIN_COVERED_MSI: 95.00
+  MIN_MSI: 93.00
+  MIN_COVERED_MSI: 98.00
 
 jobs:
   mutation-tests:

@@ -12,23 +12,28 @@ declare(strict_types=1);
 
 namespace Solrphp\SolariumBundle\SolrApi\Config\Response;
 
-use Solrphp\SolariumBundle\Response\AbstractResponse;
-use Solrphp\SolariumBundle\SolrApi\Config\SolrConfig;
+use Solarium\Core\Client\Response;
+use Solrphp\SolariumBundle\Common\Response\Header;
+use Solrphp\SolariumBundle\Common\Response\ResponseTrait;
+use Solrphp\SolariumBundle\Contract\SolrApi\Response\ResponseInterface;
+use Solrphp\SolariumBundle\SolrApi\Config\Config\SolrConfig;
 
 /**
  * Config Response.
  *
  * @author wicliff <wicliff.wolda@gmail.com>
  */
-class ConfigResponse extends AbstractResponse
+class ConfigResponse implements ResponseInterface
 {
+    use ResponseTrait;
+
     /**
-     * @var \Solrphp\SolariumBundle\SolrApi\Config\SolrConfig
+     * @var \Solrphp\SolariumBundle\SolrApi\Config\Config\SolrConfig
      */
     private SolrConfig $config;
 
     /**
-     * @return \Solrphp\SolariumBundle\SolrApi\Config\SolrConfig
+     * @return \Solrphp\SolariumBundle\SolrApi\Config\Config\SolrConfig
      */
     public function getConfig(): SolrConfig
     {
@@ -36,10 +41,27 @@ class ConfigResponse extends AbstractResponse
     }
 
     /**
-     * @param \Solrphp\SolariumBundle\SolrApi\Config\SolrConfig $config
+     * @param \Solrphp\SolariumBundle\SolrApi\Config\Config\SolrConfig $config
      */
     public function setConfig(SolrConfig $config): void
     {
         $this->config = $config;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public static function fromSolariumResponse(Response $response): ResponseInterface
+    {
+        $result = new self();
+        $result->body = $response->getBody();
+
+        $header = new Header();
+        $header->setStatusCode($response->getHeaders()['status'] ?? -1);
+        $header->setQTime($response->getHeaders()['QTime'] ?? -1);
+
+        $result->setHeader($header);
+
+        return $result;
     }
 }

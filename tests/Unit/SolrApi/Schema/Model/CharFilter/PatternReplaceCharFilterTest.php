@@ -13,6 +13,7 @@ declare(strict_types=1);
 namespace Solrphp\SolariumBundle\Tests\Unit\SolrApi\Schema\Model\CharFilter;
 
 use PHPUnit\Framework\TestCase;
+use Solrphp\SolariumBundle\SolrApi\Schema\Model\CharFilter\PatternReplaceCharFilter;
 use Solrphp\SolariumBundle\Tests\Helper\Value;
 
 /**
@@ -22,21 +23,33 @@ use Solrphp\SolariumBundle\Tests\Helper\Value;
  */
 final class PatternReplaceCharFilterTest extends TestCase
 {
-    private static $class = 'Solrphp\\SolariumBundle\\SolrApi\\Schema\\Model\\CharFilter\\PatternReplaceCharFilter';
+    /**
+     * @var string
+     */
+    private static string $class = PatternReplaceCharFilter::class;
 
-    private $values = [
+    /**
+     * @var array|string[]
+     */
+    private array $values = [
         'class' => 'foo',
         'pattern' => 'foo',
         'replacement' => 'foo',
     ];
 
-    private static $nonNullable = [
+    /**
+     * @var array|string[]
+     */
+    private static array $nonNullable = [
         'class' => 'foo',
         'pattern' => 'foo',
         'replacement' => 'foo',
     ];
 
-    private static $accessors = [
+    /**
+     * @var array|array[]
+     */
+    private static array $accessors = [
         'class' => [
             'reader' => 'getClass',
             'writer' => 'setClass',

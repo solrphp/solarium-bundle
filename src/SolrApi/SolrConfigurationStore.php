@@ -12,11 +12,11 @@ declare(strict_types=1);
 
 namespace Solrphp\SolariumBundle\SolrApi;
 
-use Solrphp\SolariumBundle\Generator\ConfigGenerator;
-use Solrphp\SolariumBundle\Generator\LazyLoadingGenerator;
-use Solrphp\SolariumBundle\Generator\SchemaGenerator;
-use Solrphp\SolariumBundle\SolrApi\Config\SolrConfig;
-use Solrphp\SolariumBundle\SolrApi\Schema\ManagedSchema;
+use Solrphp\SolariumBundle\Common\Generator\LazyLoadingGenerator;
+use Solrphp\SolariumBundle\SolrApi\Config\Config\SolrConfig;
+use Solrphp\SolariumBundle\SolrApi\Config\Generator\ConfigGenerator;
+use Solrphp\SolariumBundle\SolrApi\Schema\Config\ManagedSchema;
+use Solrphp\SolariumBundle\SolrApi\Schema\Generator\SchemaGenerator;
 
 /**
  * Solr Configuration Store.
@@ -26,12 +26,12 @@ use Solrphp\SolariumBundle\SolrApi\Schema\ManagedSchema;
 final class SolrConfigurationStore
 {
     /**
-     * @var \Solrphp\SolariumBundle\Generator\LazyLoadingGenerator<\Generator>
+     * @var \Solrphp\SolariumBundle\Common\Generator\LazyLoadingGenerator<\Generator>
      */
     private LazyLoadingGenerator $managedSchemas;
 
     /**
-     * @var \Solrphp\SolariumBundle\Generator\LazyLoadingGenerator<\Generator>
+     * @var \Solrphp\SolariumBundle\Common\Generator\LazyLoadingGenerator<\Generator>
      */
     private LazyLoadingGenerator $solrConfigs;
 
@@ -48,7 +48,7 @@ final class SolrConfigurationStore
     /**
      * @param string $core
      *
-     * @return \Solrphp\SolariumBundle\SolrApi\Schema\ManagedSchema|null
+     * @return \Solrphp\SolariumBundle\SolrApi\Schema\Config\ManagedSchema|null
      */
     public function getSchemaForCore(string $core): ?ManagedSchema
     {
@@ -64,7 +64,7 @@ final class SolrConfigurationStore
     /**
      * @param string $core
      *
-     * @return \Solrphp\SolariumBundle\SolrApi\Config\SolrConfig|null
+     * @return \Solrphp\SolariumBundle\SolrApi\Config\Config\SolrConfig|null
      */
     public function getConfigForCore(string $core): ?SolrConfig
     {

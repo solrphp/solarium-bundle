@@ -23,9 +23,15 @@ use Solrphp\SolariumBundle\Tests\Helper\Value;
  */
 final class FieldTest extends TestCase
 {
-    private static $class = 'Solrphp\\SolariumBundle\\SolrApi\\Schema\\Model\\Field';
+    /**
+     * @var string
+     */
+    private static string $class = Field::class;
 
-    private $values = [
+    /**
+     * @var array
+     */
+    private array $values = [
         'indexed' => false,
         'stored' => false,
         'docValues' => false,
@@ -48,12 +54,18 @@ final class FieldTest extends TestCase
         'default' => 'foo',
     ];
 
-    private static $nonNullable = [
+    /**
+     * @var array|string[]
+     */
+    private static array $nonNullable = [
         'name' => 'foo',
         'type' => 'foo',
     ];
 
-    private static $accessors = [
+    /**
+     * @var array|array[]
+     */
+    private static array $accessors = [
         'indexed' => [
             'reader' => 'getIndexed',
             'writer' => 'setIndexed',

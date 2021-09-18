@@ -17,7 +17,9 @@ clients
 
 ``endpoints``
 -------------
-the endpoints exposed to your client
+the endpoints exposed to your client.
+
+if omitted, all configured endpoints will be assigned to your client.
 
 ``default_endpoint``
 --------------------

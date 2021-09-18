@@ -13,6 +13,7 @@ declare(strict_types=1);
 namespace Solrphp\SolariumBundle\Tests\Unit\SolrApi\Schema\Model\CharFilter;
 
 use PHPUnit\Framework\TestCase;
+use Solrphp\SolariumBundle\SolrApi\Schema\Model\CharFilter\MappingCharFilter;
 use Solrphp\SolariumBundle\Tests\Helper\Value;
 
 /**
@@ -22,19 +23,31 @@ use Solrphp\SolariumBundle\Tests\Helper\Value;
  */
 final class MappingCharFilterTest extends TestCase
 {
-    private static $class = 'Solrphp\\SolariumBundle\\SolrApi\\Schema\\Model\\CharFilter\\MappingCharFilter';
+    /**
+     * @var string
+     */
+    private static string $class = MappingCharFilter::class;
 
-    private $values = [
+    /**
+     * @var array|string[]
+     */
+    private array $values = [
         'class' => 'foo',
         'mapping' => 'foo',
     ];
 
-    private static $nonNullable = [
+    /**
+     * @var array|string[]
+     */
+    private static array  $nonNullable = [
         'class' => 'foo',
         'mapping' => 'foo',
     ];
 
-    private static $accessors = [
+    /**
+     * @var array|array[]
+     */
+    private static array $accessors = [
         'class' => [
             'reader' => 'getClass',
             'writer' => 'setClass',

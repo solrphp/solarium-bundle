@@ -14,6 +14,8 @@ namespace Solrphp\SolariumBundle\Tests\Unit\SolrApi\Schema\Model;
 
 use PHPUnit\Framework\TestCase;
 use Solrphp\SolariumBundle\SolrApi\Schema\Model\Analyzer;
+use Solrphp\SolariumBundle\SolrApi\Schema\Model\Filter\CommonGramsFilter;
+use Solrphp\SolariumBundle\SolrApi\Schema\Model\Tokenizer;
 use Solrphp\SolariumBundle\Tests\Helper\Value;
 
 /**
@@ -23,20 +25,31 @@ use Solrphp\SolariumBundle\Tests\Helper\Value;
  */
 final class AnalyzerTest extends TestCase
 {
-    private static $class = 'Solrphp\\SolariumBundle\\SolrApi\\Schema\\Model\\Analyzer';
+    /**
+     * @var string
+     */
+    private static string $class = Analyzer::class;
 
-    private $values = [
+    /**
+     * @var array|string[]
+     */
+    private array $values = [
         'class' => 'foo',
         'type' => 'foo',
-        'charFilters' => 'Solrphp\\SolariumBundle\\SolrApi\\Schema\\Model\\Filter\\CommonGramsFilter',
-        'tokenizer' => 'Solrphp\\SolariumBundle\\SolrApi\\Schema\\Model\\Tokenizer',
-        'filters' => 'Solrphp\\SolariumBundle\\SolrApi\\Schema\\Model\\Filter\\CommonGramsFilter',
+        'charFilters' => CommonGramsFilter::class,
+        'tokenizer' => Tokenizer::class,
+        'filters' => CommonGramsFilter::class,
     ];
 
-    private static $nonNullable = [
-    ];
+    /**
+     * @var array
+     */
+    private static array $nonNullable = [];
 
-    private static $accessors = [
+    /**
+     * @var array<string, array>
+     */
+    private static array $accessors = [
         'class' => [
             'reader' => 'getClass',
             'writer' => 'setClass',

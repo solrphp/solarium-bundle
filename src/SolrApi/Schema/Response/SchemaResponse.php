@@ -10,7 +10,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Solrphp\SolariumBundle\SolrApi\CoreAdmin\Response;
+namespace Solrphp\SolariumBundle\SolrApi\Schema\Response;
 
 use Solarium\Core\Client\Response;
 use Solrphp\SolariumBundle\Common\Response\Header;
@@ -18,11 +18,11 @@ use Solrphp\SolariumBundle\Common\Response\ResponseTrait;
 use Solrphp\SolariumBundle\Contract\SolrApi\Response\ResponseInterface;
 
 /**
- * Core Response.
+ * Schema Response.
  *
- * @author wicliff <wicliff.wolda@gmail.com>
+ * @author wicliff <wwolda@gmail.com>
  */
-class CoreResponse implements ResponseInterface
+class SchemaResponse implements ResponseInterface
 {
     use ResponseTrait;
 

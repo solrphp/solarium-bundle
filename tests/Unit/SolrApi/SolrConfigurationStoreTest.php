@@ -13,13 +13,13 @@ declare(strict_types=1);
 namespace Solrphp\SolariumBundle\Tests\Unit\SolrApi;
 
 use PHPUnit\Framework\TestCase;
+use Solrphp\SolariumBundle\SolrApi\Config\Config\SolrConfig;
 use Solrphp\SolariumBundle\SolrApi\Config\Model\Property;
 use Solrphp\SolariumBundle\SolrApi\Config\Model\RequestHandler;
 use Solrphp\SolariumBundle\SolrApi\Config\Model\SearchComponent;
-use Solrphp\SolariumBundle\SolrApi\Config\SolrConfig;
-use Solrphp\SolariumBundle\SolrApi\Schema\ManagedSchema;
+use Solrphp\SolariumBundle\SolrApi\Schema\Config\ManagedSchema;
 use Solrphp\SolariumBundle\SolrApi\Schema\Model\CopyField;
-use Solrphp\SolariumBundle\SolrApi\Schema\Model\FieldType;
+use Solrphp\SolariumBundle\SolrApi\Schema\Model\Field;
 use Solrphp\SolariumBundle\SolrApi\SolrConfigurationStore;
 
 /**
@@ -79,11 +79,11 @@ class SolrConfigurationStoreTest extends TestCase
         self::assertSame($key, $schema->getUniqueKey());
 
         if (0 !== $fieldCount) {
-            self::assertInstanceOf(FieldType::class, $schema->getFields()[0]);
+            self::assertInstanceOf(Field::class, $schema->getFields()[0]);
         }
 
         if (0 !== $dynamicFieldCount) {
-            self::assertInstanceOf(FieldType::class, $schema->getDynamicFields()[0]);
+            self::assertInstanceOf(Field::class, $schema->getDynamicFields()[0]);
         }
 
         if (0 !== $copyFieldCount) {

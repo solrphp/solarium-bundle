@@ -13,18 +13,23 @@ declare(strict_types=1);
 namespace Solrphp\SolariumBundle\SolrApi\Schema\Response;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use Solrphp\SolariumBundle\Response\AbstractResponse;
-use Solrphp\SolariumBundle\SolrApi\Schema\Model\FieldType;
+use Solarium\Core\Client\Response;
+use Solrphp\SolariumBundle\Common\Response\Header;
+use Solrphp\SolariumBundle\Common\Response\ResponseTrait;
+use Solrphp\SolariumBundle\Contract\SolrApi\Response\ResponseInterface;
+use Solrphp\SolariumBundle\SolrApi\Schema\Model\Field;
 
 /**
  * FieldsResponse.
  *
  * @author wicliff <wicliff.wolda@gmail.com>
  */
-class FieldsResponse extends AbstractResponse
+class FieldsResponse implements ResponseInterface
 {
+    use ResponseTrait;
+
     /**
-     * @var ArrayCollection<int, \Solrphp\SolariumBundle\SolrApi\Schema\Model\FieldType>
+     * @var ArrayCollection<int, \Solrphp\SolariumBundle\SolrApi\Schema\Model\Field>
      */
     private ArrayCollection $fields;
 
@@ -37,7 +42,7 @@ class FieldsResponse extends AbstractResponse
     }
 
     /**
-     * @return ArrayCollection<int, \Solrphp\SolariumBundle\SolrApi\Schema\Model\FieldType>
+     * @return ArrayCollection<int, \Solrphp\SolariumBundle\SolrApi\Schema\Model\Field>
      */
     public function getFields(): ArrayCollection
     {
@@ -45,20 +50,37 @@ class FieldsResponse extends AbstractResponse
     }
 
     /**
-     * @param \Solrphp\SolariumBundle\SolrApi\Schema\Model\FieldType $field
+     * @param \Solrphp\SolariumBundle\SolrApi\Schema\Model\Field $field
      */
-    public function addField(FieldType $field): void
+    public function addField(Field $field): void
     {
         $this->fields->add($field);
     }
 
     /**
-     * @param \Solrphp\SolariumBundle\SolrApi\Schema\Model\FieldType $field
+     * @param \Solrphp\SolariumBundle\SolrApi\Schema\Model\Field $field
      *
      * @return bool
      */
-    public function removeField(FieldType $field): bool
+    public function removeField(Field $field): bool
     {
         return $this->fields->removeElement($field);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public static function fromSolariumResponse(Response $response): ResponseInterface
+    {
+        $result = new self();
+        $result->body = $response->getBody();
+
+        $header = new Header();
+        $header->setStatusCode($response->getHeaders()['status'] ?? -1);
+        $header->setQTime($response->getHeaders()['QTime'] ?? -1);
+
+        $result->setHeader($header);
+
+        return $result;
     }
 }

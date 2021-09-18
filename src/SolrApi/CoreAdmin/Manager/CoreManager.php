@@ -10,12 +10,12 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Solrphp\SolariumBundle\SolrApi\CoreAdmin;
+namespace Solrphp\SolariumBundle\SolrApi\CoreAdmin\Manager;
 
 use Solarium\Client;
 use Solarium\Core\Client\Endpoint;
 use Solarium\Core\Client\Request;
-use Solrphp\SolariumBundle\Response\AbstractResponse;
+use Solrphp\SolariumBundle\Contract\SolrApi\Response\ResponseInterface;
 use Solrphp\SolariumBundle\SolrApi\CoreAdmin\Response\CoreResponse;
 use Symfony\Component\Serializer\SerializerInterface;
 
@@ -66,9 +66,9 @@ final class CoreManager
     }
 
     /**
-     * @return \Solrphp\SolariumBundle\Response\AbstractResponse
+     * @return \Solrphp\SolariumBundle\Contract\SolrApi\Response\ResponseInterface
      */
-    public function status(): AbstractResponse
+    public function status(): ResponseInterface
     {
         $request = $this
             ->prepare()
@@ -79,9 +79,9 @@ final class CoreManager
     }
 
     /**
-     * @return \Solrphp\SolariumBundle\Response\AbstractResponse
+     * @return \Solrphp\SolariumBundle\Contract\SolrApi\Response\ResponseInterface
      */
-    public function create(): AbstractResponse
+    public function create(): ResponseInterface
     {
         $path = sprintf('%s/%s', self::SOLR_HOME, $this->core);
 
@@ -100,9 +100,9 @@ final class CoreManager
     /**
      * @param bool $force
      *
-     * @return \Solrphp\SolariumBundle\Response\AbstractResponse
+     * @return \Solrphp\SolariumBundle\Contract\SolrApi\Response\ResponseInterface
      */
-    public function unload(bool $force = false): AbstractResponse
+    public function unload(bool $force = false): ResponseInterface
     {
         $request = $this
             ->prepare()
@@ -116,9 +116,9 @@ final class CoreManager
     }
 
     /**
-     * @return \Solrphp\SolariumBundle\Response\AbstractResponse
+     * @return \Solrphp\SolariumBundle\Contract\SolrApi\Response\ResponseInterface
      */
-    public function reload(): AbstractResponse
+    public function reload(): ResponseInterface
     {
         $request = $this
             ->prepare()
@@ -131,9 +131,9 @@ final class CoreManager
     /**
      * @param \Solarium\Core\Client\Request $request
      *
-     * @return \Solrphp\SolariumBundle\Response\AbstractResponse
+     * @return \Solrphp\SolariumBundle\Contract\SolrApi\Response\ResponseInterface
      */
-    private function call(Request $request): AbstractResponse
+    private function call(Request $request): ResponseInterface
     {
         $response = $this->client->executeRequest($request, $this->getEndpoint());
 

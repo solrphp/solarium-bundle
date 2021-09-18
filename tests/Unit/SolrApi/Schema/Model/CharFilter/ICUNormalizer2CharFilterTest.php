@@ -13,6 +13,7 @@ declare(strict_types=1);
 namespace Solrphp\SolariumBundle\Tests\Unit\SolrApi\Schema\Model\CharFilter;
 
 use PHPUnit\Framework\TestCase;
+use Solrphp\SolariumBundle\SolrApi\Schema\Model\CharFilter\ICUNormalizer2CharFilter;
 use Solrphp\SolariumBundle\Tests\Helper\Value;
 
 /**
@@ -22,20 +23,32 @@ use Solrphp\SolariumBundle\Tests\Helper\Value;
  */
 final class ICUNormalizer2CharFilterTest extends TestCase
 {
-    private static $class = 'Solrphp\\SolariumBundle\\SolrApi\\Schema\\Model\\CharFilter\\ICUNormalizer2CharFilter';
+    /**
+     * @var string
+     */
+    private static string $class = ICUNormalizer2CharFilter::class;
 
-    private $values = [
+    /**
+     * @var array|string[]
+     */
+    private array $values = [
         'class' => 'foo',
         'name' => 'foo',
         'mode' => 'foo',
         'filter' => 'foo',
     ];
 
-    private static $nonNullable = [
+    /**
+     * @var array|string[]
+     */
+    private static array $nonNullable = [
         'class' => 'foo',
     ];
 
-    private static $accessors = [
+    /**
+     * @var array|array[]
+     */
+    private static array $accessors = [
         'class' => [
             'reader' => 'getClass',
             'writer' => 'setClass',

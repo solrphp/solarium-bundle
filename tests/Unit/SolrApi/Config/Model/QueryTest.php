@@ -13,6 +13,7 @@ declare(strict_types=1);
 namespace Solrphp\SolariumBundle\Tests\Unit\SolrApi\Config\Model;
 
 use PHPUnit\Framework\TestCase;
+use Solrphp\SolariumBundle\SolrApi\Config\Model\Cache;
 use Solrphp\SolariumBundle\SolrApi\Config\Model\Query;
 use Solrphp\SolariumBundle\Tests\Helper\Value;
 
@@ -23,28 +24,40 @@ use Solrphp\SolariumBundle\Tests\Helper\Value;
  */
 final class QueryTest extends TestCase
 {
-    private static $class = 'Solrphp\\SolariumBundle\\SolrApi\\Config\\Model\\Query';
+    /**
+     * @var string
+     */
+    private static string $class = Query::class;
 
-    private $values = [
+    /**
+     * @var array<string, mixed>
+     */
+    private array $values = [
         'useFilterForSortedQuery' => false,
         'queryResultWindowSize' => 3,
         'queryResultMaxDocsCached' => 4,
         'enableLazyFieldLoading' => false,
         'maxBooleanClauses' => 3,
-        'filterCache' => 'Solrphp\\SolariumBundle\\SolrApi\\Config\\Model\\Cache',
-        'queryResultCache' => 'Solrphp\\SolariumBundle\\SolrApi\\Config\\Model\\Cache',
-        'documentCache' => 'Solrphp\\SolariumBundle\\SolrApi\\Config\\Model\\Cache',
+        'filterCache' => Cache::class,
+        'queryResultCache' => Cache::class,
+        'documentCache' => Cache::class,
         'useCircuitBreakers' => false,
         'memoryCircuitBreakerThresholdPct' => 5,
     ];
 
-    private static $nonNullable = [
-        'filterCache' => 'Solrphp\\SolariumBundle\\SolrApi\\Config\\Model\\Cache',
-        'queryResultCache' => 'Solrphp\\SolariumBundle\\SolrApi\\Config\\Model\\Cache',
-        'documentCache' => 'Solrphp\\SolariumBundle\\SolrApi\\Config\\Model\\Cache',
+    /**
+     * @var array|string[]
+     */
+    private static array $nonNullable = [
+        'filterCache' => Cache::class,
+        'queryResultCache' => Cache::class,
+        'documentCache' => Cache::class,
     ];
 
-    private static $accessors = [
+    /**
+     * @var array|array[]
+     */
+    private static array $accessors = [
         'useFilterForSortedQuery' => [
             'reader' => 'getUseFilterForSortedQuery',
             'writer' => 'setUseFilterForSortedQuery',

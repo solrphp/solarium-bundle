@@ -10,7 +10,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Solrphp\SolariumBundle\SolrApi\Config;
+namespace Solrphp\SolariumBundle\SolrApi\Config\Config;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Solrphp\SolariumBundle\Contract\SolrApi\CoreDependentConfigInterface;

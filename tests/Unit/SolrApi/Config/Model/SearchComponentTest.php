@@ -13,6 +13,7 @@ declare(strict_types=1);
 namespace Solrphp\SolariumBundle\Tests\Unit\SolrApi\Config\Model;
 
 use PHPUnit\Framework\TestCase;
+use Solrphp\SolariumBundle\SolrApi\Config\Model\SearchComponent;
 use Solrphp\SolariumBundle\Tests\Helper\Value;
 
 /**
@@ -22,19 +23,31 @@ use Solrphp\SolariumBundle\Tests\Helper\Value;
  */
 final class SearchComponentTest extends TestCase
 {
-    private static $class = 'Solrphp\\SolariumBundle\\SolrApi\\Config\\Model\\SearchComponent';
+    /**
+     * @var string
+     */
+    private static string $class = SearchComponent::class;
 
-    private $values = [
+    /**
+     * @var array|string[]
+     */
+    private array $values = [
         'name' => 'foo',
         'class' => 'foo',
     ];
 
-    private static $nonNullable = [
+    /**
+     * @var array|string[]
+     */
+    private static array $nonNullable = [
         'name' => 'foo',
         'class' => 'foo',
     ];
 
-    private static $accessors = [
+    /**
+     * @var array|array[]
+     */
+    private static array $accessors = [
         'name' => [
             'reader' => 'getName',
             'writer' => 'setName',

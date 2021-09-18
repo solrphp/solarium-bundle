@@ -13,6 +13,7 @@ declare(strict_types=1);
 namespace Solrphp\SolariumBundle\Tests\Unit\SolrApi\Schema\Model;
 
 use PHPUnit\Framework\TestCase;
+use Solrphp\SolariumBundle\SolrApi\Schema\Model\FieldType;
 use Solrphp\SolariumBundle\Tests\Helper\Value;
 
 /**
@@ -22,9 +23,15 @@ use Solrphp\SolariumBundle\Tests\Helper\Value;
  */
 final class FieldTypeTest extends TestCase
 {
-    private static $class = 'Solrphp\\SolariumBundle\\SolrApi\\Schema\\Model\\FieldType';
+    /**
+     * @var string
+     */
+    private static string $class = FieldType::class;
 
-    private $values = [
+    /**
+     * @var array<string, mixed>
+     */
+    private array $values = [
         'indexed' => false,
         'stored' => false,
         'docValues' => false,
@@ -53,11 +60,17 @@ final class FieldTypeTest extends TestCase
         'analyzers' => '\\Solrphp\\SolariumBundle\\SolrApi\\Schema\\Model\\Analyzer',
     ];
 
-    private static $nonNullable = [
+    /**
+     * @var array|string[]
+     */
+    private static array $nonNullable = [
         'name' => 'foo',
     ];
 
-    private static $accessors = [
+    /**
+     * @var array
+     */
+    private static array $accessors = [
         'indexed' => [
             'reader' => 'getIndexed',
             'writer' => 'setIndexed',

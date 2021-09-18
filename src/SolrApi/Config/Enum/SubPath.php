@@ -32,7 +32,7 @@ final class SubPath
     /**
      * string[].
      */
-    public const SUB_PATHS = [
+    public const ALL = [
         self::GET_CONFIG,
         self::GET_OVERLAY,
         self::GET_SEARCH_COMPONENTS,

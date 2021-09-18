@@ -13,7 +13,10 @@ declare(strict_types=1);
 namespace Solrphp\SolariumBundle\SolrApi\Schema\Response;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use Solrphp\SolariumBundle\Response\AbstractResponse;
+use Solarium\Core\Client\Response;
+use Solrphp\SolariumBundle\Common\Response\Header;
+use Solrphp\SolariumBundle\Common\Response\ResponseTrait;
+use Solrphp\SolariumBundle\Contract\SolrApi\Response\ResponseInterface;
 use Solrphp\SolariumBundle\SolrApi\Schema\Model\CopyField;
 
 /**
@@ -21,8 +24,10 @@ use Solrphp\SolariumBundle\SolrApi\Schema\Model\CopyField;
  *
  * @author wicliff <wicliff.wolda@gmail.com>
  */
-class CopyFieldsResponse extends AbstractResponse
+class CopyFieldsResponse implements ResponseInterface
 {
+    use ResponseTrait;
+
     /**
      * @var ArrayCollection<int, \Solrphp\SolariumBundle\SolrApi\Schema\Model\CopyField>
      */
@@ -60,5 +65,22 @@ class CopyFieldsResponse extends AbstractResponse
     public function removeCopyField(CopyField $copyField): bool
     {
         return $this->copyFields->removeElement($copyField);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public static function fromSolariumResponse(Response $response): ResponseInterface
+    {
+        $result = new self();
+        $result->body = $response->getBody();
+
+        $header = new Header();
+        $header->setStatusCode($response->getHeaders()['status'] ?? -1);
+        $header->setQTime($response->getHeaders()['QTime'] ?? -1);
+
+        $result->setHeader($header);
+
+        return $result;
     }
 }

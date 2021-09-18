@@ -23,9 +23,15 @@ use Solrphp\SolariumBundle\Tests\Helper\Value;
  */
 final class TokenizerTest extends TestCase
 {
-    private static $class = 'Solrphp\\SolariumBundle\\SolrApi\\Schema\\Model\\Tokenizer';
+    /**
+     * @var string
+     */
+    private static string $class = Tokenizer::class;
 
-    private $values = [
+    /**
+     * @var array<string, string|int>
+     */
+    private array $values = [
         'class' => 'foo',
         'pattern' => 'foo',
         'minGramSize' => 3,
@@ -36,11 +42,17 @@ final class TokenizerTest extends TestCase
         'rule' => 'foo',
     ];
 
-    private static $nonNullable = [
+    /**
+     * @var array|string[]
+     */
+    private static array $nonNullable = [
         'class' => 'foo',
     ];
 
-    private static $accessors = [
+    /**
+     * @var array|array[]
+     */
+    private static array $accessors = [
         'class' => [
             'reader' => 'getClass',
             'writer' => 'setClass',

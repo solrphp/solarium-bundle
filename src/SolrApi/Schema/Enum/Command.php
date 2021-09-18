@@ -77,7 +77,7 @@ final class Command
     /**
      * Available commands for the schema api.
      */
-    public const COMMANDS = [
+    public const ALL = [
         self::ADD_FIELD => [],
         self::DELETE_FIELD => [],
         self::REPLACE_FIELD => [],

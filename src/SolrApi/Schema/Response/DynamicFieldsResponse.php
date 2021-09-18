@@ -13,23 +13,28 @@ declare(strict_types=1);
 namespace Solrphp\SolariumBundle\SolrApi\Schema\Response;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use Solrphp\SolariumBundle\Response\AbstractResponse;
-use Solrphp\SolariumBundle\SolrApi\Schema\Model\FieldType;
+use Solarium\Core\Client\Response;
+use Solrphp\SolariumBundle\Common\Response\Header;
+use Solrphp\SolariumBundle\Common\Response\ResponseTrait;
+use Solrphp\SolariumBundle\Contract\SolrApi\Response\ResponseInterface;
+use Solrphp\SolariumBundle\SolrApi\Schema\Model\Field;
 
 /**
  * Dynamic Fields Response.
  *
  * @author wicliff <wicliff.wolda@gmail.com>
  */
-class DynamicFieldsResponse extends AbstractResponse
+class DynamicFieldsResponse implements ResponseInterface
 {
+    use ResponseTrait;
+
     /**
-     * @var ArrayCollection<int, \Solrphp\SolariumBundle\SolrApi\Schema\Model\FieldType>
+     * @var ArrayCollection<int, \Solrphp\SolariumBundle\SolrApi\Schema\Model\Field>
      */
     private ArrayCollection $dynamicFields;
 
     /**
-     * Constructor.
+     * constructor.
      */
     public function __construct()
     {
@@ -37,7 +42,7 @@ class DynamicFieldsResponse extends AbstractResponse
     }
 
     /**
-     * @return ArrayCollection<int, \Solrphp\SolariumBundle\SolrApi\Schema\Model\FieldType>
+     * @return ArrayCollection<int, \Solrphp\SolariumBundle\SolrApi\Schema\Model\Field>
      */
     public function getDynamicFields(): ArrayCollection
     {
@@ -45,18 +50,37 @@ class DynamicFieldsResponse extends AbstractResponse
     }
 
     /**
-     * @param \Solrphp\SolariumBundle\SolrApi\Schema\Model\FieldType $dynamicField
+     * @param \Solrphp\SolariumBundle\SolrApi\Schema\Model\Field $dynamicField
      */
-    public function addDynamicField(FieldType $dynamicField): void
+    public function addDynamicField(Field $dynamicField): void
     {
         $this->dynamicFields->add($dynamicField);
     }
 
     /**
-     * @param \Solrphp\SolariumBundle\SolrApi\Schema\Model\FieldType $dynamicField
+     * @param \Solrphp\SolariumBundle\SolrApi\Schema\Model\Field $dynamicField
+     *
+     * @return bool
      */
-    public function removeDynamicField(FieldType $dynamicField): void
+    public function removeDynamicField(Field $dynamicField): bool
     {
-        $this->getDynamicFields()->removeElement($dynamicField);
+        return $this->dynamicFields->removeElement($dynamicField);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public static function fromSolariumResponse(Response $response): ResponseInterface
+    {
+        $result = new self();
+        $result->body = $response->getBody();
+
+        $header = new Header();
+        $header->setStatusCode($response->getHeaders()['status'] ?? -1);
+        $header->setQTime($response->getHeaders()['QTime'] ?? -1);
+
+        $result->setHeader($header);
+
+        return $result;
     }
 }

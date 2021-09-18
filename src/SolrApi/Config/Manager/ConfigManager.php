@@ -10,9 +10,10 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Solrphp\SolariumBundle\SolrApi\Config;
+namespace Solrphp\SolariumBundle\SolrApi\Config\Manager;
 
-use Solrphp\SolariumBundle\Manager\AbstractApiManager;
+use Solrphp\SolariumBundle\Common\Manager\AbstractApiManager;
+use Solrphp\SolariumBundle\Contract\SolrApi\Response\ResponseInterface;
 use Solrphp\SolariumBundle\SolrApi\Config\Enum\Command as ConfigCommands;
 use Solrphp\SolariumBundle\SolrApi\Config\Enum\SubPath as ConfigSubPaths;
 
@@ -26,12 +27,12 @@ class ConfigManager extends AbstractApiManager
     /**
      * {@inheritdoc}
      */
-    protected static array $availableCommands = ConfigCommands::COMMANDS;
+    protected static array $availableCommands = ConfigCommands::ALL;
 
     /**
      * {@inheritdoc}
      */
-    protected static array $availableSubPaths = ConfigSubPaths::SUB_PATHS;
+    protected static array $availableSubPaths = ConfigSubPaths::ALL;
 
     /**
      * {@inheritdoc}
@@ -39,18 +40,16 @@ class ConfigManager extends AbstractApiManager
     protected static string $handler = 'config';
 
     /**
-     * @param string $subPath
-     *
-     * @return \Solrphp\SolariumBundle\Response\AbstractResponse|\Solarium\Core\Client\Response
+     * {@inheritdoc}
      */
-    public function call(string $subPath)
+    public function call(string $path): ResponseInterface
     {
-        $response = parent::call($subPath);
+        $response = parent::call($path);
 
-        if (false === \array_key_exists($subPath, ConfigSubPaths::RESPONSE_CLASSES)) {
+        if (false === \array_key_exists($path, ConfigSubPaths::RESPONSE_CLASSES)) {
             return $response;
         }
 
-        return $this->serializer->deserialize($response->getBody(), ConfigSubPaths::RESPONSE_CLASSES[$subPath], 'json');
+        return $this->serializer->deserialize($response->getBody(), ConfigSubPaths::RESPONSE_CLASSES[$path], 'json');
     }
 }
