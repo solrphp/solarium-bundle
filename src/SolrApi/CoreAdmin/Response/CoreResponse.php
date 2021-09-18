@@ -13,7 +13,6 @@ declare(strict_types=1);
 namespace Solrphp\SolariumBundle\SolrApi\CoreAdmin\Response;
 
 use Solarium\Core\Client\Response;
-use Solrphp\SolariumBundle\Common\Response\Header;
 use Solrphp\SolariumBundle\Common\Response\ResponseTrait;
 use Solrphp\SolariumBundle\Contract\SolrApi\Response\ResponseInterface;
 
@@ -29,17 +28,8 @@ class CoreResponse implements ResponseInterface
     /**
      * {@inheritdoc}
      */
-    public static function fromSolariumResponse(Response $response): ResponseInterface
+    protected static function getInstance(): ResponseInterface
     {
-        $result = new self();
-        $result->body = $response->getBody();
-
-        $header = new Header();
-        $header->setStatusCode($response->getHeaders()['status'] ?? -1);
-        $header->setQTime($response->getHeaders()['QTime'] ?? -1);
-
-        $result->setHeader($header);
-
-        return $result;
+        return new self();
     }
 }

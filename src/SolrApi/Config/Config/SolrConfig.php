@@ -68,11 +68,21 @@ class SolrConfig implements CoreDependentConfigInterface
     }
 
     /**
-     * @param \Doctrine\Common\Collections\ArrayCollection<int, string> $cores
+     * @param string $core
      */
-    public function setCores(ArrayCollection $cores): void
+    public function addCore(string $core): void
     {
-        $this->cores = $cores;
+        $this->cores->add($core);
+    }
+
+    /**
+     * @param string $core
+     *
+     * @return bool
+     */
+    public function removeCore(string $core): bool
+    {
+        return $this->cores->removeElement($core);
     }
 
     /**

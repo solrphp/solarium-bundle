@@ -29,8 +29,6 @@
         </include>
         <exclude>
             <directory>src/SolrApi/*/Enum</directory>
-            <directory>src/SolrApi/*/Response</directory>
-            <directory>src/Response</directory>
         </exclude>
     </coverage>
 </phpunit>

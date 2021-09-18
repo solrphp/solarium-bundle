@@ -10,7 +10,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Solrphp\SolariumBundle\Tests\Unit\SolrApi\Schema;
+namespace Solrphp\SolariumBundle\Tests\Unit\SolrApi\Config\Manager;
 
 use PHPUnit\Framework\TestCase;
 use Solarium\Client;
@@ -22,22 +22,22 @@ use Solarium\Core\Query\Result\Result;
 use Solarium\QueryType\Server\Api\Query;
 use Solrphp\SolariumBundle\Contract\SolrApi\Response\ResponseInterface;
 use Solrphp\SolariumBundle\Exception\UnexpectedValueException;
+use Solrphp\SolariumBundle\SolrApi\Config\Enum\Command;
+use Solrphp\SolariumBundle\SolrApi\Config\Enum\SubPath as SubPathConfig;
+use Solrphp\SolariumBundle\SolrApi\Config\Manager\ConfigManager;
+use Solrphp\SolariumBundle\SolrApi\Config\Response\ConfigResponse;
 use Solrphp\SolariumBundle\SolrApi\CoreAdmin\Manager\CoreManager;
 use Solrphp\SolariumBundle\SolrApi\CoreAdmin\Response\CoreResponse;
-use Solrphp\SolariumBundle\SolrApi\Schema\Enum\Command;
-use Solrphp\SolariumBundle\SolrApi\Schema\Enum\SubPath as SubPathSchema;
-use Solrphp\SolariumBundle\SolrApi\Schema\Manager\SchemaManager;
 use Solrphp\SolariumBundle\SolrApi\Schema\Model\Field;
-use Solrphp\SolariumBundle\SolrApi\Schema\Response\FieldsResponse;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\Serializer\SerializerInterface;
 
 /**
- * Schema Manager Test.
+ * Config Manager Test.
  *
  * @author wicliff <wwolda@gmail.com>
  */
-class SchemaManagerTest extends TestCase
+class ConfigManagerTest extends TestCase
 {
     /**
      * test Undefined sub path.
@@ -48,10 +48,11 @@ class SchemaManagerTest extends TestCase
 
         $client = $this->getExecutingClient([]);
         $serializer = $this->getSerializer();
-        $coreManager = new CoreManager($client, $serializer);
-        $schemaManager = new SchemaManager($client, $coreManager, $serializer);
 
-        $schemaManager->call('foo');
+        $coreManager = new CoreManager($client, $serializer);
+        $configManager = new ConfigManager($client, $coreManager, $serializer);
+
+        $configManager->call('foo');
     }
 
     /**
@@ -63,17 +64,17 @@ class SchemaManagerTest extends TestCase
             'version' => Request::API_V2,
             'method' => Request::METHOD_GET,
             'resultclass' => QueryType::class,
-            'handler' => 'cores/foo/schema/'.SubPathSchema::SHOW_GLOBAL_SIMILARITY,
+            'handler' => 'cores/foo/config/'.SubPathConfig::GET_OVERLAY,
         ];
 
         $client = $this->getExecutingClient($options);
         $serializer = $this->getSerializer();
-        $coreManager = new CoreManager($client, $serializer);
-        $schemaManager = new SchemaManager($client, $coreManager, $serializer);
-        $schemaManager
-            ->setCore('foo');
 
-        $response = $schemaManager->call(SubPathSchema::SHOW_GLOBAL_SIMILARITY);
+        $coreManager = new CoreManager($client, $serializer);
+        $configManager = new ConfigManager($client, $coreManager, $serializer);
+        $configManager->setCore('foo');
+
+        $response = $configManager->call(SubPathConfig::GET_OVERLAY);
 
         self::assertInstanceOf(ResponseInterface::class, $response);
     }
@@ -87,23 +88,23 @@ class SchemaManagerTest extends TestCase
             'version' => Request::API_V2,
             'method' => Request::METHOD_GET,
             'resultclass' => QueryType::class,
-            'handler' => 'cores/foo/schema/'.SubPathSchema::LIST_FIELDS,
+            'handler' => 'cores/foo/config/'.SubPathConfig::GET_REQUEST_HANDLERS,
         ];
 
         $client = $this->getExecutingClient($options);
-        $serializer = $this->getSerializer(1, '', FieldsResponse::class);
+        $serializer = $this->getSerializer(1, '', ConfigResponse::class);
+
         $coreManager = new CoreManager($client, $serializer);
-        $schemaManager = new SchemaManager($client, $coreManager, $serializer);
-        $schemaManager
-            ->setCore('foo');
+        $configManager = new ConfigManager($client, $coreManager, $serializer);
+        $configManager->setCore('foo');
 
-        $response = $schemaManager->call(SubPathSchema::LIST_FIELDS);
+        $response = $configManager->call(SubPathConfig::GET_REQUEST_HANDLERS);
 
-        self::assertInstanceOf(FieldsResponse::class, $response);
+        self::assertInstanceOf(ConfigResponse::class, $response);
     }
 
     /**
-     * test non-existing command.
+     * test non existing command.
      */
     public function testNonExistingCommand(): void
     {
@@ -111,8 +112,10 @@ class SchemaManagerTest extends TestCase
 
         $client = $this->getExecutingClient([]);
         $serializer = $this->getSerializer();
+
         $coreManager = new CoreManager($client, $serializer);
-        $schemaManager = new SchemaManager($client, $coreManager, $serializer);
+        $schemaManager = new \Solrphp\SolariumBundle\SolrApi\Config\Manager\ConfigManager($client, $coreManager, $serializer);
+
         $schemaManager->addCommand('foo', new Field());
     }
 
@@ -123,12 +126,13 @@ class SchemaManagerTest extends TestCase
     {
         $client = $this->getExecutingClient([]);
         $serializer = $this->getSerializer();
+
         $coreManager = new CoreManager($client, $serializer);
-        $schemaManager = new SchemaManager($client, $coreManager, $serializer);
+        $configManager = new \Solrphp\SolariumBundle\SolrApi\Config\Manager\ConfigManager($client, $coreManager, $serializer);
 
-        $schemaManager = $schemaManager->addCommand(Command::ADD_COPY_FIELD, new Field());
+        $configManager = $configManager->addCommand(Command::ADD_INIT_PARAMS, new Field());
 
-        self::assertInstanceOf(SchemaManager::class, $schemaManager);
+        self::assertInstanceOf(ConfigManager::class, $configManager);
     }
 
     /**
@@ -147,10 +151,10 @@ class SchemaManagerTest extends TestCase
                 'action' => 'RELOAD',
             ]
         );
-
         $serializer = $this->getSerializer(1, '', CoreResponse::class);
+
         $coreManager = new CoreManager($client, $serializer);
-        $configManager = (new SchemaManager($client, $coreManager, $serializer))->setCore('foo');
+        $configManager = (new ConfigManager($client, $coreManager, $serializer))->setCore('foo');
 
         $response = $configManager->flush();
 
@@ -167,15 +171,15 @@ class SchemaManagerTest extends TestCase
             'method' => Request::METHOD_POST,
             'resultclass' => QueryType::class,
             'contenttype' => 'application/json',
-            'handler' => 'cores/foo/schema',
+            'handler' => 'cores/foo/config',
             'rawdata' => '[]',
         ];
 
-        $client = $this->getExecutingClient($options);
         $serializer = $this->getSerializer();
+        $client = $this->getExecutingClient($options);
 
         $coreManager = new CoreManager($client, $serializer);
-        $configManager = (new SchemaManager($client, $coreManager, $serializer))->setCore('foo');
+        $configManager = (new ConfigManager($client, $coreManager, $serializer))->setCore('foo');
 
         $response = $configManager->persist();
 
@@ -246,72 +250,6 @@ class SchemaManagerTest extends TestCase
             )
             ->willReturn($result)
         ;
-
-        return $client;
-    }
-
-    /**
-     * @param int         $createApiCalls
-     * @param string|null $responseBody
-     * @param string|null $executeBody
-     * @param array|null  $initOptions
-     *
-     * @return mixed|\PHPUnit\Framework\MockObject\MockObject|\Solarium\Client
-     */
-    private function getClient(int $createApiCalls = 1, string $responseBody = null, string $executeBody = null, array $initOptions = null)
-    {
-        $client = $this->getMockBuilder(Client::class)->disableOriginalConstructor()->getMock();
-
-        $initQuery = $this->getMockBuilder(Query::class)->getMock();
-        $initQuery->expects(self::once())
-            ->method('setVersion')
-            ->with(Request::API_V2)
-            ->willReturnSelf();
-
-        $initQuery->expects(self::once())
-            ->method('setMethod')
-            ->with(Request::METHOD_POST)
-            ->willReturnSelf();
-
-        $initQuery->expects(self::once())
-            ->method('setContentType')
-            ->with('application/json')
-            ->willReturnSelf();
-
-        if (null !== $initOptions) {
-            $initQuery->expects(self::once())
-                ->method('setOptions')
-                ->with(self::anything(), false);
-        }
-
-        $client->expects(self::exactly($createApiCalls))
-            ->method('createApi')
-            ->willReturnCallback(static function ($arguments) use ($initQuery) {
-                // abstract manager constructor call has no arguments
-                if (empty($arguments)) {
-                    return $initQuery;
-                }
-
-                if (\is_array($arguments)) {
-                    return new Query();
-                }
-            });
-
-        if (null !== $responseBody) {
-            $response = new Response($responseBody, ['HTTP 200 OK']);
-            $result = new Result(new Query(), $response);
-            $client->expects(self::once())
-                ->method('execute')
-                ->willReturn($result);
-        }
-
-        if (null !== $executeBody) {
-            $response = new Response($executeBody, ['HTTP 200 OK']);
-
-            $client->expects(self::once())
-                ->method('executeRequest')
-                ->willReturn($response);
-        }
 
         return $client;
     }

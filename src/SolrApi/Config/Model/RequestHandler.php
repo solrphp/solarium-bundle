@@ -120,15 +120,7 @@ class RequestHandler implements \JsonSerializable
      */
     public function removeDefault(Property $default): bool
     {
-        $key = array_search($default, $this->defaults, true);
-
-        if (false === $key) {
-            return false;
-        }
-
-        unset($this->defaults[$key]);
-
-        return true;
+        return $this->remove($default, $this->defaults);
     }
 
     /**
@@ -154,15 +146,7 @@ class RequestHandler implements \JsonSerializable
      */
     public function removeAppend(Property $append): bool
     {
-        $key = array_search($append, $this->appends, true);
-
-        if (false === $key) {
-            return false;
-        }
-
-        unset($this->appends[$key]);
-
-        return true;
+        return $this->remove($append, $this->appends);
     }
 
     /**
@@ -188,15 +172,7 @@ class RequestHandler implements \JsonSerializable
      */
     public function removeInvariant(Property $invariant): bool
     {
-        $key = array_search($invariant, $this->invariants, true);
-
-        if (false === $key) {
-            return false;
-        }
-
-        unset($this->invariants[$key]);
-
-        return true;
+        return $this->remove($invariant, $this->invariants);
     }
 
     /**
@@ -222,15 +198,7 @@ class RequestHandler implements \JsonSerializable
      */
     public function removeComponent(string $component): bool
     {
-        $key = array_search($component, $this->components, true);
-
-        if (false === $key) {
-            return false;
-        }
-
-        unset($this->components[$key]);
-
-        return true;
+        return $this->remove($component, $this->components);
     }
 
     /**
@@ -256,15 +224,7 @@ class RequestHandler implements \JsonSerializable
      */
     public function removeFirstComponent(string $component): bool
     {
-        $key = array_search($component, $this->firstComponents, true);
-
-        if (false === $key) {
-            return false;
-        }
-
-        unset($this->firstComponents[$key]);
-
-        return true;
+        return $this->remove($component, $this->firstComponents);
     }
 
     /**
@@ -290,15 +250,7 @@ class RequestHandler implements \JsonSerializable
      */
     public function removeLastComponent(string $component): bool
     {
-        $key = array_search($component, $this->lastComponents, true);
-
-        if (false === $key) {
-            return false;
-        }
-
-        unset($this->lastComponents[$key]);
-
-        return true;
+        return $this->remove($component, $this->lastComponents);
     }
 
     /**
@@ -347,5 +299,24 @@ class RequestHandler implements \JsonSerializable
         }
 
         return $return;
+    }
+
+    /**
+     * @param string|\Solrphp\SolariumBundle\SolrApi\Config\Model\Property $value
+     * @param array<int, mixed>                                            $property
+     *
+     * @return bool
+     */
+    private function remove($value, array &$property): bool
+    {
+        $key = array_search($value, $property, true);
+
+        if (false === $key) {
+            return false;
+        }
+
+        unset($property[$key]);
+
+        return true;
     }
 }

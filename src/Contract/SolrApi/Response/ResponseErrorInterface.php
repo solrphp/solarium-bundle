@@ -34,7 +34,7 @@ interface ResponseErrorInterface
     public function getMessage(): string;
 
     /**
-     * @return iterable<string, string|array>
+     * @return string[]
      */
     public function getMetaData(): iterable;
 }

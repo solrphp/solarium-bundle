@@ -117,15 +117,7 @@ final class Analyzer implements \JsonSerializable
      */
     public function removeFilter(FilterInterface $filter): bool
     {
-        $key = array_search($filter, $this->filters, true);
-
-        if (false === $key) {
-            return false;
-        }
-
-        unset($this->filters[$key]);
-
-        return true;
+        return $this->remove($filter, $this->filters);
     }
 
     /**
@@ -151,15 +143,7 @@ final class Analyzer implements \JsonSerializable
      */
     public function removeCharFilter(FilterInterface $filter): bool
     {
-        $key = array_search($filter, $this->charFilters, true);
-
-        if (false === $key) {
-            return false;
-        }
-
-        unset($this->charFilters[$key]);
-
-        return true;
+        return $this->remove($filter, $this->charFilters);
     }
 
     /**
@@ -179,5 +163,24 @@ final class Analyzer implements \JsonSerializable
                 return null !== $val && (false === \is_array($val) || 0 !== \count($val));
             }
         );
+    }
+
+    /**
+     * @param \Solrphp\SolariumBundle\Contract\SolrApi\FilterInterface $value
+     * @param array<int, mixed>                                        $property
+     *
+     * @return bool
+     */
+    private function remove(FilterInterface $value, array &$property): bool
+    {
+        $key = array_search($value, $property, true);
+
+        if (false === $key) {
+            return false;
+        }
+
+        unset($property[$key]);
+
+        return true;
     }
 }

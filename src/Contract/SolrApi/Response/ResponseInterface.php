@@ -13,6 +13,7 @@ declare(strict_types=1);
 namespace Solrphp\SolariumBundle\Contract\SolrApi\Response;
 
 use Solarium\Core\Client\Response;
+use Solrphp\SolariumBundle\Common\Response\Header;
 
 /**
  * Response Interface.
@@ -29,6 +30,13 @@ interface ResponseInterface
     public function getHeader(): ResponseHeaderInterface;
 
     /**
+     * set response header.
+     *
+     * @param \Solrphp\SolariumBundle\Contract\SolrApi\Response\ResponseHeaderInterface $header
+     */
+    public function setHeader(ResponseHeaderInterface $header): void;
+
+    /**
      * get response error.
      *
      * @return \Solrphp\SolariumBundle\Contract\SolrApi\Response\ResponseErrorInterface|null
@@ -36,11 +44,25 @@ interface ResponseInterface
     public function getError(): ?ResponseErrorInterface;
 
     /**
-     * @return string
+     * set response error.
+     *
+     * @param \Solrphp\SolariumBundle\Contract\SolrApi\Response\ResponseErrorInterface|null $error
      */
-    public function getBody(): string;
+    public function setError(?ResponseErrorInterface $error): void;
 
     /**
+     * @return string|null
+     */
+    public function getBody(): ?string;
+
+    /**
+     * @param string|null $body
+     */
+    public function setBody(?string $body): void;
+
+    /**
+     * todo: have the serializer take care of this?
+     *
      * @param \Solarium\Core\Client\Response $response
      *
      * @return \Solrphp\SolariumBundle\Contract\SolrApi\Response\ResponseInterface
