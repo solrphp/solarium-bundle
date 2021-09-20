@@ -64,12 +64,4 @@ class FieldsResponse implements ResponseInterface
     {
         return $this->fields->removeElement($field);
     }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected static function getInstance(): ResponseInterface
-    {
-        return new self();
-    }
 }

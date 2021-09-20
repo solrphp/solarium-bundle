@@ -65,12 +65,4 @@ class CopyFieldsResponse implements ResponseInterface
     {
         return $this->copyFields->removeElement($copyField);
     }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected static function getInstance(): ResponseInterface
-    {
-        return new self();
-    }
 }

@@ -65,12 +65,4 @@ class DynamicFieldsResponse implements ResponseInterface
     {
         return $this->dynamicFields->removeElement($dynamicField);
     }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected static function getInstance(): ResponseInterface
-    {
-        return new self();
-    }
 }

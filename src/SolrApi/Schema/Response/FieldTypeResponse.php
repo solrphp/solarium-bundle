@@ -65,12 +65,4 @@ class FieldTypeResponse implements ResponseInterface
     {
         return $this->fieldTypes->removeElement($fieldType);
     }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected static function getInstance(): ResponseInterface
-    {
-        return new self();
-    }
 }

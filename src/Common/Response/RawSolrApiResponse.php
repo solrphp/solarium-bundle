@@ -10,18 +10,24 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Solrphp\SolariumBundle\SolrApi\CoreAdmin\Response;
+namespace Solrphp\SolariumBundle\Common\Response;
 
-use Solarium\Core\Client\Response;
-use Solrphp\SolariumBundle\Common\Response\ResponseTrait;
 use Solrphp\SolariumBundle\Contract\SolrApi\Response\ResponseInterface;
 
 /**
- * Core Response.
+ * Raw SolrApi Response.
  *
  * @author wicliff <wicliff.wolda@gmail.com>
  */
-class CoreResponse implements ResponseInterface
+class RawSolrApiResponse implements ResponseInterface
 {
     use ResponseTrait;
+
+    /**
+     * @param ?string $body
+     */
+    public function __construct(string $body = null)
+    {
+        $this->body = $body;
+    }
 }

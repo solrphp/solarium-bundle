@@ -46,12 +46,4 @@ class ConfigResponse implements ResponseInterface
     {
         $this->config = $config;
     }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected static function getInstance(): ResponseInterface
-    {
-        return new self();
-    }
 }

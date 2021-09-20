@@ -23,8 +23,8 @@ use Solrphp\SolariumBundle\SolrApi\SolrConfigurationStore;
  */
 return static function (ContainerConfigurator $container) {
     $container->services()
-        ->set(ConfigNodeProcessorInterface::class)
-            ->tag('solrphp.config_node_processor')
+        ->instanceof(ConfigNodeProcessorInterface::class)
+        ->tag('solrphp.config_node_processor')
 
         ->set('solrphp.manager.config', ConfigManager::class)
             ->args([
@@ -43,10 +43,13 @@ return static function (ContainerConfigurator $container) {
 
         ->set('solrphp.command.config_update', SolrConfigUpdateCommand::class)
             ->args([
-                service('solrphp.manager.config'),
+                service('solrphp.processor.config'),
                 service(SolrConfigurationStore::class),
             ])
         ->tag('console.command')
         ->alias(SolrConfigUpdateCommand::class, 'solrphp.command.config_update')
+
+        // load config processors for this api.
+        ->load('Solrphp\\SolariumBundle\\SolrApi\\Config\\Manager\\Processor\\', '../../SolrApi/Config/Manager/Processor')
     ;
 };

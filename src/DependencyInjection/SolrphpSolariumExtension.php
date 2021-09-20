@@ -146,7 +146,7 @@ class SolrphpSolariumExtension extends Extension
                 new Reference($adapterName),
                 new Reference($clientOptions['dispatcher_service']),
                 [
-                    'endpoints' => $endpoints,
+                    'endpoint' => $endpoints,
                 ],
             ]);
 

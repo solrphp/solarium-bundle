@@ -57,6 +57,8 @@ class ModelTestGenerator
      */
     public function __construct(string $name)
     {
+        global $argv;
+
         $this->fileName = $name;
         $this->prepare();
     }

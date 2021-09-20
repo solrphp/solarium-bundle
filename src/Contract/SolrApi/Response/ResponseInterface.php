@@ -59,13 +59,4 @@ interface ResponseInterface
      * @param string|null $body
      */
     public function setBody(?string $body): void;
-
-    /**
-     * todo: have the serializer take care of this?
-     *
-     * @param \Solarium\Core\Client\Response $response
-     *
-     * @return \Solrphp\SolariumBundle\Contract\SolrApi\Response\ResponseInterface
-     */
-    public static function fromSolariumResponse(Response $response): self;
 }

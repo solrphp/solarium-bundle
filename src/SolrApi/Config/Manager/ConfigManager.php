@@ -16,6 +16,7 @@ use Solrphp\SolariumBundle\Common\Manager\AbstractApiManager;
 use Solrphp\SolariumBundle\Contract\SolrApi\Response\ResponseInterface;
 use Solrphp\SolariumBundle\SolrApi\Config\Enum\Command as ConfigCommands;
 use Solrphp\SolariumBundle\SolrApi\Config\Enum\SubPath as ConfigSubPaths;
+use Solrphp\SolariumBundle\SolrApi\Config\Response\ConfigResponse;
 
 /**
  * Config Manager.
@@ -47,7 +48,7 @@ class ConfigManager extends AbstractApiManager
         $response = parent::call($path);
 
         if (false === \array_key_exists($path, ConfigSubPaths::RESPONSE_CLASSES)) {
-            return $response;
+            return $this->serializer->deserialize($response->getBody(), ConfigResponse::class, 'json');
         }
 
         return $this->serializer->deserialize($response->getBody(), ConfigSubPaths::RESPONSE_CLASSES[$path], 'json');

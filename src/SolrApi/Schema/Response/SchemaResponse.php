@@ -24,12 +24,4 @@ use Solrphp\SolariumBundle\Contract\SolrApi\Response\ResponseInterface;
 class SchemaResponse implements ResponseInterface
 {
     use ResponseTrait;
-
-    /**
-     * {@inheritdoc}
-     */
-    protected static function getInstance(): ResponseInterface
-    {
-        return new self();
-    }
 }

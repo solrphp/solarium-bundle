@@ -17,11 +17,11 @@ use Solarium\Core\Client\Request;
 use Solarium\Core\Query\Result\ResultInterface;
 use Solarium\QueryType\Server\Api\Query;
 use Solrphp\SolariumBundle\Common\Collection\CommandCollection;
+use Solrphp\SolariumBundle\Common\Response\RawSolrApiResponse;
 use Solrphp\SolariumBundle\Contract\SolrApi\Manager\SolrApiManagerInterface;
 use Solrphp\SolariumBundle\Contract\SolrApi\Response\ResponseInterface;
 use Solrphp\SolariumBundle\Exception\UnexpectedValueException;
 use Solrphp\SolariumBundle\SolrApi\CoreAdmin\Manager\CoreManager;
-use Solrphp\SolariumBundle\SolrApi\Schema\Response\SchemaResponse;
 use Symfony\Component\Serializer\SerializerInterface;
 
 /**
@@ -168,7 +168,7 @@ abstract class AbstractApiManager implements SolrApiManagerInterface
 
         $response = $this->client->execute($query, $this->core)->getResponse();
 
-        return SchemaResponse::fromSolariumResponse($response);
+        return new RawSolrApiResponse($response->getBody());
     }
 
     /**
@@ -176,6 +176,6 @@ abstract class AbstractApiManager implements SolrApiManagerInterface
      */
     private function getHandler(): string
     {
-        return sprintf('cores/%s/%s', $this->core, static::$handler);
+        return sprintf('%s/%s', $this->core, static::$handler);
     }
 }

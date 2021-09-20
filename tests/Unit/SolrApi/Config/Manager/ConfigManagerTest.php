@@ -20,7 +20,6 @@ use Solarium\Core\Client\Response;
 use Solarium\Core\Query\Result\QueryType;
 use Solarium\Core\Query\Result\Result;
 use Solarium\QueryType\Server\Api\Query;
-use Solrphp\SolariumBundle\Contract\SolrApi\Response\ResponseInterface;
 use Solrphp\SolariumBundle\Exception\UnexpectedValueException;
 use Solrphp\SolariumBundle\SolrApi\Config\Enum\Command;
 use Solrphp\SolariumBundle\SolrApi\Config\Enum\SubPath as SubPathConfig;
@@ -64,11 +63,11 @@ class ConfigManagerTest extends TestCase
             'version' => Request::API_V2,
             'method' => Request::METHOD_GET,
             'resultclass' => QueryType::class,
-            'handler' => 'cores/foo/config/'.SubPathConfig::GET_OVERLAY,
+            'handler' => 'foo/config/'.SubPathConfig::GET_OVERLAY,
         ];
 
         $client = $this->getExecutingClient($options);
-        $serializer = $this->getSerializer();
+        $serializer = $this->getSerializer(1, '', ConfigResponse::class);
 
         $coreManager = new CoreManager($client, $serializer);
         $configManager = new ConfigManager($client, $coreManager, $serializer);
@@ -76,7 +75,7 @@ class ConfigManagerTest extends TestCase
 
         $response = $configManager->call(SubPathConfig::GET_OVERLAY);
 
-        self::assertInstanceOf(ResponseInterface::class, $response);
+        self::assertInstanceOf(ConfigResponse::class, $response);
     }
 
     /**
@@ -88,7 +87,7 @@ class ConfigManagerTest extends TestCase
             'version' => Request::API_V2,
             'method' => Request::METHOD_GET,
             'resultclass' => QueryType::class,
-            'handler' => 'cores/foo/config/'.SubPathConfig::GET_REQUEST_HANDLERS,
+            'handler' => 'foo/config/'.SubPathConfig::GET_REQUEST_HANDLERS,
         ];
 
         $client = $this->getExecutingClient($options);
@@ -114,7 +113,7 @@ class ConfigManagerTest extends TestCase
         $serializer = $this->getSerializer();
 
         $coreManager = new CoreManager($client, $serializer);
-        $schemaManager = new \Solrphp\SolariumBundle\SolrApi\Config\Manager\ConfigManager($client, $coreManager, $serializer);
+        $schemaManager = new ConfigManager($client, $coreManager, $serializer);
 
         $schemaManager->addCommand('foo', new Field());
     }
@@ -128,7 +127,7 @@ class ConfigManagerTest extends TestCase
         $serializer = $this->getSerializer();
 
         $coreManager = new CoreManager($client, $serializer);
-        $configManager = new \Solrphp\SolariumBundle\SolrApi\Config\Manager\ConfigManager($client, $coreManager, $serializer);
+        $configManager = new ConfigManager($client, $coreManager, $serializer);
 
         $configManager = $configManager->addCommand(Command::ADD_INIT_PARAMS, new Field());
 
@@ -171,7 +170,7 @@ class ConfigManagerTest extends TestCase
             'method' => Request::METHOD_POST,
             'resultclass' => QueryType::class,
             'contenttype' => 'application/json',
-            'handler' => 'cores/foo/config',
+            'handler' => 'foo/config',
             'rawdata' => '[]',
         ];
 
@@ -269,7 +268,7 @@ class ConfigManagerTest extends TestCase
             ->expects(self::exactly($deserializeCount))
             ->method('deserialize')
             ->with($responseData, $responseClass, 'json')
-            ->willReturn(new $responseClass());
+            ->willReturn(new $responseClass($responseData));
 
         return $serializer;
     }

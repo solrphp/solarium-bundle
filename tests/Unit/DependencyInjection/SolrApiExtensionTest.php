@@ -303,27 +303,27 @@ class SolrApiExtensionTest extends TestCase
         $default = $container->getDefinition('solarium.client.default');
 
         // assign all endpoints if none defined
-        self::assertArrayHasKey('default', $default->getArgument(2)['endpoints']);
-        self::assertArrayHasKey('second', $default->getArgument(2)['endpoints']);
+        self::assertArrayHasKey('default', $default->getArgument(2)['endpoint']);
+        self::assertArrayHasKey('second', $default->getArgument(2)['endpoint']);
 
         $second = $container->getDefinition('solarium.client.second');
 
         // assign defined endpoints
-        self::assertArrayHasKey('second', $second->getArgument(2)['endpoints']);
-        self::assertArrayNotHasKey('default', $second->getArgument(2)['endpoints']);
+        self::assertArrayHasKey('second', $second->getArgument(2)['endpoint']);
+        self::assertArrayNotHasKey('default', $second->getArgument(2)['endpoint']);
 
         $third = $container->getDefinition('solarium.client.third');
 
         // non-existing endpoint configured, all assigned
-        self::assertArrayHasKey('default', $third->getArgument(2)['endpoints']);
-        self::assertArrayHasKey('second', $third->getArgument(2)['endpoints']);
+        self::assertArrayHasKey('default', $third->getArgument(2)['endpoint']);
+        self::assertArrayHasKey('second', $third->getArgument(2)['endpoint']);
 
         $fourth = $container->getDefinition('solarium.client.fourth');
 
         // only existing endpoints are assigned
-        self::assertArrayHasKey('second', $fourth->getArgument(2)['endpoints']);
-        self::assertArrayNotHasKey('default', $fourth->getArgument(2)['endpoints']);
-        self::assertArrayNotHasKey('third', $fourth->getArgument(2)['endpoints']);
+        self::assertArrayHasKey('second', $fourth->getArgument(2)['endpoint']);
+        self::assertArrayNotHasKey('default', $fourth->getArgument(2)['endpoint']);
+        self::assertArrayNotHasKey('third', $fourth->getArgument(2)['endpoint']);
     }
 
     /**

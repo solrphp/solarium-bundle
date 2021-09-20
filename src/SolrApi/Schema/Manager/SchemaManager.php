@@ -16,6 +16,7 @@ use Solrphp\SolariumBundle\Common\Manager\AbstractApiManager;
 use Solrphp\SolariumBundle\Contract\SolrApi\Response\ResponseInterface;
 use Solrphp\SolariumBundle\SolrApi\Schema\Enum\Command as SchemaCommands;
 use Solrphp\SolariumBundle\SolrApi\Schema\Enum\SubPath as SchemaSubPaths;
+use Solrphp\SolariumBundle\SolrApi\Schema\Response\SchemaResponse;
 
 /**
  * Solr Schema Manager.
@@ -49,7 +50,7 @@ final class SchemaManager extends AbstractApiManager
         $response = parent::call($path);
 
         if (false === \array_key_exists($path, SchemaSubPaths::RESPONSE_CLASSES)) {
-            return $response;
+            return $this->serializer->deserialize($response->getBody(), SchemaResponse::class, 'json');
         }
 
         return $this->serializer->deserialize($response->getBody(), SchemaSubPaths::RESPONSE_CLASSES[$path], 'json');

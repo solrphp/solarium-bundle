@@ -15,7 +15,11 @@ namespace Solrphp\SolariumBundle\Tests\Helper;
 use Doctrine\Common\Collections\ArrayCollection;
 use Roave\BetterReflection\BetterReflection;
 use Roave\BetterReflection\Reflection\ReflectionProperty;
+use Solrphp\SolariumBundle\Common\Response\Error;
+use Solrphp\SolariumBundle\Common\Response\Header;
 use Solrphp\SolariumBundle\Contract\SolrApi\FilterInterface;
+use Solrphp\SolariumBundle\Contract\SolrApi\Response\ResponseErrorInterface;
+use Solrphp\SolariumBundle\Contract\SolrApi\Response\ResponseHeaderInterface;
 use Solrphp\SolariumBundle\SolrApi\Schema\Model\Filter\CommonGramsFilter;
 
 /**
@@ -30,6 +34,8 @@ class Dummy
      */
     private static $interfaces = [
         '\\'.FilterInterface::class => CommonGramsFilter::class,
+        '\\'.ResponseHeaderInterface::class => Header::class,
+        '\\'.ResponseErrorInterface::class => Error::class,
     ];
 
     /**
@@ -117,6 +123,12 @@ class Dummy
                 return self::scalarToValue($valueType);
             default:
                 if (class_exists($namedType)) {
+                    if (\array_key_exists($namedType, self::$interfaces)) {
+                        $class = self::$interfaces[$namedType];
+
+                        return $initComposite ? self::reflect(new $class()) : $class;
+                    }
+
                     return $initComposite ? self::reflect(new $namedType()) : $namedType;
                 }
 

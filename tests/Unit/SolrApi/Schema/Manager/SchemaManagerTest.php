@@ -20,7 +20,6 @@ use Solarium\Core\Client\Response;
 use Solarium\Core\Query\Result\QueryType;
 use Solarium\Core\Query\Result\Result;
 use Solarium\QueryType\Server\Api\Query;
-use Solrphp\SolariumBundle\Contract\SolrApi\Response\ResponseInterface;
 use Solrphp\SolariumBundle\Exception\UnexpectedValueException;
 use Solrphp\SolariumBundle\SolrApi\CoreAdmin\Manager\CoreManager;
 use Solrphp\SolariumBundle\SolrApi\CoreAdmin\Response\CoreResponse;
@@ -29,6 +28,7 @@ use Solrphp\SolariumBundle\SolrApi\Schema\Enum\SubPath as SubPathSchema;
 use Solrphp\SolariumBundle\SolrApi\Schema\Manager\SchemaManager;
 use Solrphp\SolariumBundle\SolrApi\Schema\Model\Field;
 use Solrphp\SolariumBundle\SolrApi\Schema\Response\FieldsResponse;
+use Solrphp\SolariumBundle\SolrApi\Schema\Response\SchemaResponse;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\Serializer\SerializerInterface;
 
@@ -63,11 +63,11 @@ class SchemaManagerTest extends TestCase
             'version' => Request::API_V2,
             'method' => Request::METHOD_GET,
             'resultclass' => QueryType::class,
-            'handler' => 'cores/foo/schema/'.SubPathSchema::SHOW_GLOBAL_SIMILARITY,
+            'handler' => 'foo/schema/'.SubPathSchema::SHOW_GLOBAL_SIMILARITY,
         ];
 
         $client = $this->getExecutingClient($options);
-        $serializer = $this->getSerializer();
+        $serializer = $this->getSerializer(1, '', SchemaResponse::class);
         $coreManager = new CoreManager($client, $serializer);
         $schemaManager = new SchemaManager($client, $coreManager, $serializer);
         $schemaManager
@@ -75,7 +75,7 @@ class SchemaManagerTest extends TestCase
 
         $response = $schemaManager->call(SubPathSchema::SHOW_GLOBAL_SIMILARITY);
 
-        self::assertInstanceOf(ResponseInterface::class, $response);
+        self::assertInstanceOf(SchemaResponse::class, $response);
     }
 
     /**
@@ -87,7 +87,7 @@ class SchemaManagerTest extends TestCase
             'version' => Request::API_V2,
             'method' => Request::METHOD_GET,
             'resultclass' => QueryType::class,
-            'handler' => 'cores/foo/schema/'.SubPathSchema::LIST_FIELDS,
+            'handler' => 'foo/schema/'.SubPathSchema::LIST_FIELDS,
         ];
 
         $client = $this->getExecutingClient($options);
@@ -171,7 +171,7 @@ class SchemaManagerTest extends TestCase
             'method' => Request::METHOD_POST,
             'resultclass' => QueryType::class,
             'contenttype' => 'application/json',
-            'handler' => 'cores/foo/schema',
+            'handler' => 'foo/schema',
             'rawdata' => '{"add-field":[{"name":"foo","type":"bar"}]}',
         ];
 
