@@ -17,7 +17,7 @@ use Solrphp\SolariumBundle\Contract\SolrApi\FilterInterface;
 /**
  * Beider Morse Filter.
  *
- * @author wicliff <wwolda@gmail.com>
+ * @author wicliff <wicliff.wolda@gmail.com>
  */
 final class BeiderMorseFilter implements FilterInterface, \JsonSerializable
 {

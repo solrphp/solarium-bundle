@@ -15,7 +15,7 @@ namespace Solrphp\SolariumBundle\Common\Generator;
 /**
  * Cached Generator.
  *
- * @author wicliff <wwolda@gmail.com>
+ * @author wicliff <wicliff.wolda@gmail.com>
  *
  * @phpstan-template Treturn of \Generator
  *

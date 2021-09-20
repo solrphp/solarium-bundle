@@ -17,7 +17,7 @@ use Solrphp\SolariumBundle\Contract\SolrApi\FilterInterface;
 /**
  * English Minimal Stem Filter.
  *
- * @author wicliff <wwolda@gmail.com>
+ * @author wicliff <wicliff.wolda@gmail.com>
  */
 final class EnglishMinimalStemFilter implements FilterInterface, \JsonSerializable
 {

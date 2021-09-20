@@ -17,7 +17,7 @@ use Solrphp\SolariumBundle\Contract\SolrApi\FilterInterface;
 /**
  * Shingle Filter.
  *
- * @author wicliff <wwolda@gmail.com>
+ * @author wicliff <wicliff.wolda@gmail.com>
  */
 final class ShingleFilter implements FilterInterface, \JsonSerializable
 {

@@ -19,7 +19,7 @@ use Roave\BetterReflection\Reflection\ReflectionProperty;
 /**
  * Accessor.
  *
- * @author wicliff <wwolda@gmail.com>
+ * @author wicliff <wicliff.wolda@gmail.com>
  */
 class Accessor
 {

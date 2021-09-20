@@ -13,9 +13,13 @@ declare(strict_types=1);
 namespace Solrphp\SolariumBundle\Tests\Unit\DependencyInjection;
 
 use PHPUnit\Framework\TestCase;
+use Solarium\Client;
 use Solarium\Core\Client\Adapter\Curl;
-use Solarium\Core\Client\Client;
+use Solrphp\SolariumBundle\Command\SolrConfigUpdateCommand;
 use Solrphp\SolariumBundle\DependencyInjection\SolrphpSolariumExtension;
+use Solrphp\SolariumBundle\SolrApi\Config\Manager\ConfigManager;
+use Solrphp\SolariumBundle\SolrApi\CoreAdmin\Manager\CoreManager;
+use Solrphp\SolariumBundle\SolrApi\Schema\Manager\SchemaManager;
 use Solrphp\SolariumBundle\SolrApi\SolrConfigurationStore;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBag;
@@ -23,7 +27,7 @@ use Symfony\Component\DependencyInjection\ParameterBag\ParameterBag;
 /**
  * Solr Api Extension Test.
  *
- * @author wicliff <wwolda@gmail.com>
+ * @author wicliff <wicliff.wolda@gmail.com>
  */
 class SolrApiExtensionTest extends TestCase
 {
@@ -45,14 +49,144 @@ class SolrApiExtensionTest extends TestCase
      */
     public function testLoadConfigurationStore(): void
     {
+        $schemaConfig = [
+            'clients' => [
+                'default' => [],
+            ],
+            'managed_schemas' => [
+                [
+                    'cores' => ['demo'],
+                    'unique_key' => 'foo',
+                ],
+            ],
+        ];
+
+        $configConfig = [
+            'clients' => [
+                'default' => [],
+            ],
+            'solr_configs' => [
+                [
+                  'cores' => ['demo'],
+                ],
+            ],
+        ];
         $container = $this->createContainer();
         $this->extension->load([$this->getBaseConfig()], $container);
+
+        // no schema nor config, no need for the configuration store
+        self::assertFalse($container->hasDefinition(SolrConfigurationStore::class));
+
+        $this->extension->load([$schemaConfig], $container);
 
         self::assertTrue($container->hasDefinition(SolrConfigurationStore::class));
 
         $definition = $container->getDefinition(SolrConfigurationStore::class);
 
         self::assertCount(2, $definition->getArguments());
+
+        // test with new container config config only
+        $container = $this->createContainer();
+        $this->extension->load([$configConfig], $container);
+        self::assertTrue($container->hasDefinition(SolrConfigurationStore::class));
+    }
+
+    /**
+     * @throws \PHPUnit\Framework\Exception
+     * @throws \PHPUnit\Framework\ExpectationFailedException
+     */
+    public function testLoadCoreManager(): void
+    {
+        $container = $this->createContainer();
+        $this->extension->load([$this->getBaseConfig()], $container);
+
+        // no client, no core manager
+        self::assertFalse($container->hasDefinition('solrphp.manager.core_admin'));
+
+        $this->extension->load($this->getClientConfig(), $container);
+        self::assertTrue($container->hasDefinition('solrphp.manager.core_admin'));
+
+        $definition = $container->getDefinition('solrphp.manager.core_admin');
+
+        self::assertCount(2, $definition->getArguments());
+
+        self::assertTrue($container->hasAlias(CoreManager::class));
+    }
+
+    /**
+     * @throws \PHPUnit\Framework\Exception
+     * @throws \PHPUnit\Framework\ExpectationFailedException
+     */
+    public function testLoadSchemaManager(): void
+    {
+        $config = [
+            'clients' => [
+                'default' => [],
+            ],
+            'managed_schemas' => [
+                [
+                    'cores' => ['demo'],
+                    'unique_key' => 'foo',
+                ],
+            ],
+        ];
+
+        $container = $this->createContainer();
+        $this->extension->load([$this->getBaseConfig()], $container);
+
+        // no client, no schema manager
+        self::assertFalse($container->hasDefinition('solrphp.manager.schema'));
+
+        $this->extension->load([$config], $container);
+        self::assertTrue($container->hasDefinition('solrphp.manager.schema'));
+
+        $definition = $container->getDefinition('solrphp.manager.schema');
+
+        self::assertCount(3, $definition->getArguments());
+
+        self::assertTrue($container->hasAlias(SchemaManager::class));
+    }
+
+    /**
+     * @throws \PHPUnit\Framework\Exception
+     * @throws \PHPUnit\Framework\ExpectationFailedException
+     */
+    public function testLoadConfigManager(): void
+    {
+        $configConfig = [
+            'clients' => [
+                'default' => [],
+            ],
+            'solr_configs' => [
+                [
+                    'cores' => ['demo'],
+                ],
+            ],
+        ];
+
+        $container = $this->createContainer();
+        $this->extension->load([$this->getBaseConfig()], $container);
+
+        // no client, no schema manager
+        self::assertFalse($container->hasDefinition('solrphp.manager.config'));
+        self::assertFalse($container->hasDefinition('solrphp.command.config_update'));
+
+        $this->extension->load([$configConfig], $container);
+        self::assertTrue($container->hasDefinition('solrphp.manager.config'));
+
+        $definition = $container->getDefinition('solrphp.manager.config');
+
+        self::assertCount(3, $definition->getArguments());
+        self::assertTrue($container->hasAlias(ConfigManager::class));
+
+        // config update command should be registered as well
+        self::assertTrue($container->hasDefinition('solrphp.command.config_update'));
+
+        $definition = $container->getDefinition('solrphp.command.config_update');
+
+        self::assertTrue($definition->hasTag('console.command'));
+        self::assertCount(2, $definition->getArguments());
+        self::assertTrue($container->hasAlias(SolrConfigUpdateCommand::class));
     }
 
     /**
@@ -100,6 +234,9 @@ class SolrApiExtensionTest extends TestCase
         self::assertTrue($container->hasDefinition('solarium.client.default'));
         self::assertTrue($container->hasDefinition('solarium.client.second'));
         self::assertTrue($container->hasDefinition('solarium.client.third'));
+
+        // core manager should be available at this point as well
+        self::assertTrue($container->hasDefinition('solrphp.manager.core_admin'));
 
         //client configurations
         $default = $container->getDefinition('solarium.client.default');
@@ -317,6 +454,11 @@ class SolrApiExtensionTest extends TestCase
     private function getBaseConfig(): array
     {
         return [
+            'clients' => [
+                'deafult' => [
+                    'endpoints' => ['demo'],
+                ],
+            ],
             'managed_schemas' => [],
             'solr_configs' => [],
         ];

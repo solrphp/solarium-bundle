@@ -15,7 +15,7 @@ namespace Solrphp\SolariumBundle\SolrApi\Schema\Model;
 /**
  * Field Property Trait.
  *
- * @author wicliff <wwolda@gmail.com>
+ * @author wicliff <wicliff.wolda@gmail.com>
  */
 trait FieldPropertyTrait
 {

@@ -17,7 +17,7 @@ use Solrphp\SolariumBundle\Contract\SolrApi\FilterInterface;
 /**
  * ICU Normalizer2 CharFilter.
  *
- * @author wicliff <wwolda@gmail.com>
+ * @author wicliff <wicliff.wolda@gmail.com>
  */
 final class ICUNormalizer2CharFilter implements FilterInterface, \JsonSerializable
 {

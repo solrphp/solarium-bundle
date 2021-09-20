@@ -35,7 +35,7 @@ use Symfony\Component\Serializer\SerializerInterface;
 /**
  * Schema Manager Test.
  *
- * @author wicliff <wwolda@gmail.com>
+ * @author wicliff <wicliff.wolda@gmail.com>
  */
 class SchemaManagerTest extends TestCase
 {

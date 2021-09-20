@@ -19,7 +19,7 @@ use Symfony\Component\DependencyInjection\Alias;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Extension\Extension;
-use Symfony\Component\DependencyInjection\Loader;
+use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
 use Symfony\Component\DependencyInjection\Reference;
 
 /**
@@ -48,15 +48,30 @@ class SolrphpSolariumExtension extends Extension
         $configuration = $this->getConfiguration($configs, $container);
         $config = $this->processConfiguration($configuration, $configs);
 
-        // no service definitions for now
-        // $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../../config'));
-        // $loader->load('services.yaml');
+        $loader = new PhpFileLoader($container, new FileLocator(\dirname(__DIR__).'/Resources/config'));
 
         $endpointReferences = $this->loadSolrEndpoints($container, $config);
 
         $this->loadSolrClients($container, $config, $endpointReferences);
 
-        $this->loadSolrConfigurationStore($container, $config);
+        // all following options need a solarium client, no need to proceed if not found.
+        if (false === $container->hasDefinition('solarium.client.default')) {
+            return;
+        }
+
+        $loader->load('core_admin_api.php');
+
+        if (\count($config['managed_schemas']) || \count($config['solr_configs'])) {
+            $this->loadSolrConfigurationStore($container, $config);
+        }
+
+        if (\count($config['managed_schemas'])) {
+            $loader->load('schema_api.php');
+        }
+
+        if (\count($config['solr_configs'])) {
+            $loader->load('config_api.php');
+        }
     }
 
     /**
@@ -105,12 +120,6 @@ class SolrphpSolariumExtension extends Extension
     private function loadSolrClients(ContainerBuilder $container, array $config, array $endpointReferences): void
     {
         $defaultClient = $config['default_client'];
-
-//        if (!count($config['clients'])) {
-//            $config['clients'][$defaultClient] = [];
-//        } elseif (count($config['clients']) === 1) {
-//            $defaultClient = key($config['clients']);
-//        }
 
         foreach ($config['clients'] as $name => $clientOptions) {
             $clientName = sprintf('solarium.client.%s', $name);

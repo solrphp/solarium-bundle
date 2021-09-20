@@ -17,7 +17,7 @@ use Solrphp\SolariumBundle\Contract\SolrApi\FilterInterface;
 /**
  * Limit Token Offset Filter.
  *
- * @author wicliff <wwolda@gmail.com>
+ * @author wicliff <wicliff.wolda@gmail.com>
  */
 final class LimitTokenOffsetFilter implements FilterInterface, \JsonSerializable
 {

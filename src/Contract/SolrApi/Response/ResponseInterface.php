@@ -18,7 +18,7 @@ use Solrphp\SolariumBundle\Common\Response\Header;
 /**
  * Response Interface.
  *
- * @author wicliff <wwolda@gmail.com>
+ * @author wicliff <wicliff.wolda@gmail.com>
  */
 interface ResponseInterface
 {

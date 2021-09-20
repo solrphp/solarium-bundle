@@ -19,7 +19,7 @@ use Solrphp\SolariumBundle\Contract\SolrApi\Response\ResponseInterface;
 /**
  * Schema Response.
  *
- * @author wicliff <wwolda@gmail.com>
+ * @author wicliff <wicliff.wolda@gmail.com>
  */
 class SchemaResponse implements ResponseInterface
 {

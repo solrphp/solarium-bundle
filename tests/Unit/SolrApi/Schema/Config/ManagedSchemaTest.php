@@ -22,7 +22,7 @@ use Solrphp\SolariumBundle\SolrApi\Schema\Model\FieldType;
 /**
  * ManagedSchema Test.
  *
- * @author wicliff <wwolda@gmail.com>
+ * @author wicliff <wicliff.wolda@gmail.com>
  */
 class ManagedSchemaTest extends TestCase
 {

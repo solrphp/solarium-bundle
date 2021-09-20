@@ -20,7 +20,7 @@ use Solrphp\SolariumBundle\Contract\SolrApi\Response\ResponseInterface;
 /**
  * ResponseTrait.
  *
- * @author wicliff <wwolda@gmail.com>
+ * @author wicliff <wicliff.wolda@gmail.com>
  */
 trait ResponseTrait
 {

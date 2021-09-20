@@ -18,7 +18,7 @@ use Solrphp\SolariumBundle\Exception\UnexpectedValueException;
 /**
  * Unexpected Value Exception Test.
  *
- * @author wicliff <wwolda@gmail.com>
+ * @author wicliff <wicliff.wolda@gmail.com>
  */
 class UnexpectedValueExceptionTest extends TestCase
 {

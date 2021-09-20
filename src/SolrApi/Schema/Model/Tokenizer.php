@@ -15,7 +15,7 @@ namespace Solrphp\SolariumBundle\SolrApi\Schema\Model;
 /**
  * Tokenizer.
  *
- * @author wicliff <wwolda@gmail.com>
+ * @author wicliff <wicliff.wolda@gmail.com>
  */
 final class Tokenizer implements \JsonSerializable
 {

@@ -36,8 +36,8 @@ final class SolrConfigurationStore
     private LazyLoadingGenerator $solrConfigs;
 
     /**
-     * @param array<int, array<string, mixed>> $managedSchemas
-     * @param array<int, array<string, mixed>> $solrConfigs
+     * @param array<int, array<string, ManagedSchema>> $managedSchemas
+     * @param array<int, array<string, SolrConfig>>    $solrConfigs
      */
     public function __construct(array $managedSchemas, array $solrConfigs)
     {
@@ -78,7 +78,7 @@ final class SolrConfigurationStore
     }
 
     /**
-     * @param array<int, array<string, mixed>> $configs
+     * @param array<int, array<string, SolrConfig>> $configs
      *
      * @return \Generator<int, \Solrphp\SolariumBundle\Contract\SolrApi\CoreDependentConfigInterface>
      */
@@ -88,7 +88,7 @@ final class SolrConfigurationStore
     }
 
     /**
-     * @param array<int, array<string, mixed>> $schemas
+     * @param array<int, array<string, ManagedSchema>> $schemas
      *
      * @return \Generator<int, \Solrphp\SolariumBundle\Contract\SolrApi\CoreDependentConfigInterface>
      */

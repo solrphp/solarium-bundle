@@ -19,7 +19,7 @@ use Solrphp\SolariumBundle\SolrApi\Schema\Enum\SubPath;
 /**
  * Enum Test.
  *
- * @author wicliff <wwolda@gmail.com>
+ * @author wicliff <wicliff.wolda@gmail.com>
  */
 class EnumTest extends TestCase
 {

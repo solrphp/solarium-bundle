@@ -21,7 +21,7 @@ use Solrphp\SolariumBundle\Tests\Helper\ObjectUtil;
 /**
  * Config Util Test.
  *
- * @author wicliff <wwolda@gmail.com>
+ * @author wicliff <wicliff.wolda@gmail.com>
  */
 class ConfigUtilTest extends TestCase
 {

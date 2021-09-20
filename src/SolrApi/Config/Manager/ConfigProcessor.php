@@ -1,0 +1,106 @@
+<?php
+
+declare(strict_types=1);
+
+/*
+ * This file is part of the SolrPHP SolariumBundle.
+ * (c) wicliff <wicliff.wolda@gmail.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+namespace Solrphp\SolariumBundle\SolrApi\Config\Manager;
+
+use JsonException;
+use Solrphp\SolariumBundle\Exception\ProcessorException;
+use Solrphp\SolariumBundle\SolrApi\Config\Config\SolrConfig;
+use Solrphp\SolariumBundle\SolrApi\Config\Generator\ConfigNodeGenerator;
+
+/**
+ * Config Processor.
+ *
+ * @author wicliff <wicliff.wolda@gmail.com>
+ */
+class ConfigProcessor
+{
+    /**
+     * @var \Solrphp\SolariumBundle\SolrApi\Config\Config\SolrConfig
+     */
+    private SolrConfig $config;
+
+    /**
+     * @var iterable<\Solrphp\SolariumBundle\Contract\SolrApi\Processor\ConfigNodeProcessorInterface>
+     */
+    private iterable $processors;
+
+    /**
+     * @var \Solrphp\SolariumBundle\SolrApi\Config\Manager\ConfigManager
+     */
+    private ConfigManager $manager;
+
+    /**
+     * @var \Solrphp\SolariumBundle\SolrApi\Config\Generator\ConfigNodeGenerator
+     */
+    private ConfigNodeGenerator $generator;
+
+    /**
+     * @param iterable<\Solrphp\SolariumBundle\Contract\SolrApi\Processor\ConfigNodeProcessorInterface> $processors
+     * @param \Solrphp\SolariumBundle\SolrApi\Config\Manager\ConfigManager                              $manager
+     * @param \Solrphp\SolariumBundle\SolrApi\Config\Generator\ConfigNodeGenerator|null                 $generator
+     */
+    public function __construct(iterable $processors, ConfigManager $manager, ConfigNodeGenerator $generator = null)
+    {
+        $this->processors = $processors;
+        $this->manager = $manager;
+        $this->generator = $generator ?? new ConfigNodeGenerator();
+    }
+
+    /**
+     * @param string $core
+     *
+     * @return $this
+     */
+    public function withCore(string $core): self
+    {
+        $this->manager->setCore($core);
+
+        return $this;
+    }
+
+    /**
+     * @param \Solrphp\SolariumBundle\SolrApi\Config\Config\SolrConfig $config
+     *
+     * @return $this
+     */
+    public function withConfig(SolrConfig $config): self
+    {
+        $this->config = $config;
+
+        return $this;
+    }
+
+    /**
+     * @throws \Solrphp\SolariumBundle\Exception\ProcessorException
+     */
+    public function process(): void
+    {
+        foreach ($this->generator->get($this->config) as $configNode) {
+            foreach ($this->processors as $processor) {
+                if (false === $processor->supports($configNode)) {
+                    continue;
+                }
+
+                $processor->setManager($this->manager)->process($configNode);
+            }
+        }
+
+        try {
+            $this->manager->persist();
+        } catch (JsonException $e) {
+            throw new ProcessorException('unable to persist configuration', $e);
+        }
+
+        $this->manager->flush();
+    }
+}

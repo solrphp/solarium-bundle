@@ -15,7 +15,7 @@ namespace Solrphp\SolariumBundle\Contract\SolrApi\Response;
 /**
  * Response Header Interface.
  *
- * @author wicliff <wwolda@gmail.com>
+ * @author wicliff <wicliff.wolda@gmail.com>
  */
 interface ResponseHeaderInterface
 {

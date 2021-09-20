@@ -30,7 +30,7 @@ use Solrphp\SolariumBundle\SolrApi\SolrConfigurationStore;
 /**
  * Solr ConfigurationStore Test.
  *
- * @author wicliff <wwolda@gmail.com>
+ * @author wicliff <wicliff.wolda@gmail.com>
  */
 class SolrConfigurationStoreTest extends TestCase
 {

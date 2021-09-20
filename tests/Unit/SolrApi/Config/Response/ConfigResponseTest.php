@@ -24,7 +24,7 @@ use Solrphp\SolariumBundle\SolrApi\Config\Response\ConfigResponse;
 /**
  * ConfigResponseTest.
  *
- * @author wicliff <wwolda@gmail.com>
+ * @author wicliff <wicliff.wolda@gmail.com>
  */
 class ConfigResponseTest extends TestCase
 {

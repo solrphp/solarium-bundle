@@ -29,7 +29,7 @@ use Solrphp\SolariumBundle\SolrApi\Schema\Response\SchemaResponse;
 /**
  * CopyFieldsResponseTest.
  *
- * @author wicliff <wwolda@gmail.com>
+ * @author wicliff <wicliff.wolda@gmail.com>
  */
 class SchemaApiResponseTest extends TestCase
 {

@@ -15,7 +15,7 @@ namespace Solrphp\SolariumBundle\Contract\SolrApi\Response;
 /**
  * Response Error Interface.
  *
- * @author wicliff <wwolda@gmail.com>
+ * @author wicliff <wicliff.wolda@gmail.com>
  */
 interface ResponseErrorInterface
 {

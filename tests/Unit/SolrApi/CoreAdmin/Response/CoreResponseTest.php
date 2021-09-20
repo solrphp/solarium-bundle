@@ -22,7 +22,7 @@ use Solrphp\SolariumBundle\SolrApi\CoreAdmin\Response\CoreResponse;
 /**
  * CoreResponse Test.
  *
- * @author wicliff <wwolda@gmail.com>
+ * @author wicliff <wicliff.wolda@gmail.com>
  */
 class CoreResponseTest extends TestCase
 {

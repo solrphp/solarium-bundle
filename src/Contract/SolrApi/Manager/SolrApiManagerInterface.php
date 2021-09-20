@@ -18,7 +18,7 @@ use Solrphp\SolariumBundle\Contract\SolrApi\Response\ResponseInterface;
 /**
  * SolrApi Manager Interface.
  *
- * @author wicliff <wwolda@gmail.com>
+ * @author wicliff <wicliff.wolda@gmail.com>
  */
 interface SolrApiManagerInterface
 {

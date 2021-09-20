@@ -21,7 +21,7 @@ use Solrphp\SolariumBundle\SolrApi\Schema\Model\Filter\CommonGramsFilter;
 /**
  * Dummy.
  *
- * @author wicliff <wwolda@gmail.com>
+ * @author wicliff <wicliff.wolda@gmail.com>
  */
 class Dummy
 {

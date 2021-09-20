@@ -13,8 +13,8 @@ declare(strict_types=1);
 namespace Solrphp\SolariumBundle\Tests\Unit\DependencyInjection;
 
 use Matthias\SymfonyDependencyInjectionTest\PhpUnit\AbstractExtensionConfigurationTestCase;
+use Solarium\Client;
 use Solarium\Core\Client\Adapter\Curl;
-use Solarium\Core\Client\Client;
 use Solrphp\SolariumBundle\DependencyInjection\Configuration;
 use Solrphp\SolariumBundle\DependencyInjection\SolrphpSolariumExtension;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
@@ -25,7 +25,7 @@ use Symfony\Component\DependencyInjection\Extension\ExtensionInterface;
 /**
  * SolrApi Configuration Test.
  *
- * @author wicliff <wwolda@gmail.com>
+ * @author wicliff <wicliff.wolda@gmail.com>
  */
 class SolrApiConfigurationTest extends AbstractExtensionConfigurationTestCase
 {

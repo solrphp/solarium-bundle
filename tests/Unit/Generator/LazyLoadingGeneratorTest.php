@@ -18,7 +18,7 @@ use Solrphp\SolariumBundle\Common\Generator\LazyLoadingGenerator;
 /**
  * LazyLoadingGeneratorTest.
  *
- * @author wicliff <wwolda@gmail.com>
+ * @author wicliff <wicliff.wolda@gmail.com>
  */
 class LazyLoadingGeneratorTest extends TestCase
 {

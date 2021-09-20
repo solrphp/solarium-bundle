@@ -30,7 +30,7 @@ use Symfony\Component\Finder\Finder;
 /**
  * Model Test Generator.
  *
- * @author wicliff <wwolda@gmail.com>
+ * @author wicliff <wicliff.wolda@gmail.com>
  */
 class ModelTestGenerator
 {

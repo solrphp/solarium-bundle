@@ -45,19 +45,19 @@ class Query implements \JsonSerializable
     private ?int $maxBooleanClauses = null;
 
     /**
-     * @var \Solrphp\SolariumBundle\SolrApi\Config\Model\Cache
+     * @var \Solrphp\SolariumBundle\SolrApi\Config\Model\Cache|null
      */
-    private Cache $filterCache;
+    private ?Cache $filterCache = null;
 
     /**
-     * @var \Solrphp\SolariumBundle\SolrApi\Config\Model\Cache
+     * @var \Solrphp\SolariumBundle\SolrApi\Config\Model\Cache|null
      */
-    private Cache $queryResultCache;
+    private ?Cache $queryResultCache = null;
 
     /**
-     * @var \Solrphp\SolariumBundle\SolrApi\Config\Model\Cache
+     * @var \Solrphp\SolariumBundle\SolrApi\Config\Model\Cache|null
      */
-    private Cache $documentCache;
+    private ?Cache $documentCache = null;
 
     /**
      * @var bool|null
@@ -150,49 +150,49 @@ class Query implements \JsonSerializable
     }
 
     /**
-     * @return \Solrphp\SolariumBundle\SolrApi\Config\Model\Cache
+     * @return \Solrphp\SolariumBundle\SolrApi\Config\Model\Cache|null
      */
-    public function getFilterCache(): Cache
+    public function getFilterCache(): ?Cache
     {
         return $this->filterCache;
     }
 
     /**
-     * @param \Solrphp\SolariumBundle\SolrApi\Config\Model\Cache $filterCache
+     * @param \Solrphp\SolariumBundle\SolrApi\Config\Model\Cache|null $filterCache
      */
-    public function setFilterCache(Cache $filterCache): void
+    public function setFilterCache(?Cache $filterCache): void
     {
         $this->filterCache = $filterCache;
     }
 
     /**
-     * @return \Solrphp\SolariumBundle\SolrApi\Config\Model\Cache
+     * @return \Solrphp\SolariumBundle\SolrApi\Config\Model\Cache|null
      */
-    public function getQueryResultCache(): Cache
+    public function getQueryResultCache(): ?Cache
     {
         return $this->queryResultCache;
     }
 
     /**
-     * @param \Solrphp\SolariumBundle\SolrApi\Config\Model\Cache $queryResultCache
+     * @param \Solrphp\SolariumBundle\SolrApi\Config\Model\Cache|null $queryResultCache
      */
-    public function setQueryResultCache(Cache $queryResultCache): void
+    public function setQueryResultCache(?Cache $queryResultCache): void
     {
         $this->queryResultCache = $queryResultCache;
     }
 
     /**
-     * @return \Solrphp\SolariumBundle\SolrApi\Config\Model\Cache
+     * @return \Solrphp\SolariumBundle\SolrApi\Config\Model\Cache|null
      */
-    public function getDocumentCache(): Cache
+    public function getDocumentCache(): ?Cache
     {
         return $this->documentCache;
     }
 
     /**
-     * @param \Solrphp\SolariumBundle\SolrApi\Config\Model\Cache $documentCache
+     * @param \Solrphp\SolariumBundle\SolrApi\Config\Model\Cache|null $documentCache
      */
-    public function setDocumentCache(Cache $documentCache): void
+    public function setDocumentCache(?Cache $documentCache): void
     {
         $this->documentCache = $documentCache;
     }

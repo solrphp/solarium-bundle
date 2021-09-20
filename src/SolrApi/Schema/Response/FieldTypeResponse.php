@@ -21,7 +21,7 @@ use Solrphp\SolariumBundle\SolrApi\Schema\Model\FieldType;
 /**
  * FieldType Response.
  *
- * @author wicliff <wwolda@gmail.com>
+ * @author wicliff <wicliff.wolda@gmail.com>
  */
 class FieldTypeResponse implements ResponseInterface
 {

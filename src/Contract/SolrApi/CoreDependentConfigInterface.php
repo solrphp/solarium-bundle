@@ -17,7 +17,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 /**
  * Core Dependent Config Interface.
  *
- * @author wicliff <wwolda@gmail.com>
+ * @author wicliff <wicliff.wolda@gmail.com>
  */
 interface CoreDependentConfigInterface
 {
