@@ -43,19 +43,28 @@ final class ConfigUtil
 
             if (true === \is_array($value)) {
                 foreach ($value as $key => $composite) {
-                    if (true === \is_object($composite)) {
-                        $array[] = self::toPropertyPaths($composite, $name.$separator.$key, $separator);
-                    } else {
-                        $array[][$name] = $value;
-                    }
+                    self::processNode($array, $name.$separator.$key, $composite, $separator);
                 }
-            } elseif (true === \is_object($value)) {
-                $array[] = self::toPropertyPaths($value, $name, $separator);
             } else {
-                $array[][$name] = $value;
+                self::processNode($array, $name, $value, $separator);
             }
         }
 
         return array_merge(...$array);
+    }
+
+    /**
+     * @param array<string, string> $array
+     * @param string                $name
+     * @param object|string         $value
+     * @param string                $separator
+     */
+    private static function processNode(array &$array, string $name, $value, string $separator): void
+    {
+        if (true === \is_object($value)) {
+            $array[] = self::toPropertyPaths($value, $name, $separator);
+        } else {
+            $array[][$name] = $value;
+        }
     }
 }

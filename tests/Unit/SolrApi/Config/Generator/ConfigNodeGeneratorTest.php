@@ -10,7 +10,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Solrphp\SolariumBundle\Tests\Unit\SolrApi\Config\Manager;
+namespace Solrphp\SolariumBundle\Tests\Unit\SolrApi\Config\Generator;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use PHPUnit\Framework\TestCase;

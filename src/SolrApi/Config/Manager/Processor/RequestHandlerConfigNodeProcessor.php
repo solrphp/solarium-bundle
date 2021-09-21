@@ -49,7 +49,7 @@ class RequestHandlerConfigNodeProcessor implements ConfigNodeProcessorInterface
     /**
      * {@inheritdoc}
      */
-    public function process(ConfigNodeInterface $configNode)
+    public function process(ConfigNodeInterface $configNode): void
     {
         try {
             $current = $this->manager->call($configNode->getPath());
@@ -89,6 +89,6 @@ class RequestHandlerConfigNodeProcessor implements ConfigNodeProcessorInterface
      */
     public static function getDefaultPriority(): int
     {
-        return 50;
+        return ConfigNodeProcessorInterface::PRIORITY;
     }
 }

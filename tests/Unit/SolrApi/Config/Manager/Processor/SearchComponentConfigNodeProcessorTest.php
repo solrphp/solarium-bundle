@@ -15,6 +15,7 @@ namespace Solrphp\SolariumBundle\Tests\Unit\SolrApi\Config\Manager\Processor;
 use Doctrine\Common\Collections\ArrayCollection;
 use PHPUnit\Framework\TestCase;
 use Solrphp\SolariumBundle\Common\Manager\ConfigNode;
+use Solrphp\SolariumBundle\Contract\SolrApi\Processor\ConfigNodeProcessorInterface;
 use Solrphp\SolariumBundle\Exception\ProcessorException;
 use Solrphp\SolariumBundle\Exception\UnexpectedValueException;
 use Solrphp\SolariumBundle\SolrApi\Config\Config\SolrConfig;
@@ -183,6 +184,6 @@ class SearchComponentConfigNodeProcessorTest extends TestCase
      */
     public function testPriority(): void
     {
-        self::assertSame(50, SearchComponentConfigNodeProcessor::getDefaultPriority());
+        self::assertSame(ConfigNodeProcessorInterface::PRIORITY, SearchComponentConfigNodeProcessor::getDefaultPriority());
     }
 }

@@ -27,7 +27,7 @@ class FieldsResponse implements ResponseInterface
     use ResponseTrait;
 
     /**
-     * @var ArrayCollection<int, \Solrphp\SolariumBundle\SolrApi\Schema\Model\Field>
+     * @var ArrayCollection<array-key, \Solrphp\SolariumBundle\SolrApi\Schema\Model\Field>
      */
     private ArrayCollection $fields;
 
@@ -40,7 +40,7 @@ class FieldsResponse implements ResponseInterface
     }
 
     /**
-     * @return ArrayCollection<int, \Solrphp\SolariumBundle\SolrApi\Schema\Model\Field>
+     * @return ArrayCollection<array-key, \Solrphp\SolariumBundle\SolrApi\Schema\Model\Field>
      */
     public function getFields(): ArrayCollection
     {

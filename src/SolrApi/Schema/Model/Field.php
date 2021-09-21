@@ -37,6 +37,14 @@ class Field implements \JsonSerializable
     private ?string $default = null;
 
     /**
+     * @param string $name
+     */
+    public function __construct(string $name = '')
+    {
+        $this->name = $name;
+    }
+
+    /**
      * @return string
      */
     public function getName(): string

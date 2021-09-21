@@ -12,19 +12,45 @@ declare(strict_types=1);
 
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
+use Solrphp\SolariumBundle\Command\SolrSchemaUpdateCommand;
+use Solrphp\SolariumBundle\Contract\SolrApi\Processor\ConfigNodeProcessorInterface;
 use Solrphp\SolariumBundle\SolrApi\Schema\Manager\SchemaManager;
+use Solrphp\SolariumBundle\SolrApi\Schema\Manager\SchemaProcessor;
+use Solrphp\SolariumBundle\SolrApi\SolrConfigurationStore;
 
 /*
  * configure solr schema api services and commands
  */
 return static function (ContainerConfigurator $container) {
     $container->services()
+        ->instanceof(ConfigNodeProcessorInterface::class)
+        ->tag('solrphp.config_node_processor')
+
         ->set('solrphp.manager.schema', SchemaManager::class)
-        ->args([
-            service('solarium.client'),
-            service('solrphp.manager.core_admin'),
-            service('serializer'),
-        ])
+            ->args([
+                service('solarium.client'),
+                service('solrphp.manager.core_admin'),
+                service('serializer'),
+            ])
         ->alias(SchemaManager::class, 'solrphp.manager.schema')
+
+        ->set('solrphp.processor.schema', SchemaProcessor::class)
+            ->args([
+                tagged_iterator('solrphp.config_node_processor'),
+                service('solrphp.manager.schema'),
+            ])
+        ->alias(SchemaProcessor::class, 'solrphp.processor.schema')
+
+        ->set('solrphp.command.schema_update', SolrSchemaUpdateCommand::class)
+            ->args([
+                service('solrphp.processor.schema'),
+                service(SolrConfigurationStore::class),
+            ])
+        ->tag('console.command')
+        ->alias(SolrSchemaUpdateCommand::class, 'solrphp.command.schema_update')
+
+        // load config processors for this api.
+        ->load('Solrphp\\SolariumBundle\\SolrApi\\Schema\\Manager\\Processor\\', '../../SolrApi/Schema/Manager/Processor')
+        ->exclude(['*Trait'])
     ;
 };

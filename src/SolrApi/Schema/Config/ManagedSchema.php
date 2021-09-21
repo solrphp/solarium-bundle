@@ -56,12 +56,12 @@ final class ManagedSchema implements CoreDependentConfigInterface
     private ArrayCollection $fieldTypes;
 
     /**
-     * @param string                                                                            $uniqueKey
-     * @param ArrayCollection<int, string>|null                                                 $cores
-     * @param ArrayCollection<int, \Solrphp\SolariumBundle\SolrApi\Schema\Model\Field>|null     $fields
-     * @param ArrayCollection<int, \Solrphp\SolariumBundle\SolrApi\Schema\Model\CopyField>|null $copyFields
-     * @param ArrayCollection<int, \Solrphp\SolariumBundle\SolrApi\Schema\Model\Field>|null     $dynamicFields
-     * @param ArrayCollection<int, \Solrphp\SolariumBundle\SolrApi\Schema\Model\FieldType>|null $fieldTypes
+     * @param string                                                                                  $uniqueKey
+     * @param ArrayCollection<array-key, string>|null                                                 $cores
+     * @param ArrayCollection<array-key, \Solrphp\SolariumBundle\SolrApi\Schema\Model\Field>|null     $fields
+     * @param ArrayCollection<array-key, \Solrphp\SolariumBundle\SolrApi\Schema\Model\CopyField>|null $copyFields
+     * @param ArrayCollection<array-key, \Solrphp\SolariumBundle\SolrApi\Schema\Model\Field>|null     $dynamicFields
+     * @param ArrayCollection<array-key, \Solrphp\SolariumBundle\SolrApi\Schema\Model\FieldType>|null $fieldTypes
      */
     public function __construct(string $uniqueKey, ArrayCollection $cores = null, ArrayCollection $fields = null, ArrayCollection $copyFields = null, ArrayCollection $dynamicFields = null, ArrayCollection $fieldTypes = null)
     {
@@ -196,7 +196,7 @@ final class ManagedSchema implements CoreDependentConfigInterface
     /**
      * @return ArrayCollection<int, \Solrphp\SolariumBundle\SolrApi\Schema\Model\FieldType>
      */
-    public function getFieldTypes(): ?ArrayCollection
+    public function getFieldTypes(): ArrayCollection
     {
         return $this->fieldTypes;
     }

@@ -21,14 +21,14 @@ use Solrphp\SolariumBundle\Contract\SolrApi\Manager\SolrApiManagerInterface;
  */
 interface ConfigNodeProcessorInterface
 {
+    public const PRIORITY = 50;
+
     /**
      * @param \Solrphp\SolariumBundle\Contract\SolrApi\Processor\ConfigNodeInterface $configNode
      *
-     * @return mixed
-     *
      * @throws \Solrphp\SolariumBundle\Exception\ProcessorException
      */
-    public function process(ConfigNodeInterface $configNode);
+    public function process(ConfigNodeInterface $configNode): void;
 
     /**
      * @param \Solrphp\SolariumBundle\Contract\SolrApi\Processor\ConfigNodeInterface $configNode

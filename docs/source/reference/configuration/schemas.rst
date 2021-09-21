@@ -42,21 +42,21 @@ the unique key for your schema.
 
 ``fields``
 ----------
-the field definitions for your schema.
-all properties defined in `field type properties <https://solr.apache.org/guide/field-type-definitions-and-properties.html#field-type-properties>`_ should be available as a snake case representation.
+| the field definitions for your schema.
+| all properties defined in `field type properties <https://solr.apache.org/guide/field-type-definitions-and-properties.html#field-type-properties>`_ should be available as a snake case representation.
 
 ``dynamic_fields``
 ------------------
-the dynamic field definitions for your schema.
-all properties defined in `field type properties <https://solr.apache.org/guide/field-type-definitions-and-properties.html#field-type-properties>`_ should be available as a snake case representation.
-be aware that the value for property ``name`` should contain a wildcard.
+| the dynamic field definitions for your schema.
+|all properties defined in `field type properties <https://solr.apache.org/guide/field-type-definitions-and-properties.html#field-type-properties>`_ should be available as a snake case representation.
+| **note**: be aware that the value for property ``name`` should contain a wildcard.
 
 ``copy_fields``
 ---------------
-the copy field definitions for your schema.
+| the copy field definitions for your schema.
 
 ``field_types``
 ---------------
-the field type definitions for your schema.
-most properties defined in `field type definitions and properties <https://solr.apache.org/guide/field-type-definitions-and-properties.html>`_ are available as a snake case representation.
-todo: `field type similarity <https://solr.apache.org/guide/8_9/field-type-definitions-and-properties.html#field-type-similarity>`_
+| the field type definitions for your schema.
+| most properties defined in `field type definitions and properties <https://solr.apache.org/guide/field-type-definitions-and-properties.html>`_ are available as a snake case representation.
+| **todo**: `field type similarity <https://solr.apache.org/guide/8_9/field-type-definitions-and-properties.html#field-type-similarity>`_

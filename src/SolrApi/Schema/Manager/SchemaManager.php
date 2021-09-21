@@ -25,7 +25,7 @@ use Solrphp\SolariumBundle\SolrApi\Schema\Response\SchemaResponse;
  *
  * @author wicliff <wicliff.wolda@gmail.com>
  */
-final class SchemaManager extends AbstractApiManager
+class SchemaManager extends AbstractApiManager
 {
     /**
      * {@inheritdoc}

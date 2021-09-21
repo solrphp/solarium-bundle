@@ -1,10 +1,8 @@
 configuration
 =============
 
-the configuration reference describes all ``app/config/config.yml`` options
-for the bundle.
-
-to get a complete reference, run the following command in your application:
+| the configuration reference describes all ``app/config/config.yml`` options for the bundle.
+| to get a complete reference, run the following command in your application:
 
 .. code-block:: bash
 

@@ -10,7 +10,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Solrphp\SolariumBundle\Tests\Unit\Util;
+namespace Solrphp\SolariumBundle\Tests\Unit\SolrApi\Config\Util;
 
 use PHPUnit\Framework\TestCase;
 use Solrphp\SolariumBundle\SolrApi\Config\Util\ConfigUtil;

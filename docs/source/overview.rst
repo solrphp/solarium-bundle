@@ -11,8 +11,10 @@ to install the bundle run:
 
 configuration
 -------------
-now you can configure your bundle under the ``solrphp_solarium`` key.
-the :doc:`reference/configuration` section lists all configuration options.
+| now you can configure your bundle under the ``solrphp_solarium`` key.
+| for now, configure at least one endpoint and client.
+
+| the :doc:`reference/configuration` section describes most configuration options.
 
 license
 -------

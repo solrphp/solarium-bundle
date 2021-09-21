@@ -41,7 +41,7 @@ class FieldTypeResponse implements ResponseInterface
     }
 
     /**
-     * @return \Doctrine\Common\Collections\ArrayCollection<int, \Solrphp\SolariumBundle\SolrApi\Schema\Model\FieldType>
+     * @return ArrayCollection<int, \Solrphp\SolariumBundle\SolrApi\Schema\Model\FieldType>
      */
     public function getFieldTypes(): ArrayCollection
     {

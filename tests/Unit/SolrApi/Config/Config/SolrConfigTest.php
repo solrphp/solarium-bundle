@@ -151,3 +151,27 @@ class SolrConfigTest extends TestCase
         return $query;
     }
 }
+
+// phpcs:disable
+class Bar
+{
+    public string $name;
+
+    public function __construct()
+    {
+        $this->name = 'bar';
+    }
+}
+
+class Foo
+{
+    public string $name;
+    public Bar $bar;
+
+    public function __construct()
+    {
+        $this->name = 'foo';
+        $this->bar = new Bar();
+    }
+}
+// phpcs:enable

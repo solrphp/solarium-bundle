@@ -15,6 +15,7 @@ namespace Solrphp\SolariumBundle\Tests\Unit\SolrApi\Config\Manager\Processor;
 use Doctrine\Common\Collections\ArrayCollection;
 use PHPUnit\Framework\TestCase;
 use Solrphp\SolariumBundle\Common\Manager\ConfigNode;
+use Solrphp\SolariumBundle\Contract\SolrApi\Processor\ConfigNodeProcessorInterface;
 use Solrphp\SolariumBundle\Exception\ProcessorException;
 use Solrphp\SolariumBundle\Exception\UnexpectedValueException;
 use Solrphp\SolariumBundle\SolrApi\Config\Config\SolrConfig;
@@ -130,7 +131,7 @@ class QueryConfigNodeProcessorTest extends TestCase
     public function testUnsetPropertyException(): void
     {
         $this->expectException(ProcessorException::class);
-        $this->expectExceptionMessage('unable to unset query property query.maxBooleanClauses');
+        $this->expectExceptionMessage('unable to unset-property query.maxBooleanClauses with value [null]');
 
         $configuredQuery = new Query();
         $configuredQuery->setEnableLazyFieldLoading(true);
@@ -192,7 +193,7 @@ class QueryConfigNodeProcessorTest extends TestCase
     public function testSetPropertyException(): void
     {
         $this->expectException(ProcessorException::class);
-        $this->expectExceptionMessage('unable to unset query property query.queryResultMaxDocsCached with value 10');
+        $this->expectExceptionMessage('unable to set-property query.queryResultMaxDocsCached with value 10');
 
         $configuredQuery = new Query();
         $configuredQuery->setEnableLazyFieldLoading(true);
@@ -248,6 +249,6 @@ class QueryConfigNodeProcessorTest extends TestCase
      */
     public function testPriority(): void
     {
-        self::assertSame(50, QueryConfigNodeProcessor::getDefaultPriority());
+        self::assertSame(ConfigNodeProcessorInterface::PRIORITY, QueryConfigNodeProcessor::getDefaultPriority());
     }
 }

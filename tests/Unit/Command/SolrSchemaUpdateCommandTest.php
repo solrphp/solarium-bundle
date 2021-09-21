@@ -12,13 +12,12 @@ declare(strict_types=1);
 
 namespace Solrphp\SolariumBundle\Tests\Unit\Command;
 
-use DG\BypassFinals;
 use Doctrine\Common\Collections\ArrayCollection;
 use PHPUnit\Framework\TestCase;
-use Solrphp\SolariumBundle\Command\SolrConfigUpdateCommand;
+use Solrphp\SolariumBundle\Command\SolrSchemaUpdateCommand;
 use Solrphp\SolariumBundle\Exception\ProcessorException;
-use Solrphp\SolariumBundle\SolrApi\Config\Manager\ConfigManager;
-use Solrphp\SolariumBundle\SolrApi\Config\Manager\ConfigProcessor;
+use Solrphp\SolariumBundle\SolrApi\Schema\Manager\SchemaManager;
+use Solrphp\SolariumBundle\SolrApi\Schema\Manager\SchemaProcessor;
 use Solrphp\SolariumBundle\SolrApi\SolrConfigurationStore;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Command\Command;
@@ -30,7 +29,7 @@ use Symfony\Component\Console\Tester\CommandTester;
  *
  * @author wicliff <wicliff.wolda@gmail.com>
  */
-class SolrConfigUpdateCommandTest extends TestCase
+class SolrSchemaUpdateCommandTest extends TestCase
 {
     /**
      * @throws \PHPUnit\Framework\ExpectationFailedException
@@ -42,13 +41,13 @@ class SolrConfigUpdateCommandTest extends TestCase
 
         $application = new Application();
 
-        $manager = $this->getMockBuilder(ConfigManager::class)->disableOriginalConstructor()->getMock();
-        $processor = new ConfigProcessor(new ArrayCollection(), $manager);
+        $manager = $this->getMockBuilder(SchemaManager::class)->disableOriginalConstructor()->getMock();
+        $processor = new SchemaProcessor(new ArrayCollection(), $manager);
         $store = new SolrConfigurationStore([], []);
 
-        $application->add(new SolrConfigUpdateCommand($processor, $store));
+        $application->add(new SolrSchemaUpdateCommand($processor, $store));
 
-        $command = $application->find('solr:config:update');
+        $command = $application->find('solr:schema:update');
         $commandTester = new CommandTester($command);
         $commandTester->execute(['command' => $command->getName()]);
 
@@ -64,14 +63,14 @@ class SolrConfigUpdateCommandTest extends TestCase
 
         $application = new Application();
 
-        $processor = $this->getMockBuilder(ConfigProcessor::class)->disableOriginalConstructor()->getMock();
+        $processor = $this->getMockBuilder(SchemaProcessor::class)->disableOriginalConstructor()->getMock();
         $processor->expects(self::once())->method('withCore')->with('foo')->willReturnSelf();
-        $processor->expects(self::once())->method('withConfig')->willReturnSelf();
+        $processor->expects(self::once())->method('withSchema')->willReturnSelf();
         $processor->expects(self::once())->method('process');
 
-        $application->add(new SolrConfigUpdateCommand($processor, $store));
+        $application->add(new SolrSchemaUpdateCommand($processor, $store));
 
-        $command = $application->find('solr:config:update');
+        $command = $application->find('solr:schema:update');
         $commandTester = new CommandTester($command);
         $commandTester->execute([
             'command' => $command->getName(),
@@ -86,21 +85,19 @@ class SolrConfigUpdateCommandTest extends TestCase
      */
     public function testExecuteFailure(): void
     {
-        BypassFinals::enable();
-
         $store = new SolrConfigurationStore([$this->getEmptySchemaConfig()], [$this->getEmptyConfigConfig()]);
 
         $application = new Application();
         $exception = new ProcessorException('error message');
 
-        $processor = $this->getMockBuilder(ConfigProcessor::class)->disableOriginalConstructor()->getMock();
+        $processor = $this->getMockBuilder(SchemaProcessor::class)->disableOriginalConstructor()->getMock();
         $processor->expects(self::once())->method('withCore')->with('foo')->willReturnSelf();
-        $processor->expects(self::once())->method('withConfig')->willReturnSelf();
+        $processor->expects(self::once())->method('withSchema')->willReturnSelf();
         $processor->expects(self::once())->method('process')->willThrowException($exception);
 
-        $application->add(new SolrConfigUpdateCommand($processor, $store));
+        $application->add(new SolrSchemaUpdateCommand($processor, $store));
 
-        $command = $application->find('solr:config:update');
+        $command = $application->find('solr:schema:update');
         $commandTester = new CommandTester($command);
         $commandTester->execute([
             'command' => $command->getName(),
@@ -108,7 +105,7 @@ class SolrConfigUpdateCommandTest extends TestCase
         ]);
 
         self::assertSame(Command::FAILURE, $commandTester->getStatusCode());
-        self::assertSame('Unable to process config for foo core: error message', trim($commandTester->getDisplay()));
+        self::assertSame('Unable to process managed schema for foo core: error message', trim($commandTester->getDisplay()));
     }
 
     /**
@@ -120,14 +117,14 @@ class SolrConfigUpdateCommandTest extends TestCase
 
         $application = new Application();
 
-        $processor = $this->getMockBuilder(ConfigProcessor::class)->disableOriginalConstructor()->getMock();
+        $processor = $this->getMockBuilder(SchemaProcessor::class)->disableOriginalConstructor()->getMock();
         $processor->expects(self::never())->method('withCore');
-        $processor->expects(self::never())->method('withConfig');
+        $processor->expects(self::never())->method('withSchema');
         $processor->expects(self::never())->method('process');
 
-        $application->add(new SolrConfigUpdateCommand($processor, $store));
+        $application->add(new SolrSchemaUpdateCommand($processor, $store));
 
-        $command = $application->find('solr:config:update');
+        $command = $application->find('solr:schema:update');
         $commandTester = new CommandTester($command);
         $commandTester->execute([
             'command' => $command->getName(),
@@ -135,7 +132,7 @@ class SolrConfigUpdateCommandTest extends TestCase
         ]);
 
         self::assertSame(Command::INVALID, $commandTester->getStatusCode());
-        self::assertSame('No config found for bar core', trim($commandTester->getDisplay()));
+        self::assertSame('No managed schema found for bar core', trim($commandTester->getDisplay()));
     }
 
     /**

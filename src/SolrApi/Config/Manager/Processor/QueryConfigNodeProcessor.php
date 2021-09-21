@@ -56,7 +56,7 @@ class QueryConfigNodeProcessor implements ConfigNodeProcessorInterface
      *
      * {@inheritdoc}
      */
-    public function process(ConfigNodeInterface $configNode)
+    public function process(ConfigNodeInterface $configNode): void
     {
         try {
             $current = $this->manager->call($configNode->getPath());
@@ -76,20 +76,12 @@ class QueryConfigNodeProcessor implements ConfigNodeProcessorInterface
             $updates = array_diff_assoc($configured, $actual);
 
             foreach ($updates as $name => $value) {
-                if (null === $value) {
-                    try {
-                        $this->manager->addCommand(Command::UNSET_PROPERTY, new Property($name));
-                    } catch (UnexpectedValueException $e) {
-                        throw new ProcessorException(sprintf('unable to unset query property %s', $name), $e);
-                    }
-                }
+                $command = (null === $value) ? Command::UNSET_PROPERTY : Command::SET_PROPERTY;
 
-                if (null !== $value) {
-                    try {
-                        $this->manager->addCommand(Command::SET_PROPERTY, new Property($name, $value));
-                    } catch (UnexpectedValueException $e) {
-                        throw new ProcessorException(sprintf('unable to unset query property %s with value %s', $name, $value), $e);
-                    }
+                try {
+                    $this->manager->addCommand($command, new Property($name, $value));
+                } catch (UnexpectedValueException $e) {
+                    throw new ProcessorException(sprintf('unable to %s %s with value %s', $command, $name, $value ?? '[null]'), $e);
                 }
             }
         }
@@ -108,6 +100,6 @@ class QueryConfigNodeProcessor implements ConfigNodeProcessorInterface
      */
     public static function getDefaultPriority(): int
     {
-        return 50;
+        return ConfigNodeProcessorInterface::PRIORITY;
     }
 }

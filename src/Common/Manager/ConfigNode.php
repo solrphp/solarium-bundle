@@ -38,9 +38,9 @@ class ConfigNode implements ConfigNodeInterface
     private ArrayCollection $elements;
 
     /**
-     * @param class-string                $type
-     * @param string                      $path
-     * @param ArrayCollection<int, mixed> $elements
+     * @param class-string                      $type
+     * @param string                            $path
+     * @param ArrayCollection<array-key, mixed> $elements
      */
     public function __construct(string $type, string $path, ArrayCollection $elements)
     {
@@ -66,7 +66,7 @@ class ConfigNode implements ConfigNodeInterface
     }
 
     /**
-     * @return \Generator<mixed>
+     * @return \Generator<array-key, mixed>
      */
     public function get(): \Generator
     {
