@@ -10,10 +10,10 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Solrphp\SolariumBundle\Command;
+namespace Solrphp\SolariumBundle\Command\Schema;
 
 use Solrphp\SolariumBundle\Exception\ProcessorException;
-use Solrphp\SolariumBundle\SolrApi\Config\Manager\ConfigProcessor;
+use Solrphp\SolariumBundle\SolrApi\Schema\Manager\SchemaProcessor;
 use Solrphp\SolariumBundle\SolrApi\SolrConfigurationStore;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -21,16 +21,16 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
- * Solr Config Update Command.
+ * Solr Schema Update Command.
  *
  * @author wicliff <wicliff.wolda@gmail.com>
  */
-class SolrConfigUpdateCommand extends Command
+class SolrSchemaUpdateCommand extends Command
 {
     /**
      * @var string
      */
-    protected static $defaultName = 'solr:config:update';
+    protected static $defaultName = 'solr:schema:update';
 
     /**
      * @var \Solrphp\SolariumBundle\SolrApi\SolrConfigurationStore
@@ -38,15 +38,15 @@ class SolrConfigUpdateCommand extends Command
     private SolrConfigurationStore $configurationStore;
 
     /**
-     * @var \Solrphp\SolariumBundle\SolrApi\Config\Manager\ConfigProcessor
+     * @var \Solrphp\SolariumBundle\SolrApi\Schema\Manager\SchemaProcessor
      */
-    private ConfigProcessor $processor;
+    private SchemaProcessor $processor;
 
     /**
-     * @param \Solrphp\SolariumBundle\SolrApi\Config\Manager\ConfigProcessor $processor
+     * @param \Solrphp\SolariumBundle\SolrApi\Schema\Manager\SchemaProcessor $processor
      * @param \Solrphp\SolariumBundle\SolrApi\SolrConfigurationStore         $configurationStore
      */
-    public function __construct(ConfigProcessor $processor, SolrConfigurationStore $configurationStore)
+    public function __construct(SchemaProcessor $processor, SolrConfigurationStore $configurationStore)
     {
         parent::__construct();
 
@@ -60,9 +60,9 @@ class SolrConfigUpdateCommand extends Command
     protected function configure(): void
     {
         $this
-            ->setDescription('modifies solr config overlay for given core')
+            ->setDescription('Modifies solr managed schema xml for given core')
             ->setDefinition([
-                new InputArgument('core', InputArgument::REQUIRED, 'solr core for which to update the config'),
+                new InputArgument('core', InputArgument::REQUIRED, 'solr core for which to update the schema'),
             ])
         ;
     }
@@ -74,8 +74,8 @@ class SolrConfigUpdateCommand extends Command
     {
         $core = $input->getArgument('core');
 
-        if (null === $config = $this->configurationStore->getConfigForCore($core)) {
-            $output->writeln(sprintf('<error>No config found for %s core</error>', $core));
+        if (null === $schema = $this->configurationStore->getSchemaForCore($core)) {
+            $output->writeln(sprintf('<error>No managed schema found for %s core</error>', $core));
 
             return Command::INVALID;
         }
@@ -83,12 +83,11 @@ class SolrConfigUpdateCommand extends Command
         try {
             $this->processor
                 ->withCore($core)
-                ->withConfig($config)
+                ->withSchema($schema)
                 ->process()
             ;
         } catch (ProcessorException $e) {
-            /* @infection-ignore-all tested @ \Solrphp\SolariumBundle\Tests\Unit\Command\SolrConfigUpdateCommandTest::testExecuteFailure */
-            $output->writeln(sprintf('<error>Unable to process config for %s core: %s</error>', $core, $e->getMessage()));
+            $output->writeln(sprintf('<error>Unable to process managed schema for %s core: %s</error>', $core, $e->getMessage()));
 
             return Command::FAILURE;
         }

@@ -14,4 +14,6 @@ Contents
     :maxdepth: 2
 
     overview
+    apis
     reference
+    code_quality

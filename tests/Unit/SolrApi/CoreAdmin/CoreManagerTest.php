@@ -15,7 +15,9 @@ namespace Solrphp\SolariumBundle\Tests\Unit\SolrApi\CoreAdmin;
 use PHPUnit\Framework\TestCase;
 use Solarium\Client;
 use Solarium\Core\Client\Response;
+use Solrphp\SolariumBundle\SolrApi\CoreAdmin\Manager\CoreManager;
 use Solrphp\SolariumBundle\SolrApi\CoreAdmin\Response\CoreResponse;
+use Solrphp\SolariumBundle\SolrApi\CoreAdmin\Response\StatusResponse;
 use Symfony\Component\Serializer\SerializerInterface;
 
 /**
@@ -31,11 +33,11 @@ class CoreManagerTest extends TestCase
     public function testReload(): void
     {
         $serializer = $this->getSerializer(1);
-        $client = $this->getClient(['core' => 'foo', 'action' => 'RELOAD']);
+        $client = $this->getClient($options = ['core' => 'foo', 'action' => 'RELOAD']);
 
-        $manager = (new \Solrphp\SolariumBundle\SolrApi\CoreAdmin\Manager\CoreManager($client, $serializer))->setCore('foo');
+        $manager = (new CoreManager($client, $serializer));
 
-        self::assertInstanceOf(CoreResponse::class, $manager->reload());
+        self::assertInstanceOf(CoreResponse::class, $manager->reload($options));
     }
 
     /**
@@ -43,12 +45,12 @@ class CoreManagerTest extends TestCase
      */
     public function testStatus(): void
     {
-        $serializer = $this->getSerializer(1);
-        $client = $this->getClient(['core' => 'foo', 'action' => 'STATUS']);
+        $serializer = $this->getSerializer(1, StatusResponse::class);
+        $client = $this->getClient(['action' => 'STATUS']);
 
-        $manager = (new \Solrphp\SolariumBundle\SolrApi\CoreAdmin\Manager\CoreManager($client, $serializer))->setCore('foo');
+        $manager = (new CoreManager($client, $serializer));
 
-        self::assertInstanceOf(CoreResponse::class, $manager->status());
+        self::assertInstanceOf(StatusResponse::class, $manager->status());
     }
 
     /**
@@ -57,15 +59,39 @@ class CoreManagerTest extends TestCase
     public function testCreate(): void
     {
         $serializer = $this->getSerializer(1);
-        $client = $this->getClient([
-            'action' => 'CREATE',
-            'name' => 'foo',
+
+        $options = [
+            'core' => 'foo',
             'instanceDir' => '/var/solr/data/foo',
-        ]);
+            'action' => 'CREATE',
+        ];
 
-        $manager = (new \Solrphp\SolariumBundle\SolrApi\CoreAdmin\Manager\CoreManager($client, $serializer))->setCore('foo');
+        $client = $this->getClient($options);
 
-        self::assertInstanceOf(CoreResponse::class, $manager->create());
+        $manager = (new CoreManager($client, $serializer));
+
+        self::assertInstanceOf(CoreResponse::class, $manager->create($options));
+    }
+
+    /**
+     * @throws \PHPUnit\Framework\Exception
+     * @throws \PHPUnit\Framework\ExpectationFailedException
+     */
+    public function testRename(): void
+    {
+        $serializer = $this->getSerializer(1);
+
+        $options = [
+            'core' => 'foo',
+            'other' => 'bar',
+            'action' => 'RENAME',
+        ];
+
+        $client = $this->getClient($options);
+
+        $manager = (new CoreManager($client, $serializer));
+
+        self::assertInstanceOf(CoreResponse::class, $manager->rename($options));
     }
 
     /**
@@ -73,16 +99,70 @@ class CoreManagerTest extends TestCase
      */
     public function testUnload(): void
     {
-        $serializer = $this->getSerializer(1);
-        $client = $this->getClient([
+        $options = [
             'core' => 'foo',
             'action' => 'UNLOAD',
-            'deleteDataDir' => 'false',
-        ]);
+        ];
+        $serializer = $this->getSerializer(1);
+        $client = $this->getClient($options);
 
-        $manager = (new \Solrphp\SolariumBundle\SolrApi\CoreAdmin\Manager\CoreManager($client, $serializer))->setCore('foo');
+        $manager = (new CoreManager($client, $serializer));
 
-        self::assertInstanceOf(CoreResponse::class, $manager->unload());
+        self::assertInstanceOf(CoreResponse::class, $manager->unload($options));
+    }
+
+    /**
+     * test unload.
+     */
+    public function testSwap(): void
+    {
+        $options = [
+            'core' => 'foo',
+            'other' => 'bar',
+            'action' => 'SWAP',
+        ];
+        $serializer = $this->getSerializer(1);
+        $client = $this->getClient($options);
+
+        $manager = (new CoreManager($client, $serializer));
+
+        self::assertInstanceOf(CoreResponse::class, $manager->swap($options));
+    }
+
+    /**
+     * test merge index.
+     */
+    public function testMergeIndex(): void
+    {
+        $options = [
+            'core' => 'foo',
+            'indexDir' => 'bar',
+            'action' => 'MERGEINDEXES',
+        ];
+        $serializer = $this->getSerializer(1);
+        $client = $this->getClient($options);
+
+        $manager = (new CoreManager($client, $serializer));
+
+        self::assertInstanceOf(CoreResponse::class, $manager->mergeIndexes($options));
+    }
+
+    /**
+     * test split.
+     */
+    public function testSplit(): void
+    {
+        $options = [
+            'core' => 'foo',
+            'path' => 'bar',
+            'action' => 'SPLIT',
+        ];
+        $serializer = $this->getSerializer(1);
+        $client = $this->getClient($options);
+
+        $manager = (new CoreManager($client, $serializer));
+
+        self::assertInstanceOf(CoreResponse::class, $manager->split($options));
     }
 
     /**
@@ -90,16 +170,18 @@ class CoreManagerTest extends TestCase
      */
     public function testUnloadForce(): void
     {
-        $serializer = $this->getSerializer(1);
-        $client = $this->getClient([
+        $options = [
             'core' => 'foo',
-            'action' => 'UNLOAD',
             'deleteDataDir' => 'true',
-        ]);
+            'action' => 'UNLOAD',
+        ];
 
-        $manager = (new \Solrphp\SolariumBundle\SolrApi\CoreAdmin\Manager\CoreManager($client, $serializer))->setCore('foo');
+        $serializer = $this->getSerializer(1);
+        $client = $this->getClient($options);
 
-        self::assertInstanceOf(CoreResponse::class, $manager->unload(true));
+        $manager = (new CoreManager($client, $serializer));
+
+        self::assertInstanceOf(CoreResponse::class, $manager->unload($options));
     }
 
     /**
@@ -132,17 +214,20 @@ class CoreManagerTest extends TestCase
 
     /**
      * @param int|null $deserializeCount
+     * @param string   $responseClass
      *
      * @return mixed|\PHPUnit\Framework\MockObject\MockObject|\Symfony\Component\Serializer\SerializerInterface
+     *
+     * @throws \PHPUnit\Framework\Exception
      */
-    private function getSerializer(int $deserializeCount = null)
+    private function getSerializer(int $deserializeCount = null, string $responseClass = CoreResponse::class)
     {
         $serializer = $this->getMockBuilder(SerializerInterface::class)->getMock();
         $serializer
             ->expects(self::exactly($deserializeCount))
             ->method('deserialize')
-            ->with('', CoreResponse::class, 'json')
-            ->willReturn(new CoreResponse());
+            ->with('', $responseClass, 'json')
+            ->willReturn(new $responseClass());
 
         return $serializer;
     }

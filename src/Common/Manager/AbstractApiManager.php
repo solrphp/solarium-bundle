@@ -104,7 +104,6 @@ abstract class AbstractApiManager implements SolrApiManagerInterface
     public function setCore(string $core): self
     {
         $this->core = $core;
-        $this->coreManager->setCore($core);
 
         return $this;
     }
@@ -145,7 +144,7 @@ abstract class AbstractApiManager implements SolrApiManagerInterface
      */
     public function flush(): ResponseInterface
     {
-        return $this->coreManager->reload();
+        return $this->coreManager->reload(['core' => $this->core]);
     }
 
     /**

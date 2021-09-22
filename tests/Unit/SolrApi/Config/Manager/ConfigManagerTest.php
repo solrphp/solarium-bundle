@@ -205,7 +205,7 @@ class ConfigManagerTest extends TestCase
             ->method('executeRequest')
             ->with(
                 self::callback(static function ($request) use ($options, $params) {
-                    return $options === $request->getOptions() && $params = $request->getParams();
+                    return $options === $request->getOptions() && $params === $request->getParams();
                 }),
                 self::callback(static function ($endpoint) {
                     return 'admin' === $endpoint->getCollection();

@@ -17,6 +17,7 @@ use Solarium\Core\Client\Endpoint;
 use Solarium\Core\Client\Request;
 use Solrphp\SolariumBundle\Contract\SolrApi\Response\ResponseInterface;
 use Solrphp\SolariumBundle\SolrApi\CoreAdmin\Response\CoreResponse;
+use Solrphp\SolariumBundle\SolrApi\CoreAdmin\Response\StatusResponse;
 use Symfony\Component\Serializer\SerializerInterface;
 
 /**
@@ -24,19 +25,17 @@ use Symfony\Component\Serializer\SerializerInterface;
  *
  * @author wicliff <wicliff.wolda@gmail.com>
  */
-final class CoreManager
+class CoreManager
 {
-    private const SOLR_HOME = '/var/solr/data';
+    /**
+     * @var string
+     */
+    public static string $handler = 'cores';
 
     /**
      * @var \Solarium\Client
      */
     private Client $client;
-
-    /**
-     * @var string
-     */
-    private string $core;
 
     /**
      * @var \Symfony\Component\Serializer\SerializerInterface
@@ -54,90 +53,96 @@ final class CoreManager
     }
 
     /**
-     * @param string $core
+     * @param array<string, string|bool> $options
      *
-     * @return $this
+     * @return \Solrphp\SolariumBundle\Contract\SolrApi\Response\ResponseInterface|StatusResponse
      */
-    public function setCore(string $core): self
+    public function status(array $options = []): ResponseInterface
     {
-        $this->core = $core;
-
-        return $this;
+        return $this->call($this->getRequest('STATUS', $options), StatusResponse::class);
     }
 
     /**
-     * @return \Solrphp\SolariumBundle\Contract\SolrApi\Response\ResponseInterface
-     */
-    public function status(): ResponseInterface
-    {
-        $request = $this
-            ->prepare()
-            ->addParam('action', 'STATUS')
-        ;
-
-        return $this->call($request);
-    }
-
-    /**
-     * @return \Solrphp\SolariumBundle\Contract\SolrApi\Response\ResponseInterface
-     */
-    public function create(): ResponseInterface
-    {
-        $path = sprintf('%s/%s', self::SOLR_HOME, $this->core);
-
-        $request = new Request();
-
-        $request
-            ->setHandler('cores')
-            ->addParam('action', 'CREATE')
-            ->addParam('name', $this->core)
-            ->addParam('instanceDir', $path)
-        ;
-
-        return $this->call($request);
-    }
-
-    /**
-     * @param bool $force
+     * @param array<string, string> $options
      *
      * @return \Solrphp\SolariumBundle\Contract\SolrApi\Response\ResponseInterface
      */
-    public function unload(bool $force = false): ResponseInterface
+    public function create(array $options = []): ResponseInterface
     {
-        $request = $this
-            ->prepare()
-            ->addParams([
-                'action' => 'UNLOAD',
-                'deleteDataDir' => $force,
-            ])
-        ;
-
-        return $this->call($request);
+        return $this->call($this->getRequest('CREATE', $options));
     }
 
     /**
+     * @param array<string, bool|string> $options
+     *
      * @return \Solrphp\SolariumBundle\Contract\SolrApi\Response\ResponseInterface
      */
-    public function reload(): ResponseInterface
+    public function unload(array $options = []): ResponseInterface
     {
-        $request = $this
-            ->prepare()
-            ->addParam('action', 'RELOAD')
-        ;
+        return $this->call($this->getRequest('UNLOAD', $options));
+    }
 
-        return $this->call($request);
+    /**
+     * @param array<string, bool|string> $options
+     *
+     * @return \Solrphp\SolariumBundle\Contract\SolrApi\Response\ResponseInterface
+     */
+    public function rename(array $options = []): ResponseInterface
+    {
+        return $this->call($this->getRequest('RENAME', $options));
+    }
+
+    /**
+     * @param array<string, bool|string> $options
+     *
+     * @return \Solrphp\SolariumBundle\Contract\SolrApi\Response\ResponseInterface
+     */
+    public function swap(array $options = []): ResponseInterface
+    {
+        return $this->call($this->getRequest('SWAP', $options));
+    }
+
+    /**
+     * @param array<string, string|array<string>> $options
+     *
+     * @return \Solrphp\SolariumBundle\Contract\SolrApi\Response\ResponseInterface
+     */
+    public function mergeIndexes(array $options = []): ResponseInterface
+    {
+        return $this->call($this->getRequest('MERGEINDEXES', $options));
+    }
+
+    /**
+     * @param array<string, string> $options
+     *
+     * @return \Solrphp\SolariumBundle\Contract\SolrApi\Response\ResponseInterface
+     */
+    public function reload(array $options = []): ResponseInterface
+    {
+        return $this->call($this->getRequest('RELOAD', $options));
+    }
+
+    /**
+     * @param array<string, string|array<string|array<string>>> $options
+     *
+     * @return \Solrphp\SolariumBundle\Contract\SolrApi\Response\ResponseInterface
+     */
+    public function split(array $options = []): ResponseInterface
+    {
+        return $this->call($this->getRequest('SPLIT', $options));
     }
 
     /**
      * @param \Solarium\Core\Client\Request $request
+     * @param class-string                  $responseClass
      *
      * @return \Solrphp\SolariumBundle\Contract\SolrApi\Response\ResponseInterface
      */
-    private function call(Request $request): ResponseInterface
+    private function call(Request $request, string $responseClass = CoreResponse::class): ResponseInterface
     {
         $response = $this->client->executeRequest($request, $this->getEndpoint());
 
-        return $this->serializer->deserialize($response->getBody(), CoreResponse::class, 'json');
+        return $this->serializer->deserialize($response->getBody(), $responseClass, 'json');
     }
 
     /**
@@ -149,15 +154,22 @@ final class CoreManager
     }
 
     /**
+     * @param string               $action
+     * @param array<string, mixed> $options
+     *
      * @return \Solarium\Core\Client\Request
      */
-    private function prepare(): Request
+    private function getRequest(string $action, array $options = []): Request
     {
-        $request = new Request();
-
-        $request->setHandler('cores');
-        $request->addParam('core', $this->core);
-
-        return $request;
+        return (new Request())
+            ->setHandler(self::$handler)
+            ->addParams(
+                array_merge(
+                    $options,
+                    [
+                        'action' => $action,
+                    ]
+                )
+            );
     }
 }

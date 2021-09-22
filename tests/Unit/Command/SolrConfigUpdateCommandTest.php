@@ -15,7 +15,7 @@ namespace Solrphp\SolariumBundle\Tests\Unit\Command;
 use DG\BypassFinals;
 use Doctrine\Common\Collections\ArrayCollection;
 use PHPUnit\Framework\TestCase;
-use Solrphp\SolariumBundle\Command\SolrConfigUpdateCommand;
+use Solrphp\SolariumBundle\Command\Config\SolrConfigUpdateCommand;
 use Solrphp\SolariumBundle\Exception\ProcessorException;
 use Solrphp\SolariumBundle\SolrApi\Config\Manager\ConfigManager;
 use Solrphp\SolariumBundle\SolrApi\Config\Manager\ConfigProcessor;
@@ -46,7 +46,7 @@ class SolrConfigUpdateCommandTest extends TestCase
         $processor = new ConfigProcessor(new ArrayCollection(), $manager);
         $store = new SolrConfigurationStore([], []);
 
-        $application->add(new SolrConfigUpdateCommand($processor, $store));
+        $application->add(new \Solrphp\SolariumBundle\Command\Config\SolrConfigUpdateCommand($processor, $store));
 
         $command = $application->find('solr:config:update');
         $commandTester = new CommandTester($command);
@@ -98,7 +98,7 @@ class SolrConfigUpdateCommandTest extends TestCase
         $processor->expects(self::once())->method('withConfig')->willReturnSelf();
         $processor->expects(self::once())->method('process')->willThrowException($exception);
 
-        $application->add(new SolrConfigUpdateCommand($processor, $store));
+        $application->add(new \Solrphp\SolariumBundle\Command\Config\SolrConfigUpdateCommand($processor, $store));
 
         $command = $application->find('solr:config:update');
         $commandTester = new CommandTester($command);
@@ -125,7 +125,7 @@ class SolrConfigUpdateCommandTest extends TestCase
         $processor->expects(self::never())->method('withConfig');
         $processor->expects(self::never())->method('process');
 
-        $application->add(new SolrConfigUpdateCommand($processor, $store));
+        $application->add(new \Solrphp\SolariumBundle\Command\Config\SolrConfigUpdateCommand($processor, $store));
 
         $command = $application->find('solr:config:update');
         $commandTester = new CommandTester($command);

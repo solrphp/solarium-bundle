@@ -12,7 +12,7 @@ declare(strict_types=1);
 
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
-use Solrphp\SolariumBundle\Command\SolrSchemaUpdateCommand;
+use Solrphp\SolariumBundle\Command\Schema\SolrSchemaUpdateCommand;
 use Solrphp\SolariumBundle\Contract\SolrApi\Processor\ConfigNodeProcessorInterface;
 use Solrphp\SolariumBundle\SolrApi\Schema\Manager\SchemaManager;
 use Solrphp\SolariumBundle\SolrApi\Schema\Manager\SchemaProcessor;

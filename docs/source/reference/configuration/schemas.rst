@@ -48,8 +48,9 @@ the unique key for your schema.
 ``dynamic_fields``
 ------------------
 | the dynamic field definitions for your schema.
-|all properties defined in `field type properties <https://solr.apache.org/guide/field-type-definitions-and-properties.html#field-type-properties>`_ should be available as a snake case representation.
-| **note**: be aware that the value for property ``name`` should contain a wildcard.
+| all properties defined in `field type properties <https://solr.apache.org/guide/field-type-definitions-and-properties.html#field-type-properties>`_ should be available as a snake case representation.
+
+.. :note: be aware that the value for property ``name`` should contain a wildcard.
 
 ``copy_fields``
 ---------------

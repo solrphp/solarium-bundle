@@ -15,7 +15,7 @@ namespace Solrphp\SolariumBundle\Tests\Unit\DependencyInjection;
 use PHPUnit\Framework\TestCase;
 use Solarium\Client;
 use Solarium\Core\Client\Adapter\Curl;
-use Solrphp\SolariumBundle\Command\SolrConfigUpdateCommand;
+use Solrphp\SolariumBundle\Command\Config\SolrConfigUpdateCommand;
 use Solrphp\SolariumBundle\DependencyInjection\SolrphpSolariumExtension;
 use Solrphp\SolariumBundle\SolrApi\Config\Manager\ConfigManager;
 use Solrphp\SolariumBundle\SolrApi\CoreAdmin\Manager\CoreManager;
