@@ -26,11 +26,6 @@
 /.php-cs-fixer.cache
 ###< friendsofphp/php-cs-fixer ###
 
-###> phpmetrics ###
-/metrics.json
-/metrics/
-###< phpmetrics ###
-
 ###> sphinx ###
 /docs/build/
 ###< sphinx ###

@@ -1,0 +1,37 @@
+{
+  "includes": [
+    "./",
+    "src"
+  ],
+  "exclude": [
+    "tests",
+    "build",
+    "public",
+    "templates",
+    "var",
+    "vendor"
+  ],
+  "groups": [
+    {
+      "name": "Solr Config API",
+      "match": "!SolrApi\\\\Config\\\\!i"
+    },
+    {
+      "name": "Solr Schema API",
+      "match": "!SolrApi\\\\Schema\\\\!i"
+    },
+    {
+      "name": "Solr Core Admin API",
+      "match": "!SolrApi\\\\CoreAdmin\\\\!i"
+    }
+  ],
+  "plugins": {
+    "git": {
+      "binary": "git"
+    },
+    "junit": {
+      "report": "./build/coverage/junit.xml"
+    }
+  },
+  "extensions": [ "php", "php8" ]
+}
