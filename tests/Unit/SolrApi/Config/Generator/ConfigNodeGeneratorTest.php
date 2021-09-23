@@ -19,6 +19,7 @@ use Solrphp\SolariumBundle\SolrApi\Config\Config\SolrConfig;
 use Solrphp\SolariumBundle\SolrApi\Config\Enum\SubPath;
 use Solrphp\SolariumBundle\SolrApi\Config\Generator\ConfigNodeGenerator;
 use Solrphp\SolariumBundle\SolrApi\Config\Model\Query;
+use Solrphp\SolariumBundle\SolrApi\Config\Model\RequestDispatcher;
 use Solrphp\SolariumBundle\SolrApi\Config\Model\RequestHandler;
 use Solrphp\SolariumBundle\SolrApi\Config\Model\SearchComponent;
 use Solrphp\SolariumBundle\SolrApi\Config\Model\UpdateHandler;
@@ -39,7 +40,8 @@ class ConfigNodeGeneratorTest extends TestCase
         $requestHandler = new RequestHandler();
         $query = new Query();
         $updateHandler = new UpdateHandler();
-        $config = new SolrConfig(new ArrayCollection(['foo']), new ArrayCollection([$searchComponent]), new ArrayCollection([$requestHandler]), $query, $updateHandler);
+        $requestDispatcher = new RequestDispatcher();
+        $config = new SolrConfig(new ArrayCollection(['foo']), new ArrayCollection([$searchComponent]), new ArrayCollection([$requestHandler]), $query, $updateHandler, $requestDispatcher);
 
         $result = [
             [
@@ -62,6 +64,11 @@ class ConfigNodeGeneratorTest extends TestCase
                 'path' => SubPath::GET_UPDATE_HANDLER,
                 'first' => $updateHandler,
             ],
+            [
+                'type' => RequestDispatcher::class,
+                'path' => SubPath::GET_REQUEST_DISPATCHER,
+                'first' => $requestDispatcher,
+            ],
         ];
 
         foreach ((new ConfigNodeGenerator())->get($config) as $key => $configNode) {
@@ -74,6 +81,6 @@ class ConfigNodeGeneratorTest extends TestCase
         }
 
         // making sure all nodes are returned
-        self::assertSame(3, $key);
+        self::assertSame(4, $key);
     }
 }

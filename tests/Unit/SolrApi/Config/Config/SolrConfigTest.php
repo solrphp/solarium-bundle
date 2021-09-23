@@ -16,6 +16,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use PHPUnit\Framework\TestCase;
 use Solrphp\SolariumBundle\SolrApi\Config\Config\SolrConfig;
 use Solrphp\SolariumBundle\SolrApi\Config\Model\Query;
+use Solrphp\SolariumBundle\SolrApi\Config\Model\RequestDispatcher;
 use Solrphp\SolariumBundle\SolrApi\Config\Model\RequestHandler;
 use Solrphp\SolariumBundle\SolrApi\Config\Model\SearchComponent;
 use Solrphp\SolariumBundle\SolrApi\Config\Model\UpdateHandler;
@@ -37,8 +38,9 @@ class SolrConfigTest extends TestCase
         $requestHandlers = $this->getRequestHandlers();
         $query = $this->getQuery();
         $handler = $this->getUpdateHandler();
+        $dispatcher = $this->getRequestDispatcher();
 
-        $solrConfig = new SolrConfig($cores, $searchComponents, $requestHandlers, $query, $handler);
+        $solrConfig = new SolrConfig($cores, $searchComponents, $requestHandlers, $query, $handler, $dispatcher);
 
         self::assertSame($cores, $solrConfig->getCores());
         self::assertSame($searchComponents, $solrConfig->getSearchComponents());
@@ -59,6 +61,7 @@ class SolrConfigTest extends TestCase
         $requestHandler = $this->getRequestHandlers()->first();
         $query = $this->getQuery();
         $handler = $this->getUpdateHandler();
+        $dispatcher = $this->getRequestDispatcher();
 
         $solrConfig = new SolrConfig($cores);
 
@@ -67,6 +70,7 @@ class SolrConfigTest extends TestCase
         $solrConfig->setQuery($query);
         $solrConfig->setUpdateHandler($handler);
         $solrConfig->addCore('qux');
+        $solrConfig->setRequestDispatcher($dispatcher);
 
         self::assertContains($core, $solrConfig->getCores());
         self::assertContains('qux', $solrConfig->getCores());
@@ -74,6 +78,7 @@ class SolrConfigTest extends TestCase
         self::assertContains($requestHandler, $solrConfig->getRequestHandlers());
         self::assertSame($query, $solrConfig->getQuery());
         self::assertSame($handler, $solrConfig->getUpdateHandler());
+        self::assertSame($dispatcher, $solrConfig->getRequestDispatcher());
 
         self::assertTrue($solrConfig->removeCore($core));
         self::assertFalse($solrConfig->removeCore($core));
@@ -99,6 +104,7 @@ class SolrConfigTest extends TestCase
 
         self::assertNull($solrConfig->getQuery());
         self::assertNull($solrConfig->getUpdateHandler());
+        self::assertNull($solrConfig->getRequestDispatcher());
     }
 
     /**
@@ -170,6 +176,14 @@ class SolrConfigTest extends TestCase
         $handler->setVersionBucketLockTimeoutMs(10);
 
         return $handler;
+    }
+
+    /**
+     * @return \Solrphp\SolariumBundle\SolrApi\Config\Model\RequestDispatcher
+     */
+    private function getRequestDispatcher(): RequestDispatcher
+    {
+        return new RequestDispatcher();
     }
 }
 

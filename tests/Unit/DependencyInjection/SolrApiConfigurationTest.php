@@ -312,6 +312,16 @@ class SolrApiConfigurationTest extends AbstractExtensionConfigurationTestCase
                             'num_version_buckets' => 10,
                         ],
                     ],
+                    'request_dispatcher' => [
+                        'handle_select' => true,
+                        'request_parsers' => [
+                            'enable_remote_streaming' => true,
+                            'enable_stream_body' => false,
+                            'multipart_upload_limit_in_kB' => 10,
+                            'formdata_upload_limit_in_kB' => 10,
+                            'add_http_request_to_context' => true,
+                        ],
+                    ],
                 ],
             ],
         ];

@@ -17,6 +17,7 @@ use Solrphp\SolariumBundle\Common\Manager\IterableConfigNode;
 use Solrphp\SolariumBundle\SolrApi\Config\Config\SolrConfig;
 use Solrphp\SolariumBundle\SolrApi\Config\Enum\SubPath;
 use Solrphp\SolariumBundle\SolrApi\Config\Model\Query;
+use Solrphp\SolariumBundle\SolrApi\Config\Model\RequestDispatcher;
 use Solrphp\SolariumBundle\SolrApi\Config\Model\RequestHandler;
 use Solrphp\SolariumBundle\SolrApi\Config\Model\SearchComponent;
 use Solrphp\SolariumBundle\SolrApi\Config\Model\UpdateHandler;
@@ -51,6 +52,10 @@ class ConfigNodeGenerator
 
         if (null !== $updateHandler = $config->getUpdateHandler()) {
             $return[] = new ConfigNode(UpdateHandler::class, SubPath::GET_UPDATE_HANDLER, $updateHandler);
+        }
+
+        if (null !== $requestDispatcher = $config->getRequestDispatcher()) {
+            $return[] = new ConfigNode(RequestDispatcher::class, SubPath::GET_REQUEST_DISPATCHER, $requestDispatcher);
         }
 
         return $return;

@@ -15,6 +15,7 @@ namespace Solrphp\SolariumBundle\SolrApi\Config\Generator;
 use Doctrine\Common\Collections\ArrayCollection;
 use Solrphp\SolariumBundle\SolrApi\Config\Config\SolrConfig;
 use Solrphp\SolariumBundle\SolrApi\Config\Model\Query;
+use Solrphp\SolariumBundle\SolrApi\Config\Model\RequestDispatcher;
 use Solrphp\SolariumBundle\SolrApi\Config\Model\RequestHandler;
 use Solrphp\SolariumBundle\SolrApi\Config\Model\SearchComponent;
 use Solrphp\SolariumBundle\SolrApi\Config\Model\UpdateHandler;
@@ -72,7 +73,13 @@ class ConfigGenerator
                 $config['update_handler'] = null;
             }
 
-            yield new SolrConfig(new ArrayCollection($config['cores']), new ArrayCollection($config['search_components']), new ArrayCollection($config['request_handlers']), $config['query'], $config['update_handler']);
+            if (false === empty($config['request_dispatcher'])) {
+                $config['request_dispatcher'] = $this->serializer->denormalize($config['request_dispatcher'], RequestDispatcher::class);
+            } else {
+                $config['request_dispatcher'] = null;
+            }
+
+            yield new SolrConfig(new ArrayCollection($config['cores']), new ArrayCollection($config['search_components']), new ArrayCollection($config['request_handlers']), $config['query'], $config['update_handler'], $config['request_dispatcher']);
         }
     }
 }

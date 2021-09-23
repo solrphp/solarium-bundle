@@ -15,6 +15,7 @@ namespace Solrphp\SolariumBundle\SolrApi\Config\Config;
 use Doctrine\Common\Collections\ArrayCollection;
 use Solrphp\SolariumBundle\Contract\SolrApi\CoreDependentConfigInterface;
 use Solrphp\SolariumBundle\SolrApi\Config\Model\Query;
+use Solrphp\SolariumBundle\SolrApi\Config\Model\RequestDispatcher;
 use Solrphp\SolariumBundle\SolrApi\Config\Model\RequestHandler;
 use Solrphp\SolariumBundle\SolrApi\Config\Model\SearchComponent;
 use Solrphp\SolariumBundle\SolrApi\Config\Model\UpdateHandler;
@@ -52,19 +53,26 @@ class SolrConfig implements CoreDependentConfigInterface
     private ?UpdateHandler $updateHandler;
 
     /**
+     * @var \Solrphp\SolariumBundle\SolrApi\Config\Model\RequestDispatcher|null
+     */
+    private ?RequestDispatcher $requestDispatcher;
+
+    /**
      * @param ArrayCollection<int, string>                                                            $cores
      * @param ArrayCollection<int, \Solrphp\SolariumBundle\SolrApi\Config\Model\SearchComponent>|null $searchComponents
      * @param ArrayCollection<int, \Solrphp\SolariumBundle\SolrApi\Config\Model\RequestHandler>|null  $requestHandlers
      * @param \Solrphp\SolariumBundle\SolrApi\Config\Model\Query|null                                 $query
      * @param \Solrphp\SolariumBundle\SolrApi\Config\Model\UpdateHandler|null                         $updateHandler
+     * @param \Solrphp\SolariumBundle\SolrApi\Config\Model\RequestDispatcher|null                     $requestDispatcher
      */
-    public function __construct(ArrayCollection $cores, ArrayCollection $searchComponents = null, ArrayCollection $requestHandlers = null, Query $query = null, UpdateHandler $updateHandler = null)
+    public function __construct(ArrayCollection $cores, ArrayCollection $searchComponents = null, ArrayCollection $requestHandlers = null, Query $query = null, UpdateHandler $updateHandler = null, RequestDispatcher $requestDispatcher = null)
     {
         $this->cores = $cores;
         $this->searchComponents = $searchComponents ?? new ArrayCollection();
         $this->requestHandlers = $requestHandlers ?? new ArrayCollection();
         $this->query = $query;
         $this->updateHandler = $updateHandler;
+        $this->requestDispatcher = $requestDispatcher;
     }
 
     /**
@@ -175,5 +183,21 @@ class SolrConfig implements CoreDependentConfigInterface
     public function setUpdateHandler(?UpdateHandler $updateHandler): void
     {
         $this->updateHandler = $updateHandler;
+    }
+
+    /**
+     * @return \Solrphp\SolariumBundle\SolrApi\Config\Model\RequestDispatcher|null
+     */
+    public function getRequestDispatcher(): ?RequestDispatcher
+    {
+        return $this->requestDispatcher;
+    }
+
+    /**
+     * @param \Solrphp\SolariumBundle\SolrApi\Config\Model\RequestDispatcher|null $requestDispatcher
+     */
+    public function setRequestDispatcher(?RequestDispatcher $requestDispatcher): void
+    {
+        $this->requestDispatcher = $requestDispatcher;
     }
 }

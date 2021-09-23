@@ -41,6 +41,12 @@ configs
                     auto_commit:
                         max_time: 15000
                         open_searcher: false
+                request_dispatcher:
+                    handle_select: true
+                    request_parsers:
+                        enable_remote_streaming: true
+                        enable_stream_body: false
+
 
 ``cores``
 ---------
@@ -61,3 +67,7 @@ configs
 ``update_handler``
 ------------------
 | the `update handler settings <https://solr.apache.org/guide/8_9/updatehandlers-in-solrconfig.html>`_ for your configuration
+
+``request dispatcher``
+------------------
+| the `request dispatcher settings <https://solr.apache.org/guide/8_9/requestdispatcher-in-solrconfig.html>`_ for your configuration

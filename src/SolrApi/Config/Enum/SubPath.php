@@ -29,6 +29,7 @@ final class SubPath
     public const GET_REQUEST_HANDLERS = 'requestHandler';
     public const GET_QUERY = 'query';
     public const GET_UPDATE_HANDLER = 'updateHandler';
+    public const GET_REQUEST_DISPATCHER = 'requestDispatcher';
 
     /**
      * string[].
@@ -40,6 +41,7 @@ final class SubPath
         self::GET_REQUEST_HANDLERS,
         self::GET_QUERY,
         self::GET_UPDATE_HANDLER,
+        self::GET_REQUEST_DISPATCHER,
     ];
 
     public const RESPONSE_CLASSES = [
