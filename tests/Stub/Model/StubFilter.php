@@ -12,7 +12,7 @@ declare(strict_types=1);
 
 namespace Solrphp\SolariumBundle\Tests\Stub\Model;
 
-use Solrphp\SolariumBundle\Contract\SolrApi\FilterInterface;
+use Solrphp\SolariumBundle\SolrApi\Schema\Contract\FilterInterface;
 
 /**
  * Stub Filter.

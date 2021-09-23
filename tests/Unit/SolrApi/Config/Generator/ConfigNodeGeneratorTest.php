@@ -14,6 +14,7 @@ namespace Solrphp\SolariumBundle\Tests\Unit\SolrApi\Config\Generator;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use PHPUnit\Framework\TestCase;
+use Solrphp\SolariumBundle\Common\Manager\IterableConfigNode;
 use Solrphp\SolariumBundle\SolrApi\Config\Config\SolrConfig;
 use Solrphp\SolariumBundle\SolrApi\Config\Enum\SubPath;
 use Solrphp\SolariumBundle\SolrApi\Config\Generator\ConfigNodeGenerator;
@@ -59,9 +60,9 @@ class ConfigNodeGeneratorTest extends TestCase
         foreach ((new ConfigNodeGenerator())->get($config) as $key => $configNode) {
             self::assertSame($result[$key]['type'], $configNode->getType());
             self::assertSame($result[$key]['path'], $configNode->getPath());
-            foreach ($configNode->get() as $value) {
-                break;
-            }
+
+            $value = ($configNode instanceof IterableConfigNode) ? $configNode->get()->current() : $configNode->get();
+
             self::assertSame($result[$key]['first'], $value);
         }
 

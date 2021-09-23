@@ -15,6 +15,7 @@ namespace Solrphp\SolariumBundle\SolrApi\Schema\Manager\Processor;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\Criteria;
+use Solrphp\SolariumBundle\Common\Manager\IterableConfigNode;
 use Solrphp\SolariumBundle\Contract\SolrApi\Manager\SolrApiManagerInterface;
 use Solrphp\SolariumBundle\Contract\SolrApi\Processor\ConfigNodeInterface;
 use Solrphp\SolariumBundle\Contract\SolrApi\Processor\ConfigNodeProcessorInterface;
@@ -52,6 +53,10 @@ class FieldConfigNodeProcessor implements ConfigNodeProcessorInterface
      */
     public function process(ConfigNodeInterface $configNode): void
     {
+        if (!$configNode instanceof IterableConfigNode) {
+            throw new ProcessorException(sprintf('invalid config node use %s', IterableConfigNode::class));
+        }
+
         try {
             $current = $this->manager->call($configNode->getPath());
         } catch (UnexpectedValueException $e) {
@@ -101,12 +106,12 @@ class FieldConfigNodeProcessor implements ConfigNodeProcessorInterface
     }
 
     /**
-     * @param \Solrphp\SolariumBundle\Contract\SolrApi\Processor\ConfigNodeInterface $configNode
-     * @param ArrayCollection<array-key, Field>                                      $current
+     * @param \Solrphp\SolariumBundle\Common\Manager\IterableConfigNode $configNode
+     * @param ArrayCollection<array-key, Field>                         $current
      *
      * @throws \Solrphp\SolariumBundle\Exception\UnexpectedValueException
      */
-    private function processConfigured(ConfigNodeInterface $configNode, ArrayCollection $current): void
+    private function processConfigured(IterableConfigNode $configNode, ArrayCollection $current): void
     {
         foreach ($configNode->get() as $field) {
             $command = $this->matching($current, $field)->isEmpty() ? Command::ADD_FIELD : Command::REPLACE_FIELD;
@@ -115,12 +120,12 @@ class FieldConfigNodeProcessor implements ConfigNodeProcessorInterface
     }
 
     /**
-     * @param \Solrphp\SolariumBundle\Contract\SolrApi\Processor\ConfigNodeInterface $configNode
-     * @param ArrayCollection<array-key, Field>                                      $current
+     * @param \Solrphp\SolariumBundle\Common\Manager\IterableConfigNode $configNode
+     * @param ArrayCollection<array-key, Field>                         $current
      *
      * @throws \Solrphp\SolariumBundle\Exception\UnexpectedValueException
      */
-    private function processCurrent(ConfigNodeInterface $configNode, ArrayCollection $current): void
+    private function processCurrent(IterableConfigNode $configNode, ArrayCollection $current): void
     {
         $configured = new ArrayCollection(iterator_to_array($configNode->get()));
 

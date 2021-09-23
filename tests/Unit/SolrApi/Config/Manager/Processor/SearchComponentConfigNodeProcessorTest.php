@@ -15,6 +15,7 @@ namespace Solrphp\SolariumBundle\Tests\Unit\SolrApi\Config\Manager\Processor;
 use Doctrine\Common\Collections\ArrayCollection;
 use PHPUnit\Framework\TestCase;
 use Solrphp\SolariumBundle\Common\Manager\ConfigNode;
+use Solrphp\SolariumBundle\Common\Manager\IterableConfigNode;
 use Solrphp\SolariumBundle\Contract\SolrApi\Processor\ConfigNodeProcessorInterface;
 use Solrphp\SolariumBundle\Exception\ProcessorException;
 use Solrphp\SolariumBundle\Exception\UnexpectedValueException;
@@ -24,6 +25,7 @@ use Solrphp\SolariumBundle\SolrApi\Config\Manager\ConfigManager;
 use Solrphp\SolariumBundle\SolrApi\Config\Manager\Processor\SearchComponentConfigNodeProcessor;
 use Solrphp\SolariumBundle\SolrApi\Config\Model\RequestHandler;
 use Solrphp\SolariumBundle\SolrApi\Config\Model\SearchComponent;
+use Solrphp\SolariumBundle\SolrApi\Config\Model\UpdateHandler;
 use Solrphp\SolariumBundle\SolrApi\Config\Response\ConfigResponse;
 use Solrphp\SolariumBundle\SolrApi\Schema\Response\SchemaResponse;
 
@@ -42,7 +44,7 @@ class SearchComponentConfigNodeProcessorTest extends TestCase
         $this->expectException(ProcessorException::class);
         $this->expectExceptionMessage('unable to retrieve search component config for sub path bar');
 
-        $node = new ConfigNode('foo', 'bar', new ArrayCollection());
+        $node = new IterableConfigNode('foo', 'bar', new ArrayCollection());
         $manager = $this->getMockBuilder(ConfigManager::class)->disableOriginalConstructor()->getMock();
         $manager->expects(self::once())
             ->method('call')
@@ -60,12 +62,27 @@ class SearchComponentConfigNodeProcessorTest extends TestCase
         $this->expectException(ProcessorException::class);
         $this->expectExceptionMessage('invalid response for sub path bar');
 
-        $node = new ConfigNode('foo', 'bar', new ArrayCollection());
+        $node = new IterableConfigNode('foo', 'bar', new ArrayCollection());
         $manager = $this->getMockBuilder(ConfigManager::class)->disableOriginalConstructor()->getMock();
         $manager->expects(self::once())
             ->method('call')
             ->willReturn(new SchemaResponse())
         ;
+
+        (new SearchComponentConfigNodeProcessor())->setManager($manager)->process($node);
+    }
+
+    /**
+     * @throws \PHPUnit\Framework\InvalidArgumentException
+     */
+    public function testInvalidConfigNode(): void
+    {
+        $this->expectException(ProcessorException::class);
+        $this->expectExceptionMessage(sprintf('invalid config node use %s', IterableConfigNode::class));
+
+        $node = new ConfigNode('foo', 'bar', new UpdateHandler());
+        $manager = $this->getMockBuilder(ConfigManager::class)->disableOriginalConstructor()->getMock();
+        $manager->expects(self::never())->method('call');
 
         (new SearchComponentConfigNodeProcessor())->setManager($manager)->process($node);
     }
@@ -79,7 +96,7 @@ class SearchComponentConfigNodeProcessorTest extends TestCase
         $requestHandler = new RequestHandler();
         $requestHandler->setName('foo');
 
-        $node = new ConfigNode('foo', 'bar', new ArrayCollection([$requestHandler]));
+        $node = new IterableConfigNode('foo', 'bar', new ArrayCollection([$requestHandler]));
 
         $currentHandler = new RequestHandler();
         $currentHandler->setName('bar');
@@ -111,7 +128,7 @@ class SearchComponentConfigNodeProcessorTest extends TestCase
         $requestHandler = new RequestHandler();
         $requestHandler->setName('foo');
 
-        $node = new ConfigNode('foo', 'bar', new ArrayCollection([$requestHandler]));
+        $node = new IterableConfigNode('foo', 'bar', new ArrayCollection([$requestHandler]));
 
         $currentHandler = new RequestHandler();
         $currentHandler->setName('foo');
@@ -146,7 +163,7 @@ class SearchComponentConfigNodeProcessorTest extends TestCase
         $requestHandler = new RequestHandler();
         $requestHandler->setName('foo');
 
-        $node = new ConfigNode('foo', 'bar', new ArrayCollection([$requestHandler]));
+        $node = new IterableConfigNode('foo', 'bar', new ArrayCollection([$requestHandler]));
         $currentConfig = new SolrConfig(new ArrayCollection(['foo']), new ArrayCollection([$requestHandler]));
 
         $response = new ConfigResponse();
@@ -172,8 +189,8 @@ class SearchComponentConfigNodeProcessorTest extends TestCase
      */
     public function testSupports(): void
     {
-        $nodeOne = new ConfigNode(SearchComponent::class, 'bar', new ArrayCollection());
-        $nodeTwo = new ConfigNode(RequestHandler::class, 'bar', new ArrayCollection());
+        $nodeOne = new IterableConfigNode(SearchComponent::class, 'bar', new ArrayCollection());
+        $nodeTwo = new IterableConfigNode(RequestHandler::class, 'bar', new ArrayCollection());
 
         self::assertTrue((new SearchComponentConfigNodeProcessor())->supports($nodeOne));
         self::assertFalse((new SearchComponentConfigNodeProcessor())->supports($nodeTwo));

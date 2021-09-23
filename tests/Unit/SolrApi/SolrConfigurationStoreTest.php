@@ -42,8 +42,12 @@ class SolrConfigurationStoreTest extends TestCase
      * @param int    $searchComponentCount
      * @param int    $requestHandlerCount
      * @param bool   $queryObject
+     * @param bool   $handlerObject
+     *
+     * @throws \PHPUnit\Framework\Exception
+     * @throws \PHPUnit\Framework\ExpectationFailedException
      */
-    public function testConfigInitialization(array $configs, string $coreConfig, int $searchComponentCount, int $requestHandlerCount, bool $queryObject): void
+    public function testConfigInitialization(array $configs, string $coreConfig, int $searchComponentCount, int $requestHandlerCount, bool $queryObject, bool $handlerObject): void
     {
         $config = (new SolrConfigurationStore([], $configs))
             ->getConfigForCore($coreConfig);
@@ -52,6 +56,7 @@ class SolrConfigurationStoreTest extends TestCase
         self::assertCount($searchComponentCount, $config->getSearchComponents());
         self::assertCount($requestHandlerCount, $config->getRequestHandlers());
         self::assertSame($queryObject, \is_object($config->getQuery()));
+        self::assertSame($handlerObject, \is_object($config->getUpdateHandler()));
 
         if (0 !== $searchComponentCount) {
             self::assertInstanceOf(SearchComponent::class, $config->getSearchComponents()[0]);
@@ -129,6 +134,7 @@ class SolrConfigurationStoreTest extends TestCase
                 ],
             ],
             'query' => null,
+            'update_handler' => null,
         ];
 
         $config = (new SolrConfigurationStore([], [$config]))
@@ -452,12 +458,16 @@ class SolrConfigurationStoreTest extends TestCase
                             'name' => 'foo',
                         ],
                     ],
+                    'update_handler' => [
+                        'class' => 'foo',
+                    ],
                 ],
             ],
             'core_config' => 'bar',
             'search_component_count' => 1,
             'request_handler_count' => 1,
             'query_is_object' => true,
+            'update_handler_is_object' => true,
         ];
 
         yield 'one_core_one_component_config' => [
@@ -471,12 +481,14 @@ class SolrConfigurationStoreTest extends TestCase
                     ],
                     'request_handlers' => [],
                     'query' => null,
+                    'update_handler' => null,
                 ],
             ],
             'core_config' => 'foo',
             'search_component_count' => 1,
             'request_handler_count' => 0,
             'query_is_object' => false,
+            'update_handler_is_object' => false,
         ];
 
         yield 'one_core_one_handler_config' => [
@@ -490,12 +502,14 @@ class SolrConfigurationStoreTest extends TestCase
                         ['name' => 'foo', 'class' => 'bar'],
                     ],
                     'query' => null,
+                    'update_handler' => null,
                 ],
             ],
             'core_config' => 'foo',
             'search_component_count' => 0,
             'request_handler_count' => 1,
             'query_is_object' => false,
+            'update_handler_is_object' => false,
         ];
 
         yield 'multiple_configs' => [
@@ -507,6 +521,7 @@ class SolrConfigurationStoreTest extends TestCase
                     'search_components' => [],
                     'request_handlers' => [],
                     'query' => null,
+                    'update_handler' => null,
                 ],
                 [
                     'cores' => [
@@ -525,6 +540,7 @@ class SolrConfigurationStoreTest extends TestCase
             'search_component_count' => 1,
             'request_handler_count' => 1,
             'query_is_object' => false,
+            'update_handler_is_object' => false,
         ];
     }
 }

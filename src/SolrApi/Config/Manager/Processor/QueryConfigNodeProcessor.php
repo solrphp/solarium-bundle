@@ -68,23 +68,11 @@ class QueryConfigNodeProcessor implements ConfigNodeProcessorInterface
             throw new ProcessorException(sprintf('invalid query response for sub path %s', $configNode->getPath()));
         }
 
-        // should be only one
-        foreach ($configNode->get() as $query) {
-            $configured = null !== $query ? ConfigUtil::toPropertyPaths($query, 'query') : [];
-            $actual = null !== $current->getConfig()->getQuery() ? ConfigUtil::toPropertyPaths($current->getConfig()->getQuery(), 'query') : [];
+        $configured = ConfigUtil::toPropertyPaths($configNode->get(), 'query');
+        $actual = null !== $current->getConfig()->getQuery() ? ConfigUtil::toPropertyPaths($current->getConfig()->getQuery(), 'query') : [];
 
-            $updates = array_diff_assoc($configured, $actual);
-
-            foreach ($updates as $name => $value) {
-                $command = (null === $value) ? Command::UNSET_PROPERTY : Command::SET_PROPERTY;
-
-                try {
-                    $this->manager->addCommand($command, new Property($name, $value));
-                } catch (UnexpectedValueException $e) {
-                    throw new ProcessorException(sprintf('unable to %s %s with value %s', $command, $name, $value ?? '[null]'), $e);
-                }
-            }
-        }
+        $this->processValues($configured, Command::SET_PROPERTY);
+        $this->processValues(array_diff_key($actual, $configured), Command::UNSET_PROPERTY);
     }
 
     /**
@@ -101,5 +89,22 @@ class QueryConfigNodeProcessor implements ConfigNodeProcessorInterface
     public static function getDefaultPriority(): int
     {
         return ConfigNodeProcessorInterface::PRIORITY;
+    }
+
+    /**
+     * @param array<string, string|null> $values
+     * @param string                     $command
+     *
+     * @throws \Solrphp\SolariumBundle\Exception\ProcessorException
+     */
+    private function processValues(array $values, string $command): void
+    {
+        foreach ($values as $name => $value) {
+            try {
+                $this->manager->addCommand($command, new Property($name, $value));
+            } catch (UnexpectedValueException $e) {
+                throw new ProcessorException(sprintf('unable to %s %s', $command, $name), $e);
+            }
+        }
     }
 }

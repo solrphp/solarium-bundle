@@ -17,6 +17,7 @@ use Solrphp\SolariumBundle\SolrApi\Config\Config\SolrConfig;
 use Solrphp\SolariumBundle\SolrApi\Config\Model\Query;
 use Solrphp\SolariumBundle\SolrApi\Config\Model\RequestHandler;
 use Solrphp\SolariumBundle\SolrApi\Config\Model\SearchComponent;
+use Solrphp\SolariumBundle\SolrApi\Config\Model\UpdateHandler;
 use Symfony\Component\PropertyInfo\Extractor\ReflectionExtractor;
 use Symfony\Component\Serializer\NameConverter\CamelCaseToSnakeCaseNameConverter;
 use Symfony\Component\Serializer\Normalizer\ArrayDenormalizer;
@@ -65,7 +66,13 @@ class ConfigGenerator
                 $config['query'] = null;
             }
 
-            yield new SolrConfig(new ArrayCollection($config['cores']), new ArrayCollection($config['search_components']), new ArrayCollection($config['request_handlers']), $config['query']);
+            if (false === empty($config['update_handler'])) {
+                $config['update_handler'] = $this->serializer->denormalize($config['update_handler'], UpdateHandler::class);
+            } else {
+                $config['update_handler'] = null;
+            }
+
+            yield new SolrConfig(new ArrayCollection($config['cores']), new ArrayCollection($config['search_components']), new ArrayCollection($config['request_handlers']), $config['query'], $config['update_handler']);
         }
     }
 }

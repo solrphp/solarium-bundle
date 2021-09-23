@@ -17,7 +17,7 @@ use Solrphp\SolariumBundle\SolrApi\Config\Response\ConfigResponse;
 /**
  * Config sub paths.
  *
- * @see https://lucene.apache.org/solr/guide/8_4/config-api.html#config-api-endpoints
+ * @see https://lucene.apache.org/solr/guide/config-api.html#config-api-endpoints
  *
  * @author wicliff <wicliff.wolda@gmail.com>
  */
@@ -28,6 +28,7 @@ final class SubPath
     public const GET_SEARCH_COMPONENTS = 'searchComponent';
     public const GET_REQUEST_HANDLERS = 'requestHandler';
     public const GET_QUERY = 'query';
+    public const GET_UPDATE_HANDLER = 'updateHandler';
 
     /**
      * string[].
@@ -38,6 +39,7 @@ final class SubPath
         self::GET_SEARCH_COMPONENTS,
         self::GET_REQUEST_HANDLERS,
         self::GET_QUERY,
+        self::GET_UPDATE_HANDLER,
     ];
 
     public const RESPONSE_CLASSES = [

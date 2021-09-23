@@ -13,7 +13,7 @@ declare(strict_types=1);
 namespace Solrphp\SolariumBundle\Tests\Helper;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use Solrphp\SolariumBundle\Contract\SolrApi\FilterInterface;
+use Solrphp\SolariumBundle\SolrApi\Schema\Contract\FilterInterface;
 use Solrphp\SolariumBundle\SolrApi\Schema\Model\CharFilter\PatternReplaceCharFilter;
 
 /**

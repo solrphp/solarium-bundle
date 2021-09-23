@@ -12,11 +12,10 @@ declare(strict_types=1);
 
 namespace Solrphp\SolariumBundle\Common\Manager;
 
-use Doctrine\Common\Collections\ArrayCollection;
 use Solrphp\SolariumBundle\Contract\SolrApi\Processor\ConfigNodeInterface;
 
 /**
- * Config Node.
+ * ConfigNode.
  *
  * @author wicliff <wicliff.wolda@gmail.com>
  */
@@ -33,24 +32,24 @@ class ConfigNode implements ConfigNodeInterface
     private string $path;
 
     /**
-     * @var ArrayCollection<int, mixed>
+     * @var object
      */
-    private ArrayCollection $elements;
+    private object $object;
 
     /**
-     * @param class-string                      $type
-     * @param string                            $path
-     * @param ArrayCollection<array-key, mixed> $elements
+     * @param class-string $type
+     * @param string       $path
+     * @param object       $object
      */
-    public function __construct(string $type, string $path, ArrayCollection $elements)
+    public function __construct(string $type, string $path, object $object)
     {
         $this->type = $type;
         $this->path = $path;
-        $this->elements = $elements;
+        $this->object = $object;
     }
 
     /**
-     * @return class-string
+     * @return string
      */
     public function getType(): string
     {
@@ -66,12 +65,10 @@ class ConfigNode implements ConfigNodeInterface
     }
 
     /**
-     * @return \Generator<array-key, mixed>
+     * @return object
      */
-    public function get(): \Generator
+    public function get(): object
     {
-        foreach ($this->elements as $element) {
-            yield $element;
-        }
+        return $this->object;
     }
 }

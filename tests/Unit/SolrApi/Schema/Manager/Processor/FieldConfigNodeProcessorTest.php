@@ -15,10 +15,12 @@ namespace Solrphp\SolariumBundle\Tests\Unit\SolrApi\Schema\Manager\Processor;
 use Doctrine\Common\Collections\ArrayCollection;
 use PHPUnit\Framework\TestCase;
 use Solrphp\SolariumBundle\Common\Manager\ConfigNode;
+use Solrphp\SolariumBundle\Common\Manager\IterableConfigNode;
 use Solrphp\SolariumBundle\Contract\SolrApi\Processor\ConfigNodeProcessorInterface;
 use Solrphp\SolariumBundle\Exception\ProcessorException;
 use Solrphp\SolariumBundle\Exception\UnexpectedValueException;
 use Solrphp\SolariumBundle\SolrApi\Config\Manager\ConfigManager;
+use Solrphp\SolariumBundle\SolrApi\Config\Model\UpdateHandler;
 use Solrphp\SolariumBundle\SolrApi\Config\Response\ConfigResponse;
 use Solrphp\SolariumBundle\SolrApi\Schema\Enum\Command;
 use Solrphp\SolariumBundle\SolrApi\Schema\Enum\SubPath;
@@ -42,7 +44,7 @@ class FieldConfigNodeProcessorTest extends TestCase
         $this->expectException(ProcessorException::class);
         $this->expectExceptionMessage('unable to retrieve current field config: foo');
 
-        $node = new ConfigNode('foo', 'bar', new ArrayCollection());
+        $node = new IterableConfigNode('foo', 'bar', new ArrayCollection());
         $manager = $this->getMockBuilder(SchemaManager::class)->disableOriginalConstructor()->getMock();
         $manager->expects(self::once())
             ->method('call')
@@ -60,12 +62,27 @@ class FieldConfigNodeProcessorTest extends TestCase
         $this->expectException(ProcessorException::class);
         $this->expectExceptionMessage('invalid field response for sub path bar');
 
-        $node = new ConfigNode('foo', 'bar', new ArrayCollection());
+        $node = new IterableConfigNode('foo', 'bar', new ArrayCollection());
         $manager = $this->getMockBuilder(SchemaManager::class)->disableOriginalConstructor()->getMock();
         $manager->expects(self::once())
             ->method('call')
             ->willReturn(new ConfigResponse())
         ;
+
+        (new FieldConfigNodeProcessor())->setManager($manager)->process($node);
+    }
+
+    /**
+     * @throws \PHPUnit\Framework\InvalidArgumentException
+     */
+    public function testInvalidConfigNode(): void
+    {
+        $this->expectException(ProcessorException::class);
+        $this->expectExceptionMessage(sprintf('invalid config node use %s', IterableConfigNode::class));
+
+        $node = new ConfigNode('foo', 'bar', new UpdateHandler());
+        $manager = $this->getMockBuilder(ConfigManager::class)->disableOriginalConstructor()->getMock();
+        $manager->expects(self::never())->method('call');
 
         (new FieldConfigNodeProcessor())->setManager($manager)->process($node);
     }
@@ -79,7 +96,7 @@ class FieldConfigNodeProcessorTest extends TestCase
         $field = new Field('foo');
         $secondField = new Field('qux');
 
-        $node = new ConfigNode('foo', SubPath::LIST_FIELDS, new ArrayCollection([$field, $secondField]));
+        $node = new IterableConfigNode('foo', SubPath::LIST_FIELDS, new ArrayCollection([$field, $secondField]));
 
         $currentField = new Field('bar');
         $secondCurrentField = new Field('qux');
@@ -117,7 +134,7 @@ class FieldConfigNodeProcessorTest extends TestCase
 
         $field = new Field('foo');
 
-        $node = new ConfigNode('foo', 'bar', new ArrayCollection([$field]));
+        $node = new IterableConfigNode('foo', 'bar', new ArrayCollection([$field]));
 
         $currentField = new Field('bar');
 
@@ -144,8 +161,8 @@ class FieldConfigNodeProcessorTest extends TestCase
      */
     public function testSupports(): void
     {
-        $nodeOne = new ConfigNode(Field::class, SubPath::LIST_FIELDS, new ArrayCollection());
-        $nodeTwo = new ConfigNode(Field::class, SubPath::LIST_DYNAMIC_FIELDS, new ArrayCollection());
+        $nodeOne = new IterableConfigNode(Field::class, SubPath::LIST_FIELDS, new ArrayCollection());
+        $nodeTwo = new IterableConfigNode(Field::class, SubPath::LIST_DYNAMIC_FIELDS, new ArrayCollection());
 
         self::assertTrue((new FieldConfigNodeProcessor())->supports($nodeOne));
         self::assertFalse((new FieldConfigNodeProcessor())->supports($nodeTwo));

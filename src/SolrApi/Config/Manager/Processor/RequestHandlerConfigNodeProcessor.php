@@ -13,6 +13,7 @@ declare(strict_types=1);
 namespace Solrphp\SolariumBundle\SolrApi\Config\Manager\Processor;
 
 use Doctrine\Common\Collections\Criteria;
+use Solrphp\SolariumBundle\Common\Manager\IterableConfigNode;
 use Solrphp\SolariumBundle\Contract\SolrApi\Manager\SolrApiManagerInterface;
 use Solrphp\SolariumBundle\Contract\SolrApi\Processor\ConfigNodeInterface;
 use Solrphp\SolariumBundle\Contract\SolrApi\Processor\ConfigNodeProcessorInterface;
@@ -51,6 +52,10 @@ class RequestHandlerConfigNodeProcessor implements ConfigNodeProcessorInterface
      */
     public function process(ConfigNodeInterface $configNode): void
     {
+        if (!$configNode instanceof IterableConfigNode) {
+            throw new ProcessorException(sprintf('invalid config node use %s', IterableConfigNode::class));
+        }
+
         try {
             $current = $this->manager->call($configNode->getPath());
         } catch (UnexpectedValueException $e) {

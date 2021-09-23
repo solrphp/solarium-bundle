@@ -18,6 +18,7 @@ use Solrphp\SolariumBundle\SolrApi\Config\Config\SolrConfig;
 use Solrphp\SolariumBundle\SolrApi\Config\Model\Query;
 use Solrphp\SolariumBundle\SolrApi\Config\Model\RequestHandler;
 use Solrphp\SolariumBundle\SolrApi\Config\Model\SearchComponent;
+use Solrphp\SolariumBundle\SolrApi\Config\Model\UpdateHandler;
 
 /**
  * SolrConfig Test.
@@ -35,13 +36,15 @@ class SolrConfigTest extends TestCase
         $searchComponents = $this->getSearchComponents();
         $requestHandlers = $this->getRequestHandlers();
         $query = $this->getQuery();
+        $handler = $this->getUpdateHandler();
 
-        $solrConfig = new SolrConfig($cores, $searchComponents, $requestHandlers, $query);
+        $solrConfig = new SolrConfig($cores, $searchComponents, $requestHandlers, $query, $handler);
 
         self::assertSame($cores, $solrConfig->getCores());
         self::assertSame($searchComponents, $solrConfig->getSearchComponents());
         self::assertSame($requestHandlers, $solrConfig->getRequestHandlers());
         self::assertSame($query, $solrConfig->getQuery());
+        self::assertSame($handler, $solrConfig->getUpdateHandler());
     }
 
     /**
@@ -55,12 +58,14 @@ class SolrConfigTest extends TestCase
         $searchComponent = $this->getSearchComponents()->first();
         $requestHandler = $this->getRequestHandlers()->first();
         $query = $this->getQuery();
+        $handler = $this->getUpdateHandler();
 
         $solrConfig = new SolrConfig($cores);
 
         $solrConfig->addSearchComponent($searchComponent);
         $solrConfig->addRequestHandler($requestHandler);
         $solrConfig->setQuery($query);
+        $solrConfig->setUpdateHandler($handler);
         $solrConfig->addCore('qux');
 
         self::assertContains($core, $solrConfig->getCores());
@@ -68,6 +73,7 @@ class SolrConfigTest extends TestCase
         self::assertContains($searchComponent, $solrConfig->getSearchComponents());
         self::assertContains($requestHandler, $solrConfig->getRequestHandlers());
         self::assertSame($query, $solrConfig->getQuery());
+        self::assertSame($handler, $solrConfig->getUpdateHandler());
 
         self::assertTrue($solrConfig->removeCore($core));
         self::assertFalse($solrConfig->removeCore($core));
@@ -90,6 +96,9 @@ class SolrConfigTest extends TestCase
 
         self::assertInstanceOf(ArrayCollection::class, $solrConfig->getSearchComponents());
         self::assertEmpty($solrConfig->getSearchComponents());
+
+        self::assertNull($solrConfig->getQuery());
+        self::assertNull($solrConfig->getUpdateHandler());
     }
 
     /**
@@ -149,6 +158,18 @@ class SolrConfigTest extends TestCase
         $query->setEnableLazyFieldLoading(true);
 
         return $query;
+    }
+
+    /**
+     * @return \Solrphp\SolariumBundle\SolrApi\Config\Model\UpdateHandler
+     */
+    private function getUpdateHandler(): UpdateHandler
+    {
+        $handler = new UpdateHandler();
+        $handler->setClass('foo');
+        $handler->setVersionBucketLockTimeoutMs(10);
+
+        return $handler;
     }
 }
 

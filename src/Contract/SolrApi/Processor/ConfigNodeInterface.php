@@ -34,9 +34,9 @@ interface ConfigNodeInterface
     public function getPath(): string;
 
     /**
-     * returns collection of currently configured node elements.
+     * returns (collection of) currently configured node element(s).
      *
-     * @return \Generator<int, mixed>
+     * @return \Generator<int, mixed>|object
      */
-    public function get(): \Generator;
+    public function get();
 }

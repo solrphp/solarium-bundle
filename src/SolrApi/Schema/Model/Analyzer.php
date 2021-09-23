@@ -12,7 +12,7 @@ declare(strict_types=1);
 
 namespace Solrphp\SolariumBundle\SolrApi\Schema\Model;
 
-use Solrphp\SolariumBundle\Contract\SolrApi\FilterInterface;
+use Solrphp\SolariumBundle\SolrApi\Schema\Contract\FilterInterface;
 
 /**
  * Analyzer.
@@ -32,7 +32,7 @@ final class Analyzer implements \JsonSerializable
     private ?string $type = null;
 
     /**
-     * @var \Solrphp\SolariumBundle\Contract\SolrApi\FilterInterface[]
+     * @var \Solrphp\SolariumBundle\SolrApi\Schema\Contract\FilterInterface[]
      */
     private array $charFilters = [];
 
@@ -42,7 +42,7 @@ final class Analyzer implements \JsonSerializable
     private ?Tokenizer $tokenizer = null;
 
     /**
-     * @var \Solrphp\SolariumBundle\Contract\SolrApi\FilterInterface[]
+     * @var \Solrphp\SolariumBundle\SolrApi\Schema\Contract\FilterInterface[]
      */
     private array $filters = [];
 
@@ -95,7 +95,7 @@ final class Analyzer implements \JsonSerializable
     }
 
     /**
-     * @return \Solrphp\SolariumBundle\Contract\SolrApi\FilterInterface[]
+     * @return \Solrphp\SolariumBundle\SolrApi\Schema\Contract\FilterInterface[]
      */
     public function getFilters(): array
     {
@@ -103,7 +103,7 @@ final class Analyzer implements \JsonSerializable
     }
 
     /**
-     * @param \Solrphp\SolariumBundle\Contract\SolrApi\FilterInterface $filter
+     * @param \Solrphp\SolariumBundle\SolrApi\Schema\Contract\FilterInterface $filter
      */
     public function addFilter(FilterInterface $filter): void
     {
@@ -111,7 +111,7 @@ final class Analyzer implements \JsonSerializable
     }
 
     /**
-     * @param \Solrphp\SolariumBundle\Contract\SolrApi\FilterInterface $filter
+     * @param \Solrphp\SolariumBundle\SolrApi\Schema\Contract\FilterInterface $filter
      *
      * @return bool
      */
@@ -121,7 +121,7 @@ final class Analyzer implements \JsonSerializable
     }
 
     /**
-     * @return \Solrphp\SolariumBundle\Contract\SolrApi\FilterInterface[]
+     * @return \Solrphp\SolariumBundle\SolrApi\Schema\Contract\FilterInterface[]
      */
     public function getCharFilters(): array
     {
@@ -129,7 +129,7 @@ final class Analyzer implements \JsonSerializable
     }
 
     /**
-     * @param \Solrphp\SolariumBundle\Contract\SolrApi\FilterInterface $filter
+     * @param \Solrphp\SolariumBundle\SolrApi\Schema\Contract\FilterInterface $filter
      */
     public function addCharFilter(FilterInterface $filter): void
     {
@@ -137,7 +137,7 @@ final class Analyzer implements \JsonSerializable
     }
 
     /**
-     * @param \Solrphp\SolariumBundle\Contract\SolrApi\FilterInterface $filter
+     * @param \Solrphp\SolariumBundle\SolrApi\Schema\Contract\FilterInterface $filter
      *
      * @return bool
      */
@@ -166,8 +166,8 @@ final class Analyzer implements \JsonSerializable
     }
 
     /**
-     * @param \Solrphp\SolariumBundle\Contract\SolrApi\FilterInterface $value
-     * @param array<int, mixed>                                        $property
+     * @param \Solrphp\SolariumBundle\SolrApi\Schema\Contract\FilterInterface $value
+     * @param array<int, mixed>                                               $property
      *
      * @return bool
      */

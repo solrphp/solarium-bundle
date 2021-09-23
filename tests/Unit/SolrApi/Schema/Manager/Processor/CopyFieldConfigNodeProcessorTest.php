@@ -15,10 +15,12 @@ namespace Solrphp\SolariumBundle\Tests\Unit\SolrApi\Schema\Manager\Processor;
 use Doctrine\Common\Collections\ArrayCollection;
 use PHPUnit\Framework\TestCase;
 use Solrphp\SolariumBundle\Common\Manager\ConfigNode;
+use Solrphp\SolariumBundle\Common\Manager\IterableConfigNode;
 use Solrphp\SolariumBundle\Contract\SolrApi\Processor\ConfigNodeProcessorInterface;
 use Solrphp\SolariumBundle\Exception\ProcessorException;
 use Solrphp\SolariumBundle\Exception\UnexpectedValueException;
 use Solrphp\SolariumBundle\SolrApi\Config\Manager\ConfigManager;
+use Solrphp\SolariumBundle\SolrApi\Config\Model\UpdateHandler;
 use Solrphp\SolariumBundle\SolrApi\Config\Response\ConfigResponse;
 use Solrphp\SolariumBundle\SolrApi\Schema\Enum\Command;
 use Solrphp\SolariumBundle\SolrApi\Schema\Manager\Processor\CopyFieldConfigNodeProcessor;
@@ -42,12 +44,11 @@ class CopyFieldConfigNodeProcessorTest extends TestCase
         $this->expectException(ProcessorException::class);
         $this->expectExceptionMessage('unable to retrieve current field type config: foo');
 
-        $node = new ConfigNode('foo', 'bar', new ArrayCollection());
+        $node = new IterableConfigNode('foo', 'bar', new ArrayCollection());
         $manager = $this->getMockBuilder(SchemaManager::class)->disableOriginalConstructor()->getMock();
         $manager->expects(self::once())
             ->method('call')
-            ->willThrowException(new UnexpectedValueException('foo'))
-        ;
+            ->willThrowException(new UnexpectedValueException('foo'));
 
         (new CopyFieldConfigNodeProcessor())->setManager($manager)->process($node);
     }
@@ -60,12 +61,26 @@ class CopyFieldConfigNodeProcessorTest extends TestCase
         $this->expectException(ProcessorException::class);
         $this->expectExceptionMessage('invalid field type response for sub path bar');
 
-        $node = new ConfigNode('foo', 'bar', new ArrayCollection());
+        $node = new IterableConfigNode('foo', 'bar', new ArrayCollection());
         $manager = $this->getMockBuilder(SchemaManager::class)->disableOriginalConstructor()->getMock();
         $manager->expects(self::once())
             ->method('call')
-            ->willReturn(new ConfigResponse())
-        ;
+            ->willReturn(new ConfigResponse());
+
+        (new CopyFieldConfigNodeProcessor())->setManager($manager)->process($node);
+    }
+
+    /**
+     * @throws \PHPUnit\Framework\InvalidArgumentException
+     */
+    public function testInvalidConfigNode(): void
+    {
+        $this->expectException(ProcessorException::class);
+        $this->expectExceptionMessage(sprintf('invalid config node use %s', IterableConfigNode::class));
+
+        $node = new ConfigNode('foo', 'bar', new UpdateHandler());
+        $manager = $this->getMockBuilder(ConfigManager::class)->disableOriginalConstructor()->getMock();
+        $manager->expects(self::never())->method('call');
 
         (new CopyFieldConfigNodeProcessor())->setManager($manager)->process($node);
     }
@@ -80,7 +95,7 @@ class CopyFieldConfigNodeProcessorTest extends TestCase
         $field->setSource('foo');
         $field->setDest('bar');
 
-        $node = new ConfigNode('foo', 'bar', new ArrayCollection([$field]));
+        $node = new IterableConfigNode('foo', 'bar', new ArrayCollection([$field]));
 
         $currentField = new CopyField();
         $currentField->setSource('bar');
@@ -101,8 +116,7 @@ class CopyFieldConfigNodeProcessorTest extends TestCase
             ->withConsecutive(
                 [Command::ADD_COPY_FIELD, $field],
                 [Command::DELETE_COPY_FIELD, $currentField]
-            )
-        ;
+            );
 
         (new CopyFieldConfigNodeProcessor())->setManager($manager)->process($node);
     }
@@ -120,7 +134,7 @@ class CopyFieldConfigNodeProcessorTest extends TestCase
         $field->setSource('foo');
         $field->setDest('bar');
 
-        $node = new ConfigNode('foo', 'bar', new ArrayCollection([$field]));
+        $node = new IterableConfigNode('foo', 'bar', new ArrayCollection([$field]));
 
         $currentField = new CopyField();
         $currentField->setSource('bar');
@@ -138,8 +152,7 @@ class CopyFieldConfigNodeProcessorTest extends TestCase
         $manager->expects(self::once())
             ->method('addCommand')
             ->with(Command::ADD_COPY_FIELD, $field)
-            ->willThrowException(new UnexpectedValueException('[error message]'))
-        ;
+            ->willThrowException(new UnexpectedValueException('[error message]'));
 
         (new CopyFieldConfigNodeProcessor())->setManager($manager)->process($node);
     }
@@ -149,8 +162,8 @@ class CopyFieldConfigNodeProcessorTest extends TestCase
      */
     public function testSupports(): void
     {
-        $nodeOne = new ConfigNode(CopyField::class, 'bar', new ArrayCollection());
-        $nodeTwo = new ConfigNode(Field::class, 'bar', new ArrayCollection());
+        $nodeOne = new IterableConfigNode(CopyField::class, 'bar', new ArrayCollection());
+        $nodeTwo = new IterableConfigNode(Field::class, 'bar', new ArrayCollection());
 
         self::assertTrue((new CopyFieldConfigNodeProcessor())->supports($nodeOne));
         self::assertFalse((new CopyFieldConfigNodeProcessor())->supports($nodeTwo));

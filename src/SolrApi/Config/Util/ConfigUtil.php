@@ -41,6 +41,10 @@ final class ConfigUtil
 
             $name = (null !== $prefix) ? sprintf('%s%s%s', $prefix, $separator, $property->getName()) : $property->getName();
 
+            if (null === $value) {
+                continue;
+            }
+
             if (true === \is_array($value)) {
                 foreach ($value as $key => $composite) {
                     self::processNode($array, $name.$separator.$key, $composite, $separator);

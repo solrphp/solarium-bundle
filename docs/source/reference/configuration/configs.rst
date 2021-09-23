@@ -34,19 +34,30 @@ configs
                     document_cache: ~
                     use_circuit_breakers: true
                     memory_circuit_breaker_threshold_pct: 75
+                update_handler:
+                    class: 'solr.DirectUpdateHandler2'
+                    update_log:
+                        num_version_buckets: 65536
+                    auto_commit:
+                        max_time: 15000
+                        open_searcher: false
 
 ``cores``
 ---------
-an array of cores the solr configuration applies to.
+| an array of cores the solr configuration applies to.
 
 ``search_components``
 ---------------------
-the `search components <https://solr.apache.org/guide/requesthandlers-and-searchcomponents-in-solrconfig.html#search-components>`_ for your configuration
+| the `search components <https://solr.apache.org/guide/requesthandlers-and-searchcomponents-in-solrconfig.html#search-components>`_ for your configuration
 
 ``request_handlers``
 --------------------
-the `request handlers <https://solr.apache.org/guide/requesthandlers-and-searchcomponents-in-solrconfig.html#request-handlers>`_ for your configuration
+| the `request handlers <https://solr.apache.org/guide/requesthandlers-and-searchcomponents-in-solrconfig.html#request-handlers>`_ for your configuration
 
 ``query``
 ---------
-the `query settings <https://solr.apache.org/guide/query-settings-in-solrconfig.html#query-settings-in-solrconfig>`_ for your configuration.
+| the `query settings <https://solr.apache.org/guide/query-settings-in-solrconfig.html#query-settings-in-solrconfig>`_ for your configuration.
+
+``update_handler``
+------------------
+| the `update handler settings <https://solr.apache.org/guide/8_9/updatehandlers-in-solrconfig.html>`_ for your configuration

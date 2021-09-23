@@ -17,9 +17,9 @@ use Roave\BetterReflection\BetterReflection;
 use Roave\BetterReflection\Reflection\ReflectionProperty;
 use Solrphp\SolariumBundle\Common\Response\Error;
 use Solrphp\SolariumBundle\Common\Response\Header;
-use Solrphp\SolariumBundle\Contract\SolrApi\FilterInterface;
 use Solrphp\SolariumBundle\Contract\SolrApi\Response\ResponseErrorInterface;
 use Solrphp\SolariumBundle\Contract\SolrApi\Response\ResponseHeaderInterface;
+use Solrphp\SolariumBundle\SolrApi\Schema\Contract\FilterInterface;
 use Solrphp\SolariumBundle\SolrApi\Schema\Model\Filter\CommonGramsFilter;
 
 /**

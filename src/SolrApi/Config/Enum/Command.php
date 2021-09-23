@@ -22,7 +22,7 @@ final class Command
     /**
      * commands for common properties.
      *
-     * @see https://lucene.apache.org/solr/guide/8_4/config-api.html#commands-for-common-properties
+     * @see https://lucene.apache.org/solr/guide/config-api.html#commands-for-common-properties
      */
     public const SET_PROPERTY = 'set-property';
     public const UNSET_PROPERTY = 'unset-property';
@@ -30,7 +30,7 @@ final class Command
     /**
      * commands for user defined properties.
      *
-     * @see https://lucene.apache.org/solr/guide/8_4/config-api.html#commands-for-user-defined-properties
+     * @see https://lucene.apache.org/solr/guide/config-api.html#commands-for-user-defined-properties
      */
     public const SET_USER_PROPERTY = 'set-user-property';
     public const UNSET_USER_PROPERTY = 'unset-user-property';
@@ -38,7 +38,7 @@ final class Command
     /**
      * basic commands for components.
      *
-     * @see https://lucene.apache.org/solr/guide/8_4/config-api.html#basic-commands-for-components
+     * @see https://lucene.apache.org/solr/guide/config-api.html#basic-commands-for-components
      */
     public const ADD_REQUEST_HANDLER = 'add-requesthandler';
     public const UPDATE_REQUEST_HANDLER = 'update-requesthandler';
@@ -56,7 +56,7 @@ final class Command
     /**
      * advanced commands for components.
      *
-     * @see https://lucene.apache.org/solr/guide/8_4/config-api.html#advanced-commands-for-components
+     * @see https://lucene.apache.org/solr/guide/config-api.html#advanced-commands-for-components
      */
     public const ADD_QUERY_PARSER = 'add-queryparser';
     public const UPDATE_QUERY_PARSER = 'update-queryparser';

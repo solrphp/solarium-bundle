@@ -15,6 +15,7 @@ namespace Solrphp\SolariumBundle\Tests\Unit\SolrApi\Config\Manager\Processor;
 use Doctrine\Common\Collections\ArrayCollection;
 use PHPUnit\Framework\TestCase;
 use Solrphp\SolariumBundle\Common\Manager\ConfigNode;
+use Solrphp\SolariumBundle\Common\Manager\IterableConfigNode;
 use Solrphp\SolariumBundle\Contract\SolrApi\Processor\ConfigNodeProcessorInterface;
 use Solrphp\SolariumBundle\Exception\ProcessorException;
 use Solrphp\SolariumBundle\Exception\UnexpectedValueException;
@@ -42,7 +43,7 @@ class QueryConfigNodeProcessorTest extends TestCase
         $this->expectException(ProcessorException::class);
         $this->expectExceptionMessage('unable to retrieve query config for sub path bar');
 
-        $node = new ConfigNode('foo', 'bar', new ArrayCollection());
+        $node = new IterableConfigNode('foo', 'bar', new ArrayCollection());
         $manager = $this->getMockBuilder(ConfigManager::class)->disableOriginalConstructor()->getMock();
         $manager->expects(self::once())
             ->method('call')
@@ -60,7 +61,7 @@ class QueryConfigNodeProcessorTest extends TestCase
         $this->expectException(ProcessorException::class);
         $this->expectExceptionMessage('invalid query response for sub path bar');
 
-        $node = new ConfigNode('foo', 'bar', new ArrayCollection());
+        $node = new IterableConfigNode('foo', 'bar', new ArrayCollection());
         $manager = $this->getMockBuilder(ConfigManager::class)->disableOriginalConstructor()->getMock();
         $manager->expects(self::once())
             ->method('call')
@@ -84,7 +85,7 @@ class QueryConfigNodeProcessorTest extends TestCase
         $currentQuery->setMaxBooleanClauses(1024);
         $currentQuery->setQueryResultMaxDocsCached(20);
 
-        $node = new ConfigNode('foo', 'bar', new ArrayCollection([$configuredQuery]));
+        $node = new ConfigNode('foo', 'bar', $configuredQuery);
 
         $currentConfig = new SolrConfig(new ArrayCollection(['foo']), null, null, $currentQuery);
 
@@ -131,7 +132,7 @@ class QueryConfigNodeProcessorTest extends TestCase
     public function testUnsetPropertyException(): void
     {
         $this->expectException(ProcessorException::class);
-        $this->expectExceptionMessage('unable to unset-property query.maxBooleanClauses with value [null]');
+        $this->expectExceptionMessage('unable to unset-property query.maxBooleanClauses');
 
         $configuredQuery = new Query();
         $configuredQuery->setEnableLazyFieldLoading(true);
@@ -141,7 +142,7 @@ class QueryConfigNodeProcessorTest extends TestCase
         $currentQuery->setMaxBooleanClauses(1024);
         $currentQuery->setQueryResultMaxDocsCached(20);
 
-        $node = new ConfigNode('foo', 'bar', new ArrayCollection([$configuredQuery]));
+        $node = new ConfigNode('foo', 'bar', $configuredQuery);
 
         $currentConfig = new SolrConfig(new ArrayCollection(['foo']), null, null, $currentQuery);
 
@@ -193,7 +194,7 @@ class QueryConfigNodeProcessorTest extends TestCase
     public function testSetPropertyException(): void
     {
         $this->expectException(ProcessorException::class);
-        $this->expectExceptionMessage('unable to set-property query.queryResultMaxDocsCached with value 10');
+        $this->expectExceptionMessage('unable to set-property query.queryResultMaxDocsCached');
 
         $configuredQuery = new Query();
         $configuredQuery->setEnableLazyFieldLoading(true);
@@ -203,7 +204,7 @@ class QueryConfigNodeProcessorTest extends TestCase
         $currentQuery->setMaxBooleanClauses(1024);
         $currentQuery->setQueryResultMaxDocsCached(20);
 
-        $node = new ConfigNode('foo', 'bar', new ArrayCollection([$configuredQuery]));
+        $node = new ConfigNode('foo', 'bar', $configuredQuery);
 
         $currentConfig = new SolrConfig(new ArrayCollection(['foo']), null, null, $currentQuery);
 
@@ -237,8 +238,8 @@ class QueryConfigNodeProcessorTest extends TestCase
      */
     public function testSupports(): void
     {
-        $nodeOne = new ConfigNode(Query::class, 'bar', new ArrayCollection());
-        $nodeTwo = new ConfigNode(RequestHandler::class, 'bar', new ArrayCollection());
+        $nodeOne = new IterableConfigNode(Query::class, 'bar', new ArrayCollection());
+        $nodeTwo = new IterableConfigNode(RequestHandler::class, 'bar', new ArrayCollection());
 
         self::assertTrue((new QueryConfigNodeProcessor())->supports($nodeOne));
         self::assertFalse((new QueryConfigNodeProcessor())->supports($nodeTwo));

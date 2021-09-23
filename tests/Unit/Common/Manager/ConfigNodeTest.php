@@ -14,7 +14,7 @@ namespace Solrphp\SolariumBundle\Tests\Unit\Common\Manager;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use PHPUnit\Framework\TestCase;
-use Solrphp\SolariumBundle\Common\Manager\ConfigNode;
+use Solrphp\SolariumBundle\Common\Manager\IterableConfigNode;
 
 /**
  * ConfigNode Test.
@@ -29,7 +29,7 @@ class ConfigNodeTest extends TestCase
      */
     public function testConfigNodeConstruction(): void
     {
-        $node = new ConfigNode('Foo\Bar', '/baz', new ArrayCollection(['foo']));
+        $node = new IterableConfigNode('Foo\Bar', '/baz', new ArrayCollection(['foo']));
 
         self::assertSame('/baz', $node->getPath());
         self::assertSame('Foo\Bar', $node->getType());

@@ -43,7 +43,7 @@ class SchemaGenerator
      */
     public function __construct()
     {
-        $classMetadataFactory = new ClassMetadataFactory(new XmlFileLoader(__DIR__.'/../../../Resources/serializer/discriminator-map.xml'));
+        $classMetadataFactory = new ClassMetadataFactory(new XmlFileLoader(__DIR__.'/../../../Resources/serializer/schema/discriminator-map.xml'));
         $discriminator = new ClassDiscriminatorFromClassMetadata($classMetadataFactory);
         $this->serializer = new Serializer([new ArrayDenormalizer(), new ObjectNormalizer(null, new CamelCaseToSnakeCaseNameConverter(), null, new ReflectionExtractor(), $discriminator)]);
     }

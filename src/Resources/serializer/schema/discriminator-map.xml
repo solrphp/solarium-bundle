@@ -4,7 +4,7 @@
     xsi:schemaLocation="http://symfony.com/schema/dic/serializer-mapping
         https://symfony.com/schema/dic/serializer-mapping/serializer-mapping-1.0.xsd"
 >
-    <class name="Solrphp\SolariumBundle\Contract\SolrApi\FilterInterface">
+    <class name="Solrphp\SolariumBundle\SolrApi\Schema\Contract\FilterInterface">
         <discriminator-map type-property="class">
             <mapping type="org.apache.solr.analysis.HTMLStripCharFilter" class="Solrphp\SolariumBundle\SolrApi\Schema\Model\CharFilter\HTMLStripCharFilter"/>
             <mapping type="solr.ASCIIFoldingFilterFactory" class="Solrphp\SolariumBundle\SolrApi\Schema\Model\Filter\ASCIIFoldingFilter"/>

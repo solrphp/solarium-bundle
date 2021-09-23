@@ -17,6 +17,7 @@ use Solrphp\SolariumBundle\Contract\SolrApi\CoreDependentConfigInterface;
 use Solrphp\SolariumBundle\SolrApi\Config\Model\Query;
 use Solrphp\SolariumBundle\SolrApi\Config\Model\RequestHandler;
 use Solrphp\SolariumBundle\SolrApi\Config\Model\SearchComponent;
+use Solrphp\SolariumBundle\SolrApi\Config\Model\UpdateHandler;
 
 /**
  * Solr Config.
@@ -46,17 +47,24 @@ class SolrConfig implements CoreDependentConfigInterface
     private ?Query $query;
 
     /**
+     * @var \Solrphp\SolariumBundle\SolrApi\Config\Model\UpdateHandler|null
+     */
+    private ?UpdateHandler $updateHandler;
+
+    /**
      * @param ArrayCollection<int, string>                                                            $cores
      * @param ArrayCollection<int, \Solrphp\SolariumBundle\SolrApi\Config\Model\SearchComponent>|null $searchComponents
      * @param ArrayCollection<int, \Solrphp\SolariumBundle\SolrApi\Config\Model\RequestHandler>|null  $requestHandlers
      * @param \Solrphp\SolariumBundle\SolrApi\Config\Model\Query|null                                 $query
+     * @param \Solrphp\SolariumBundle\SolrApi\Config\Model\UpdateHandler|null                         $updateHandler
      */
-    public function __construct(ArrayCollection $cores, ArrayCollection $searchComponents = null, ArrayCollection $requestHandlers = null, Query $query = null)
+    public function __construct(ArrayCollection $cores, ArrayCollection $searchComponents = null, ArrayCollection $requestHandlers = null, Query $query = null, UpdateHandler $updateHandler = null)
     {
         $this->cores = $cores;
         $this->searchComponents = $searchComponents ?? new ArrayCollection();
         $this->requestHandlers = $requestHandlers ?? new ArrayCollection();
         $this->query = $query;
+        $this->updateHandler = $updateHandler;
     }
 
     /**
@@ -151,5 +159,21 @@ class SolrConfig implements CoreDependentConfigInterface
     public function setQuery(?Query $query): void
     {
         $this->query = $query;
+    }
+
+    /**
+     * @return \Solrphp\SolariumBundle\SolrApi\Config\Model\UpdateHandler|null
+     */
+    public function getUpdateHandler(): ?UpdateHandler
+    {
+        return $this->updateHandler;
+    }
+
+    /**
+     * @param \Solrphp\SolariumBundle\SolrApi\Config\Model\UpdateHandler|null $updateHandler
+     */
+    public function setUpdateHandler(?UpdateHandler $updateHandler): void
+    {
+        $this->updateHandler = $updateHandler;
     }
 }

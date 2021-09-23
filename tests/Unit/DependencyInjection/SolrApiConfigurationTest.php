@@ -289,6 +289,29 @@ class SolrApiConfigurationTest extends AbstractExtensionConfigurationTestCase
                         'use_circuit_breakers' => true,
                         'memory_circuit_breaker_threshold_pct' => 75,
                     ],
+                    'update_handler' => [
+                        'class' => 'foo',
+                        'version_bucket_Lock_timeout_ms' => 10,
+                        'auto_commit' => [
+                            'max_docs' => 10,
+                            'max_time' => 10,
+                            'max_size' => 10,
+                            'open_searcher' => false,
+                        ],
+                        'auto_soft_commit' => [
+                            'max_docs' => 10,
+                            'max_time' => 10,
+                        ],
+                        'commit_within' => [
+                            'soft_commit' => true,
+                        ],
+                        'update_log' => [
+                            'name' => 'foo',
+                            'num_records_to_keep' => 10,
+                            'max_num_logs_to_keep' => 10,
+                            'num_version_buckets' => 10,
+                        ],
+                    ],
                 ],
             ],
         ];
