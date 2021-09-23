@@ -21,6 +21,7 @@ use Solrphp\SolariumBundle\SolrApi\Config\Generator\ConfigNodeGenerator;
 use Solrphp\SolariumBundle\SolrApi\Config\Model\Query;
 use Solrphp\SolariumBundle\SolrApi\Config\Model\RequestHandler;
 use Solrphp\SolariumBundle\SolrApi\Config\Model\SearchComponent;
+use Solrphp\SolariumBundle\SolrApi\Config\Model\UpdateHandler;
 
 /**
  * ConfigNode Generator Test.
@@ -37,7 +38,8 @@ class ConfigNodeGeneratorTest extends TestCase
         $searchComponent = new SearchComponent();
         $requestHandler = new RequestHandler();
         $query = new Query();
-        $config = new SolrConfig(new ArrayCollection(['foo']), new ArrayCollection([$searchComponent]), new ArrayCollection([$requestHandler]), $query);
+        $updateHandler = new UpdateHandler();
+        $config = new SolrConfig(new ArrayCollection(['foo']), new ArrayCollection([$searchComponent]), new ArrayCollection([$requestHandler]), $query, $updateHandler);
 
         $result = [
             [
@@ -55,6 +57,11 @@ class ConfigNodeGeneratorTest extends TestCase
                 'path' => SubPath::GET_QUERY,
                 'first' => $query,
             ],
+            [
+                'type' => UpdateHandler::class,
+                'path' => SubPath::GET_UPDATE_HANDLER,
+                'first' => $updateHandler,
+            ],
         ];
 
         foreach ((new ConfigNodeGenerator())->get($config) as $key => $configNode) {
@@ -67,6 +74,6 @@ class ConfigNodeGeneratorTest extends TestCase
         }
 
         // making sure all nodes are returned
-        self::assertSame(2, $key);
+        self::assertSame(3, $key);
     }
 }
