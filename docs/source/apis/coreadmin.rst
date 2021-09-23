@@ -88,8 +88,8 @@ unload
  * ``--delete-instance-dir``: removes everything related to the core, including the index directory, configuration files and other related files
  * ``--async=<value>``: request id to track this action which will be processed asynchronously
 
-mergeindexes
-~~~~~~~~~~~~
+merge-indexes
+~~~~~~~~~~~~~
 | the `merge indexes <https://solr.apache.org/guide/coreadmin-api.html#coreadmin-mergeindexes>`_ command is available by running
 
 .. code-block:: bash
