@@ -63,8 +63,8 @@ class SolrCoreSplitCommandTest extends TestCase
     {
         $response = new CoreResponse();
         $header = new Header();
-        $header->setStatusCode(0);
-        $response->setHeader($header);
+        $header->setStatus(0);
+        $response->setResponseHeader($header);
 
         $application = new Application();
 
@@ -97,8 +97,8 @@ class SolrCoreSplitCommandTest extends TestCase
         $response = new CoreResponse();
         $header = new Header();
 
-        $header->setStatusCode(1);
-        $response->setHeader($header);
+        $header->setStatus(1);
+        $response->setResponseHeader($header);
         $response->setError($error);
 
         $application = new Application();
@@ -183,8 +183,8 @@ class SolrCoreSplitCommandTest extends TestCase
         $response = new CoreResponse();
         $header = new Header();
 
-        $header->setStatusCode(0);
-        $response->setHeader($header);
+        $header->setStatus(0);
+        $response->setResponseHeader($header);
 
         $serializer = $this->getMockBuilder(SerializerInterface::class)->getMock();
         $serializer->expects(self::once())->method('deserialize')->willReturn($response);

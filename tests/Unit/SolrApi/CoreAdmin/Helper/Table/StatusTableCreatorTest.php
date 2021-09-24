@@ -87,10 +87,7 @@ class StatusTableCreatorTest extends TestCase
         $status->setIndex($index);
 
         $response = new StatusResponse();
-        $response->addStatus($status);
-
-        $response = new StatusResponse();
-        $response->addStatus($status);
+        $response->addStatus($status->getName(), $status);
 
         $expected = <<<TABLE
 ┌──────┬─────────────┬─────────┬─────── status ──┬───────────────────────────┬────────┐

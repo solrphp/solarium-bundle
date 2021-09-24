@@ -34,7 +34,7 @@ class Header implements ResponseHeaderInterface
     /**
      * {@inheritdoc}
      */
-    public function getStatusCode(): int
+    public function getStatus(): int
     {
         return $this->status;
     }
@@ -42,7 +42,7 @@ class Header implements ResponseHeaderInterface
     /**
      * @param int $status
      */
-    public function setStatusCode(int $status): void
+    public function setStatus(int $status): void
     {
         $this->status = $status;
     }

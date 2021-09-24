@@ -26,7 +26,7 @@ class StatusResponse implements ResponseInterface
     use ResponseTrait;
 
     /**
-     * @var array<array-key, Status>
+     * @var array<string, Status>
      */
     private array $status = [];
 
@@ -39,11 +39,20 @@ class StatusResponse implements ResponseInterface
     }
 
     /**
+     * @param string                                                 $key
      * @param \Solrphp\SolariumBundle\SolrApi\CoreAdmin\Model\Status $status
      */
-    public function addStatus(Status $status): void
+    public function addStatus(string $key, Status $status): void
     {
-        $this->status[] = $status;
+        $this->status[$key] = $status;
+    }
+
+    /**
+     * @param array<string, Status> $status
+     */
+    public function setStatus(array $status): void
+    {
+        $this->status = $status;
     }
 
     /**

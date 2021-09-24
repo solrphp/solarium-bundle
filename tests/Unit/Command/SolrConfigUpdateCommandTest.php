@@ -12,7 +12,6 @@ declare(strict_types=1);
 
 namespace Solrphp\SolariumBundle\Tests\Unit\Command;
 
-use DG\BypassFinals;
 use Doctrine\Common\Collections\ArrayCollection;
 use PHPUnit\Framework\TestCase;
 use Solrphp\SolariumBundle\Command\Config\SolrConfigUpdateCommand;
@@ -86,8 +85,6 @@ class SolrConfigUpdateCommandTest extends TestCase
      */
     public function testExecuteFailure(): void
     {
-        BypassFinals::enable();
-
         $store = new SolrConfigurationStore([$this->getEmptySchemaConfig()], [$this->getEmptyConfigConfig()]);
 
         $application = new Application();

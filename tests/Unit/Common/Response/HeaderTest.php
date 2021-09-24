@@ -22,22 +22,34 @@ use Solrphp\SolariumBundle\Common\Response\Header;
  */
 final class HeaderTest extends TestCase
 {
-    private static $class = Header::class;
+    /**
+     * @var class-string
+     */
+    private static string $class = Header::class;
 
-    private $values = [
+    /**
+     * @var array<string, int>
+     */
+    private array $values = [
         'status' => 5,
         'qTime' => 1,
     ];
 
-    private static $nonNullable = [
+    /**
+     * @var array<string, int>
+     */
+    private static array $nonNullable = [
         'status' => 4,
         'qTime' => 4,
     ];
 
-    private static $accessors = [
+    /**
+     * @var array<string, array<string, string|null>>
+     */
+    private static array $accessors = [
         'status' => [
-            'reader' => 'getStatusCode',
-            'writer' => 'setStatusCode',
+            'reader' => 'getStatus',
+            'writer' => 'setStatus',
             'remover' => null,
         ],
         'qTime' => [

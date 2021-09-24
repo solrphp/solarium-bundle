@@ -13,6 +13,7 @@ declare(strict_types=1);
 namespace Solrphp\SolariumBundle\Contract\SolrApi\Response;
 
 use Solarium\Core\Client\Response;
+use Solrphp\SolariumBundle\Common\Response\Error;
 use Solrphp\SolariumBundle\Common\Response\Header;
 
 /**
@@ -27,14 +28,7 @@ interface ResponseInterface
      *
      * @return \Solrphp\SolariumBundle\Contract\SolrApi\Response\ResponseHeaderInterface
      */
-    public function getHeader(): ResponseHeaderInterface;
-
-    /**
-     * set response header.
-     *
-     * @param \Solrphp\SolariumBundle\Contract\SolrApi\Response\ResponseHeaderInterface $header
-     */
-    public function setHeader(ResponseHeaderInterface $header): void;
+    public function getResponseHeader(): ResponseHeaderInterface;
 
     /**
      * get response error.
@@ -44,19 +38,9 @@ interface ResponseInterface
     public function getError(): ?ResponseErrorInterface;
 
     /**
-     * set response error.
+     * get response body.
      *
-     * @param \Solrphp\SolariumBundle\Contract\SolrApi\Response\ResponseErrorInterface|null $error
-     */
-    public function setError(?ResponseErrorInterface $error): void;
-
-    /**
-     * @return string|null
+     *  @return string|null
      */
     public function getBody(): ?string;
-
-    /**
-     * @param string|null $body
-     */
-    public function setBody(?string $body): void;
 }

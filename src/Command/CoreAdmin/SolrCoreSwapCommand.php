@@ -68,10 +68,10 @@ class SolrCoreSwapCommand extends Command
     {
         $response = $this->coreManager->swap($this->getOptions($input));
 
-        if (0 !== $response->getHeader()->getStatusCode()) {
+        if (0 !== $response->getResponseHeader()->getStatus()) {
             $error = null !== $response->getError() ? $response->getError()->getMessage() : '[unable to get error message]';
 
-            $output->writeln(sprintf('<error>error swapping cores %s & %s: %s (%d)</error>', $input->getArgument('core'), $input->getArgument('other'), $error, $response->getHeader()->getStatusCode()));
+            $output->writeln(sprintf('<error>error swapping cores %s & %s: %s (%d)</error>', $input->getArgument('core'), $input->getArgument('other'), $error, $response->getResponseHeader()->getStatus()));
 
             return Command::FAILURE;
         }

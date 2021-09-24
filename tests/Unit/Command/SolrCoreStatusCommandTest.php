@@ -60,7 +60,7 @@ class SolrCoreStatusCommandTest extends TestCase
         $userDataTable = $this->getMockBuilder(UserDataTableCreator::class)->getMock();
         $userDataTable->expects(self::once())->method('create')->with(self::anything(), $response);
 
-        $application->add(new \Solrphp\SolariumBundle\Command\CoreAdmin\SolrCoreStatusCommand($manager, $statusTable, $indexTable, $userDataTable));
+        $application->add(new SolrCoreStatusCommand($manager, $statusTable, $indexTable, $userDataTable));
 
         $command = $application->find('solr:core:status');
         $commandTester = new CommandTester($command);
@@ -82,8 +82,8 @@ class SolrCoreStatusCommandTest extends TestCase
         $response = new CoreResponse();
         $header = new Header();
 
-        $header->setStatusCode(1);
-        $response->setHeader($header);
+        $header->setStatus(1);
+        $response->setResponseHeader($header);
         $response->setError($error);
 
         $application = new Application();
@@ -135,8 +135,8 @@ class SolrCoreStatusCommandTest extends TestCase
         $response = new CoreResponse();
         $header = new Header();
 
-        $header->setStatusCode(0);
-        $response->setHeader($header);
+        $header->setStatus(0);
+        $response->setResponseHeader($header);
 
         $serializer = $this->getMockBuilder(SerializerInterface::class)->getMock();
         $serializer->expects(self::once())->method('deserialize')->willReturn($response);
@@ -249,10 +249,10 @@ class SolrCoreStatusCommandTest extends TestCase
         $status->setIndex($index);
 
         $header = new Header();
-        $header->setStatusCode(0);
+        $header->setStatus(0);
         $response = new StatusResponse();
-        $response->addStatus($status);
-        $response->setHeader($header);
+        $response->addStatus('foo', $status);
+        $response->setResponseHeader($header);
 
         return $response;
     }

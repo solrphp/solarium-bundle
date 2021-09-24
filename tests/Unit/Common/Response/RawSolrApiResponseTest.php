@@ -24,22 +24,34 @@ use Solrphp\SolariumBundle\Common\Response\RawSolrApiResponse;
  */
 final class RawSolrApiResponseTest extends TestCase
 {
-    private static $class = RawSolrApiResponse::class;
+    /**
+     * @var class-string
+     */
+    private static string $class = RawSolrApiResponse::class;
 
-    private $values = [
+    /**
+     * @var array<string, string>
+     */
+    private array $values = [
         'headerResponse' => Header::class,
         'error' => Error::class,
         'body' => 'foo',
     ];
 
-    private static $nonNullable = [
+    /**
+     * @var array<string, string>
+     */
+    private static array $nonNullable = [
         'headerResponse' => Header::class,
     ];
 
-    private static $accessors = [
+    /**
+     * @var array<string, array<string, string|null>>
+     */
+    private static array $accessors = [
         'headerResponse' => [
-            'reader' => 'getHeader',
-            'writer' => 'setHeader',
+            'reader' => 'getResponseHeader',
+            'writer' => 'setResponseHeader',
             'remover' => null,
         ],
         'error' => [

@@ -87,7 +87,7 @@ class IndexTableCreatorTest extends TestCase
         $status->setIndex($index);
 
         $response = new StatusResponse();
-        $response->addStatus($status);
+        $response->addStatus('foo', $status);
 
         $expected = <<<TABLE
 ┌──────┬─────────┬────────┬─────────────┬─────────────────────┬─────────┬──────────────┬─── index ──────────────┬───────────┬──────────────┬───────────────────────────┬─────────────┬──────┐

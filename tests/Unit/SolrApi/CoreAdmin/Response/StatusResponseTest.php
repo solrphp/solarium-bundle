@@ -31,10 +31,16 @@ class StatusResponseTest extends TestCase
         $response = new StatusResponse();
         $status = new Status();
 
-        $response->addStatus($status);
+        $response->addStatus('foo', $status);
 
         self::assertContains($status, $response->getStatus());
         self::assertTrue($response->removeStatus($status));
         self::assertFalse($response->removeStatus($status));
+
+        $response = new StatusResponse();
+        $response->setStatus(['bar' => $status]);
+
+        self::assertArrayNotHasKey('foo', $response->getStatus());
+        self::assertArrayHasKey('bar', $response->getStatus());
     }
 }

@@ -91,10 +91,10 @@ class SolrCoreStatusCommand extends Command
     {
         $response = $this->coreManager->status($this->getOptions($input));
 
-        if (!$response instanceof StatusResponse || 0 !== $response->getHeader()->getStatusCode()) {
+        if (!$response instanceof StatusResponse || 0 !== $response->getResponseHeader()->getStatus()) {
             $error = null !== $response->getError() ? $response->getError()->getMessage() : '[unable to get error message]';
 
-            $output->writeln(sprintf('<error>error while retrieving status: %s (%d)</error>', $error, $response->getHeader()->getStatusCode()));
+            $output->writeln(sprintf('<error>error while retrieving status: %s (%d)</error>', $error, $response->getResponseHeader()->getStatus()));
 
             return Command::FAILURE;
         }

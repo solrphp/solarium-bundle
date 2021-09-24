@@ -69,10 +69,10 @@ class SolrCoreMergeIndexesCommand extends Command
     {
         $response = $this->coreManager->mergeIndexes($this->getOptions($input));
 
-        if (0 !== $response->getHeader()->getStatusCode()) {
+        if (0 !== $response->getResponseHeader()->getStatus()) {
             $error = null !== $response->getError() ? $response->getError()->getMessage() : '[unable to get error message]';
 
-            $output->writeln(sprintf('<error>error merging indexes for core %s: %s (%d)</error>', $input->getArgument('core'), $error, $response->getHeader()->getStatusCode()));
+            $output->writeln(sprintf('<error>error merging indexes for core %s: %s (%d)</error>', $input->getArgument('core'), $error, $response->getResponseHeader()->getStatus()));
 
             return Command::FAILURE;
         }

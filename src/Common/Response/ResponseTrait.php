@@ -12,9 +12,6 @@ declare(strict_types=1);
 
 namespace Solrphp\SolariumBundle\Common\Response;
 
-use Solrphp\SolariumBundle\Contract\SolrApi\Response\ResponseErrorInterface;
-use Solrphp\SolariumBundle\Contract\SolrApi\Response\ResponseHeaderInterface;
-
 /**
  * ResponseTrait.
  *
@@ -23,14 +20,14 @@ use Solrphp\SolariumBundle\Contract\SolrApi\Response\ResponseHeaderInterface;
 trait ResponseTrait
 {
     /**
-     * @var \Solrphp\SolariumBundle\Contract\SolrApi\Response\ResponseHeaderInterface
+     * @var \Solrphp\SolariumBundle\Common\Response\Header
      */
-    private ResponseHeaderInterface $responseHeader;
+    private Header $responseHeader;
 
     /**
-     * @var \Solrphp\SolariumBundle\Contract\SolrApi\Response\ResponseErrorInterface|null
+     * @var \Solrphp\SolariumBundle\Common\Response\Error|null
      */
-    private ?ResponseErrorInterface $error = null;
+    private ?Error $error = null;
 
     /**
      * @var string|null
@@ -40,15 +37,15 @@ trait ResponseTrait
     /**
      * {@inheritdoc}
      */
-    public function getHeader(): ResponseHeaderInterface
+    public function getResponseHeader(): Header
     {
         return $this->responseHeader;
     }
 
     /**
-     * @param \Solrphp\SolariumBundle\Contract\SolrApi\Response\ResponseHeaderInterface $responseHeader
+     * @param \Solrphp\SolariumBundle\Common\Response\Header $responseHeader
      */
-    public function setHeader(ResponseHeaderInterface $responseHeader): void
+    public function setResponseHeader(Header $responseHeader): void
     {
         $this->responseHeader = $responseHeader;
     }
@@ -56,21 +53,21 @@ trait ResponseTrait
     /**
      * {@inheritdoc}
      */
-    public function getError(): ?ResponseErrorInterface
+    public function getError(): ?Error
     {
         return $this->error;
     }
 
     /**
-     * @param \Solrphp\SolariumBundle\Contract\SolrApi\Response\ResponseErrorInterface|null $error
+     * @param \Solrphp\SolariumBundle\Common\Response\Error|null $error
      */
-    public function setError(?ResponseErrorInterface $error): void
+    public function setError(?Error $error): void
     {
         $this->error = $error;
     }
 
     /**
-     * @return string|null
+     * {@inheritdoc}
      */
     public function getBody(): ?string
     {

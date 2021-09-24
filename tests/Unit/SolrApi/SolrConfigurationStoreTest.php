@@ -461,6 +461,9 @@ class SolrConfigurationStoreTest extends TestCase
                     'update_handler' => [
                         'class' => 'foo',
                     ],
+                    'request_dispatcher' => [
+                        'handle_select' => false,
+                    ],
                 ],
             ],
             'core_config' => 'bar',
@@ -468,6 +471,7 @@ class SolrConfigurationStoreTest extends TestCase
             'request_handler_count' => 1,
             'query_is_object' => true,
             'update_handler_is_object' => true,
+            'request_dispatcher_is_object' => true,
         ];
 
         yield 'one_core_one_component_config' => [
@@ -482,6 +486,7 @@ class SolrConfigurationStoreTest extends TestCase
                     'request_handlers' => [],
                     'query' => null,
                     'update_handler' => null,
+                    'request_dispatcher' => null,
                 ],
             ],
             'core_config' => 'foo',
@@ -489,6 +494,7 @@ class SolrConfigurationStoreTest extends TestCase
             'request_handler_count' => 0,
             'query_is_object' => false,
             'update_handler_is_object' => false,
+            'request_dispatcher_is_object' => false,
         ];
 
         yield 'one_core_one_handler_config' => [
@@ -503,6 +509,7 @@ class SolrConfigurationStoreTest extends TestCase
                     ],
                     'query' => null,
                     'update_handler' => null,
+                    'request_dispatcher' => null,
                 ],
             ],
             'core_config' => 'foo',
@@ -510,6 +517,7 @@ class SolrConfigurationStoreTest extends TestCase
             'request_handler_count' => 1,
             'query_is_object' => false,
             'update_handler_is_object' => false,
+            'request_dispatcher_is_object' => false,
         ];
 
         yield 'multiple_configs' => [
@@ -522,6 +530,7 @@ class SolrConfigurationStoreTest extends TestCase
                     'request_handlers' => [],
                     'query' => null,
                     'update_handler' => null,
+                    'request_dispatcher' => null,
                 ],
                 [
                     'cores' => [
@@ -541,6 +550,7 @@ class SolrConfigurationStoreTest extends TestCase
             'request_handler_count' => 1,
             'query_is_object' => false,
             'update_handler_is_object' => false,
+            'request_dispatcher_is_object' => false,
         ];
     }
 }

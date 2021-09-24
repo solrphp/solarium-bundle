@@ -24,7 +24,7 @@ interface ResponseHeaderInterface
      *
      * @return int
      */
-    public function getStatusCode(): int;
+    public function getStatus(): int;
 
     /**
      * get query time as provided by solr.

@@ -86,7 +86,7 @@ unload
  * ``--delete-index``: will remove the index when unloading the core
  * ``--delete-data-dir``: removes the data directory and all sub-directories
  * ``--delete-instance-dir``: removes everything related to the core, including the index directory, configuration files and other related files
- * ``--async=<value>``: request id to track this action which will be processed asynchronously
+ * ``--async``: request id to track this action which will be processed asynchronously
 
 merge-indexes
 ~~~~~~~~~~~~~
