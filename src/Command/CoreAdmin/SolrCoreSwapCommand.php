@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace Solrphp\SolariumBundle\Command\CoreAdmin;
 
+use Solrphp\SolariumBundle\Common\Util\ErrorUtil;
 use Solrphp\SolariumBundle\SolrApi\CoreAdmin\Manager\CoreManager;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -69,9 +70,7 @@ class SolrCoreSwapCommand extends Command
         $response = $this->coreManager->swap($this->getOptions($input));
 
         if (0 !== $response->getResponseHeader()->getStatus()) {
-            $error = null !== $response->getError() ? $response->getError()->getMessage() : '[unable to get error message]';
-
-            $output->writeln(sprintf('<error>error swapping cores %s & %s: %s (%d)</error>', $input->getArgument('core'), $input->getArgument('other'), $error, $response->getResponseHeader()->getStatus()));
+            $output->writeln(sprintf('<error>error swapping cores %s & %s: %s</error>', $input->getArgument('core'), $input->getArgument('other'), ErrorUtil::fromResponse($response, $output->getVerbosity())));
 
             return Command::FAILURE;
         }

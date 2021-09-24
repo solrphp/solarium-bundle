@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace Solrphp\SolariumBundle\Command\CoreAdmin;
 
+use Solrphp\SolariumBundle\Common\Util\ErrorUtil;
 use Solrphp\SolariumBundle\SolrApi\CoreAdmin\Helper\Table\IndexTableCreator;
 use Solrphp\SolariumBundle\SolrApi\CoreAdmin\Helper\Table\StatusTableCreator;
 use Solrphp\SolariumBundle\SolrApi\CoreAdmin\Helper\Table\UserDataTableCreator;
@@ -92,9 +93,7 @@ class SolrCoreStatusCommand extends Command
         $response = $this->coreManager->status($this->getOptions($input));
 
         if (!$response instanceof StatusResponse || 0 !== $response->getResponseHeader()->getStatus()) {
-            $error = null !== $response->getError() ? $response->getError()->getMessage() : '[unable to get error message]';
-
-            $output->writeln(sprintf('<error>error while retrieving status: %s (%d)</error>', $error, $response->getResponseHeader()->getStatus()));
+            $output->writeln(sprintf('<error>error while retrieving status: %s</error>', ErrorUtil::fromResponse($response, $output->getVerbosity())));
 
             return Command::FAILURE;
         }

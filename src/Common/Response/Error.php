@@ -27,9 +27,9 @@ class Error implements ResponseErrorInterface
     private array $metadata = [];
 
     /**
-     * @var string
+     * @var string|null
      */
-    private string $message;
+    private ?string $message = null;
 
     /**
      * @var int
@@ -53,9 +53,9 @@ class Error implements ResponseErrorInterface
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getMessage(): string
+    public function getMessage(): ?string
     {
         return $this->message;
     }

@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace Solrphp\SolariumBundle\Command\CoreAdmin;
 
+use Solrphp\SolariumBundle\Common\Util\ErrorUtil;
 use Solrphp\SolariumBundle\SolrApi\CoreAdmin\Manager\CoreManager;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -69,9 +70,7 @@ class SolrCoreRenameCommand extends Command
         $response = $this->coreManager->rename($this->getOptions($input));
 
         if (0 !== $response->getResponseHeader()->getStatus()) {
-            $error = null !== $response->getError() ? $response->getError()->getMessage() : '[unable to get error message]';
-
-            $output->writeln(sprintf('<error>error renaming core %s: %s (%d)</error>', $input->getArgument('core'), $error, $response->getResponseHeader()->getStatus()));
+            $output->writeln(sprintf('<error>error renaming core %s: %s</error>', $input->getArgument('core'), ErrorUtil::fromResponse($response, $output->getVerbosity())));
 
             return Command::FAILURE;
         }

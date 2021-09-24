@@ -29,12 +29,12 @@ interface ResponseErrorInterface
     /**
      * get error message.
      *
-     * @return string
+     * @return string|null
      */
-    public function getMessage(): string;
+    public function getMessage(): ?string;
 
     /**
-     * @return string[]
+     * @return array<string>
      */
-    public function getMetaData(): iterable;
+    public function getMetaData(): array;
 }

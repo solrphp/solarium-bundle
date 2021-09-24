@@ -50,6 +50,7 @@ class IndexTableCreator
             ->setHeaderTitle('index')
             ->setHeaders($headers)
             ->setRows($rows)
+            ->setHorizontal()
         ;
     }
 }
