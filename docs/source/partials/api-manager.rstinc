@@ -1,0 +1,4 @@
+api manager
+-----------
+| the |api-manager| service can be used to communicate with this api.
+| its ``persist()`` and ``flush()`` methods can be used to sync your added commands with the api.

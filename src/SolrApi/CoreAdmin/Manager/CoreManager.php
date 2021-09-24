@@ -27,6 +27,15 @@ use Symfony\Component\Serializer\SerializerInterface;
  */
 class CoreManager
 {
+    private const ACTION_SWAP = 'SWAP';
+    private const ACTION_SPLIT = 'SPLIT';
+    private const ACTION_STATUS = 'STATUS';
+    private const ACTION_CREATE = 'CREATE';
+    private const ACTION_UNLOAD = 'UNLOAD';
+    private const ACTION_RENAME = 'RENAME';
+    private const ACTION_RELOAD = 'RELOAD';
+    private const ACTION_MERGE_INDEXES = 'MERGEINDEXES';
+
     /**
      * @var string
      */
@@ -59,7 +68,7 @@ class CoreManager
      */
     public function status(array $options = []): ResponseInterface
     {
-        return $this->call($this->getRequest('STATUS', $options), StatusResponse::class);
+        return $this->call($this->getRequest(self::ACTION_STATUS, $options), StatusResponse::class);
     }
 
     /**
@@ -69,7 +78,7 @@ class CoreManager
      */
     public function create(array $options = []): ResponseInterface
     {
-        return $this->call($this->getRequest('CREATE', $options));
+        return $this->call($this->getRequest(self::ACTION_CREATE, $options));
     }
 
     /**
@@ -79,7 +88,7 @@ class CoreManager
      */
     public function unload(array $options = []): ResponseInterface
     {
-        return $this->call($this->getRequest('UNLOAD', $options));
+        return $this->call($this->getRequest(self::ACTION_UNLOAD, $options));
     }
 
     /**
@@ -89,7 +98,7 @@ class CoreManager
      */
     public function rename(array $options = []): ResponseInterface
     {
-        return $this->call($this->getRequest('RENAME', $options));
+        return $this->call($this->getRequest(self::ACTION_RENAME, $options));
     }
 
     /**
@@ -99,7 +108,7 @@ class CoreManager
      */
     public function swap(array $options = []): ResponseInterface
     {
-        return $this->call($this->getRequest('SWAP', $options));
+        return $this->call($this->getRequest(self::ACTION_SWAP, $options));
     }
 
     /**
@@ -109,7 +118,7 @@ class CoreManager
      */
     public function mergeIndexes(array $options = []): ResponseInterface
     {
-        return $this->call($this->getRequest('MERGEINDEXES', $options));
+        return $this->call($this->getRequest(self::ACTION_MERGE_INDEXES, $options));
     }
 
     /**
@@ -119,7 +128,7 @@ class CoreManager
      */
     public function reload(array $options = []): ResponseInterface
     {
-        return $this->call($this->getRequest('RELOAD', $options));
+        return $this->call($this->getRequest(self::ACTION_RELOAD, $options));
     }
 
     /**
@@ -129,7 +138,7 @@ class CoreManager
      */
     public function split(array $options = []): ResponseInterface
     {
-        return $this->call($this->getRequest('SPLIT', $options));
+        return $this->call($this->getRequest(self::ACTION_SPLIT, $options));
     }
 
     /**

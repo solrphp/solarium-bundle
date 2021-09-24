@@ -67,7 +67,7 @@ swap
 
 .. code-block:: bash
 
-    $ php bin/console solr:core:swap <core-name> <new-name>
+    $ php bin/console solr:core:swap <core-name> <other-name>
 
 | **options**:
 
