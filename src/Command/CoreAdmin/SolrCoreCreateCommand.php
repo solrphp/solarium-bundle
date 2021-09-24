@@ -96,7 +96,7 @@ class SolrCoreCreateCommand extends Command
         $options = [];
 
         if (null !== ($core = $input->getArgument('core'))) {
-            $options['core'] = $core;
+            $options['name'] = $core;
         }
 
         if (null !== ($instanceDir = $input->getOption('instance-dir'))) {

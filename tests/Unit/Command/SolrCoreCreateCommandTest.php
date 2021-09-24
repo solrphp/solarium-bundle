@@ -182,7 +182,7 @@ class SolrCoreCreateCommandTest extends TestCase
                 '--instance-dir' => 'foo',
             ],
             'keys' => [
-                'core' => 'foo',
+                'name' => 'foo',
                 'instanceDir' => 'foo',
                 'action' => 'CREATE',
             ],
@@ -193,7 +193,7 @@ class SolrCoreCreateCommandTest extends TestCase
                 '--config' => 'foo',
             ],
             'keys' => [
-                'core' => 'foo',
+                'name' => 'foo',
                 'config' => 'foo',
                 'action' => 'CREATE',
             ],
@@ -204,7 +204,7 @@ class SolrCoreCreateCommandTest extends TestCase
                 '--schema' => 'foo',
             ],
             'keys' => [
-                'core' => 'foo',
+                'name' => 'foo',
                 'schema' => 'foo',
                 'action' => 'CREATE',
             ],
@@ -215,7 +215,7 @@ class SolrCoreCreateCommandTest extends TestCase
                 '--data-dir' => 'foo',
             ],
             'keys' => [
-                'core' => 'foo',
+                'name' => 'foo',
                 'dataDir' => 'foo',
                 'action' => 'CREATE',
             ],
@@ -226,7 +226,7 @@ class SolrCoreCreateCommandTest extends TestCase
                 '--config-set' => 'foo',
             ],
             'keys' => [
-                'core' => 'foo',
+                'name' => 'foo',
                 'configSet' => 'foo',
                 'action' => 'CREATE',
             ],
@@ -237,7 +237,7 @@ class SolrCoreCreateCommandTest extends TestCase
                 '--collection' => 'foo',
             ],
             'keys' => [
-                'core' => 'foo',
+                'name' => 'foo',
                 'collection' => 'foo',
                 'action' => 'CREATE',
             ],
@@ -248,7 +248,7 @@ class SolrCoreCreateCommandTest extends TestCase
                 '--shard' => 'foo',
             ],
             'keys' => [
-                'core' => 'foo',
+                'name' => 'foo',
                 'shard' => 'foo',
                 'action' => 'CREATE',
             ],
@@ -259,7 +259,7 @@ class SolrCoreCreateCommandTest extends TestCase
                 '--async' => 'foo',
             ],
             'keys' => [
-                'core' => 'foo',
+                'name' => 'foo',
                 'async' => 'foo',
                 'action' => 'CREATE',
             ],
@@ -277,7 +277,7 @@ class SolrCoreCreateCommandTest extends TestCase
                 '--async' => 'foo',
             ],
             'keys' => [
-                'core' => 'foo',
+                'name' => 'foo',
                 'instanceDir' => 'foo',
                 'config' => 'foo',
                 'schema' => 'foo',

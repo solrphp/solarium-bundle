@@ -13,6 +13,7 @@ declare(strict_types=1);
 namespace Solrphp\SolariumBundle\Common\Response;
 
 use Solrphp\SolariumBundle\Contract\SolrApi\Response\ResponseErrorInterface;
+use Symfony\Component\Serializer\Annotation as Serializer;
 
 /**
  * Error.
@@ -28,6 +29,8 @@ class Error implements ResponseErrorInterface
 
     /**
      * @var string|null
+     *
+     * @Serializer\SerializedName("msg")
      */
     private ?string $message = null;
 
