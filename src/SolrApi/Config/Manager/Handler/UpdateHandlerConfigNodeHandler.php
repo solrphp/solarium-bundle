@@ -10,26 +10,25 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Solrphp\SolariumBundle\SolrApi\Config\Manager\Processor;
+namespace Solrphp\SolariumBundle\SolrApi\Config\Manager\Handler;
 
+use Solrphp\SolariumBundle\Contract\SolrApi\Manager\ConfigNodeHandlerInterface;
+use Solrphp\SolariumBundle\Contract\SolrApi\Manager\ConfigNodeInterface;
 use Solrphp\SolariumBundle\Contract\SolrApi\Manager\SolrApiManagerInterface;
-use Solrphp\SolariumBundle\Contract\SolrApi\Processor\ConfigNodeInterface;
-use Solrphp\SolariumBundle\Contract\SolrApi\Processor\ConfigNodeProcessorInterface;
 use Solrphp\SolariumBundle\Exception\ProcessorException;
 use Solrphp\SolariumBundle\Exception\UnexpectedValueException;
 use Solrphp\SolariumBundle\SolrApi\Config\Enum\Command;
 use Solrphp\SolariumBundle\SolrApi\Config\Model\Property;
-use Solrphp\SolariumBundle\SolrApi\Config\Model\Query;
 use Solrphp\SolariumBundle\SolrApi\Config\Model\UpdateHandler;
 use Solrphp\SolariumBundle\SolrApi\Config\Response\ConfigResponse;
 use Solrphp\SolariumBundle\SolrApi\Config\Util\ConfigUtil;
 
 /**
- * Query ConfigNode Processor.
+ * UpdateHandler ConfigNode Handler.
  *
  * @author wicliff <wicliff.wolda@gmail.com>
  */
-class UpdateHandlerConfigNodeProcessor implements ConfigNodeProcessorInterface
+class UpdateHandlerConfigNodeHandler implements ConfigNodeHandlerInterface
 {
     /**
      * @var \Solrphp\SolariumBundle\Contract\SolrApi\Manager\SolrApiManagerInterface
@@ -39,9 +38,9 @@ class UpdateHandlerConfigNodeProcessor implements ConfigNodeProcessorInterface
     /**
      * @param \Solrphp\SolariumBundle\Contract\SolrApi\Manager\SolrApiManagerInterface $manager
      *
-     * @return \Solrphp\SolariumBundle\Contract\SolrApi\Processor\ConfigNodeProcessorInterface
+     * @return \Solrphp\SolariumBundle\Contract\SolrApi\Manager\ConfigNodeHandlerInterface
      */
-    public function setManager(SolrApiManagerInterface $manager): ConfigNodeProcessorInterface
+    public function setManager(SolrApiManagerInterface $manager): ConfigNodeHandlerInterface
     {
         $this->manager = $manager;
 
@@ -57,7 +56,7 @@ class UpdateHandlerConfigNodeProcessor implements ConfigNodeProcessorInterface
      *
      * {@inheritdoc}
      */
-    public function process(ConfigNodeInterface $configNode): void
+    public function handle(ConfigNodeInterface $configNode): void
     {
         try {
             $current = $this->manager->call($configNode->getPath());
@@ -89,7 +88,7 @@ class UpdateHandlerConfigNodeProcessor implements ConfigNodeProcessorInterface
      */
     public static function getDefaultPriority(): int
     {
-        return ConfigNodeProcessorInterface::PRIORITY;
+        return ConfigNodeHandlerInterface::PRIORITY;
     }
 
     /**

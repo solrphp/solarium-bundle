@@ -10,28 +10,26 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Solrphp\SolariumBundle\Contract\SolrApi\Processor;
-
-use Solrphp\SolariumBundle\Contract\SolrApi\Manager\SolrApiManagerInterface;
+namespace Solrphp\SolariumBundle\Contract\SolrApi\Manager;
 
 /**
  * ConfigNode Processor Interface.
  *
  * @author wicliff <wicliff.wolda@gmail.com>
  */
-interface ConfigNodeProcessorInterface
+interface ConfigNodeHandlerInterface
 {
     public const PRIORITY = 50;
 
     /**
-     * @param \Solrphp\SolariumBundle\Contract\SolrApi\Processor\ConfigNodeInterface $configNode
+     * @param \Solrphp\SolariumBundle\Contract\SolrApi\Manager\ConfigNodeInterface $configNode
      *
      * @throws \Solrphp\SolariumBundle\Exception\ProcessorException
      */
-    public function process(ConfigNodeInterface $configNode): void;
+    public function handle(ConfigNodeInterface $configNode): void;
 
     /**
-     * @param \Solrphp\SolariumBundle\Contract\SolrApi\Processor\ConfigNodeInterface $configNode
+     * @param \Solrphp\SolariumBundle\Contract\SolrApi\Manager\ConfigNodeInterface $configNode
      *
      * @return bool
      */
@@ -43,4 +41,9 @@ interface ConfigNodeProcessorInterface
      * @return $this
      */
     public function setManager(SolrApiManagerInterface $manager): self;
+
+    /**
+     * @return int
+     */
+    public static function getDefaultPriority(): int;
 }

@@ -16,13 +16,13 @@ use Doctrine\Common\Collections\ArrayCollection;
 use PHPUnit\Framework\TestCase;
 use Solrphp\SolariumBundle\Common\Manager\ConfigNode;
 use Solrphp\SolariumBundle\Common\Manager\IterableConfigNode;
-use Solrphp\SolariumBundle\Contract\SolrApi\Processor\ConfigNodeProcessorInterface;
+use Solrphp\SolariumBundle\Contract\SolrApi\Manager\ConfigNodeHandlerInterface;
 use Solrphp\SolariumBundle\Exception\ProcessorException;
 use Solrphp\SolariumBundle\Exception\UnexpectedValueException;
 use Solrphp\SolariumBundle\SolrApi\Config\Config\SolrConfig;
 use Solrphp\SolariumBundle\SolrApi\Config\Enum\Command;
 use Solrphp\SolariumBundle\SolrApi\Config\Manager\ConfigManager;
-use Solrphp\SolariumBundle\SolrApi\Config\Manager\Processor\RequestDispatcherConfigNodeProcessor;
+use Solrphp\SolariumBundle\SolrApi\Config\Manager\Handler\RequestDispatcherConfigNodeHandler;
 use Solrphp\SolariumBundle\SolrApi\Config\Model\Query;
 use Solrphp\SolariumBundle\SolrApi\Config\Model\RequestDispatcher;
 use Solrphp\SolariumBundle\SolrApi\Config\Model\RequestHandler;
@@ -52,7 +52,7 @@ class RequestDispatcherConfigNodeProcessorTest extends TestCase
             ->willThrowException(new UnexpectedValueException('foo'))
         ;
 
-        (new RequestDispatcherConfigNodeProcessor())->setManager($manager)->process($node);
+        (new RequestDispatcherConfigNodeHandler())->setManager($manager)->handle($node);
     }
 
     /**
@@ -70,7 +70,7 @@ class RequestDispatcherConfigNodeProcessorTest extends TestCase
             ->willReturn(new SchemaResponse())
         ;
 
-        (new RequestDispatcherConfigNodeProcessor())->setManager($manager)->process($node);
+        (new RequestDispatcherConfigNodeHandler())->setManager($manager)->handle($node);
     }
 
     /**
@@ -131,7 +131,7 @@ class RequestDispatcherConfigNodeProcessorTest extends TestCase
             )
         ;
 
-        (new RequestDispatcherConfigNodeProcessor())->setManager($manager)->process($node);
+        (new RequestDispatcherConfigNodeHandler())->setManager($manager)->handle($node);
     }
 
     /**
@@ -200,7 +200,7 @@ class RequestDispatcherConfigNodeProcessorTest extends TestCase
             )
         ;
 
-        (new RequestDispatcherConfigNodeProcessor())->setManager($manager)->process($node);
+        (new RequestDispatcherConfigNodeHandler())->setManager($manager)->handle($node);
     }
 
     /**
@@ -253,7 +253,7 @@ class RequestDispatcherConfigNodeProcessorTest extends TestCase
             )
         ;
 
-        (new RequestDispatcherConfigNodeProcessor())->setManager($manager)->process($node);
+        (new RequestDispatcherConfigNodeHandler())->setManager($manager)->handle($node);
     }
 
     /**
@@ -264,8 +264,8 @@ class RequestDispatcherConfigNodeProcessorTest extends TestCase
         $nodeOne = new IterableConfigNode(RequestDispatcher::class, 'bar', new ArrayCollection());
         $nodeTwo = new IterableConfigNode(RequestHandler::class, 'bar', new ArrayCollection());
 
-        self::assertTrue((new RequestDispatcherConfigNodeProcessor())->supports($nodeOne));
-        self::assertFalse((new RequestDispatcherConfigNodeProcessor())->supports($nodeTwo));
+        self::assertTrue((new RequestDispatcherConfigNodeHandler())->supports($nodeOne));
+        self::assertFalse((new RequestDispatcherConfigNodeHandler())->supports($nodeTwo));
     }
 
     /**
@@ -273,6 +273,6 @@ class RequestDispatcherConfigNodeProcessorTest extends TestCase
      */
     public function testPriority(): void
     {
-        self::assertSame(ConfigNodeProcessorInterface::PRIORITY, RequestDispatcherConfigNodeProcessor::getDefaultPriority());
+        self::assertSame(ConfigNodeHandlerInterface::PRIORITY, RequestDispatcherConfigNodeHandler::getDefaultPriority());
     }
 }

@@ -13,7 +13,7 @@ declare(strict_types=1);
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
 use Solrphp\SolariumBundle\Command\Schema\SolrSchemaUpdateCommand;
-use Solrphp\SolariumBundle\Contract\SolrApi\Processor\ConfigNodeProcessorInterface;
+use Solrphp\SolariumBundle\Contract\SolrApi\Manager\ConfigNodeHandlerInterface;
 use Solrphp\SolariumBundle\SolrApi\Schema\Manager\SchemaManager;
 use Solrphp\SolariumBundle\SolrApi\Schema\Manager\SchemaProcessor;
 use Solrphp\SolariumBundle\SolrApi\SolrConfigurationStore;
@@ -23,7 +23,7 @@ use Solrphp\SolariumBundle\SolrApi\SolrConfigurationStore;
  */
 return static function (ContainerConfigurator $container) {
     $container->services()
-        ->instanceof(ConfigNodeProcessorInterface::class)
+        ->instanceof(ConfigNodeHandlerInterface::class)
         ->tag('solrphp.config_node_processor')
 
         ->set('solrphp.manager.schema', SchemaManager::class)
@@ -50,7 +50,7 @@ return static function (ContainerConfigurator $container) {
         ->alias(SolrSchemaUpdateCommand::class, 'solrphp.command.schema_update')
 
         // load config processors for this api.
-        ->load('Solrphp\\SolariumBundle\\SolrApi\\Schema\\Manager\\Processor\\', '../../SolrApi/Schema/Manager/Processor')
+        ->load('Solrphp\\SolariumBundle\\SolrApi\\Schema\\Manager\\Handler\\', '../../SolrApi/Schema/Manager/Handler')
         ->exclude(['*Trait'])
     ;
 };

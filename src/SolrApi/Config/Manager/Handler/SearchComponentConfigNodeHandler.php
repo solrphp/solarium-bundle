@@ -10,25 +10,25 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Solrphp\SolariumBundle\SolrApi\Config\Manager\Processor;
+namespace Solrphp\SolariumBundle\SolrApi\Config\Manager\Handler;
 
 use Doctrine\Common\Collections\Criteria;
 use Solrphp\SolariumBundle\Common\Manager\IterableConfigNode;
+use Solrphp\SolariumBundle\Contract\SolrApi\Manager\ConfigNodeHandlerInterface;
+use Solrphp\SolariumBundle\Contract\SolrApi\Manager\ConfigNodeInterface;
 use Solrphp\SolariumBundle\Contract\SolrApi\Manager\SolrApiManagerInterface;
-use Solrphp\SolariumBundle\Contract\SolrApi\Processor\ConfigNodeInterface;
-use Solrphp\SolariumBundle\Contract\SolrApi\Processor\ConfigNodeProcessorInterface;
 use Solrphp\SolariumBundle\Exception\ProcessorException;
 use Solrphp\SolariumBundle\Exception\UnexpectedValueException;
 use Solrphp\SolariumBundle\SolrApi\Config\Enum\Command;
-use Solrphp\SolariumBundle\SolrApi\Config\Model\RequestHandler;
+use Solrphp\SolariumBundle\SolrApi\Config\Model\SearchComponent;
 use Solrphp\SolariumBundle\SolrApi\Config\Response\ConfigResponse;
 
 /**
- * RequestHandler ConfigNode Processor.
+ * SearchComponent ConfigNode Handler.
  *
  * @author wicliff <wicliff.wolda@gmail.com>
  */
-class RequestHandlerConfigNodeProcessor implements ConfigNodeProcessorInterface
+class SearchComponentConfigNodeHandler implements ConfigNodeHandlerInterface
 {
     /**
      * @var \Solrphp\SolariumBundle\Contract\SolrApi\Manager\SolrApiManagerInterface
@@ -38,9 +38,9 @@ class RequestHandlerConfigNodeProcessor implements ConfigNodeProcessorInterface
     /**
      * @param \Solrphp\SolariumBundle\Contract\SolrApi\Manager\SolrApiManagerInterface $manager
      *
-     * @return \Solrphp\SolariumBundle\Contract\SolrApi\Processor\ConfigNodeProcessorInterface
+     * @return \Solrphp\SolariumBundle\Contract\SolrApi\Manager\ConfigNodeHandlerInterface
      */
-    public function setManager(SolrApiManagerInterface $manager): ConfigNodeProcessorInterface
+    public function setManager(SolrApiManagerInterface $manager): ConfigNodeHandlerInterface
     {
         $this->manager = $manager;
 
@@ -50,7 +50,7 @@ class RequestHandlerConfigNodeProcessor implements ConfigNodeProcessorInterface
     /**
      * {@inheritdoc}
      */
-    public function process(ConfigNodeInterface $configNode): void
+    public function handle(ConfigNodeInterface $configNode): void
     {
         if (!$configNode instanceof IterableConfigNode) {
             throw new ProcessorException(sprintf('invalid config node use %s', IterableConfigNode::class));
@@ -59,11 +59,11 @@ class RequestHandlerConfigNodeProcessor implements ConfigNodeProcessorInterface
         try {
             $current = $this->manager->call($configNode->getPath());
         } catch (UnexpectedValueException $e) {
-            throw new ProcessorException(sprintf('unable to retrieve request handler config for sub path %s', $configNode->getPath()), $e);
+            throw new ProcessorException(sprintf('unable to retrieve search component config for sub path %s', $configNode->getPath()), $e);
         }
 
         if (!$current instanceof ConfigResponse) {
-            throw new ProcessorException(sprintf('invalid request handler response for sub path %s', $configNode->getPath()));
+            throw new ProcessorException(sprintf('invalid response for sub path %s', $configNode->getPath()));
         }
 
         foreach ($configNode->get() as $component) {
@@ -71,7 +71,7 @@ class RequestHandlerConfigNodeProcessor implements ConfigNodeProcessorInterface
                 ->andWhere(Criteria::expr()->eq('name', $component->getName()))
             ;
 
-            $command = $current->getConfig()->getRequestHandlers()->matching($criteria)->isEmpty() ? Command::ADD_REQUEST_HANDLER : Command::UPDATE_REQUEST_HANDLER;
+            $command = $current->getConfig()->getSearchComponents()->matching($criteria)->isEmpty() ? Command::ADD_SEARCH_COMPONENT : Command::UPDATE_SEARCH_COMPONENT;
 
             try {
                 $this->manager->addCommand($command, $component);
@@ -86,7 +86,7 @@ class RequestHandlerConfigNodeProcessor implements ConfigNodeProcessorInterface
      */
     public function supports(ConfigNodeInterface $configNode): bool
     {
-        return RequestHandler::class === $configNode->getType();
+        return SearchComponent::class === $configNode->getType();
     }
 
     /**
@@ -94,6 +94,6 @@ class RequestHandlerConfigNodeProcessor implements ConfigNodeProcessorInterface
      */
     public static function getDefaultPriority(): int
     {
-        return ConfigNodeProcessorInterface::PRIORITY;
+        return ConfigNodeHandlerInterface::PRIORITY;
     }
 }

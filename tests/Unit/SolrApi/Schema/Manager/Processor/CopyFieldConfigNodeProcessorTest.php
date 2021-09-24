@@ -16,14 +16,14 @@ use Doctrine\Common\Collections\ArrayCollection;
 use PHPUnit\Framework\TestCase;
 use Solrphp\SolariumBundle\Common\Manager\ConfigNode;
 use Solrphp\SolariumBundle\Common\Manager\IterableConfigNode;
-use Solrphp\SolariumBundle\Contract\SolrApi\Processor\ConfigNodeProcessorInterface;
+use Solrphp\SolariumBundle\Contract\SolrApi\Manager\ConfigNodeHandlerInterface;
 use Solrphp\SolariumBundle\Exception\ProcessorException;
 use Solrphp\SolariumBundle\Exception\UnexpectedValueException;
 use Solrphp\SolariumBundle\SolrApi\Config\Manager\ConfigManager;
 use Solrphp\SolariumBundle\SolrApi\Config\Model\UpdateHandler;
 use Solrphp\SolariumBundle\SolrApi\Config\Response\ConfigResponse;
 use Solrphp\SolariumBundle\SolrApi\Schema\Enum\Command;
-use Solrphp\SolariumBundle\SolrApi\Schema\Manager\Processor\CopyFieldConfigNodeProcessor;
+use Solrphp\SolariumBundle\SolrApi\Schema\Manager\Handler\CopyFieldConfigNodeHandler;
 use Solrphp\SolariumBundle\SolrApi\Schema\Manager\SchemaManager;
 use Solrphp\SolariumBundle\SolrApi\Schema\Model\CopyField;
 use Solrphp\SolariumBundle\SolrApi\Schema\Model\Field;
@@ -50,7 +50,7 @@ class CopyFieldConfigNodeProcessorTest extends TestCase
             ->method('call')
             ->willThrowException(new UnexpectedValueException('foo'));
 
-        (new CopyFieldConfigNodeProcessor())->setManager($manager)->process($node);
+        (new CopyFieldConfigNodeHandler())->setManager($manager)->handle($node);
     }
 
     /**
@@ -67,7 +67,7 @@ class CopyFieldConfigNodeProcessorTest extends TestCase
             ->method('call')
             ->willReturn(new ConfigResponse());
 
-        (new CopyFieldConfigNodeProcessor())->setManager($manager)->process($node);
+        (new CopyFieldConfigNodeHandler())->setManager($manager)->handle($node);
     }
 
     /**
@@ -82,7 +82,7 @@ class CopyFieldConfigNodeProcessorTest extends TestCase
         $manager = $this->getMockBuilder(ConfigManager::class)->disableOriginalConstructor()->getMock();
         $manager->expects(self::never())->method('call');
 
-        (new CopyFieldConfigNodeProcessor())->setManager($manager)->process($node);
+        (new CopyFieldConfigNodeHandler())->setManager($manager)->handle($node);
     }
 
     /**
@@ -118,7 +118,7 @@ class CopyFieldConfigNodeProcessorTest extends TestCase
                 [Command::DELETE_COPY_FIELD, $currentField]
             );
 
-        (new CopyFieldConfigNodeProcessor())->setManager($manager)->process($node);
+        (new CopyFieldConfigNodeHandler())->setManager($manager)->handle($node);
     }
 
     /**
@@ -154,7 +154,7 @@ class CopyFieldConfigNodeProcessorTest extends TestCase
             ->with(Command::ADD_COPY_FIELD, $field)
             ->willThrowException(new UnexpectedValueException('[error message]'));
 
-        (new CopyFieldConfigNodeProcessor())->setManager($manager)->process($node);
+        (new CopyFieldConfigNodeHandler())->setManager($manager)->handle($node);
     }
 
     /**
@@ -165,8 +165,8 @@ class CopyFieldConfigNodeProcessorTest extends TestCase
         $nodeOne = new IterableConfigNode(CopyField::class, 'bar', new ArrayCollection());
         $nodeTwo = new IterableConfigNode(Field::class, 'bar', new ArrayCollection());
 
-        self::assertTrue((new CopyFieldConfigNodeProcessor())->supports($nodeOne));
-        self::assertFalse((new CopyFieldConfigNodeProcessor())->supports($nodeTwo));
+        self::assertTrue((new CopyFieldConfigNodeHandler())->supports($nodeOne));
+        self::assertFalse((new CopyFieldConfigNodeHandler())->supports($nodeTwo));
     }
 
     /**
@@ -174,6 +174,6 @@ class CopyFieldConfigNodeProcessorTest extends TestCase
      */
     public function testPriority(): void
     {
-        self::assertSame(ConfigNodeProcessorInterface::PRIORITY, CopyFieldConfigNodeProcessor::getDefaultPriority());
+        self::assertSame(ConfigNodeHandlerInterface::PRIORITY, CopyFieldConfigNodeHandler::getDefaultPriority());
     }
 }

@@ -13,7 +13,7 @@ declare(strict_types=1);
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
 use Solrphp\SolariumBundle\Command\Config\SolrConfigUpdateCommand;
-use Solrphp\SolariumBundle\Contract\SolrApi\Processor\ConfigNodeProcessorInterface;
+use Solrphp\SolariumBundle\Contract\SolrApi\Manager\ConfigNodeHandlerInterface;
 use Solrphp\SolariumBundle\SolrApi\Config\Manager\ConfigManager;
 use Solrphp\SolariumBundle\SolrApi\Config\Manager\ConfigProcessor;
 use Solrphp\SolariumBundle\SolrApi\SolrConfigurationStore;
@@ -23,7 +23,7 @@ use Solrphp\SolariumBundle\SolrApi\SolrConfigurationStore;
  */
 return static function (ContainerConfigurator $container) {
     $container->services()
-        ->instanceof(ConfigNodeProcessorInterface::class)
+        ->instanceof(ConfigNodeHandlerInterface::class)
         ->tag('solrphp.config_node_processor')
 
         ->set('solrphp.manager.config', ConfigManager::class)
@@ -50,6 +50,6 @@ return static function (ContainerConfigurator $container) {
         ->alias(SolrConfigUpdateCommand::class, 'solrphp.command.config_update')
 
         // load config processors for this api.
-        ->load('Solrphp\\SolariumBundle\\SolrApi\\Config\\Manager\\Processor\\', '../../SolrApi/Config/Manager/Processor')
+        ->load('Solrphp\\SolariumBundle\\SolrApi\\Config\\Manager\\Handler\\', '../../SolrApi/Config/Manager/Handler')
     ;
 };

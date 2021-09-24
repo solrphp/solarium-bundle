@@ -16,13 +16,13 @@ use Doctrine\Common\Collections\ArrayCollection;
 use PHPUnit\Framework\TestCase;
 use Solrphp\SolariumBundle\Common\Manager\ConfigNode;
 use Solrphp\SolariumBundle\Common\Manager\IterableConfigNode;
-use Solrphp\SolariumBundle\Contract\SolrApi\Processor\ConfigNodeProcessorInterface;
+use Solrphp\SolariumBundle\Contract\SolrApi\Manager\ConfigNodeHandlerInterface;
 use Solrphp\SolariumBundle\Exception\ProcessorException;
 use Solrphp\SolariumBundle\Exception\UnexpectedValueException;
 use Solrphp\SolariumBundle\SolrApi\Config\Config\SolrConfig;
 use Solrphp\SolariumBundle\SolrApi\Config\Enum\Command;
 use Solrphp\SolariumBundle\SolrApi\Config\Manager\ConfigManager;
-use Solrphp\SolariumBundle\SolrApi\Config\Manager\Processor\RequestHandlerConfigNodeProcessor;
+use Solrphp\SolariumBundle\SolrApi\Config\Manager\Handler\RequestHandlerConfigNodeHandler;
 use Solrphp\SolariumBundle\SolrApi\Config\Model\RequestHandler;
 use Solrphp\SolariumBundle\SolrApi\Config\Model\SearchComponent;
 use Solrphp\SolariumBundle\SolrApi\Config\Model\UpdateHandler;
@@ -51,7 +51,7 @@ class RequestHandlerConfigNodeProcessorTest extends TestCase
             ->willThrowException(new UnexpectedValueException('foo'))
         ;
 
-        (new RequestHandlerConfigNodeProcessor())->setManager($manager)->process($node);
+        (new RequestHandlerConfigNodeHandler())->setManager($manager)->handle($node);
     }
 
     /**
@@ -69,7 +69,7 @@ class RequestHandlerConfigNodeProcessorTest extends TestCase
             ->willReturn(new SchemaResponse())
         ;
 
-        (new RequestHandlerConfigNodeProcessor())->setManager($manager)->process($node);
+        (new RequestHandlerConfigNodeHandler())->setManager($manager)->handle($node);
     }
 
     /**
@@ -86,7 +86,7 @@ class RequestHandlerConfigNodeProcessorTest extends TestCase
             ->method('call')
         ;
 
-        (new RequestHandlerConfigNodeProcessor())->setManager($manager)->process($node);
+        (new RequestHandlerConfigNodeHandler())->setManager($manager)->handle($node);
     }
 
     /**
@@ -118,7 +118,7 @@ class RequestHandlerConfigNodeProcessorTest extends TestCase
             ->with(Command::ADD_REQUEST_HANDLER, $requestHandler)
         ;
 
-        (new RequestHandlerConfigNodeProcessor())->setManager($manager)->process($node);
+        (new RequestHandlerConfigNodeHandler())->setManager($manager)->handle($node);
     }
 
     /**
@@ -150,7 +150,7 @@ class RequestHandlerConfigNodeProcessorTest extends TestCase
             ->with(Command::UPDATE_REQUEST_HANDLER, $requestHandler)
         ;
 
-        (new RequestHandlerConfigNodeProcessor())->setManager($manager)->process($node);
+        (new RequestHandlerConfigNodeHandler())->setManager($manager)->handle($node);
     }
 
     /**
@@ -183,7 +183,7 @@ class RequestHandlerConfigNodeProcessorTest extends TestCase
             ->willThrowException(new UnexpectedValueException())
         ;
 
-        (new RequestHandlerConfigNodeProcessor())->setManager($manager)->process($node);
+        (new RequestHandlerConfigNodeHandler())->setManager($manager)->handle($node);
     }
 
     /**
@@ -194,8 +194,8 @@ class RequestHandlerConfigNodeProcessorTest extends TestCase
         $nodeOne = new IterableConfigNode(RequestHandler::class, 'bar', new ArrayCollection());
         $nodeTwo = new IterableConfigNode(SearchComponent::class, 'bar', new ArrayCollection());
 
-        self::assertTrue((new RequestHandlerConfigNodeProcessor())->supports($nodeOne));
-        self::assertFalse((new RequestHandlerConfigNodeProcessor())->supports($nodeTwo));
+        self::assertTrue((new RequestHandlerConfigNodeHandler())->supports($nodeOne));
+        self::assertFalse((new RequestHandlerConfigNodeHandler())->supports($nodeTwo));
     }
 
     /**
@@ -203,6 +203,6 @@ class RequestHandlerConfigNodeProcessorTest extends TestCase
      */
     public function testPriority(): void
     {
-        self::assertSame(ConfigNodeProcessorInterface::PRIORITY, RequestHandlerConfigNodeProcessor::getDefaultPriority());
+        self::assertSame(ConfigNodeHandlerInterface::PRIORITY, RequestHandlerConfigNodeHandler::getDefaultPriority());
     }
 }

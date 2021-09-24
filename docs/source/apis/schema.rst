@@ -1,11 +1,13 @@
 Schema API
 ==========
 | see the `official Schema API reference <https://solr.apache.org/guide/schema-api.html>`_ for the api's description.
-| currently supported features and commands:
+
+.. include:: ../partials/config-handler.rstinc
 
 console commands
 ----------------
 | in order to use these commands, make sure you've got at least one :doc:`endpoint <../reference/configuration/endpoints>`, :doc:`client <../reference/configuration/endpoints>` and :doc:`managed schema <../reference/configuration/schemas>` configured.
+| currently supported features and commands:
 
 update
 ~~~~~~

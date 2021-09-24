@@ -16,7 +16,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use PHPUnit\Framework\TestCase;
 use Solrphp\SolariumBundle\Common\Manager\ConfigNode;
 use Solrphp\SolariumBundle\Common\Manager\IterableConfigNode;
-use Solrphp\SolariumBundle\Contract\SolrApi\Processor\ConfigNodeProcessorInterface;
+use Solrphp\SolariumBundle\Contract\SolrApi\Manager\ConfigNodeHandlerInterface;
 use Solrphp\SolariumBundle\Exception\ProcessorException;
 use Solrphp\SolariumBundle\Exception\UnexpectedValueException;
 use Solrphp\SolariumBundle\SolrApi\Config\Manager\ConfigManager;
@@ -24,7 +24,7 @@ use Solrphp\SolariumBundle\SolrApi\Config\Model\UpdateHandler;
 use Solrphp\SolariumBundle\SolrApi\Config\Response\ConfigResponse;
 use Solrphp\SolariumBundle\SolrApi\Schema\Enum\Command;
 use Solrphp\SolariumBundle\SolrApi\Schema\Enum\SubPath;
-use Solrphp\SolariumBundle\SolrApi\Schema\Manager\Processor\FieldTypeConfigNodeProcessor;
+use Solrphp\SolariumBundle\SolrApi\Schema\Manager\Handler\FieldTypeConfigNodeHandler;
 use Solrphp\SolariumBundle\SolrApi\Schema\Manager\SchemaManager;
 use Solrphp\SolariumBundle\SolrApi\Schema\Model\Field;
 use Solrphp\SolariumBundle\SolrApi\Schema\Model\FieldType;
@@ -52,7 +52,7 @@ class FieldTypeConfigNodeProcessorTest extends TestCase
             ->willThrowException(new UnexpectedValueException('foo'))
         ;
 
-        (new FieldTypeConfigNodeProcessor())->setManager($manager)->process($node);
+        (new FieldTypeConfigNodeHandler())->setManager($manager)->handle($node);
     }
 
     /**
@@ -70,7 +70,7 @@ class FieldTypeConfigNodeProcessorTest extends TestCase
             ->willReturn(new ConfigResponse())
         ;
 
-        (new FieldTypeConfigNodeProcessor())->setManager($manager)->process($node);
+        (new FieldTypeConfigNodeHandler())->setManager($manager)->handle($node);
     }
 
     /**
@@ -85,7 +85,7 @@ class FieldTypeConfigNodeProcessorTest extends TestCase
         $manager = $this->getMockBuilder(ConfigManager::class)->disableOriginalConstructor()->getMock();
         $manager->expects(self::never())->method('call');
 
-        (new FieldTypeConfigNodeProcessor())->setManager($manager)->process($node);
+        (new FieldTypeConfigNodeHandler())->setManager($manager)->handle($node);
     }
 
     /**
@@ -121,7 +121,7 @@ class FieldTypeConfigNodeProcessorTest extends TestCase
             )
         ;
 
-        (new FieldTypeConfigNodeProcessor())->setManager($manager)->process($node);
+        (new FieldTypeConfigNodeHandler())->setManager($manager)->handle($node);
     }
 
     /**
@@ -154,7 +154,7 @@ class FieldTypeConfigNodeProcessorTest extends TestCase
             ->willThrowException(new UnexpectedValueException('[error message]'))
         ;
 
-        (new FieldTypeConfigNodeProcessor())->setManager($manager)->process($node);
+        (new FieldTypeConfigNodeHandler())->setManager($manager)->handle($node);
     }
 
     /**
@@ -165,8 +165,8 @@ class FieldTypeConfigNodeProcessorTest extends TestCase
         $nodeOne = new IterableConfigNode(FieldType::class, 'foo', new ArrayCollection());
         $nodeTwo = new IterableConfigNode(Field::class, SubPath::LIST_DYNAMIC_FIELDS, new ArrayCollection());
 
-        self::assertTrue((new FieldTypeConfigNodeProcessor())->supports($nodeOne));
-        self::assertFalse((new FieldTypeConfigNodeProcessor())->supports($nodeTwo));
+        self::assertTrue((new FieldTypeConfigNodeHandler())->supports($nodeOne));
+        self::assertFalse((new FieldTypeConfigNodeHandler())->supports($nodeTwo));
     }
 
     /**
@@ -174,6 +174,6 @@ class FieldTypeConfigNodeProcessorTest extends TestCase
      */
     public function testPriority(): void
     {
-        self::assertSame(ConfigNodeProcessorInterface::PRIORITY, FieldTypeConfigNodeProcessor::getDefaultPriority());
+        self::assertSame(ConfigNodeHandlerInterface::PRIORITY, FieldTypeConfigNodeHandler::getDefaultPriority());
     }
 }

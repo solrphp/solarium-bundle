@@ -1,0 +1,9 @@
+config node handlers
+--------------------
+
+| when syncing the configuration with solr, this bundle uses a collection of handlers implementing the ``ConfigNodeHandlerInterface`` to take care of adding commands to the API appropriate manager.
+
+implementing your own config handler
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+| all handlers provided by this bundle have a `default priority <https://symfony.com/doc/current/service_container/tags.html#tagged-services-with-priority>`_ of 50 so if one likes to hook into the config handling you can register your own handler by having your service implement the ``ConfigNodeHandlerInterface``.
+| by specifying the default priority you have control over when your custom handler is executed (the higher the number, the earlier the tagged service will be located in the collection)

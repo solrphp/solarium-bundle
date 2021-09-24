@@ -16,13 +16,13 @@ use Doctrine\Common\Collections\ArrayCollection;
 use PHPUnit\Framework\TestCase;
 use Solrphp\SolariumBundle\Common\Manager\ConfigNode;
 use Solrphp\SolariumBundle\Common\Manager\IterableConfigNode;
-use Solrphp\SolariumBundle\Contract\SolrApi\Processor\ConfigNodeProcessorInterface;
+use Solrphp\SolariumBundle\Contract\SolrApi\Manager\ConfigNodeHandlerInterface;
 use Solrphp\SolariumBundle\Exception\ProcessorException;
 use Solrphp\SolariumBundle\Exception\UnexpectedValueException;
 use Solrphp\SolariumBundle\SolrApi\Config\Config\SolrConfig;
 use Solrphp\SolariumBundle\SolrApi\Config\Enum\Command;
 use Solrphp\SolariumBundle\SolrApi\Config\Manager\ConfigManager;
-use Solrphp\SolariumBundle\SolrApi\Config\Manager\Processor\QueryConfigNodeProcessor;
+use Solrphp\SolariumBundle\SolrApi\Config\Manager\Handler\QueryConfigNodeHandler;
 use Solrphp\SolariumBundle\SolrApi\Config\Model\Query;
 use Solrphp\SolariumBundle\SolrApi\Config\Model\RequestHandler;
 use Solrphp\SolariumBundle\SolrApi\Config\Response\ConfigResponse;
@@ -50,7 +50,7 @@ class QueryConfigNodeProcessorTest extends TestCase
             ->willThrowException(new UnexpectedValueException('foo'))
         ;
 
-        (new QueryConfigNodeProcessor())->setManager($manager)->process($node);
+        (new QueryConfigNodeHandler())->setManager($manager)->handle($node);
     }
 
     /**
@@ -68,7 +68,7 @@ class QueryConfigNodeProcessorTest extends TestCase
             ->willReturn(new SchemaResponse())
         ;
 
-        (new QueryConfigNodeProcessor())->setManager($manager)->process($node);
+        (new QueryConfigNodeHandler())->setManager($manager)->handle($node);
     }
 
     /**
@@ -122,7 +122,7 @@ class QueryConfigNodeProcessorTest extends TestCase
             )
         ;
 
-        (new QueryConfigNodeProcessor())->setManager($manager)->process($node);
+        (new QueryConfigNodeHandler())->setManager($manager)->handle($node);
     }
 
     /**
@@ -184,7 +184,7 @@ class QueryConfigNodeProcessorTest extends TestCase
             )
         ;
 
-        (new QueryConfigNodeProcessor())->setManager($manager)->process($node);
+        (new QueryConfigNodeHandler())->setManager($manager)->handle($node);
     }
 
     /**
@@ -230,7 +230,7 @@ class QueryConfigNodeProcessorTest extends TestCase
             )
         ;
 
-        (new QueryConfigNodeProcessor())->setManager($manager)->process($node);
+        (new QueryConfigNodeHandler())->setManager($manager)->handle($node);
     }
 
     /**
@@ -241,8 +241,8 @@ class QueryConfigNodeProcessorTest extends TestCase
         $nodeOne = new IterableConfigNode(Query::class, 'bar', new ArrayCollection());
         $nodeTwo = new IterableConfigNode(RequestHandler::class, 'bar', new ArrayCollection());
 
-        self::assertTrue((new QueryConfigNodeProcessor())->supports($nodeOne));
-        self::assertFalse((new QueryConfigNodeProcessor())->supports($nodeTwo));
+        self::assertTrue((new QueryConfigNodeHandler())->supports($nodeOne));
+        self::assertFalse((new QueryConfigNodeHandler())->supports($nodeTwo));
     }
 
     /**
@@ -250,6 +250,6 @@ class QueryConfigNodeProcessorTest extends TestCase
      */
     public function testPriority(): void
     {
-        self::assertSame(ConfigNodeProcessorInterface::PRIORITY, QueryConfigNodeProcessor::getDefaultPriority());
+        self::assertSame(ConfigNodeHandlerInterface::PRIORITY, QueryConfigNodeHandler::getDefaultPriority());
     }
 }

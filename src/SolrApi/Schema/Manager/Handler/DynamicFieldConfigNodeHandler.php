@@ -10,37 +10,38 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Solrphp\SolariumBundle\SolrApi\Schema\Manager\Processor;
+namespace Solrphp\SolariumBundle\SolrApi\Schema\Manager\Handler;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\Criteria;
 use Solrphp\SolariumBundle\Common\Manager\IterableConfigNode;
+use Solrphp\SolariumBundle\Contract\SolrApi\Manager\ConfigNodeHandlerInterface;
+use Solrphp\SolariumBundle\Contract\SolrApi\Manager\ConfigNodeInterface;
 use Solrphp\SolariumBundle\Contract\SolrApi\Manager\SolrApiManagerInterface;
-use Solrphp\SolariumBundle\Contract\SolrApi\Processor\ConfigNodeInterface;
-use Solrphp\SolariumBundle\Contract\SolrApi\Processor\ConfigNodeProcessorInterface;
 use Solrphp\SolariumBundle\Exception\ProcessorException;
 use Solrphp\SolariumBundle\Exception\UnexpectedValueException;
 use Solrphp\SolariumBundle\SolrApi\Schema\Enum\Command;
-use Solrphp\SolariumBundle\SolrApi\Schema\Model\CopyField;
-use Solrphp\SolariumBundle\SolrApi\Schema\Response\CopyFieldsResponse;
+use Solrphp\SolariumBundle\SolrApi\Schema\Enum\SubPath;
+use Solrphp\SolariumBundle\SolrApi\Schema\Model\Field;
+use Solrphp\SolariumBundle\SolrApi\Schema\Response\DynamicFieldsResponse;
 
 /**
- * CopyField ConfigNode Processor.
+ * DynamicField ConfigNode Handler.
  *
  * @author wicliff <wicliff.wolda@gmail.com>
  */
-class CopyFieldConfigNodeProcessor implements ConfigNodeProcessorInterface
+final class DynamicFieldConfigNodeHandler implements ConfigNodeHandlerInterface
 {
     /**
-     * @ var \Solrphp\SolariumBundle\Contract\SolrApi\Manager\SolrApiManagerInterface
+     * @var \Solrphp\SolariumBundle\Contract\SolrApi\Manager\SolrApiManagerInterface
      */
     private SolrApiManagerInterface $manager;
 
     /**
      * {@inheritdoc}
      */
-    public function setManager(SolrApiManagerInterface $manager): ConfigNodeProcessorInterface
+    public function setManager(SolrApiManagerInterface $manager): ConfigNodeHandlerInterface
     {
         $this->manager = $manager;
 
@@ -50,7 +51,7 @@ class CopyFieldConfigNodeProcessor implements ConfigNodeProcessorInterface
     /**
      * {@inheritdoc}
      */
-    public function process(ConfigNodeInterface $configNode): void
+    public function handle(ConfigNodeInterface $configNode): void
     {
         if (!$configNode instanceof IterableConfigNode) {
             throw new ProcessorException(sprintf('invalid config node use %s', IterableConfigNode::class));
@@ -59,16 +60,16 @@ class CopyFieldConfigNodeProcessor implements ConfigNodeProcessorInterface
         try {
             $current = $this->manager->call($configNode->getPath());
         } catch (UnexpectedValueException $e) {
-            throw new ProcessorException(sprintf('unable to retrieve current field type config: %s', $e->getMessage()), $e);
+            throw new ProcessorException(sprintf('unable to retrieve current dynamic field config: %s', $e->getMessage()), $e);
         }
 
-        if (!$current instanceof CopyFieldsResponse) {
-            throw new ProcessorException(sprintf('invalid field type response for sub path %s', $configNode->getPath()));
+        if (!$current instanceof DynamicFieldsResponse) {
+            throw new ProcessorException(sprintf('invalid dynamic field response for sub path %s', $configNode->getPath()));
         }
 
         try {
-            $this->processConfigured($configNode, $current->getCopyFields());
-            $this->processCurrent($configNode, $current->getCopyFields());
+            $this->processConfigured($configNode, $current->getDynamicFields());
+            $this->processCurrent($configNode, $current->getDynamicFields());
         } catch (UnexpectedValueException $e) {
             throw new ProcessorException(sprintf('unable to add command for type %s: %s', $configNode->getType(), $e->getMessage()), $e);
         }
@@ -79,7 +80,7 @@ class CopyFieldConfigNodeProcessor implements ConfigNodeProcessorInterface
      */
     public function supports(ConfigNodeInterface $configNode): bool
     {
-        return CopyField::class === $configNode->getType();
+        return Field::class === $configNode->getType() && SubPath::LIST_DYNAMIC_FIELDS === $configNode->getPath();
     }
 
     /**
@@ -87,27 +88,40 @@ class CopyFieldConfigNodeProcessor implements ConfigNodeProcessorInterface
      */
     public static function getDefaultPriority(): int
     {
-        return ConfigNodeProcessorInterface::PRIORITY;
+        return ConfigNodeHandlerInterface::PRIORITY;
+    }
+
+    /**
+     * @param ArrayCollection<array-key, Field>|Field[]          $collection
+     * @param \Solrphp\SolariumBundle\SolrApi\Schema\Model\Field $field
+     *
+     * @return Collection|Field[]
+     */
+    private function matching(ArrayCollection $collection, $field): Collection
+    {
+        $criteria = Criteria::create()
+            ->andWhere(Criteria::expr()->eq('name', $field->getName()));
+
+        return $collection->matching($criteria);
     }
 
     /**
      * @param \Solrphp\SolariumBundle\Common\Manager\IterableConfigNode $configNode
-     * @param ArrayCollection<array-key, CopyField>|CopyField[]         $current
+     * @param \Doctrine\Common\Collections\ArrayCollection<Field>       $current
      *
      * @throws \Solrphp\SolariumBundle\Exception\UnexpectedValueException
      */
     private function processConfigured(IterableConfigNode $configNode, ArrayCollection $current): void
     {
         foreach ($configNode->get() as $field) {
-            if (true === $this->matching($current, $field)->isEmpty()) {
-                $this->manager->addCommand(Command::ADD_COPY_FIELD, $field);
-            }
+            $command = $this->matching($current, $field)->isEmpty() ? Command::ADD_DYNAMIC_FIELD : Command::REPLACE_DYNAMIC_FIELD;
+            $this->manager->addCommand($command, $field);
         }
     }
 
     /**
      * @param \Solrphp\SolariumBundle\Common\Manager\IterableConfigNode $configNode
-     * @param ArrayCollection<array-key, CopyField>|CopyField[]         $current
+     * @param ArrayCollection<array-key, Field>                         $current
      *
      * @throws \Solrphp\SolariumBundle\Exception\UnexpectedValueException
      */
@@ -116,24 +130,9 @@ class CopyFieldConfigNodeProcessor implements ConfigNodeProcessorInterface
         $configured = new ArrayCollection(iterator_to_array($configNode->get()));
 
         foreach ($current as $field) {
-            if (true === $this->matching($configured, $field)->isEmpty()) {
-                $this->manager->addCommand(Command::DELETE_COPY_FIELD, $field);
+            if ($this->matching($configured, $field)->isEmpty()) {
+                $this->manager->addCommand(Command::DELETE_DYNAMIC_FIELD, new Field($field->getName()));
             }
         }
-    }
-
-    /**
-     * @param ArrayCollection<array-key, CopyField>|CopyField[]      $collection
-     * @param \Solrphp\SolariumBundle\SolrApi\Schema\Model\CopyField $field
-     *
-     * @return Collection<array-key, CopyField>|CopyField[]
-     */
-    private function matching(ArrayCollection $collection, CopyField $field): Collection
-    {
-        $criteria = Criteria::create()
-            ->andWhere(Criteria::expr()->eq('source', $field->getSource()))
-            ->andWhere(Criteria::expr()->eq('dest', $field->getDest()));
-
-        return $collection->matching($criteria);
     }
 }

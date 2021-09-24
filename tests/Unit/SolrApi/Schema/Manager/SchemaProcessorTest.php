@@ -17,8 +17,8 @@ use PHPUnit\Framework\TestCase;
 use Solrphp\SolariumBundle\Exception\ProcessorException;
 use Solrphp\SolariumBundle\SolrApi\Schema\Config\ManagedSchema;
 use Solrphp\SolariumBundle\SolrApi\Schema\Generator\SchemaNodeGenerator;
-use Solrphp\SolariumBundle\SolrApi\Schema\Manager\Processor\CopyFieldConfigNodeProcessor;
-use Solrphp\SolariumBundle\SolrApi\Schema\Manager\Processor\FieldConfigNodeProcessor;
+use Solrphp\SolariumBundle\SolrApi\Schema\Manager\Handler\CopyFieldConfigNodeHandler;
+use Solrphp\SolariumBundle\SolrApi\Schema\Manager\Handler\FieldConfigNodeHandler;
 use Solrphp\SolariumBundle\SolrApi\Schema\Manager\SchemaManager;
 use Solrphp\SolariumBundle\SolrApi\Schema\Manager\SchemaProcessor;
 use Solrphp\SolariumBundle\SolrApi\Schema\Model\Field;
@@ -50,11 +50,11 @@ class SchemaProcessorTest extends TestCase
         $manager->expects(self::once())->method('persist');
         $manager->expects(self::once())->method('flush');
 
-        $copyFieldProcessor = $this->getMockBuilder(CopyFieldConfigNodeProcessor::class)->getMock();
+        $copyFieldProcessor = $this->getMockBuilder(CopyFieldConfigNodeHandler::class)->getMock();
         $copyFieldProcessor->expects(self::once())->method('supports')->willReturn(false);
 
-        $fieldProcessor = $this->getMockBuilder(FieldConfigNodeProcessor::class)->onlyMethods(['process'])->getMock();
-        $fieldProcessor->expects(self::once())->method('process');
+        $fieldProcessor = $this->getMockBuilder(FieldConfigNodeHandler::class)->onlyMethods(['handle'])->getMock();
+        $fieldProcessor->expects(self::once())->method('handle');
 
         $processors = new ArrayCollection([
             $copyFieldProcessor,
@@ -84,8 +84,8 @@ class SchemaProcessorTest extends TestCase
             ->with('foo');
 
         $processors = new ArrayCollection([
-            new CopyFieldConfigNodeProcessor(),
-            new FieldConfigNodeProcessor(),
+            new CopyFieldConfigNodeHandler(),
+            new FieldConfigNodeHandler(),
         ]);
 
         $field = ObjectUtil::reflect(new Field());

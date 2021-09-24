@@ -12,7 +12,7 @@ declare(strict_types=1);
 
 namespace Solrphp\SolariumBundle\Common\Manager;
 
-use Solrphp\SolariumBundle\Contract\SolrApi\Processor\ConfigNodeInterface;
+use Solrphp\SolariumBundle\Contract\SolrApi\Manager\ConfigNodeInterface;
 
 /**
  * ConfigNode.

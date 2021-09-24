@@ -30,9 +30,9 @@ class ConfigProcessor
     private SolrConfig $config;
 
     /**
-     * @var iterable<\Solrphp\SolariumBundle\Contract\SolrApi\Processor\ConfigNodeProcessorInterface>
+     * @var iterable<\Solrphp\SolariumBundle\Contract\SolrApi\Manager\ConfigNodeHandlerInterface>
      */
-    private iterable $processors;
+    private iterable $handlerChain;
 
     /**
      * @var \Solrphp\SolariumBundle\SolrApi\Config\Manager\ConfigManager
@@ -45,13 +45,13 @@ class ConfigProcessor
     private ConfigNodeGenerator $generator;
 
     /**
-     * @param iterable<\Solrphp\SolariumBundle\Contract\SolrApi\Processor\ConfigNodeProcessorInterface> $processors
-     * @param \Solrphp\SolariumBundle\SolrApi\Config\Manager\ConfigManager                              $manager
-     * @param \Solrphp\SolariumBundle\SolrApi\Config\Generator\ConfigNodeGenerator|null                 $generator
+     * @param iterable<\Solrphp\SolariumBundle\Contract\SolrApi\Manager\ConfigNodeHandlerInterface> $handlers
+     * @param \Solrphp\SolariumBundle\SolrApi\Config\Manager\ConfigManager                          $manager
+     * @param \Solrphp\SolariumBundle\SolrApi\Config\Generator\ConfigNodeGenerator|null             $generator
      */
-    public function __construct(iterable $processors, ConfigManager $manager, ConfigNodeGenerator $generator = null)
+    public function __construct(iterable $handlers, ConfigManager $manager, ConfigNodeGenerator $generator = null)
     {
-        $this->processors = $processors;
+        $this->handlerChain = $handlers;
         $this->manager = $manager;
         $this->generator = $generator ?? new ConfigNodeGenerator();
     }
@@ -86,12 +86,12 @@ class ConfigProcessor
     public function process(): void
     {
         foreach ($this->generator->get($this->config) as $configNode) {
-            foreach ($this->processors as $processor) {
-                if (false === $processor->supports($configNode)) {
+            foreach ($this->handlerChain as $handler) {
+                if (false === $handler->supports($configNode)) {
                     continue;
                 }
 
-                $processor->setManager($this->manager)->process($configNode);
+                $handler->setManager($this->manager)->handle($configNode);
             }
         }
 

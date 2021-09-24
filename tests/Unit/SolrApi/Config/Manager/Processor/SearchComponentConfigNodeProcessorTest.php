@@ -16,13 +16,13 @@ use Doctrine\Common\Collections\ArrayCollection;
 use PHPUnit\Framework\TestCase;
 use Solrphp\SolariumBundle\Common\Manager\ConfigNode;
 use Solrphp\SolariumBundle\Common\Manager\IterableConfigNode;
-use Solrphp\SolariumBundle\Contract\SolrApi\Processor\ConfigNodeProcessorInterface;
+use Solrphp\SolariumBundle\Contract\SolrApi\Manager\ConfigNodeHandlerInterface;
 use Solrphp\SolariumBundle\Exception\ProcessorException;
 use Solrphp\SolariumBundle\Exception\UnexpectedValueException;
 use Solrphp\SolariumBundle\SolrApi\Config\Config\SolrConfig;
 use Solrphp\SolariumBundle\SolrApi\Config\Enum\Command;
 use Solrphp\SolariumBundle\SolrApi\Config\Manager\ConfigManager;
-use Solrphp\SolariumBundle\SolrApi\Config\Manager\Processor\SearchComponentConfigNodeProcessor;
+use Solrphp\SolariumBundle\SolrApi\Config\Manager\Handler\SearchComponentConfigNodeHandler;
 use Solrphp\SolariumBundle\SolrApi\Config\Model\RequestHandler;
 use Solrphp\SolariumBundle\SolrApi\Config\Model\SearchComponent;
 use Solrphp\SolariumBundle\SolrApi\Config\Model\UpdateHandler;
@@ -51,7 +51,7 @@ class SearchComponentConfigNodeProcessorTest extends TestCase
             ->willThrowException(new UnexpectedValueException('foo'))
         ;
 
-        (new SearchComponentConfigNodeProcessor())->setManager($manager)->process($node);
+        (new SearchComponentConfigNodeHandler())->setManager($manager)->handle($node);
     }
 
     /**
@@ -69,7 +69,7 @@ class SearchComponentConfigNodeProcessorTest extends TestCase
             ->willReturn(new SchemaResponse())
         ;
 
-        (new SearchComponentConfigNodeProcessor())->setManager($manager)->process($node);
+        (new SearchComponentConfigNodeHandler())->setManager($manager)->handle($node);
     }
 
     /**
@@ -84,7 +84,7 @@ class SearchComponentConfigNodeProcessorTest extends TestCase
         $manager = $this->getMockBuilder(ConfigManager::class)->disableOriginalConstructor()->getMock();
         $manager->expects(self::never())->method('call');
 
-        (new SearchComponentConfigNodeProcessor())->setManager($manager)->process($node);
+        (new SearchComponentConfigNodeHandler())->setManager($manager)->handle($node);
     }
 
     /**
@@ -116,7 +116,7 @@ class SearchComponentConfigNodeProcessorTest extends TestCase
             ->with(Command::ADD_SEARCH_COMPONENT, $requestHandler)
         ;
 
-        (new SearchComponentConfigNodeProcessor())->setManager($manager)->process($node);
+        (new SearchComponentConfigNodeHandler())->setManager($manager)->handle($node);
     }
 
     /**
@@ -148,7 +148,7 @@ class SearchComponentConfigNodeProcessorTest extends TestCase
             ->with(Command::UPDATE_SEARCH_COMPONENT, $requestHandler)
         ;
 
-        (new SearchComponentConfigNodeProcessor())->setManager($manager)->process($node);
+        (new SearchComponentConfigNodeHandler())->setManager($manager)->handle($node);
     }
 
     /**
@@ -181,7 +181,7 @@ class SearchComponentConfigNodeProcessorTest extends TestCase
             ->willThrowException(new UnexpectedValueException())
         ;
 
-        (new SearchComponentConfigNodeProcessor())->setManager($manager)->process($node);
+        (new SearchComponentConfigNodeHandler())->setManager($manager)->handle($node);
     }
 
     /**
@@ -192,8 +192,8 @@ class SearchComponentConfigNodeProcessorTest extends TestCase
         $nodeOne = new IterableConfigNode(SearchComponent::class, 'bar', new ArrayCollection());
         $nodeTwo = new IterableConfigNode(RequestHandler::class, 'bar', new ArrayCollection());
 
-        self::assertTrue((new SearchComponentConfigNodeProcessor())->supports($nodeOne));
-        self::assertFalse((new SearchComponentConfigNodeProcessor())->supports($nodeTwo));
+        self::assertTrue((new SearchComponentConfigNodeHandler())->supports($nodeOne));
+        self::assertFalse((new SearchComponentConfigNodeHandler())->supports($nodeTwo));
     }
 
     /**
@@ -201,6 +201,6 @@ class SearchComponentConfigNodeProcessorTest extends TestCase
      */
     public function testPriority(): void
     {
-        self::assertSame(ConfigNodeProcessorInterface::PRIORITY, SearchComponentConfigNodeProcessor::getDefaultPriority());
+        self::assertSame(ConfigNodeHandlerInterface::PRIORITY, SearchComponentConfigNodeHandler::getDefaultPriority());
     }
 }

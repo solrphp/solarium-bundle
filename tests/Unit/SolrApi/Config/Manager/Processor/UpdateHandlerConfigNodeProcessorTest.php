@@ -16,13 +16,13 @@ use Doctrine\Common\Collections\ArrayCollection;
 use PHPUnit\Framework\TestCase;
 use Solrphp\SolariumBundle\Common\Manager\ConfigNode;
 use Solrphp\SolariumBundle\Common\Manager\IterableConfigNode;
-use Solrphp\SolariumBundle\Contract\SolrApi\Processor\ConfigNodeProcessorInterface;
+use Solrphp\SolariumBundle\Contract\SolrApi\Manager\ConfigNodeHandlerInterface;
 use Solrphp\SolariumBundle\Exception\ProcessorException;
 use Solrphp\SolariumBundle\Exception\UnexpectedValueException;
 use Solrphp\SolariumBundle\SolrApi\Config\Config\SolrConfig;
 use Solrphp\SolariumBundle\SolrApi\Config\Enum\Command;
 use Solrphp\SolariumBundle\SolrApi\Config\Manager\ConfigManager;
-use Solrphp\SolariumBundle\SolrApi\Config\Manager\Processor\UpdateHandlerConfigNodeProcessor;
+use Solrphp\SolariumBundle\SolrApi\Config\Manager\Handler\UpdateHandlerConfigNodeHandler;
 use Solrphp\SolariumBundle\SolrApi\Config\Model\AutoSoftCommit;
 use Solrphp\SolariumBundle\SolrApi\Config\Model\Query;
 use Solrphp\SolariumBundle\SolrApi\Config\Model\RequestHandler;
@@ -52,7 +52,7 @@ class UpdateHandlerConfigNodeProcessorTest extends TestCase
             ->willThrowException(new UnexpectedValueException('foo'))
         ;
 
-        (new UpdateHandlerConfigNodeProcessor())->setManager($manager)->process($node);
+        (new UpdateHandlerConfigNodeHandler())->setManager($manager)->handle($node);
     }
 
     /**
@@ -70,7 +70,7 @@ class UpdateHandlerConfigNodeProcessorTest extends TestCase
             ->willReturn(new SchemaResponse())
         ;
 
-        (new UpdateHandlerConfigNodeProcessor())->setManager($manager)->process($node);
+        (new UpdateHandlerConfigNodeHandler())->setManager($manager)->handle($node);
     }
 
     /**
@@ -128,7 +128,7 @@ class UpdateHandlerConfigNodeProcessorTest extends TestCase
             )
         ;
 
-        (new UpdateHandlerConfigNodeProcessor())->setManager($manager)->process($node);
+        (new UpdateHandlerConfigNodeHandler())->setManager($manager)->handle($node);
     }
 
     /**
@@ -194,7 +194,7 @@ class UpdateHandlerConfigNodeProcessorTest extends TestCase
             )
         ;
 
-        (new UpdateHandlerConfigNodeProcessor())->setManager($manager)->process($node);
+        (new UpdateHandlerConfigNodeHandler())->setManager($manager)->handle($node);
     }
 
     /**
@@ -244,7 +244,7 @@ class UpdateHandlerConfigNodeProcessorTest extends TestCase
             )
         ;
 
-        (new UpdateHandlerConfigNodeProcessor())->setManager($manager)->process($node);
+        (new UpdateHandlerConfigNodeHandler())->setManager($manager)->handle($node);
     }
 
     /**
@@ -255,8 +255,8 @@ class UpdateHandlerConfigNodeProcessorTest extends TestCase
         $nodeOne = new IterableConfigNode(UpdateHandler::class, 'bar', new ArrayCollection());
         $nodeTwo = new IterableConfigNode(RequestHandler::class, 'bar', new ArrayCollection());
 
-        self::assertTrue((new UpdateHandlerConfigNodeProcessor())->supports($nodeOne));
-        self::assertFalse((new UpdateHandlerConfigNodeProcessor())->supports($nodeTwo));
+        self::assertTrue((new UpdateHandlerConfigNodeHandler())->supports($nodeOne));
+        self::assertFalse((new UpdateHandlerConfigNodeHandler())->supports($nodeTwo));
     }
 
     /**
@@ -264,6 +264,6 @@ class UpdateHandlerConfigNodeProcessorTest extends TestCase
      */
     public function testPriority(): void
     {
-        self::assertSame(ConfigNodeProcessorInterface::PRIORITY, UpdateHandlerConfigNodeProcessor::getDefaultPriority());
+        self::assertSame(ConfigNodeHandlerInterface::PRIORITY, UpdateHandlerConfigNodeHandler::getDefaultPriority());
     }
 }

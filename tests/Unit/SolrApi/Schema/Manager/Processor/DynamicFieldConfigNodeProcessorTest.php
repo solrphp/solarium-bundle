@@ -16,7 +16,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use PHPUnit\Framework\TestCase;
 use Solrphp\SolariumBundle\Common\Manager\ConfigNode;
 use Solrphp\SolariumBundle\Common\Manager\IterableConfigNode;
-use Solrphp\SolariumBundle\Contract\SolrApi\Processor\ConfigNodeProcessorInterface;
+use Solrphp\SolariumBundle\Contract\SolrApi\Manager\ConfigNodeHandlerInterface;
 use Solrphp\SolariumBundle\Exception\ProcessorException;
 use Solrphp\SolariumBundle\Exception\UnexpectedValueException;
 use Solrphp\SolariumBundle\SolrApi\Config\Manager\ConfigManager;
@@ -24,7 +24,7 @@ use Solrphp\SolariumBundle\SolrApi\Config\Model\UpdateHandler;
 use Solrphp\SolariumBundle\SolrApi\Config\Response\ConfigResponse;
 use Solrphp\SolariumBundle\SolrApi\Schema\Enum\Command;
 use Solrphp\SolariumBundle\SolrApi\Schema\Enum\SubPath;
-use Solrphp\SolariumBundle\SolrApi\Schema\Manager\Processor\DynamicFieldConfigNodeProcessor;
+use Solrphp\SolariumBundle\SolrApi\Schema\Manager\Handler\DynamicFieldConfigNodeHandler;
 use Solrphp\SolariumBundle\SolrApi\Schema\Manager\SchemaManager;
 use Solrphp\SolariumBundle\SolrApi\Schema\Model\Field;
 use Solrphp\SolariumBundle\SolrApi\Schema\Response\DynamicFieldsResponse;
@@ -50,7 +50,7 @@ class DynamicFieldConfigNodeProcessorTest extends TestCase
             ->method('call')
             ->willThrowException(new UnexpectedValueException('foo'));
 
-        (new DynamicFieldConfigNodeProcessor())->setManager($manager)->process($node);
+        (new DynamicFieldConfigNodeHandler())->setManager($manager)->handle($node);
     }
 
     /**
@@ -67,7 +67,7 @@ class DynamicFieldConfigNodeProcessorTest extends TestCase
             ->method('call')
             ->willReturn(new ConfigResponse());
 
-        (new DynamicFieldConfigNodeProcessor())->setManager($manager)->process($node);
+        (new DynamicFieldConfigNodeHandler())->setManager($manager)->handle($node);
     }
 
     /**
@@ -82,7 +82,7 @@ class DynamicFieldConfigNodeProcessorTest extends TestCase
         $manager = $this->getMockBuilder(ConfigManager::class)->disableOriginalConstructor()->getMock();
         $manager->expects(self::never())->method('call');
 
-        (new DynamicFieldConfigNodeProcessor())->setManager($manager)->process($node);
+        (new DynamicFieldConfigNodeHandler())->setManager($manager)->handle($node);
     }
 
     /**
@@ -117,7 +117,7 @@ class DynamicFieldConfigNodeProcessorTest extends TestCase
                 [Command::DELETE_DYNAMIC_FIELD, $currentField]
             );
 
-        (new DynamicFieldConfigNodeProcessor())->setManager($manager)->process($node);
+        (new DynamicFieldConfigNodeHandler())->setManager($manager)->handle($node);
     }
 
     /**
@@ -149,7 +149,7 @@ class DynamicFieldConfigNodeProcessorTest extends TestCase
             ->with(Command::ADD_DYNAMIC_FIELD, $field)
             ->willThrowException(new UnexpectedValueException('[error message]'));
 
-        (new DynamicFieldConfigNodeProcessor())->setManager($manager)->process($node);
+        (new DynamicFieldConfigNodeHandler())->setManager($manager)->handle($node);
     }
 
     /**
@@ -160,8 +160,8 @@ class DynamicFieldConfigNodeProcessorTest extends TestCase
         $nodeOne = new IterableConfigNode(Field::class, SubPath::LIST_DYNAMIC_FIELDS, new ArrayCollection());
         $nodeTwo = new IterableConfigNode(Field::class, SubPath::LIST_FIELDS, new ArrayCollection());
 
-        self::assertTrue((new DynamicFieldConfigNodeProcessor())->supports($nodeOne));
-        self::assertFalse((new DynamicFieldConfigNodeProcessor())->supports($nodeTwo));
+        self::assertTrue((new DynamicFieldConfigNodeHandler())->supports($nodeOne));
+        self::assertFalse((new DynamicFieldConfigNodeHandler())->supports($nodeTwo));
     }
 
     /**
@@ -169,6 +169,6 @@ class DynamicFieldConfigNodeProcessorTest extends TestCase
      */
     public function testPriority(): void
     {
-        self::assertSame(ConfigNodeProcessorInterface::PRIORITY, DynamicFieldConfigNodeProcessor::getDefaultPriority());
+        self::assertSame(ConfigNodeHandlerInterface::PRIORITY, DynamicFieldConfigNodeHandler::getDefaultPriority());
     }
 }

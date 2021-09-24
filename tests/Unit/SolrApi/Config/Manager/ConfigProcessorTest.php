@@ -19,8 +19,8 @@ use Solrphp\SolariumBundle\SolrApi\Config\Config\SolrConfig;
 use Solrphp\SolariumBundle\SolrApi\Config\Generator\ConfigNodeGenerator;
 use Solrphp\SolariumBundle\SolrApi\Config\Manager\ConfigManager;
 use Solrphp\SolariumBundle\SolrApi\Config\Manager\ConfigProcessor;
-use Solrphp\SolariumBundle\SolrApi\Config\Manager\Processor\RequestHandlerConfigNodeProcessor;
-use Solrphp\SolariumBundle\SolrApi\Config\Manager\Processor\SearchComponentConfigNodeProcessor;
+use Solrphp\SolariumBundle\SolrApi\Config\Manager\Handler\RequestHandlerConfigNodeHandler;
+use Solrphp\SolariumBundle\SolrApi\Config\Manager\Handler\SearchComponentConfigNodeHandler;
 use Solrphp\SolariumBundle\SolrApi\Config\Model\SearchComponent;
 use Solrphp\SolariumBundle\SolrApi\Config\Response\ConfigResponse;
 use Solrphp\SolariumBundle\Tests\Helper\ObjectUtil;
@@ -50,11 +50,11 @@ class ConfigProcessorTest extends TestCase
         $manager->expects(self::once())->method('persist');
         $manager->expects(self::once())->method('flush');
 
-        $requestProcessor = $this->getMockBuilder(RequestHandlerConfigNodeProcessor::class)->getMock();
+        $requestProcessor = $this->getMockBuilder(RequestHandlerConfigNodeHandler::class)->getMock();
         $requestProcessor->expects(self::once())->method('supports')->willReturn(false);
 
-        $searchProcessor = $this->getMockBuilder(SearchComponentConfigNodeProcessor::class)->onlyMethods(['process'])->getMock();
-        $searchProcessor->expects(self::once())->method('process');
+        $searchProcessor = $this->getMockBuilder(SearchComponentConfigNodeHandler::class)->onlyMethods(['handle'])->getMock();
+        $searchProcessor->expects(self::once())->method('handle');
 
         $processors = new ArrayCollection([
             $requestProcessor,
@@ -84,8 +84,8 @@ class ConfigProcessorTest extends TestCase
             ->with('foo');
 
         $processors = new ArrayCollection([
-            new RequestHandlerConfigNodeProcessor(),
-            new SearchComponentConfigNodeProcessor(),
+            new RequestHandlerConfigNodeHandler(),
+            new SearchComponentConfigNodeHandler(),
         ]);
 
         $searchComponent = ObjectUtil::reflect(new SearchComponent());
