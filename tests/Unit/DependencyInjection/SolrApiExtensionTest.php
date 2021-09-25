@@ -202,6 +202,8 @@ class SolrApiExtensionTest extends TestCase
                 ],
                 'second' => [
                     'core' => 'bar',
+                    'username' => 'bar',
+                    'password' => 'foo',
                 ],
             ],
         ];
@@ -217,7 +219,7 @@ class SolrApiExtensionTest extends TestCase
         $second = $container->getDefinition('solarium.client.endpoint.second');
 
         self::assertSame(['core' => 'foo', 'key' => 'default'], $default->getArgument(0));
-        self::assertSame(['core' => 'bar', 'key' => 'second'], $second->getArgument(0));
+        self::assertSame(['core' => 'bar', 'username' => 'bar', 'password' => 'foo', 'key' => 'second'], $second->getArgument(0));
     }
 
     /**

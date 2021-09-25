@@ -5,7 +5,7 @@ on:
   push:
 
 jobs:
-  phpstan:
+  phpunit:
     name: "phpunit"
 
     runs-on: ${{ matrix.operating-system }}
@@ -33,7 +33,7 @@ jobs:
           coverage: "pcov"
           php-version: "${{ matrix.php-version }}"
           ini-values: memory_limit=-1
-          tools: composer:v2, cs2pr
+          tools: composer:v2
 
       - name: "cache dependencies"
         uses: "actions/cache@v2"

@@ -59,6 +59,8 @@ class Configuration implements ConfigurationInterface
                             ->scalarNode('path')->end()
                             ->scalarNode('core')->end()
                             ->scalarNode('collection')->end()
+                            ->scalarNode('username')->end()
+                            ->scalarNode('password')->end()
                         ->end()
                     ->end()
                 ->end()

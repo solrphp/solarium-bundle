@@ -20,10 +20,10 @@ use Symfony\Component\Console\Output\OutputInterface;
  *
  * @author wicliff <wicliff.wolda@gmail.com>
  */
-class ErrorUtil
+final class ErrorUtil
 {
     /**
-     * not instantiable.
+     * @codeCoverageIgnore
      */
     private function __construct()
     {

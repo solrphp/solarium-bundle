@@ -17,6 +17,8 @@ $container->loadFromExtension('solrphp_solarium', [
             'path' => 'solr',
             'core' => 'demo',
             'collection' => 'demos',
+            'username' => 'foo',
+            'password' => 'bar',
         ],
     ],
     'default_client' => 'default',

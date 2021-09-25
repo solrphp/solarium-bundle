@@ -73,6 +73,8 @@ class SolrApiConfigurationTest extends AbstractExtensionConfigurationTestCase
                     'path' => 'solr',
                     'core' => 'demo',
                     'collection' => 'demos',
+                    'username' => 'foo',
+                    'password' => 'bar',
                 ],
             ],
             'default_client' => 'default',

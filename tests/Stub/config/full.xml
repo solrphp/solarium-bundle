@@ -2,7 +2,7 @@
 <container xmlns="http://symfony.com/schema/dic/services">
 
     <config xmlns="http://example.org/schema/dic/solrphp_solarium">
-        <endpoint name="default" scheme="https" host="127.0.0.1" port="8983" path="solr" core="demo" collection="demos" />
+        <endpoint name="default" scheme="https" host="127.0.0.1" port="8983" path="solr" core="demo" collection="demos" username="foo" password="bar" />
         <default_client>default</default_client>
         <client
                 name="default"
