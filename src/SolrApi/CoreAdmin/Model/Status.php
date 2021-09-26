@@ -13,6 +13,7 @@ declare(strict_types=1);
 namespace Solrphp\SolariumBundle\SolrApi\CoreAdmin\Model;
 
 use JMS\Serializer\Annotation as Serializer;
+use Solrphp\SolariumBundle\Common\Util\DateTimeUtil;
 
 /**
  * Status.
@@ -60,6 +61,7 @@ class Status implements \JsonSerializable
      * @var \DateTime
      *
      * @Serializer\Type("DateTime")
+     * @Serializer\Accessor(setter="setStartTime")
      */
     private \DateTime $startTime;
 
@@ -164,6 +166,8 @@ class Status implements \JsonSerializable
     }
 
     /**
+     * Solr only deals with utc dates so we set one without modifying the actual date time value.
+     *
      * @param \DateTime $startTime
      */
     public function setStartTime(\DateTime $startTime): void
@@ -215,7 +219,7 @@ class Status implements \JsonSerializable
                 'dataDir' => $this->dataDir,
                 'config' => $this->config,
                 'schema' => $this->schema,
-                'startTime' => $this->startTime->format('c'),
+                'startTime' => DateTimeUtil::toSolrString($this->startTime),
                 'uptime' => $this->uptime,
                 'index' => $this->index,
             ],

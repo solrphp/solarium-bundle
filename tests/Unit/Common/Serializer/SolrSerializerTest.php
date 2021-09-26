@@ -41,7 +41,7 @@ class SolrSerializerTest extends TestCase
      */
     public function testHandlers(): void
     {
-        $status = json_encode(['name' => 'foo', 'startTime' => '1973-11-01T00:00:00P']);
+        $status = json_encode(['name' => 'foo', 'startTime' => '1973-11-01 00:00:00']);
         $serializer = new SolrSerializer();
 
         $result = $serializer->deserialize($status, Status::class, 'solr');

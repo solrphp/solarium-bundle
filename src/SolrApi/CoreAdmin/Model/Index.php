@@ -13,6 +13,7 @@ declare(strict_types=1);
 namespace Solrphp\SolariumBundle\SolrApi\CoreAdmin\Model;
 
 use JMS\Serializer\Annotation as Serializer;
+use Solrphp\SolariumBundle\Common\Util\DateTimeUtil;
 
 /**
  * Index.
@@ -102,6 +103,7 @@ class Index implements \JsonSerializable
      * @var \DateTime
      *
      * @Serializer\Type("DateTime")
+     * @Serializer\Accessor(setter="setLastModified")
      */
     private \DateTime $lastModified;
 
@@ -304,6 +306,8 @@ class Index implements \JsonSerializable
     }
 
     /**
+     * Solr only deals with utc dates so we set one without modifying the actual date time value.
+     *
      * @param \DateTime $lastModified
      */
     public function setLastModified(\DateTime $lastModified): void
@@ -360,7 +364,7 @@ class Index implements \JsonSerializable
             'directory' => $this->directory,
             'segmentsFile' => $this->segmentsFile,
             'userData' => $this->userData,
-            'lastModified' => $this->lastModified->format('c'),
+            'lastModified' => DateTimeUtil::toSolrString($this->lastModified),
             'sizeInBytes' => $this->sizeInBytes,
             'size' => $this->size,
         ];

@@ -121,7 +121,12 @@ final class StatusTest extends TestCase
             $instance->$writer($value);
 
             if (null === $remover) {
-                self::assertSame($value, $instance->$reader());
+                if ($value instanceof \DateTime) {
+                    // check if actual time hasn't changed
+                    self::assertSame($value->format('Y-m-d\TH:i:s\Z'), gmdate('Y-m-d\TH:i:s\Z', $instance->$reader()->getTimestamp()));
+                } else {
+                    self::assertSame($value, $instance->$reader());
+                }
             } else {
                 self::assertContains($value, $instance->$reader());
             }

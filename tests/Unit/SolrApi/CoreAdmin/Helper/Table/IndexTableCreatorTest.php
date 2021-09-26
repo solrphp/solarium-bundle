@@ -90,22 +90,22 @@ class IndexTableCreatorTest extends TestCase
         $response->addStatus('foo', $status);
 
         $expected = <<<TABLE
-├───────────────────── index ─────────────────────┤
-│ core                │ foo                       │
-│ numDocs             │ 3                         │
-│ maxDoc              │ 10                        │
-│ deletedDocs         │ 2                         │
-│ indexHeapUsageBytes │ 10                        │
-│ version             │ 8                         │
-│ segmentCount        │ 8                         │
-│ current             │ 1                         │
-│ hasDeletions        │ 1                         │
-│ directory           │ foo                       │
-│ segmentsFile        │ bar                       │
-│ lastModified        │ 1970-01-01T00:00:00+00:00 │
-│ sizeInBytes         │ 90                        │
-│ size                │ 9                         │
-└─────────────────────┴───────────────────────────┘
+├────────────────── index ───────────────────┤
+│ core                │ foo                  │
+│ numDocs             │ 3                    │
+│ maxDoc              │ 10                   │
+│ deletedDocs         │ 2                    │
+│ indexHeapUsageBytes │ 10                   │
+│ version             │ 8                    │
+│ segmentCount        │ 8                    │
+│ current             │ 1                    │
+│ hasDeletions        │ 1                    │
+│ directory           │ foo                  │
+│ segmentsFile        │ bar                  │
+│ lastModified        │ 1970-01-01T00:00:00Z │
+│ sizeInBytes         │ 90                   │
+│ size                │ 9                    │
+└─────────────────────┴──────────────────────┘
 
 TABLE;
 
