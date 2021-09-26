@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace Solrphp\SolariumBundle\Common\Manager;
 
+use JMS\Serializer\SerializerInterface;
 use Solarium\Client;
 use Solarium\Core\Client\Request;
 use Solarium\Core\Query\Result\ResultInterface;
@@ -22,7 +23,6 @@ use Solrphp\SolariumBundle\Contract\SolrApi\Manager\SolrApiManagerInterface;
 use Solrphp\SolariumBundle\Contract\SolrApi\Response\ResponseInterface;
 use Solrphp\SolariumBundle\Exception\UnexpectedValueException;
 use Solrphp\SolariumBundle\SolrApi\CoreAdmin\Manager\CoreManager;
-use Symfony\Component\Serializer\SerializerInterface;
 
 /**
  * Abstract Solr Api Manager.
@@ -80,14 +80,14 @@ abstract class AbstractApiManager implements SolrApiManagerInterface
     protected CommandCollection $commands;
 
     /**
-     * @var \Symfony\Component\Serializer\SerializerInterface
+     * @var \JMS\Serializer\SerializerInterface
      */
     protected SerializerInterface $serializer;
 
     /**
      * @param \Solarium\Client                                              $client
      * @param \Solrphp\SolariumBundle\SolrApi\CoreAdmin\Manager\CoreManager $coreManager
-     * @param \Symfony\Component\Serializer\SerializerInterface             $serializer
+     * @param \JMS\Serializer\SerializerInterface                           $serializer
      */
     public function __construct(Client $client, CoreManager $coreManager, SerializerInterface $serializer)
     {

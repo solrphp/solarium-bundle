@@ -13,6 +13,7 @@ declare(strict_types=1);
 namespace Solrphp\SolariumBundle\SolrApi\Config\Config;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use JMS\Serializer\Annotation as Serializer;
 use Solrphp\SolariumBundle\Contract\SolrApi\CoreDependentConfigInterface;
 use Solrphp\SolariumBundle\SolrApi\Config\Model\Query;
 use Solrphp\SolariumBundle\SolrApi\Config\Model\RequestDispatcher;
@@ -34,11 +35,17 @@ class SolrConfig implements CoreDependentConfigInterface
 
     /**
      * @var ArrayCollection<int, \Solrphp\SolariumBundle\SolrApi\Config\Model\SearchComponent>
+     *
+     * @Serializer\SerializedName("searchComponent")
+     * @Serializer\Type("ArrayCollection<Solrphp\SolariumBundle\SolrApi\Config\Model\SearchComponent>")
      */
     private ArrayCollection $searchComponents;
 
     /**
      * @var ArrayCollection<int, \Solrphp\SolariumBundle\SolrApi\Config\Model\RequestHandler>
+     *
+     * @Serializer\SerializedName("requestHandler")
+     * @Serializer\Type("ArrayCollection<Solrphp\SolariumBundle\SolrApi\Config\Model\RequestHandler>")
      */
     private ArrayCollection $requestHandlers;
 

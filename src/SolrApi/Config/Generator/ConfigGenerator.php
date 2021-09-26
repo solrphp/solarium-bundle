@@ -13,17 +13,13 @@ declare(strict_types=1);
 namespace Solrphp\SolariumBundle\SolrApi\Config\Generator;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use JMS\Serializer\SerializerInterface;
 use Solrphp\SolariumBundle\SolrApi\Config\Config\SolrConfig;
 use Solrphp\SolariumBundle\SolrApi\Config\Model\Query;
 use Solrphp\SolariumBundle\SolrApi\Config\Model\RequestDispatcher;
 use Solrphp\SolariumBundle\SolrApi\Config\Model\RequestHandler;
 use Solrphp\SolariumBundle\SolrApi\Config\Model\SearchComponent;
 use Solrphp\SolariumBundle\SolrApi\Config\Model\UpdateHandler;
-use Symfony\Component\PropertyInfo\Extractor\ReflectionExtractor;
-use Symfony\Component\Serializer\NameConverter\CamelCaseToSnakeCaseNameConverter;
-use Symfony\Component\Serializer\Normalizer\ArrayDenormalizer;
-use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
-use Symfony\Component\Serializer\Serializer;
 
 /**
  * Config Generator.
@@ -33,16 +29,21 @@ use Symfony\Component\Serializer\Serializer;
 class ConfigGenerator
 {
     /**
-     * @var \Symfony\Component\Serializer\Serializer
+     * @var string
      */
-    private Serializer $serializer;
+    private string $format = 'json';
+
+    /**
+     * @var \JMS\Serializer\SerializerInterface
+     */
+    private SerializerInterface $serializer;
 
     /**
      * constructor.
      */
-    public function __construct()
+    public function __construct(SerializerInterface $serializer)
     {
-        $this->serializer = new Serializer([new ArrayDenormalizer(), new ObjectNormalizer(null, new CamelCaseToSnakeCaseNameConverter(), null, new ReflectionExtractor())]);
+        $this->serializer = $serializer;
     }
 
     /**
@@ -54,27 +55,27 @@ class ConfigGenerator
     {
         foreach ($configs as $config) {
             foreach ($config['search_components'] as $key => $searchComponent) {
-                $config['search_components'][$key] = $this->serializer->denormalize($searchComponent, SearchComponent::class);
+                $config['search_components'][$key] = $this->serializer->deserialize(json_encode($searchComponent, \JSON_THROW_ON_ERROR), SearchComponent::class, $this->format);
             }
 
             foreach ($config['request_handlers'] as $key => $requestHandler) {
-                $config['request_handlers'][$key] = $this->serializer->denormalize($requestHandler, RequestHandler::class);
+                $config['request_handlers'][$key] = $this->serializer->deserialize(json_encode($requestHandler, \JSON_THROW_ON_ERROR), RequestHandler::class, $this->format);
             }
 
             if (false === empty($config['query'])) {
-                $config['query'] = $this->serializer->denormalize($config['query'], Query::class);
+                $config['query'] = $this->serializer->deserialize(json_encode($config['query'], \JSON_THROW_ON_ERROR), Query::class, $this->format);
             } else {
                 $config['query'] = null;
             }
 
             if (false === empty($config['update_handler'])) {
-                $config['update_handler'] = $this->serializer->denormalize($config['update_handler'], UpdateHandler::class);
+                $config['update_handler'] = $this->serializer->deserialize(json_encode($config['update_handler'], \JSON_THROW_ON_ERROR), UpdateHandler::class, $this->format);
             } else {
                 $config['update_handler'] = null;
             }
 
             if (false === empty($config['request_dispatcher'])) {
-                $config['request_dispatcher'] = $this->serializer->denormalize($config['request_dispatcher'], RequestDispatcher::class);
+                $config['request_dispatcher'] = $this->serializer->deserialize(json_encode($config['request_dispatcher'], \JSON_THROW_ON_ERROR), RequestDispatcher::class, $this->format);
             } else {
                 $config['request_dispatcher'] = null;
             }

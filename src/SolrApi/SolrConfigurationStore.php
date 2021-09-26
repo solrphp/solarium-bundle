@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace Solrphp\SolariumBundle\SolrApi;
 
+use JMS\Serializer\SerializerInterface;
 use Solrphp\SolariumBundle\Common\Generator\LazyLoadingGenerator;
 use Solrphp\SolariumBundle\SolrApi\Config\Config\SolrConfig;
 use Solrphp\SolariumBundle\SolrApi\Config\Generator\ConfigGenerator;
@@ -39,7 +40,7 @@ final class SolrConfigurationStore
      * @param array<int, array<string, ManagedSchema>> $managedSchemas
      * @param array<int, array<string, SolrConfig>>    $solrConfigs
      */
-    public function __construct(array $managedSchemas, array $solrConfigs)
+    public function __construct(array $managedSchemas, array $solrConfigs, SerializerInterface $serializer)
     {
         $this->managedSchemas = new LazyLoadingGenerator($this->initSchemas($managedSchemas));
         $this->solrConfigs = new LazyLoadingGenerator($this->initConfigs($solrConfigs));

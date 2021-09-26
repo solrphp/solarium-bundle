@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<serializer>
+    <class name="Solrphp\SolariumBundle\SolrApi\Schema\Contract\FilterInterface" discriminator-field-name="class">
+        <discriminator-class value="org.apache.solr.analysis.HTMLStripCharFilter">Solrphp\SolariumBundle\SolrApi\Schema\Model\CharFilter\HTMLStripCharFilter</discriminator-class>
+        <discriminator-class value="solr.ASCIIFoldingFilterFactory">Solrphp\SolariumBundle\SolrApi\Schema\Model\Filter\ASCIIFoldingFilter</discriminator-class>
+        <discriminator-class value="solr.BeiderMorseFilterFactory">Solrphp\SolariumBundle\SolrApi\Schema\Model\Filter\BeiderMorseFilter</discriminator-class>
+        <discriminator-class value="solr.ClassicFilterFactory">Solrphp\SolariumBundle\SolrApi\Schema\Model\Filter\ClassicFilter</discriminator-class>
+        <discriminator-class value="solr.CommonGramsFilterFactory">Solrphp\SolariumBundle\SolrApi\Schema\Model\Filter\CommonGramsFilter</discriminator-class>
+        <discriminator-class value="solr.DaitchMokotoffSoundexFilterFactory">Solrphp\SolariumBundle\SolrApi\Schema\Model\Filter\DaitchMokotoffSoundexFilter</discriminator-class>
+        <discriminator-class value="solr.DelimitedBoostTokenFilterFactory">Solrphp\SolariumBundle\SolrApi\Schema\Model\Filter\DelimitedBoostTokenFilter</discriminator-class>
+        <discriminator-class value="solr.DoubleMetaphoneFilterFactory">Solrphp\SolariumBundle\SolrApi\Schema\Model\Filter\DoubleMetaphoneFilter</discriminator-class>
+        <discriminator-class value="solr.EdgeNGramFilterFactory">Solrphp\SolariumBundle\SolrApi\Schema\Model\Filter\EdgeNGramFilter</discriminator-class>
+        <discriminator-class value="solr.EnglishMinimalStemFilterFactory">Solrphp\SolariumBundle\SolrApi\Schema\Model\Filter\EnglishMinimalStemFilter</discriminator-class>
+        <discriminator-class value="solr.EnglishPossessiveFilterFactory">Solrphp\SolariumBundle\SolrApi\Schema\Model\Filter\EnglishPossessiveFilter</discriminator-class>
+        <discriminator-class value="solr.FingerprintFilterFactory">Solrphp\SolariumBundle\SolrApi\Schema\Model\Filter\FingerprintFilter</discriminator-class>
+        <discriminator-class value="solr.FlattenGraphFilterFactory">Solrphp\SolariumBundle\SolrApi\Schema\Model\Filter\FlattenGraphFilter</discriminator-class>
+        <discriminator-class value="solr.HunspellStemFilterFactory">Solrphp\SolariumBundle\SolrApi\Schema\Model\Filter\HunspellStemFilter</discriminator-class>
+        <discriminator-class value="solr.HyphenatedWordsFilterFactory">Solrphp\SolariumBundle\SolrApi\Schema\Model\Filter\HyphenatedWordsFilter</discriminator-class>
+        <discriminator-class value="solr.ICUFoldingFilterFactory">Solrphp\SolariumBundle\SolrApi\Schema\Model\Filter\ICUFoldingFilter</discriminator-class>
+        <discriminator-class value="solr.ICUNormalizer2CharFilterFactory">Solrphp\SolariumBundle\SolrApi\Schema\Model\CharFilter\ICUNormalizer2CharFilter</discriminator-class>
+        <discriminator-class value="solr.ICUNormalizer2FilterFactory">Solrphp\SolariumBundle\SolrApi\Schema\Model\Filter\ICUNormalizer2Filter</discriminator-class>
+        <discriminator-class value="solr.ICUTransformFilterFactory">Solrphp\SolariumBundle\SolrApi\Schema\Model\Filter\ICUTransformFilter</discriminator-class>
+        <discriminator-class value="solr.KeepWordFilterFactory">Solrphp\SolariumBundle\SolrApi\Schema\Model\Filter\KeepWordFilter</discriminator-class>
+        <discriminator-class value="solr.KStemFilterFactory">Solrphp\SolariumBundle\SolrApi\Schema\Model\Filter\KStemFilter</discriminator-class>
+        <discriminator-class value="solr.LengthFilterFactory">Solrphp\SolariumBundle\SolrApi\Schema\Model\Filter\LengthFilter</discriminator-class>
+        <discriminator-class value="solr.LimitTokenCountFilterFactory">Solrphp\SolariumBundle\SolrApi\Schema\Model\Filter\LimitTokenCountFilter</discriminator-class>
+        <discriminator-class value="solr.LimitTokenOffsetFilterFactory">Solrphp\SolariumBundle\SolrApi\Schema\Model\Filter\LimitTokenOffsetFilter</discriminator-class>
+        <discriminator-class value="solr.LimitTokenPositionFilterFactory">Solrphp\SolariumBundle\SolrApi\Schema\Model\Filter\LimitTokenPositionFilter</discriminator-class>
+        <discriminator-class value="solr.LowerCaseFilterFactory">Solrphp\SolariumBundle\SolrApi\Schema\Model\Filter\LowerCaseFilter</discriminator-class>
+        <discriminator-class value="solr.ManagedStopFilterFactory">Solrphp\SolariumBundle\SolrApi\Schema\Model\Filter\ManagedStopFilter</discriminator-class>
+        <discriminator-class value="solr.ManagedStopFilterFactory">Solrphp\SolariumBundle\SolrApi\Schema\Model\Filter\ManagedSynonymGraphFilter</discriminator-class>
+        <discriminator-class value="solr.MappingCharFilterFactory">Solrphp\SolariumBundle\SolrApi\Schema\Model\CharFilter\MappingCharFilter</discriminator-class>
+        <discriminator-class value="solr.NGramFilterFactory">Solrphp\SolariumBundle\SolrApi\Schema\Model\Filter\NGramFilter</discriminator-class>
+        <discriminator-class value="solr.NumericPayloadTokenFilterFactory">Solrphp\SolariumBundle\SolrApi\Schema\Model\Filter\NumericPayloadTokenFilter</discriminator-class>
+        <discriminator-class value="solr.PatternReplaceCharFilterFactory">Solrphp\SolariumBundle\SolrApi\Schema\Model\CharFilter\PatternReplaceCharFilter</discriminator-class>
+        <discriminator-class value="solr.PatternReplaceFilterFactory">Solrphp\SolariumBundle\SolrApi\Schema\Model\Filter\PatternReplaceFilter</discriminator-class>
+        <discriminator-class value="solr.PhoneticFilterFactory">Solrphp\SolariumBundle\SolrApi\Schema\Model\Filter\PhoneticFilter</discriminator-class>
+        <discriminator-class value="solr.PorterStemFilterFactory">Solrphp\SolariumBundle\SolrApi\Schema\Model\Filter\PorterStemFilter</discriminator-class>
+        <discriminator-class value="solr.ProtectedTermFilterFactory">Solrphp\SolariumBundle\SolrApi\Schema\Model\Filter\ProtectedTermFilter</discriminator-class>
+        <discriminator-class value="solr.RemoveDuplicatesTokenFilterFactory">Solrphp\SolariumBundle\SolrApi\Schema\Model\Filter\RemoveDuplicatesTokenFilter</discriminator-class>
+        <discriminator-class value="solr.ReversedWildcardFilterFactory">Solrphp\SolariumBundle\SolrApi\Schema\Model\Filter\ReversedWildcardFilter</discriminator-class>
+        <discriminator-class value="solr.ShingleFilterFactory">Solrphp\SolariumBundle\SolrApi\Schema\Model\Filter\ShingleFilter</discriminator-class>
+        <discriminator-class value="solr.SnowballPorterFilterFactory">Solrphp\SolariumBundle\SolrApi\Schema\Model\Filter\SnowballPorterFilter</discriminator-class>
+        <discriminator-class value="solr.StopFilterFactory">Solrphp\SolariumBundle\SolrApi\Schema\Model\Filter\StopFilter</discriminator-class>
+        <discriminator-class value="solr.SuggestStopFilterFactory">Solrphp\SolariumBundle\SolrApi\Schema\Model\Filter\SuggestStopFilter</discriminator-class>
+        <discriminator-class value="solr.SynonymGraphFilterFactory">Solrphp\SolariumBundle\SolrApi\Schema\Model\Filter\SynonymGraphFilter</discriminator-class>
+        <discriminator-class value="solr.TokenOffsetPayloadTokenFilterFactory">Solrphp\SolariumBundle\SolrApi\Schema\Model\Filter\TokenOffsetPayloadTokenFilter</discriminator-class>
+        <discriminator-class value="solr.TrimFilterFactory">Solrphp\SolariumBundle\SolrApi\Schema\Model\Filter\TrimFilter</discriminator-class>
+        <discriminator-class value="solr.TypeAsPayloadTokenFilterFactory">Solrphp\SolariumBundle\SolrApi\Schema\Model\Filter\TypeAsPayloadTokenFilter</discriminator-class>
+        <discriminator-class value="solr.TypeAsSynonymFilterFactory">Solrphp\SolariumBundle\SolrApi\Schema\Model\Filter\TypeAsSynonymFilter</discriminator-class>
+        <discriminator-class value="solr.TypeTokenFilterFactory">Solrphp\SolariumBundle\SolrApi\Schema\Model\Filter\TypeTokenFilter</discriminator-class>
+        <discriminator-class value="solr.WordDelimiterGraphFilterFactory">Solrphp\SolariumBundle\SolrApi\Schema\Model\Filter\WordDelimiterGraphFilter</discriminator-class>
+    </class>
+</serializer>

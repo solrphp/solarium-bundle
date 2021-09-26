@@ -14,6 +14,7 @@ namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
 use Solrphp\SolariumBundle\Command\Schema\SolrSchemaUpdateCommand;
 use Solrphp\SolariumBundle\Contract\SolrApi\Manager\ConfigNodeHandlerInterface;
+use Solrphp\SolariumBundle\SolrApi\Schema\Generator\SchemaGenerator;
 use Solrphp\SolariumBundle\SolrApi\Schema\Manager\SchemaManager;
 use Solrphp\SolariumBundle\SolrApi\Schema\Manager\SchemaProcessor;
 use Solrphp\SolariumBundle\SolrApi\SolrConfigurationStore;
@@ -30,9 +31,15 @@ return static function (ContainerConfigurator $container) {
             ->args([
                 service('solarium.client'),
                 service('solrphp.manager.core_admin'),
-                service('serializer'),
+                service('solrphp.serializer'),
             ])
         ->alias(SchemaManager::class, 'solrphp.manager.schema')
+
+        ->set('solrphp.generator.schema', SchemaGenerator::class)
+            ->args([
+                service('solrphp.serializer'),
+            ])
+        ->alias(SchemaGenerator::class, 'solrphp.generator.schema')
 
         ->set('solrphp.processor.schema', SchemaProcessor::class)
             ->args([

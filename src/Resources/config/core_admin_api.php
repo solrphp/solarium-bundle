@@ -30,7 +30,7 @@ return static function (ContainerConfigurator $container) {
         ->set('solrphp.manager.core_admin', CoreManager::class)
             ->args([
                 service('solarium.client'),
-                service('serializer'),
+                service('solrphp.serializer'),
             ])
         ->alias(CoreManager::class, 'solrphp.manager.core_admin')
 

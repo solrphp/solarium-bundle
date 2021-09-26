@@ -13,18 +13,11 @@ declare(strict_types=1);
 namespace Solrphp\SolariumBundle\SolrApi\Schema\Generator;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use JMS\Serializer\SerializerInterface;
 use Solrphp\SolariumBundle\SolrApi\Schema\Config\ManagedSchema;
 use Solrphp\SolariumBundle\SolrApi\Schema\Model\CopyField;
 use Solrphp\SolariumBundle\SolrApi\Schema\Model\Field;
 use Solrphp\SolariumBundle\SolrApi\Schema\Model\FieldType;
-use Symfony\Component\PropertyInfo\Extractor\ReflectionExtractor;
-use Symfony\Component\Serializer\Mapping\ClassDiscriminatorFromClassMetadata;
-use Symfony\Component\Serializer\Mapping\Factory\ClassMetadataFactory;
-use Symfony\Component\Serializer\Mapping\Loader\XmlFileLoader;
-use Symfony\Component\Serializer\NameConverter\CamelCaseToSnakeCaseNameConverter;
-use Symfony\Component\Serializer\Normalizer\ArrayDenormalizer;
-use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
-use Symfony\Component\Serializer\Serializer;
 
 /**
  * Schema Generator.
@@ -34,18 +27,21 @@ use Symfony\Component\Serializer\Serializer;
 class SchemaGenerator
 {
     /**
-     * @var \Symfony\Component\Serializer\Serializer
+     * @var string
      */
-    private Serializer $serializer;
+    private string $format = 'json';
+
+    /**
+     * @var \JMS\Serializer\SerializerInterface
+     */
+    private SerializerInterface $serializer;
 
     /**
      * construct.
      */
-    public function __construct()
+    public function __construct(SerializerInterface $serializer)
     {
-        $classMetadataFactory = new ClassMetadataFactory(new XmlFileLoader(__DIR__.'/../../../Resources/serializer/schema/discriminator-map.xml'));
-        $discriminator = new ClassDiscriminatorFromClassMetadata($classMetadataFactory);
-        $this->serializer = new Serializer([new ArrayDenormalizer(), new ObjectNormalizer(null, new CamelCaseToSnakeCaseNameConverter(), null, new ReflectionExtractor(), $discriminator)]);
+        $this->serializer = $serializer;
     }
 
     /**
@@ -57,19 +53,19 @@ class SchemaGenerator
     {
         foreach ($schemas as $schema) {
             foreach ($schema['fields'] as $name => $field) {
-                $schema['fields'][$name] = $this->serializer->denormalize($field, Field::class);
+                $schema['fields'][$name] = $this->serializer->deserialize(json_encode($field, \JSON_THROW_ON_ERROR), Field::class, $this->format);
             }
 
             foreach ($schema['dynamic_fields'] as $name => $field) {
-                $schema['dynamic_fields'][$name] = $this->serializer->denormalize($field, Field::class);
+                $schema['dynamic_fields'][$name] = $this->serializer->deserialize(json_encode($field, \JSON_THROW_ON_ERROR), Field::class, $this->format);
             }
 
             foreach ($schema['copy_fields'] as $index => $copyField) {
-                $schema['copy_fields'][$index] = $this->serializer->denormalize($copyField, CopyField::class);
+                $schema['copy_fields'][$index] = $this->serializer->deserialize(json_encode($copyField, \JSON_THROW_ON_ERROR), CopyField::class, $this->format);
             }
 
             foreach ($schema['field_types'] as $index => $copyField) {
-                $schema['field_types'][$index] = $this->serializer->denormalize($copyField, FieldType::class);
+                $schema['field_types'][$index] = $this->serializer->deserialize(json_encode($copyField, \JSON_THROW_ON_ERROR), FieldType::class, $this->format);
             }
 
             yield new ManagedSchema($schema['unique_key'], new ArrayCollection($schema['cores']), new ArrayCollection($schema['fields']), new ArrayCollection($schema['copy_fields']), new ArrayCollection($schema['dynamic_fields']), new ArrayCollection($schema['field_types']));
