@@ -43,14 +43,19 @@ class ConfigManager extends AbstractApiManager
     /**
      * {@inheritdoc}
      */
+    protected static ?string $api = null;
+
+    /**
+     * {@inheritdoc}
+     */
     public function call(string $path): ResponseInterface
     {
         $response = parent::call($path);
 
         if (false === \array_key_exists($path, ConfigSubPaths::RESPONSE_CLASSES)) {
-            return $this->serializer->deserialize($response->getBody(), ConfigResponse::class, 'json');
+            return $this->serializer->deserialize($response->getBody() ?? '{}', ConfigResponse::class, 'solr');
         }
 
-        return $this->serializer->deserialize($response->getBody(), ConfigSubPaths::RESPONSE_CLASSES[$path], 'json');
+        return $this->serializer->deserialize($response->getBody() ?? '{}', ConfigSubPaths::RESPONSE_CLASSES[$path], 'solr');
     }
 }

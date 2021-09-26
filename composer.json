@@ -33,6 +33,7 @@
         "php": ">=7.4 || ^8.0",
         "ext-json": "*",
         "doctrine/collections": "^1.6",
+        "jms/serializer": "^3.14",
         "solarium/solarium": "^6.1",
         "symfony/config": "5.3.*",
         "symfony/console": "5.3.*",

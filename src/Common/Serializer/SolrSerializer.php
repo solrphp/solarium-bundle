@@ -12,13 +12,15 @@ declare(strict_types=1);
 
 namespace Solrphp\SolariumBundle\Common\Serializer;
 
-use Doctrine\Common\Annotations\AnnotationReader;
 use JMS\Serializer\DeserializationContext;
-use JMS\Serializer\Naming\CamelCaseNamingStrategy;
+use JMS\Serializer\Handler\HandlerRegistry;
 use JMS\Serializer\SerializationContext;
 use JMS\Serializer\Serializer;
 use JMS\Serializer\SerializerBuilder;
 use JMS\Serializer\SerializerInterface;
+use Solrphp\SolariumBundle\Common\Serializer\Handler\PropertyListHandler;
+use Solrphp\SolariumBundle\Common\Serializer\Visitor\PrepareCallable;
+use Solrphp\SolariumBundle\Common\Serializer\Visitor\SolrDeserializationVisitorFactory;
 
 /**
  * Solr Serializer.
@@ -27,16 +29,25 @@ use JMS\Serializer\SerializerInterface;
  */
 class SolrSerializer implements SerializerInterface
 {
+    /**
+     * @var \JMS\Serializer\Serializer
+     */
     private Serializer $serializer;
 
+    /**
+     * @throws \JMS\Serializer\Exception\RuntimeException
+     */
     public function __construct()
     {
         $this->serializer = SerializerBuilder::create()
             ->addDefaultHandlers()
             ->addDefaultSerializationVisitors()
             ->addDefaultDeserializationVisitors()
-            ->setAnnotationReader(new AnnotationReader())
-            ->setPropertyNamingStrategy(new CamelCaseNamingStrategy())
+            ->setDeserializationVisitor('solr', new SolrDeserializationVisitorFactory(\Closure::fromCallable([new PrepareCallable(), 'prepareSolrResponse'])))
+            ->addDefaultHandlers()
+            ->configureHandlers(static function (HandlerRegistry $registry) {
+                $registry->registerSubscribingHandler(new PropertyListHandler());
+            })
             ->addMetadataDir(__DIR__.'/../../Resources/serializer/schema')
             ->build()
         ;
@@ -47,7 +58,7 @@ class SolrSerializer implements SerializerInterface
      */
     public function serialize($data, string $format, ?SerializationContext $context = null, ?string $type = null): string
     {
-        return $this->serializer->serialize($data, $format, $context, $type);
+        throw new \RuntimeException(sprintf('%s is not configured for serialization', __CLASS__));
     }
 
     /**

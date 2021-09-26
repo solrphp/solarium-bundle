@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace Solrphp\SolariumBundle\SolrApi\Schema\Model\Filter;
 
+use JMS\Serializer\Annotation as Serializer;
 use Solrphp\SolariumBundle\SolrApi\Schema\Contract\FilterInterface;
 
 /**
@@ -23,31 +24,43 @@ final class SuggestStopFilter implements FilterInterface, \JsonSerializable
 {
     /**
      * @var string
+     *
+     * @Serializer\Type("string")
      */
     private string $class = 'solr.SuggestStopFilterFactory';
 
     /**
      * @var string|null
+     *
+     * @Serializer\Type("string")
      */
     private ?string $words = null;
 
     /**
      * @var string|null
+     *
+     * @Serializer\Type("string")
      */
     private ?string $format = null;
 
     /**
      * @var string|null
+     *
+     * @Serializer\Type("string")
      */
     private ?string $wordset = null;
 
     /**
      * @var string|null
+     *
+     * @Serializer\Type("string")
      */
     private ?string $snowball = null;
 
     /**
      * @var bool|null
+     *
+     * @Serializer\Type("bool")
      */
     private ?bool $ignoreCase = null;
 

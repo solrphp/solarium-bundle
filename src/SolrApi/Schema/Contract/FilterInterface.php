@@ -19,7 +19,7 @@ namespace Solrphp\SolariumBundle\SolrApi\Schema\Contract;
  *
  * discriminator map is loaded from a xml mapping file.
  *
- * @see 'Resources\serializer\discriminator-map.xml'
+ * @see 'Resources\serializer\schema\Solrphp.SolariumBundle.SolrApi.Schema.Contract.FilterInterface.xml'
  */
 interface FilterInterface
 {

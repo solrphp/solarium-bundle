@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace Solrphp\SolariumBundle\SolrApi\Schema\Model\Filter;
 
+use JMS\Serializer\Annotation as Serializer;
 use Solrphp\SolariumBundle\SolrApi\Schema\Contract\FilterInterface;
 
 /**
@@ -23,26 +24,36 @@ final class ReversedWildcardFilter implements FilterInterface, \JsonSerializable
 {
     /**
      * @var string
+     *
+     * @Serializer\Type("string")
      */
     private string $class = 'solr.ReversedWildcardFilterFactory';
 
     /**
      * @var bool|null
+     *
+     * @Serializer\Type("bool")
      */
     private ?bool $withOriginal = null;
 
     /**
      * @var int|null
+     *
+     * @Serializer\Type("int")
      */
     private ?int $maxPosAsterisk = null;
 
     /**
      * @var int|null
+     *
+     * @Serializer\Type("int")
      */
     private ?int $maxPosQuestion = null;
 
     /**
      * @var float|null
+     *
+     * @Serializer\Type("float")
      */
     private ?float $maxFractionAsterisk = null;
 

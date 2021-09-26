@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace Solrphp\SolariumBundle\Tests\Unit\SolrApi\Schema\Manager;
 
+use JMS\Serializer\SerializerInterface;
 use PHPUnit\Framework\TestCase;
 use Solarium\Client;
 use Solarium\Core\Client\Adapter\Curl;
@@ -30,7 +31,6 @@ use Solrphp\SolariumBundle\SolrApi\Schema\Model\Field;
 use Solrphp\SolariumBundle\SolrApi\Schema\Response\FieldsResponse;
 use Solrphp\SolariumBundle\SolrApi\Schema\Response\SchemaResponse;
 use Symfony\Component\EventDispatcher\EventDispatcher;
-use Symfony\Component\Serializer\SerializerInterface;
 
 /**
  * Schema Manager Test.
@@ -60,7 +60,7 @@ class SchemaManagerTest extends TestCase
     public function testNoCustomResponseClass(): void
     {
         $options = [
-            'version' => Request::API_V2,
+            'version' => Request::API_V1,
             'method' => Request::METHOD_GET,
             'resultclass' => QueryType::class,
             'handler' => 'foo/schema/'.SubPathSchema::SHOW_GLOBAL_SIMILARITY,
@@ -84,7 +84,7 @@ class SchemaManagerTest extends TestCase
     public function testCustomResponseClass(): void
     {
         $options = [
-            'version' => Request::API_V2,
+            'version' => Request::API_V1,
             'method' => Request::METHOD_GET,
             'resultclass' => QueryType::class,
             'handler' => 'foo/schema/'.SubPathSchema::LIST_FIELDS,
@@ -167,7 +167,7 @@ class SchemaManagerTest extends TestCase
         $field->setType('bar');
 
         $options = [
-            'version' => Request::API_V2,
+            'version' => Request::API_V1,
             'method' => Request::METHOD_POST,
             'resultclass' => QueryType::class,
             'contenttype' => 'application/json',
@@ -270,7 +270,7 @@ class SchemaManagerTest extends TestCase
         $serializer
             ->expects(self::exactly($deserializeCount))
             ->method('deserialize')
-            ->with($responseData, $responseClass, 'json')
+            ->with($responseData, $responseClass, 'solr')
             ->willReturn(new $responseClass());
 
         return $serializer;

@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace Solrphp\SolariumBundle\Tests\Unit\Command;
 
+use JMS\Serializer\SerializerInterface;
 use PHPUnit\Framework\TestCase;
 use Solarium\Core\Client\Adapter\Curl;
 use Solarium\Core\Client\Response;
@@ -31,7 +32,6 @@ use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Tester\CommandTester;
 use Symfony\Component\EventDispatcher\EventDispatcher;
-use Symfony\Component\Serializer\SerializerInterface;
 
 /**
  * Solr Core Status Command Test.

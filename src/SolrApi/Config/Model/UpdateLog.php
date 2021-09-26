@@ -12,6 +12,8 @@ declare(strict_types=1);
 
 namespace Solrphp\SolariumBundle\SolrApi\Config\Model;
 
+use JMS\Serializer\Annotation as Serializer;
+
 /**
  * UpdateLog.
  *
@@ -21,21 +23,29 @@ class UpdateLog implements \JsonSerializable
 {
     /**
      * @var string
+     *
+     * @Serializer\Type("string")
      */
     private string $name;
 
     /**
      * @var int|null
+     *
+     * @Serializer\Type("int")
      */
     private ?int $numRecordsToKeep = null;
 
     /**
      * @var int|null
+     *
+     * @Serializer\Type("int")
      */
     private ?int $maxNumLogsToKeep = null;
 
     /**
      * @var int|null
+     *
+     * @Serializer\Type("int")
      */
     private ?int $numVersionBuckets = null;
 

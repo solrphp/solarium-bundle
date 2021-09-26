@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace Solrphp\SolariumBundle\SolrApi\Schema\Model\Filter;
 
+use JMS\Serializer\Annotation as Serializer;
 use Solrphp\SolariumBundle\SolrApi\Schema\Contract\FilterInterface;
 
 /**
@@ -23,50 +24,85 @@ final class WordDelimiterGraphFilter implements FilterInterface, \JsonSerializab
 {
     /**
      * @var string
+     *
+     * @Serializer\Type("string")
      */
     private string $class = 'solr.WordDelimiterGraphFilterFactory';
+
     /**
      * @var int|null
+     *
+     * @Serializer\Type("int")
      */
     private ?int $generateWordParts = null;
+
     /**
      * @var int|null
+     *
+     * @Serializer\Type("int")
      */
     private ?int $generateNumberParts = null;
+
     /**
      * @var int|null
+     *
+     * @Serializer\Type("int")
      */
     private ?int $splitOnCaseChange = null;
+
     /**
      * @var int|null
+     *
+     * @Serializer\Type("int")
      */
     private ?int $splitOnNumerics = null;
+
     /**
      * @var int|null
+     *
+     * @Serializer\Type("int")
      */
     private ?int $catenateWords = null;
+
     /**
      * @var int|null
+     *
+     * @Serializer\Type("int")
      */
     private ?int $catenateNumbers = null;
+
     /**
      * @var int|null
+     *
+     * @Serializer\Type("int")
      */
     private ?int $catenateAll = null;
+
     /**
      * @var int|null
+     *
+     * @Serializer\Type("int")
      */
     private ?int $preserveOriginal = null;
+
     /**
      * @var string|null
+     *
+     * @Serializer\Type("string")
      */
     private ?string $protected = null;
+
     /**
      * @var int|null
+     *
+     * @Serializer\Type("int")
      */
     private ?int $stemEnglishPossessive = null;
+
     /**
      * @var string|null
+     *
+     * @Serializer\Type("string")
      */
     private ?string $types = null;
 

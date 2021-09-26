@@ -12,6 +12,8 @@ declare(strict_types=1);
 
 namespace Solrphp\SolariumBundle\SolrApi\Schema\Model;
 
+use JMS\Serializer\Annotation as Serializer;
+
 /**
  * Field.
  *
@@ -23,16 +25,22 @@ class Field implements \JsonSerializable
 
     /**
      * @var string
+     *
+     * @Serializer\Type("string")
      */
     private string $name;
 
     /**
      * @var string
+     *
+     * @Serializer\Type("string")
      */
     private string $type;
 
     /**
      * @var string|null
+     *
+     * @Serializer\Type("string")
      */
     private ?string $default = null;
 

@@ -12,6 +12,8 @@ declare(strict_types=1);
 
 namespace Solrphp\SolariumBundle\SolrApi\Config\Model;
 
+use JMS\Serializer\Annotation as Serializer;
+
 /**
  * RequestParser.
  *
@@ -21,26 +23,36 @@ class RequestParser implements \JsonSerializable
 {
     /**
      * @var bool|null
+     *
+     * @Serializer\Type("bool")
      */
     private ?bool $enableRemoteStreaming = null;
 
     /**
      * @var bool|null
+     *
+     * @Serializer\Type("bool")
      */
     private ?bool $enableStreamBody = null;
 
     /**
      * @var int|null
+     *
+     * @Serializer\Type("int")
      */
     private ?int $multipartUploadLimitInKB = null;
 
     /**
      * @var int|null
+     *
+     * @Serializer\Type("int")
      */
     private ?int $formdataUploadLimitInKB = null;
 
     /**
      * @var bool|null
+     *
+     * @Serializer\Type("bool")
      */
     private ?bool $addHttpRequestToContext = null;
 

@@ -10,15 +10,15 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Solrphp\SolariumBundle\Tests\Unit\SolrApi\CoreAdmin;
+namespace Solrphp\SolariumBundle\Tests\Unit\SolrApi\CoreAdmin\Manager;
 
+use JMS\Serializer\SerializerInterface;
 use PHPUnit\Framework\TestCase;
 use Solarium\Client;
 use Solarium\Core\Client\Response;
 use Solrphp\SolariumBundle\SolrApi\CoreAdmin\Manager\CoreManager;
 use Solrphp\SolariumBundle\SolrApi\CoreAdmin\Response\CoreResponse;
 use Solrphp\SolariumBundle\SolrApi\CoreAdmin\Response\StatusResponse;
-use Symfony\Component\Serializer\SerializerInterface;
 
 /**
  * CoreManagerTest.
@@ -226,7 +226,7 @@ class CoreManagerTest extends TestCase
         $serializer
             ->expects(self::exactly($deserializeCount))
             ->method('deserialize')
-            ->with('', $responseClass, 'json')
+            ->with('', $responseClass, 'solr')
             ->willReturn(new $responseClass());
 
         return $serializer;

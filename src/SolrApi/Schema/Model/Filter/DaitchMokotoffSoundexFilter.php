@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace Solrphp\SolariumBundle\SolrApi\Schema\Model\Filter;
 
+use JMS\Serializer\Annotation as Serializer;
 use Solrphp\SolariumBundle\SolrApi\Schema\Contract\FilterInterface;
 
 /**
@@ -23,11 +24,15 @@ final class DaitchMokotoffSoundexFilter implements FilterInterface, \JsonSeriali
 {
     /**
      * @var string
+     *
+     * @Serializer\Type("string")
      */
     private string $class = 'solr.DaitchMokotoffSoundexFilterFactory';
 
     /**
      * @var bool
+     *
+     * @Serializer\Type("bool")
      */
     private bool $inject = true;
 

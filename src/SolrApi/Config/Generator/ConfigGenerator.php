@@ -39,7 +39,7 @@ class ConfigGenerator
     private SerializerInterface $serializer;
 
     /**
-     * constructor.
+     * @param \JMS\Serializer\SerializerInterface $serializer
      */
     public function __construct(SerializerInterface $serializer)
     {

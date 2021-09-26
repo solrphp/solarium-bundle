@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace Solrphp\SolariumBundle\SolrApi\Schema\Model\Filter;
 
+use JMS\Serializer\Annotation as Serializer;
 use Solrphp\SolariumBundle\SolrApi\Schema\Contract\FilterInterface;
 
 /**
@@ -23,26 +24,43 @@ final class ShingleFilter implements FilterInterface, \JsonSerializable
 {
     /**
      * @var string
+     *
+     * @Serializer\Type("string")
      */
     private string $class = 'solr.ShingleFilterFactory';
+
     /**
      * @var int|null
+     *
+     * @Serializer\Type("int")
      */
     private ?int $minShingleSize = null;
+
     /**
      * @var int|null
+     *
+     * @Serializer\Type("int")
      */
     private ?int $maxShingleSize = null;
+
     /**
      * @var bool|null
+     *
+     * @Serializer\Type("bool")
      */
     private ?bool $outputUnigrams = null;
+
     /**
      * @var bool|null
+     *
+     * @Serializer\Type("bool")
      */
     private ?bool $outputUnigramsIfNoShingles = null;
+
     /**
      * @var string|null
+     *
+     * @Serializer\Type("string")
      */
     private ?string $tokenSeparator = null;
 

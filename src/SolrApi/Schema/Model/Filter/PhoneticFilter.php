@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace Solrphp\SolariumBundle\SolrApi\Schema\Model\Filter;
 
+use JMS\Serializer\Annotation as Serializer;
 use Solrphp\SolariumBundle\SolrApi\Schema\Contract\FilterInterface;
 
 /**
@@ -23,21 +24,29 @@ final class PhoneticFilter implements FilterInterface, \JsonSerializable
 {
     /**
      * @var string
+     *
+     * @Serializer\Type("string")
      */
     private string $class = 'solr.PhoneticFilterFactory';
 
     /**
      * @var string
+     *
+     * @Serializer\Type("string")
      */
     private string $encoder;
 
     /**
      * @var bool|null
+     *
+     * @Serializer\Type("bool")
      */
     private ?bool $inject = null;
 
     /**
      * @var int|null
+     *
+     * @Serializer\Type("int")
      */
     private ?int $maxCodeLength = null;
 

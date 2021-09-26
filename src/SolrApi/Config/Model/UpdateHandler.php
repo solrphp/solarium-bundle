@@ -12,8 +12,10 @@ declare(strict_types=1);
 
 namespace Solrphp\SolariumBundle\SolrApi\Config\Model;
 
+use JMS\Serializer\Annotation as Serializer;
+
 /**
- * UpdateHandler.
+ * Update Handler.
  *
  * @author wicliff <wicliff.wolda@gmail.com>
  */
@@ -21,31 +23,43 @@ class UpdateHandler implements \JsonSerializable
 {
     /**
      * @var string
+     *
+     * @Serializer\Type("string")
      */
     private string $class;
 
     /**
      * @var \Solrphp\SolariumBundle\SolrApi\Config\Model\AutoCommit|null
+     *
+     * @Serializer\Type("Solrphp\SolariumBundle\SolrApi\Config\Model\AutoCommit")
      */
     private ?AutoCommit $autoCommit = null;
 
     /**
      * @var \Solrphp\SolariumBundle\SolrApi\Config\Model\AutoSoftCommit|null
+     *
+     * @Serializer\Type("Solrphp\SolariumBundle\SolrApi\Config\Model\AutoSoftCommit")
      */
     private ?AutoSoftCommit $autoSoftCommit = null;
 
     /**
      * @var \Solrphp\SolariumBundle\SolrApi\Config\Model\CommitWithin|null
+     *
+     * @Serializer\Type("Solrphp\SolariumBundle\SolrApi\Config\Model\CommitWithin")
      */
     private ?CommitWithin $commitWithin = null;
 
     /**
      * @var \Solrphp\SolariumBundle\SolrApi\Config\Model\UpdateLog|null
+     *
+     * @Serializer\Type("Solrphp\SolariumBundle\SolrApi\Config\Model\UpdateLog")
      */
     private ?UpdateLog $updateLog = null;
 
     /**
      * @var int|null
+     *
+     * @Serializer\Type("int")
      */
     private ?int $versionBucketLockTimeoutMs = null;
 

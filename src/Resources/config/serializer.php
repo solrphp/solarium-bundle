@@ -15,11 +15,12 @@ namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 use Solrphp\SolariumBundle\Common\Serializer\SolrSerializer;
 
 /*
- * configure solr schema api services and commands
+ * configure solrphp serializer.
  */
 return static function (ContainerConfigurator $container) {
     $container->services()
         ->set('solrphp.serializer', SolrSerializer::class)
+        ->autowire()
         ->alias(SolrSerializer::class, 'solrphp.serializer')
     ;
 };

@@ -39,11 +39,14 @@ final class SolrConfigurationStore
     /**
      * @param array<int, array<string, ManagedSchema>> $managedSchemas
      * @param array<int, array<string, SolrConfig>>    $solrConfigs
+     * @param \JMS\Serializer\SerializerInterface      $serializer
+     *
+     * @throws \JsonException
      */
     public function __construct(array $managedSchemas, array $solrConfigs, SerializerInterface $serializer)
     {
-        $this->managedSchemas = new LazyLoadingGenerator($this->initSchemas($managedSchemas));
-        $this->solrConfigs = new LazyLoadingGenerator($this->initConfigs($solrConfigs));
+        $this->managedSchemas = new LazyLoadingGenerator((new SchemaGenerator($serializer))->generate($managedSchemas));
+        $this->solrConfigs = new LazyLoadingGenerator((new ConfigGenerator($serializer))->generate($solrConfigs));
     }
 
     /**
@@ -76,25 +79,5 @@ final class SolrConfigurationStore
         }
 
         return null;
-    }
-
-    /**
-     * @param array<int, array<string, SolrConfig>> $configs
-     *
-     * @return \Generator<int, \Solrphp\SolariumBundle\Contract\SolrApi\CoreDependentConfigInterface>
-     */
-    private function initConfigs(array $configs): \Generator
-    {
-        return (new ConfigGenerator())->generate($configs);
-    }
-
-    /**
-     * @param array<int, array<string, ManagedSchema>> $schemas
-     *
-     * @return \Generator<int, \Solrphp\SolariumBundle\Contract\SolrApi\CoreDependentConfigInterface>
-     */
-    private function initSchemas(array $schemas): \Generator
-    {
-        return (new SchemaGenerator())->generate($schemas);
     }
 }

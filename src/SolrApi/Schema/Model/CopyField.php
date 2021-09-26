@@ -12,6 +12,8 @@ declare(strict_types=1);
 
 namespace Solrphp\SolariumBundle\SolrApi\Schema\Model;
 
+use JMS\Serializer\Annotation as Serializer;
+
 /**
  * Copy Field.
  *
@@ -21,16 +23,22 @@ final class CopyField implements \JsonSerializable
 {
     /**
      * @var string
+     *
+     * @Serializer\Type("string")
      */
     private string $source;
 
     /**
      * @var string
+     *
+     * @Serializer\Type("string")
      */
     private string $dest;
 
     /**
      * @var int|null
+     *
+     * @Serializer\Type("int")
      */
     private ?int $maxChars = null;
 

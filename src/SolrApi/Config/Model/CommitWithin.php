@@ -12,6 +12,8 @@ declare(strict_types=1);
 
 namespace Solrphp\SolariumBundle\SolrApi\Config\Model;
 
+use JMS\Serializer\Annotation as Serializer;
+
 /**
  * CommitWithin.
  *
@@ -21,6 +23,8 @@ class CommitWithin implements \JsonSerializable
 {
     /**
      * @var bool
+     *
+     * @Serializer\Type("bool")
      */
     private bool $softCommit;
 

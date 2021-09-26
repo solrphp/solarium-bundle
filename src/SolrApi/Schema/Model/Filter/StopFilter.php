@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace Solrphp\SolariumBundle\SolrApi\Schema\Model\Filter;
 
+use JMS\Serializer\Annotation as Serializer;
 use Solrphp\SolariumBundle\SolrApi\Schema\Contract\FilterInterface;
 
 /**
@@ -23,26 +24,36 @@ final class StopFilter implements FilterInterface, \JsonSerializable
 {
     /**
      * @var string
+     *
+     * @Serializer\Type("string")
      */
     private string $class = 'solr.StopFilterFactory';
 
     /**
      * @var string|null
+     *
+     * @Serializer\Type("string")
      */
     private ?string $words = null;
 
     /**
      * @var string|null
+     *
+     * @Serializer\Type("string")
      */
     private ?string $format = null;
 
     /**
      * @var bool|null
+     *
+     * @Serializer\Type("bool")
      */
     private ?bool $ignoreCase = null;
 
     /**
      * @var bool|null
+     *
+     * @Serializer\Type("bool")
      */
     private ?bool $enablePositionIncrements = null;
 

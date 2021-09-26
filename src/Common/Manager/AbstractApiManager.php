@@ -53,6 +53,13 @@ abstract class AbstractApiManager implements SolrApiManagerInterface
     protected static string $handler = '';
 
     /**
+     * api version or null for non-prefixed calls (config v1 calls).
+     *
+     * @var string|null
+     */
+    protected static ?string $api;
+
+    /**
      * @var \Solarium\Core\Client\Client
      */
     protected $client;
@@ -127,12 +134,13 @@ abstract class AbstractApiManager implements SolrApiManagerInterface
      */
     public function persist(): ResultInterface
     {
-        $query = $this->client->createApi()
-            ->setVersion(Request::API_V2)
-            ->setMethod(Request::METHOD_POST)
-            ->setContentType('application/json')
-            ->setHandler($this->getHandler())
-        ;
+        $query = $this->client
+            ->createApi([
+                'version' => static::$api,
+                'method' => Request::METHOD_POST,
+                'contenttype' => 'application/json',
+                'handler' => $this->getHandler(),
+            ]);
 
         $query->setOptions(['rawdata' => json_encode($this->commands, \JSON_THROW_ON_ERROR)], false);
 
@@ -159,11 +167,10 @@ abstract class AbstractApiManager implements SolrApiManagerInterface
         // todo: use setters once typehints are fixed
         $query = $this->client
             ->createApi([
-                'version' => Request::API_V2,
+                'version' => static::$api,
                 'method' => Request::METHOD_GET,
                 'handler' => sprintf('%s/%s', $this->getHandler(), $path),
-            ])
-        ;
+            ]);
 
         $response = $this->client->execute($query, $this->core)->getResponse();
 

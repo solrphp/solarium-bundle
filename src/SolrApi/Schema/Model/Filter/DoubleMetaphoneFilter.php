@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace Solrphp\SolariumBundle\SolrApi\Schema\Model\Filter;
 
+use JMS\Serializer\Annotation as Serializer;
 use Solrphp\SolariumBundle\SolrApi\Schema\Contract\FilterInterface;
 
 /**
@@ -23,16 +24,22 @@ final class DoubleMetaphoneFilter implements FilterInterface, \JsonSerializable
 {
     /**
      * @var string
+     *
+     * @Serializer\Type("string")
      */
     private string $class = 'solr.DoubleMetaphoneFilterFactory';
 
     /**
      * @var bool
+     *
+     * @Serializer\Type("bool")
      */
     private bool $inject = true;
 
     /**
      * @var int|null
+     *
+     * @Serializer\Type("int")
      */
     private ?int $maxCodeLength = null;
 

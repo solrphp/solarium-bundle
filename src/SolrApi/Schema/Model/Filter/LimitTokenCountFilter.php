@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace Solrphp\SolariumBundle\SolrApi\Schema\Model\Filter;
 
+use JMS\Serializer\Annotation as Serializer;
 use Solrphp\SolariumBundle\SolrApi\Schema\Contract\FilterInterface;
 
 /**
@@ -23,14 +24,22 @@ final class LimitTokenCountFilter implements FilterInterface, \JsonSerializable
 {
     /**
      * @var string
+     *
+     * @Serializer\Type("string")
      */
     private string $class = 'solr.LimitTokenCountFilterFactory';
+
     /**
      * @var int
+     *
+     * @Serializer\Type("int")
      */
     private int $maxTokenCount;
+
     /**
      * @var bool|null
+     *
+     * @Serializer\Type("bool")
      */
     private ?bool $consumeAllTokens = null;
 

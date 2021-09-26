@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace Solrphp\SolariumBundle\SolrApi\Schema\Manager;
 
+use Solarium\Core\Client\Request;
 use Solrphp\SolariumBundle\Common\Manager\AbstractApiManager;
 use Solrphp\SolariumBundle\Contract\SolrApi\Response\ResponseInterface;
 use Solrphp\SolariumBundle\SolrApi\Schema\Enum\Command as SchemaCommands;
@@ -43,6 +44,13 @@ class SchemaManager extends AbstractApiManager
     protected static string $handler = 'schema';
 
     /**
+     * api version or null for non-prefixed calls (config v1 calls).
+     *
+     * @var string|null
+     */
+    protected static ?string $api = Request::API_V1;
+
+    /**
      * {@inheritdoc}
      */
     public function call(string $path): ResponseInterface
@@ -50,9 +58,9 @@ class SchemaManager extends AbstractApiManager
         $response = parent::call($path);
 
         if (false === \array_key_exists($path, SchemaSubPaths::RESPONSE_CLASSES)) {
-            return $this->serializer->deserialize($response->getBody(), SchemaResponse::class, 'json');
+            return $this->serializer->deserialize($response->getBody() ?? '{}', SchemaResponse::class, 'solr');
         }
 
-        return $this->serializer->deserialize($response->getBody(), SchemaSubPaths::RESPONSE_CLASSES[$path], 'json');
+        return $this->serializer->deserialize($response->getBody() ?? '{}', SchemaSubPaths::RESPONSE_CLASSES[$path], 'solr');
     }
 }

@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace Solrphp\SolariumBundle\SolrApi\Schema\Model;
 
+use JMS\Serializer\Annotation as Serializer;
 use Solrphp\SolariumBundle\SolrApi\Schema\Contract\FilterInterface;
 
 /**
@@ -23,26 +24,36 @@ final class Analyzer implements \JsonSerializable
 {
     /**
      * @var string|null
+     *
+     * @Serializer\Type("string")
      */
     private ?string $class = null;
 
     /**
      * @var string|null
+     *
+     * @Serializer\Type("string")
      */
     private ?string $type = null;
 
     /**
      * @var \Solrphp\SolariumBundle\SolrApi\Schema\Contract\FilterInterface[]
+     *
+     * @Serializer\Type("array<Solrphp\SolariumBundle\SolrApi\Schema\Contract\FilterInterface>")
      */
     private array $charFilters = [];
 
     /**
      * @var \Solrphp\SolariumBundle\SolrApi\Schema\Model\Tokenizer|null
+     *
+     * @Serializer\Type("Solrphp\SolariumBundle\SolrApi\Schema\Model\Tokenizer")
      */
     private ?Tokenizer $tokenizer = null;
 
     /**
      * @var \Solrphp\SolariumBundle\SolrApi\Schema\Contract\FilterInterface[]
+     *
+     * @Serializer\Type("array<Solrphp\SolariumBundle\SolrApi\Schema\Contract\FilterInterface>")
      */
     private array $filters = [];
 

@@ -15,6 +15,7 @@ namespace Solrphp\SolariumBundle\Tests\Unit\Command;
 use Doctrine\Common\Collections\ArrayCollection;
 use PHPUnit\Framework\TestCase;
 use Solrphp\SolariumBundle\Command\Config\SolrConfigUpdateCommand;
+use Solrphp\SolariumBundle\Common\Serializer\SolrSerializer;
 use Solrphp\SolariumBundle\Exception\ProcessorException;
 use Solrphp\SolariumBundle\SolrApi\Config\Manager\ConfigManager;
 use Solrphp\SolariumBundle\SolrApi\Config\Manager\ConfigProcessor;
@@ -43,9 +44,9 @@ class SolrConfigUpdateCommandTest extends TestCase
 
         $manager = $this->getMockBuilder(ConfigManager::class)->disableOriginalConstructor()->getMock();
         $processor = new ConfigProcessor(new ArrayCollection(), $manager);
-        $store = new SolrConfigurationStore([], []);
+        $store = new SolrConfigurationStore([], [], new SolrSerializer());
 
-        $application->add(new \Solrphp\SolariumBundle\Command\Config\SolrConfigUpdateCommand($processor, $store));
+        $application->add(new SolrConfigUpdateCommand($processor, $store));
 
         $command = $application->find('solr:config:update');
         $commandTester = new CommandTester($command);
@@ -59,7 +60,7 @@ class SolrConfigUpdateCommandTest extends TestCase
      */
     public function testExecute(): void
     {
-        $store = new SolrConfigurationStore([$this->getEmptySchemaConfig()], [$this->getEmptyConfigConfig()]);
+        $store = new SolrConfigurationStore([$this->getEmptySchemaConfig()], [$this->getEmptyConfigConfig()], new SolrSerializer());
 
         $application = new Application();
 
@@ -85,7 +86,7 @@ class SolrConfigUpdateCommandTest extends TestCase
      */
     public function testExecuteFailure(): void
     {
-        $store = new SolrConfigurationStore([$this->getEmptySchemaConfig()], [$this->getEmptyConfigConfig()]);
+        $store = new SolrConfigurationStore([$this->getEmptySchemaConfig()], [$this->getEmptyConfigConfig()], new SolrSerializer());
 
         $application = new Application();
         $exception = new ProcessorException('error message');
@@ -95,7 +96,7 @@ class SolrConfigUpdateCommandTest extends TestCase
         $processor->expects(self::once())->method('withConfig')->willReturnSelf();
         $processor->expects(self::once())->method('process')->willThrowException($exception);
 
-        $application->add(new \Solrphp\SolariumBundle\Command\Config\SolrConfigUpdateCommand($processor, $store));
+        $application->add(new SolrConfigUpdateCommand($processor, $store));
 
         $command = $application->find('solr:config:update');
         $commandTester = new CommandTester($command);
@@ -113,7 +114,7 @@ class SolrConfigUpdateCommandTest extends TestCase
      */
     public function testExecuteNoConfig(): void
     {
-        $store = new SolrConfigurationStore([$this->getEmptySchemaConfig()], [$this->getEmptyConfigConfig()]);
+        $store = new SolrConfigurationStore([$this->getEmptySchemaConfig()], [$this->getEmptyConfigConfig()], new SolrSerializer());
 
         $application = new Application();
 
@@ -122,7 +123,7 @@ class SolrConfigUpdateCommandTest extends TestCase
         $processor->expects(self::never())->method('withConfig');
         $processor->expects(self::never())->method('process');
 
-        $application->add(new \Solrphp\SolariumBundle\Command\Config\SolrConfigUpdateCommand($processor, $store));
+        $application->add(new SolrConfigUpdateCommand($processor, $store));
 
         $command = $application->find('solr:config:update');
         $commandTester = new CommandTester($command);

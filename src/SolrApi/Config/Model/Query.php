@@ -12,6 +12,8 @@ declare(strict_types=1);
 
 namespace Solrphp\SolariumBundle\SolrApi\Config\Model;
 
+use JMS\Serializer\Annotation as Serializer;
+
 /**
  * Query.
  *
@@ -21,51 +23,71 @@ class Query implements \JsonSerializable
 {
     /**
      * @var bool|null
+     *
+     * @Serializer\Type("bool")
      */
     private ?bool $useFilterForSortedQuery = null;
 
     /**
      * @var int|null
+     *
+     * @Serializer\Type("int")
      */
     private ?int $queryResultWindowSize = null;
 
     /**
      * @var int|null
+     *
+     * @Serializer\Type("int")
      */
     private ?int $queryResultMaxDocsCached = null;
 
     /**
      * @var bool|null
+     *
+     * @Serializer\Type("bool")
      */
     private ?bool $enableLazyFieldLoading = null;
 
     /**
      * @var int|null
+     *
+     * @Serializer\Type("int")
      */
     private ?int $maxBooleanClauses = null;
 
     /**
      * @var \Solrphp\SolariumBundle\SolrApi\Config\Model\Cache|null
+     *
+     * @Serializer\Type("Solrphp\SolariumBundle\SolrApi\Config\Model\Cache")
      */
     private ?Cache $filterCache = null;
 
     /**
      * @var \Solrphp\SolariumBundle\SolrApi\Config\Model\Cache|null
+     *
+     * @Serializer\Type("Solrphp\SolariumBundle\SolrApi\Config\Model\Cache")
      */
     private ?Cache $queryResultCache = null;
 
     /**
      * @var \Solrphp\SolariumBundle\SolrApi\Config\Model\Cache|null
+     *
+     * @Serializer\Type("Solrphp\SolariumBundle\SolrApi\Config\Model\Cache")
      */
     private ?Cache $documentCache = null;
 
     /**
      * @var bool|null
+     *
+     * @Serializer\Type("bool")
      */
     private ?bool $useCircuitBreakers = null;
 
     /**
      * @var int|null
+     *
+     * @Serializer\Type("int")
      */
     private ?int $memoryCircuitBreakerThresholdPct = null;
 

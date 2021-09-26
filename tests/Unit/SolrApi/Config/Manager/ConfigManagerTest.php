@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace Solrphp\SolariumBundle\Tests\Unit\SolrApi\Config\Manager;
 
+use JMS\Serializer\SerializerInterface;
 use PHPUnit\Framework\TestCase;
 use Solarium\Client;
 use Solarium\Core\Client\Adapter\Curl;
@@ -29,7 +30,6 @@ use Solrphp\SolariumBundle\SolrApi\CoreAdmin\Manager\CoreManager;
 use Solrphp\SolariumBundle\SolrApi\CoreAdmin\Response\CoreResponse;
 use Solrphp\SolariumBundle\SolrApi\Schema\Model\Field;
 use Symfony\Component\EventDispatcher\EventDispatcher;
-use Symfony\Component\Serializer\SerializerInterface;
 
 /**
  * Config Manager Test.
@@ -60,7 +60,7 @@ class ConfigManagerTest extends TestCase
     public function testNoCustomResponseClass(): void
     {
         $options = [
-            'version' => Request::API_V2,
+            'version' => null,
             'method' => Request::METHOD_GET,
             'resultclass' => QueryType::class,
             'handler' => 'foo/config/'.SubPathConfig::GET_OVERLAY,
@@ -84,7 +84,7 @@ class ConfigManagerTest extends TestCase
     public function testCustomResponseClass(): void
     {
         $options = [
-            'version' => Request::API_V2,
+            'version' => null,
             'method' => Request::METHOD_GET,
             'resultclass' => QueryType::class,
             'handler' => 'foo/config/'.SubPathConfig::GET_REQUEST_HANDLERS,
@@ -166,7 +166,7 @@ class ConfigManagerTest extends TestCase
     public function testPersist(): void
     {
         $options = [
-            'version' => Request::API_V2,
+            'version' => null,
             'method' => Request::METHOD_POST,
             'resultclass' => QueryType::class,
             'contenttype' => 'application/json',
@@ -267,7 +267,7 @@ class ConfigManagerTest extends TestCase
         $serializer
             ->expects(self::exactly($deserializeCount))
             ->method('deserialize')
-            ->with($responseData, $responseClass, 'json')
+            ->with($responseData, $responseClass, 'solr')
             ->willReturn(new $responseClass($responseData));
 
         return $serializer;

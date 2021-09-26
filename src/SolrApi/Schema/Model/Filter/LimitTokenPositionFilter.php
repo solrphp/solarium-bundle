@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace Solrphp\SolariumBundle\SolrApi\Schema\Model\Filter;
 
+use JMS\Serializer\Annotation as Serializer;
 use Solrphp\SolariumBundle\SolrApi\Schema\Contract\FilterInterface;
 
 /**
@@ -23,16 +24,22 @@ final class LimitTokenPositionFilter implements FilterInterface, \JsonSerializab
 {
     /**
      * @var string
+     *
+     * @Serializer\Type("string")
      */
     private string $class = 'solr.LimitTokenPositionFilterFactory';
 
     /**
      * @var int
+     *
+     * @Serializer\Type("int")
      */
     private int $maxTokenPosition;
 
     /**
      * @var bool|null
+     *
+     * @Serializer\Type("bool")
      */
     private ?bool $consumeAllTokens = null;
 

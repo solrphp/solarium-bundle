@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace Solrphp\SolariumBundle\SolrApi\Schema\Model\Filter;
 
+use JMS\Serializer\Annotation as Serializer;
 use Solrphp\SolariumBundle\SolrApi\Schema\Contract\FilterInterface;
 
 /**
@@ -23,21 +24,29 @@ final class ProtectedTermFilter implements FilterInterface, \JsonSerializable
 {
     /**
      * @var string
+     *
+     * @Serializer\Type("string")
      */
     private string $class = 'solr.ProtectedTermFilterFactory';
 
     /**
      * @var string
+     *
+     * @Serializer\Type("string")
      */
     private string $protected;
 
     /**
      * @var string
+     *
+     * @Serializer\Type("string")
      */
     private string $wrappedFilters;
 
     /**
      * @var bool|null
+     *
+     * @Serializer\Type("bool")
      */
     private ?bool $ignoreCase = null;
 

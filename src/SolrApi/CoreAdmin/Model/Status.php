@@ -12,6 +12,8 @@ declare(strict_types=1);
 
 namespace Solrphp\SolariumBundle\SolrApi\CoreAdmin\Model;
 
+use JMS\Serializer\Annotation as Serializer;
+
 /**
  * Status.
  *
@@ -21,36 +23,50 @@ class Status implements \JsonSerializable
 {
     /**
      * @var string
+     *
+     * @Serializer\Type("string")
      */
     private string $name;
 
     /**
      * @var string
+     *
+     * @Serializer\Type("string")
      */
     private string $instanceDir;
 
     /**
      * @var string
+     *
+     * @Serializer\Type("string")
      */
     private string $dataDir;
 
     /**
      * @var string
+     *
+     * @Serializer\Type("string")
      */
     private string $config;
 
     /**
      * @var string
+     *
+     * @Serializer\Type("string")
      */
     private string $schema;
 
     /**
      * @var \DateTime
+     *
+     * @Serializer\Type("DateTime")
      */
     private \DateTime $startTime;
 
     /**
      * @var int
+     *
+     * @Serializer\Type("int")
      */
     private int $uptime;
 

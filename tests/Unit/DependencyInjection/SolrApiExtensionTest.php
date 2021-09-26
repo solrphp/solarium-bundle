@@ -83,7 +83,9 @@ class SolrApiExtensionTest extends TestCase
 
         $definition = $container->getDefinition(SolrConfigurationStore::class);
 
-        self::assertCount(2, $definition->getArguments());
+        self::assertTrue($container->hasDefinition('solrphp.serializer'));
+
+        self::assertCount(3, $definition->getArguments());
 
         // test with new container config config only
         $container = $this->createContainer();

@@ -37,7 +37,7 @@ class SchemaGenerator
     private SerializerInterface $serializer;
 
     /**
-     * construct.
+     * @param \JMS\Serializer\SerializerInterface $serializer
      */
     public function __construct(SerializerInterface $serializer)
     {

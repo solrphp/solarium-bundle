@@ -12,6 +12,8 @@ declare(strict_types=1);
 
 namespace Solrphp\SolariumBundle\SolrApi\CoreAdmin\Model;
 
+use JMS\Serializer\Annotation as Serializer;
+
 /**
  * User Data.
  *
@@ -21,11 +23,15 @@ class UserData implements \JsonSerializable
 {
     /**
      * @var string
+     *
+     * @Serializer\Type("string")
      */
     private string $commitCommandVer;
 
     /**
      * @var string
+     *
+     * @Serializer\Type("string")
      */
     private string $commitTimeMSec;
 

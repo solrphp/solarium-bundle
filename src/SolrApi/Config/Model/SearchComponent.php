@@ -12,6 +12,8 @@ declare(strict_types=1);
 
 namespace Solrphp\SolariumBundle\SolrApi\Config\Model;
 
+use JMS\Serializer\Annotation as Serializer;
+
 /**
  * Search Component.
  *
@@ -21,11 +23,15 @@ class SearchComponent implements \JsonSerializable
 {
     /**
      * @var string
+     *
+     * @Serializer\Type("string")
      */
     private string $name;
 
     /**
      * @var string
+     *
+     * @Serializer\Type("string")
      */
     private string $class;
 

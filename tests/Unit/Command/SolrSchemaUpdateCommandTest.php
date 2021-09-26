@@ -15,6 +15,7 @@ namespace Solrphp\SolariumBundle\Tests\Unit\Command;
 use Doctrine\Common\Collections\ArrayCollection;
 use PHPUnit\Framework\TestCase;
 use Solrphp\SolariumBundle\Command\Schema\SolrSchemaUpdateCommand;
+use Solrphp\SolariumBundle\Common\Serializer\SolrSerializer;
 use Solrphp\SolariumBundle\Exception\ProcessorException;
 use Solrphp\SolariumBundle\SolrApi\Schema\Manager\SchemaManager;
 use Solrphp\SolariumBundle\SolrApi\Schema\Manager\SchemaProcessor;
@@ -43,9 +44,9 @@ class SolrSchemaUpdateCommandTest extends TestCase
 
         $manager = $this->getMockBuilder(SchemaManager::class)->disableOriginalConstructor()->getMock();
         $processor = new SchemaProcessor(new ArrayCollection(), $manager);
-        $store = new SolrConfigurationStore([], []);
+        $store = new SolrConfigurationStore([], [], new SolrSerializer());
 
-        $application->add(new \Solrphp\SolariumBundle\Command\Schema\SolrSchemaUpdateCommand($processor, $store));
+        $application->add(new SolrSchemaUpdateCommand($processor, $store));
 
         $command = $application->find('solr:schema:update');
         $commandTester = new CommandTester($command);
@@ -59,7 +60,7 @@ class SolrSchemaUpdateCommandTest extends TestCase
      */
     public function testExecute(): void
     {
-        $store = new SolrConfigurationStore([$this->getEmptySchemaConfig()], [$this->getEmptyConfigConfig()]);
+        $store = new SolrConfigurationStore([$this->getEmptySchemaConfig()], [$this->getEmptyConfigConfig()], new SolrSerializer());
 
         $application = new Application();
 
@@ -68,7 +69,7 @@ class SolrSchemaUpdateCommandTest extends TestCase
         $processor->expects(self::once())->method('withSchema')->willReturnSelf();
         $processor->expects(self::once())->method('process');
 
-        $application->add(new \Solrphp\SolariumBundle\Command\Schema\SolrSchemaUpdateCommand($processor, $store));
+        $application->add(new SolrSchemaUpdateCommand($processor, $store));
 
         $command = $application->find('solr:schema:update');
         $commandTester = new CommandTester($command);
@@ -85,7 +86,7 @@ class SolrSchemaUpdateCommandTest extends TestCase
      */
     public function testExecuteFailure(): void
     {
-        $store = new SolrConfigurationStore([$this->getEmptySchemaConfig()], [$this->getEmptyConfigConfig()]);
+        $store = new SolrConfigurationStore([$this->getEmptySchemaConfig()], [$this->getEmptyConfigConfig()], new SolrSerializer());
 
         $application = new Application();
         $exception = new ProcessorException('error message');
@@ -113,7 +114,7 @@ class SolrSchemaUpdateCommandTest extends TestCase
      */
     public function testExecuteNoConfig(): void
     {
-        $store = new SolrConfigurationStore([$this->getEmptySchemaConfig()], [$this->getEmptyConfigConfig()]);
+        $store = new SolrConfigurationStore([$this->getEmptySchemaConfig()], [$this->getEmptyConfigConfig()], new SolrSerializer());
 
         $application = new Application();
 
@@ -122,7 +123,7 @@ class SolrSchemaUpdateCommandTest extends TestCase
         $processor->expects(self::never())->method('withSchema');
         $processor->expects(self::never())->method('process');
 
-        $application->add(new \Solrphp\SolariumBundle\Command\Schema\SolrSchemaUpdateCommand($processor, $store));
+        $application->add(new SolrSchemaUpdateCommand($processor, $store));
 
         $command = $application->find('solr:schema:update');
         $commandTester = new CommandTester($command);

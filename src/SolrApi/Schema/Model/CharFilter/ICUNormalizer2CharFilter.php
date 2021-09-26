@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace Solrphp\SolariumBundle\SolrApi\Schema\Model\CharFilter;
 
+use JMS\Serializer\Annotation as Serializer;
 use Solrphp\SolariumBundle\SolrApi\Schema\Contract\FilterInterface;
 
 /**
@@ -23,21 +24,29 @@ final class ICUNormalizer2CharFilter implements FilterInterface, \JsonSerializab
 {
     /**
      * @var string
+     *
+     * @Serializer\Type("string")
      */
     private string $class = 'solr.ICUNormalizer2CharFilterFactory';
 
     /**
      * @var string|null
+     *
+     * @Serializer\Type("string")
      */
     private ?string $name = null;
 
     /**
      * @var string|null
+     *
+     * @Serializer\Type("string")
      */
     private ?string $mode = null;
 
     /**
      * @var string|null
+     *
+     * @Serializer\Type("string")
      */
     private ?string $filter = null;
 

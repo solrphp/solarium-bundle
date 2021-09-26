@@ -12,7 +12,7 @@ declare(strict_types=1);
 
 namespace Solrphp\SolariumBundle\SolrApi\Config\Model;
 
-use Symfony\Component\Serializer\Annotation as Serializer;
+use JMS\Serializer\Annotation as Serializer;
 
 /**
  * Request Handler.
@@ -23,45 +23,57 @@ class RequestHandler implements \JsonSerializable
 {
     /**
      * @var string
+     *
+     * @Serializer\Type("string")
      */
     private string $name;
 
     /**
      * @var string
+     *
+     * @Serializer\Type("string")
      */
     private string $class;
 
     /**
      * @var \Solrphp\SolariumBundle\SolrApi\Config\Model\Property[]
+     *
+     * @Serializer\Type("PropertyList")
      */
     private array $defaults = [];
 
     /**
      * @var \Solrphp\SolariumBundle\SolrApi\Config\Model\Property[]
+     *
+     * @Serializer\Type("PropertyList")
      */
     private array $appends = [];
 
     /**
      * @var \Solrphp\SolariumBundle\SolrApi\Config\Model\Property[]
+     *
+     * @Serializer\Type("PropertyList")
      */
     private array $invariants = [];
 
     /**
      * @var string[]
+     *
+     * @Serializer\Type("array<string>")
      */
     private array $components = [];
 
     /**
      * @var string[]
      *
-     * @Serializer\SerializedName("first-components")
+     * @Serializer\Type("array<string>")
      */
     private array $firstComponents = [];
 
     /**
      * @var string[]
      *
-     * @Serializer\SerializedName("last-components")
+     * @Serializer\Type("array<string>")
      */
     private array $lastComponents = [];
 

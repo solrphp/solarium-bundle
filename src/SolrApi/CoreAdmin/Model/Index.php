@@ -12,6 +12,8 @@ declare(strict_types=1);
 
 namespace Solrphp\SolariumBundle\SolrApi\CoreAdmin\Model;
 
+use JMS\Serializer\Annotation as Serializer;
+
 /**
  * Index.
  *
@@ -21,71 +23,99 @@ class Index implements \JsonSerializable
 {
     /**
      * @var int
+     *
+     * @Serializer\Type("int")
      */
     private int $numDocs;
 
     /**
      * @var int
+     *
+     * @Serializer\Type("int")
      */
     private int $maxDoc;
 
     /**
      * @var int
+     *
+     * @Serializer\Type("int")
      */
     private int $deletedDocs;
 
     /**
      * @var int
+     *
+     * @Serializer\Type("int")
      */
     private int $indexHeapUsageBytes;
 
     /**
      * @var int
+     *
+     * @Serializer\Type("int")
      */
     private int $version;
 
     /**
      * @var int
+     *
+     * @Serializer\Type("int")
      */
     private int $segmentCount;
 
     /**
      * @var bool
+     *
+     * @Serializer\Type("bool")
      */
     private bool $current;
 
     /**
      * @var bool
+     *
+     * @Serializer\Type("bool")
      */
     private bool $hasDeletions;
 
     /**
      * @var string
+     *
+     * @Serializer\Type("string")
      */
     private string $directory;
 
     /**
      * @var string
+     *
+     * @Serializer\Type("string")
      */
     private string $segmentsFile;
 
     /**
      * @var \Solrphp\SolariumBundle\SolrApi\CoreAdmin\Model\UserData
+     *
+     * @Serializer\Type("Solrphp\SolariumBundle\SolrApi\CoreAdmin\Model\UserData")
      */
     private UserData $userData;
 
     /**
      * @var \DateTime
+     *
+     * @Serializer\Type("DateTime")
      */
     private \DateTime $lastModified;
 
     /**
      * @var int
+     *
+     * @Serializer\Type("int")
      */
     private int $sizeInBytes;
 
     /**
      * @var string
+     *
+     * @Serializer\Type("string")
      */
     private string $size;
 

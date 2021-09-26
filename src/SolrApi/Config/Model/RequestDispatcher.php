@@ -12,6 +12,8 @@ declare(strict_types=1);
 
 namespace Solrphp\SolariumBundle\SolrApi\Config\Model;
 
+use JMS\Serializer\Annotation as Serializer;
+
 /**
  * RequestDispatcher.
  *
@@ -21,6 +23,8 @@ class RequestDispatcher implements \JsonSerializable
 {
     /**
      * @var bool|null
+     *
+     * @Serializer\Type("bool")
      */
     private ?bool $handleSelect = null;
 

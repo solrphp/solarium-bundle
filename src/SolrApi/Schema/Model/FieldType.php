@@ -12,6 +12,8 @@ declare(strict_types=1);
 
 namespace Solrphp\SolariumBundle\SolrApi\Schema\Model;
 
+use JMS\Serializer\Annotation as Serializer;
+
 /**
  * Field Type.
  *
@@ -23,46 +25,64 @@ final class FieldType implements \JsonSerializable
 
     /**
      * @var string
+     *
+     * @Serializer\Type("string")
      */
     private string $name;
 
     /**
      * @var string|null
+     *
+     * @Serializer\Type("string")
      */
     private ?string $class = null;
 
     /**
      * @var int|null
+     *
+     * @Serializer\Type("int")
      */
     private ?int $positionIncrementGap = null;
 
     /**
      * @var bool|null
+     *
+     * @Serializer\Type("bool")
      */
     private ?bool $autoGeneratePhraseQueries = null;
 
     /**
      * @var string|null
+     *
+     * @Serializer\Type("string")
      */
     private ?string $synonymQueryStyle = null;
 
     /**
      * @var bool|null
+     *
+     * @Serializer\Type("bool")
      */
     private ?bool $enableGraphQueries = null;
 
     /**
      * @var string|null
+     *
+     * @Serializer\Type("string")
      */
     private ?string $docValuesFormat = null;
 
     /**
      * @var string|null
+     *
+     * @Serializer\Type("string")
      */
     private ?string $postingsFormat = null;
 
     /**
      * @var \Solrphp\SolariumBundle\SolrApi\Schema\Model\Analyzer[]
+     *
+     * @Serializer\Type("array<Solrphp\SolariumBundle\SolrApi\Schema\Model\Analyzer>")
      */
     private array $analyzers = [];
 

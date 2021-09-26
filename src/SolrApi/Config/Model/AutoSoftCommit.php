@@ -12,6 +12,8 @@ declare(strict_types=1);
 
 namespace Solrphp\SolariumBundle\SolrApi\Config\Model;
 
+use JMS\Serializer\Annotation as Serializer;
+
 /**
  * AutoSoftCommit.
  *
@@ -21,11 +23,15 @@ class AutoSoftCommit implements \JsonSerializable
 {
     /**
      * @var int|null
+     *
+     * @Serializer\Type("int")
      */
     private ?int $maxDocs = null;
 
     /**
      * @var int|null
+     *
+     * @Serializer\Type("int")
      */
     private ?int $maxTime = null;
 

@@ -12,13 +12,13 @@ declare(strict_types=1);
 
 namespace Solrphp\SolariumBundle\SolrApi\CoreAdmin\Manager;
 
+use JMS\Serializer\SerializerInterface;
 use Solarium\Client;
 use Solarium\Core\Client\Endpoint;
 use Solarium\Core\Client\Request;
 use Solrphp\SolariumBundle\Contract\SolrApi\Response\ResponseInterface;
 use Solrphp\SolariumBundle\SolrApi\CoreAdmin\Response\CoreResponse;
 use Solrphp\SolariumBundle\SolrApi\CoreAdmin\Response\StatusResponse;
-use Symfony\Component\Serializer\SerializerInterface;
 
 /**
  * Solr Collections Manager.
@@ -47,13 +47,13 @@ class CoreManager
     private Client $client;
 
     /**
-     * @var \Symfony\Component\Serializer\SerializerInterface
+     * @var \JMS\Serializer\SerializerInterface
      */
     private SerializerInterface $serializer;
 
     /**
-     * @param \Solarium\Client                                  $client
-     * @param \Symfony\Component\Serializer\SerializerInterface $serializer
+     * @param \Solarium\Client                    $client
+     * @param \JMS\Serializer\SerializerInterface $serializer
      */
     public function __construct(Client $client, SerializerInterface $serializer)
     {
@@ -68,7 +68,7 @@ class CoreManager
      */
     public function status(array $options = []): ResponseInterface
     {
-        return $this->call($this->getRequest(self::ACTION_STATUS, $options), StatusResponse::class);
+        return $this->call($this->getRequest(self::ACTION_STATUS, $options), new StatusResponse());
     }
 
     /**
@@ -142,16 +142,19 @@ class CoreManager
     }
 
     /**
-     * @param \Solarium\Core\Client\Request $request
-     * @param class-string                  $responseClass
+     * @param \Solarium\Core\Client\Request                                            $request
+     * @param \Solrphp\SolariumBundle\Contract\SolrApi\Response\ResponseInterface|null $responseClass
      *
      * @return \Solrphp\SolariumBundle\Contract\SolrApi\Response\ResponseInterface
+     *
+     * @throws \JMS\Serializer\Exception\RuntimeException
      */
-    private function call(Request $request, string $responseClass = CoreResponse::class): ResponseInterface
+    private function call(Request $request, ResponseInterface $responseClass = null): ResponseInterface
     {
+        $class = $responseClass ?? new CoreResponse();
         $response = $this->client->executeRequest($request, $this->getEndpoint());
 
-        return $this->serializer->deserialize($response->getBody(), $responseClass, 'json');
+        return $this->serializer->deserialize($response->getBody(), \get_class($class), 'solr');
     }
 
     /**
