@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace Solrphp\SolariumBundle\SolrApi\CoreAdmin\Response;
 
+use JMS\Serializer\Annotation as Serializer;
 use Solrphp\SolariumBundle\Common\Response\ResponseTrait;
 use Solrphp\SolariumBundle\Contract\SolrApi\Response\ResponseInterface;
 use Solrphp\SolariumBundle\SolrApi\CoreAdmin\Model\Status;
@@ -27,6 +28,8 @@ class StatusResponse implements ResponseInterface
 
     /**
      * @var array<string, Status>
+     *
+     * @Serializer\Type("array<Solrphp\SolariumBundle\SolrApi\CoreAdmin\Model\Status>")
      */
     private array $status = [];
 

@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace Solrphp\SolariumBundle\SolrApi\Config\Response;
 
+use JMS\Serializer\Annotation as Serializer;
 use Solarium\Core\Client\Response;
 use Solrphp\SolariumBundle\Common\Response\ResponseTrait;
 use Solrphp\SolariumBundle\Contract\SolrApi\Response\ResponseInterface;
@@ -28,6 +29,8 @@ class ConfigResponse implements ResponseInterface
 
     /**
      * @var \Solrphp\SolariumBundle\SolrApi\Config\Config\SolrConfig
+     *
+     * @Serializer\Type("Solrphp\SolariumBundle\SolrApi\Config\Config\SolrConfig")
      */
     private SolrConfig $config;
 

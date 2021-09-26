@@ -12,6 +12,8 @@ declare(strict_types=1);
 
 namespace Solrphp\SolariumBundle\Common\Response;
 
+use JMS\Serializer\Annotation as Serializer;
+
 /**
  * ResponseTrait.
  *
@@ -21,16 +23,22 @@ trait ResponseTrait
 {
     /**
      * @var \Solrphp\SolariumBundle\Common\Response\Header
+     *
+     * @Serializer\Type("Solrphp\SolariumBundle\Common\Response\Header")
      */
     private Header $responseHeader;
 
     /**
      * @var \Solrphp\SolariumBundle\Common\Response\Error|null
+     *
+     * @Serializer\Type("Solrphp\SolariumBundle\Common\Response\Error")
      */
     private ?Error $error = null;
 
     /**
      * @var string|null
+     *
+     * @Serializer\Type("string")
      */
     private ?string $body = null;
 

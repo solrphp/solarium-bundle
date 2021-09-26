@@ -13,6 +13,7 @@ declare(strict_types=1);
 namespace Solrphp\SolariumBundle\SolrApi\Schema\Response;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use JMS\Serializer\Annotation as Serializer;
 use Solrphp\SolariumBundle\Common\Response\ResponseTrait;
 use Solrphp\SolariumBundle\Contract\SolrApi\Response\ResponseInterface;
 use Solrphp\SolariumBundle\SolrApi\Schema\Model\Field;
@@ -28,6 +29,8 @@ class FieldsResponse implements ResponseInterface
 
     /**
      * @var ArrayCollection<array-key, \Solrphp\SolariumBundle\SolrApi\Schema\Model\Field>
+     *
+     * @Serializer\Type("ArrayCollection<Solrphp\SolariumBundle\SolrApi\Schema\Model\Field>")
      */
     private ArrayCollection $fields;
 

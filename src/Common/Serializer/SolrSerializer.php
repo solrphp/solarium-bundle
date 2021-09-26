@@ -19,6 +19,7 @@ use JMS\Serializer\Serializer;
 use JMS\Serializer\SerializerBuilder;
 use JMS\Serializer\SerializerInterface;
 use Solrphp\SolariumBundle\Common\Serializer\Handler\PropertyListHandler;
+use Solrphp\SolariumBundle\Common\Serializer\Handler\SolrDateHandler;
 use Solrphp\SolariumBundle\Common\Serializer\Visitor\PrepareCallable;
 use Solrphp\SolariumBundle\Common\Serializer\Visitor\SolrDeserializationVisitorFactory;
 
@@ -47,6 +48,7 @@ class SolrSerializer implements SerializerInterface
             ->addDefaultHandlers()
             ->configureHandlers(static function (HandlerRegistry $registry) {
                 $registry->registerSubscribingHandler(new PropertyListHandler());
+                $registry->registerSubscribingHandler(new SolrDateHandler());
             })
             ->addMetadataDir(__DIR__.'/../../Resources/serializer/schema')
             ->build()
