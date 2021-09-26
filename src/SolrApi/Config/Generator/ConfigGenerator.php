@@ -12,7 +12,6 @@ declare(strict_types=1);
 
 namespace Solrphp\SolariumBundle\SolrApi\Config\Generator;
 
-use Doctrine\Common\Collections\ArrayCollection;
 use JMS\Serializer\SerializerInterface;
 use Solrphp\SolariumBundle\SolrApi\Config\Config\SolrConfig;
 use Solrphp\SolariumBundle\SolrApi\Config\Model\Query;
@@ -80,7 +79,7 @@ class ConfigGenerator
                 $config['request_dispatcher'] = null;
             }
 
-            yield new SolrConfig(new ArrayCollection($config['cores']), new ArrayCollection($config['search_components']), new ArrayCollection($config['request_handlers']), $config['query'], $config['update_handler'], $config['request_dispatcher']);
+            yield new SolrConfig($config['cores'], $config['search_components'], $config['request_handlers'], $config['query'], $config['update_handler'], $config['request_dispatcher']);
         }
     }
 }

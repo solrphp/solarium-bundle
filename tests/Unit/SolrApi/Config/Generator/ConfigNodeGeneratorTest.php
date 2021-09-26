@@ -12,7 +12,6 @@ declare(strict_types=1);
 
 namespace Solrphp\SolariumBundle\Tests\Unit\SolrApi\Config\Generator;
 
-use Doctrine\Common\Collections\ArrayCollection;
 use PHPUnit\Framework\TestCase;
 use Solrphp\SolariumBundle\Common\Manager\IterableConfigNode;
 use Solrphp\SolariumBundle\SolrApi\Config\Config\SolrConfig;
@@ -41,7 +40,7 @@ class ConfigNodeGeneratorTest extends TestCase
         $query = new Query();
         $updateHandler = new UpdateHandler();
         $requestDispatcher = new RequestDispatcher();
-        $config = new SolrConfig(new ArrayCollection(['foo']), new ArrayCollection([$searchComponent]), new ArrayCollection([$requestHandler]), $query, $updateHandler, $requestDispatcher);
+        $config = new SolrConfig(['foo'], [$searchComponent], [$requestHandler], $query, $updateHandler, $requestDispatcher);
 
         $result = [
             [

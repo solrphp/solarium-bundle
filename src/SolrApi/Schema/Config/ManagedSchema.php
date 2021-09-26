@@ -36,41 +36,41 @@ final class ManagedSchema implements CoreDependentConfigInterface
     private ArrayCollection $cores;
 
     /**
-     * @var ArrayCollection<int, \Solrphp\SolariumBundle\SolrApi\Schema\Model\Field>
+     * @var ArrayCollection<int|string, \Solrphp\SolariumBundle\SolrApi\Schema\Model\Field>
      */
     private ArrayCollection $fields;
 
     /**
-     * @var ArrayCollection<int, \Solrphp\SolariumBundle\SolrApi\Schema\Model\CopyField>
+     * @var ArrayCollection<int|string, \Solrphp\SolariumBundle\SolrApi\Schema\Model\CopyField>
      */
     private ArrayCollection $copyFields;
 
     /**
-     * @var ArrayCollection<int, \Solrphp\SolariumBundle\SolrApi\Schema\Model\Field>
+     * @var ArrayCollection<int|string, \Solrphp\SolariumBundle\SolrApi\Schema\Model\Field>
      */
     private ArrayCollection $dynamicFields;
 
     /**
-     * @var \Doctrine\Common\Collections\ArrayCollection<int, \Solrphp\SolariumBundle\SolrApi\Schema\Model\FieldType>
+     * @var \Doctrine\Common\Collections\ArrayCollection<int|string, \Solrphp\SolariumBundle\SolrApi\Schema\Model\FieldType>
      */
     private ArrayCollection $fieldTypes;
 
     /**
-     * @param string                                                                                  $uniqueKey
-     * @param ArrayCollection<array-key, string>|null                                                 $cores
-     * @param ArrayCollection<array-key, \Solrphp\SolariumBundle\SolrApi\Schema\Model\Field>|null     $fields
-     * @param ArrayCollection<array-key, \Solrphp\SolariumBundle\SolrApi\Schema\Model\CopyField>|null $copyFields
-     * @param ArrayCollection<array-key, \Solrphp\SolariumBundle\SolrApi\Schema\Model\Field>|null     $dynamicFields
-     * @param ArrayCollection<array-key, \Solrphp\SolariumBundle\SolrApi\Schema\Model\FieldType>|null $fieldTypes
+     * @param string                            $uniqueKey
+     * @param array<string>|null                $cores
+     * @param array<int|string, Field>|null     $fields
+     * @param array<int|string, CopyField>|null $copyFields
+     * @param array<int|string, Field>|null     $dynamicFields
+     * @param array<int|string, FieldType>|null $fieldTypes
      */
-    public function __construct(string $uniqueKey, ArrayCollection $cores = null, ArrayCollection $fields = null, ArrayCollection $copyFields = null, ArrayCollection $dynamicFields = null, ArrayCollection $fieldTypes = null)
+    public function __construct(string $uniqueKey, array $cores = null, array $fields = null, array $copyFields = null, array $dynamicFields = null, array $fieldTypes = null)
     {
         $this->uniqueKey = $uniqueKey;
-        $this->cores = $cores ?? new ArrayCollection();
-        $this->fields = $fields ?? new ArrayCollection();
-        $this->copyFields = $copyFields ?? new ArrayCollection();
-        $this->dynamicFields = $dynamicFields ?? new ArrayCollection();
-        $this->fieldTypes = $fieldTypes ?? new ArrayCollection();
+        $this->cores = new ArrayCollection($cores ?? []);
+        $this->fields = new ArrayCollection($fields ?? []);
+        $this->copyFields = new ArrayCollection($copyFields ?? []);
+        $this->dynamicFields = new ArrayCollection($dynamicFields ?? []);
+        $this->fieldTypes = new ArrayCollection($fieldTypes ?? []);
     }
 
     /**
@@ -116,7 +116,7 @@ final class ManagedSchema implements CoreDependentConfigInterface
     }
 
     /**
-     * @return ArrayCollection<int, \Solrphp\SolariumBundle\SolrApi\Schema\Model\Field>
+     * @return ArrayCollection<int|string, \Solrphp\SolariumBundle\SolrApi\Schema\Model\Field>
      */
     public function getFields(): ArrayCollection
     {
@@ -142,7 +142,7 @@ final class ManagedSchema implements CoreDependentConfigInterface
     }
 
     /**
-     * @return ArrayCollection<int, \Solrphp\SolariumBundle\SolrApi\Schema\Model\CopyField>
+     * @return ArrayCollection<int|string, \Solrphp\SolariumBundle\SolrApi\Schema\Model\CopyField>
      */
     public function getCopyFields(): ArrayCollection
     {
@@ -168,7 +168,7 @@ final class ManagedSchema implements CoreDependentConfigInterface
     }
 
     /**
-     * @return ArrayCollection<int, \Solrphp\SolariumBundle\SolrApi\Schema\Model\Field>
+     * @return ArrayCollection<int|string, \Solrphp\SolariumBundle\SolrApi\Schema\Model\Field>
      */
     public function getDynamicFields(): ArrayCollection
     {
@@ -194,7 +194,7 @@ final class ManagedSchema implements CoreDependentConfigInterface
     }
 
     /**
-     * @return ArrayCollection<int, \Solrphp\SolariumBundle\SolrApi\Schema\Model\FieldType>
+     * @return ArrayCollection<int|string, \Solrphp\SolariumBundle\SolrApi\Schema\Model\FieldType>
      */
     public function getFieldTypes(): ArrayCollection
     {

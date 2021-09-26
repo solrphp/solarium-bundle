@@ -12,7 +12,6 @@ declare(strict_types=1);
 
 namespace Solrphp\SolariumBundle\Tests\Unit\SolrApi\Schema\Generator;
 
-use Doctrine\Common\Collections\ArrayCollection;
 use PHPUnit\Framework\TestCase;
 use Solrphp\SolariumBundle\SolrApi\Schema\Config\ManagedSchema;
 use Solrphp\SolariumBundle\SolrApi\Schema\Enum\SubPath;
@@ -38,7 +37,7 @@ class SchemaNodeGeneratorTest extends TestCase
         $dynamicField = new Field();
         $fieldType = new FieldType();
 
-        $schema = new ManagedSchema('id', new ArrayCollection(['foo']), new ArrayCollection([$field]), new ArrayCollection([$copyField]), new ArrayCollection([$dynamicField]), new ArrayCollection([$fieldType]));
+        $schema = new ManagedSchema('id', ['foo'], [$field], [$copyField], [$dynamicField], [$fieldType]);
 
         $result = [
             [

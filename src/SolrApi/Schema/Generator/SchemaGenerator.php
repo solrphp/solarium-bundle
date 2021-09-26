@@ -12,7 +12,6 @@ declare(strict_types=1);
 
 namespace Solrphp\SolariumBundle\SolrApi\Schema\Generator;
 
-use Doctrine\Common\Collections\ArrayCollection;
 use JMS\Serializer\SerializerInterface;
 use Solrphp\SolariumBundle\SolrApi\Schema\Config\ManagedSchema;
 use Solrphp\SolariumBundle\SolrApi\Schema\Model\CopyField;
@@ -68,7 +67,7 @@ class SchemaGenerator
                 $schema['field_types'][$index] = $this->serializer->deserialize(json_encode($copyField, \JSON_THROW_ON_ERROR), FieldType::class, $this->format);
             }
 
-            yield new ManagedSchema($schema['unique_key'], new ArrayCollection($schema['cores']), new ArrayCollection($schema['fields']), new ArrayCollection($schema['copy_fields']), new ArrayCollection($schema['dynamic_fields']), new ArrayCollection($schema['field_types']));
+            yield new ManagedSchema($schema['unique_key'], $schema['cores'], $schema['fields'], $schema['copy_fields'], $schema['dynamic_fields'], $schema['field_types']);
         }
     }
 }

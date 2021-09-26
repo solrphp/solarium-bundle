@@ -39,7 +39,7 @@ class SchemaProcessorTest extends TestCase
     public function testProcess()
     {
         $field = ObjectUtil::reflect(new Field());
-        $schema = new ManagedSchema('foo', new ArrayCollection(['foo']), new ArrayCollection([$field]));
+        $schema = new ManagedSchema('foo', ['foo'], [$field]);
 
         $manager = $this->getMockBuilder(SchemaManager::class)->disableOriginalConstructor()->getMock();
 
@@ -90,7 +90,7 @@ class SchemaProcessorTest extends TestCase
 
         $field = ObjectUtil::reflect(new Field());
 
-        $schema = new ManagedSchema('foo', new ArrayCollection(['foo']), new ArrayCollection([$field]));
+        $schema = new ManagedSchema('foo', ['foo'], [$field]);
 
         $response = new FieldsResponse();
         $response->addField($field);
@@ -117,7 +117,7 @@ class SchemaProcessorTest extends TestCase
         $generator->expects(self::once())->method('get');
         $manager = $this->getMockBuilder(SchemaManager::class)->disableOriginalConstructor()->getMock();
 
-        $schema = new ManagedSchema('id', new ArrayCollection(['foo']));
+        $schema = new ManagedSchema('id', ['foo']);
 
         $processor = new SchemaProcessor(new ArrayCollection(), $manager, $generator);
         $processor

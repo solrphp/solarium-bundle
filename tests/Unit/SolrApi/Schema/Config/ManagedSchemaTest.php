@@ -40,11 +40,11 @@ class ManagedSchemaTest extends TestCase
         $managedSchema = new ManagedSchema('foo', $cores, $fields, $copyFields, $dynamicFields, $fieldTypes);
 
         self::assertSame('foo', $managedSchema->getUniqueKey());
-        self::assertSame($cores, $managedSchema->getCores());
-        self::assertSame($fields, $managedSchema->getFields());
-        self::assertSame($copyFields, $managedSchema->getCopyFields());
-        self::assertSame($dynamicFields, $managedSchema->getDynamicFields());
-        self::assertSame($fieldTypes, $managedSchema->getFieldTypes());
+        self::assertSame($cores, iterator_to_array($managedSchema->getCores()));
+        self::assertSame($fields, iterator_to_array($managedSchema->getFields()));
+        self::assertSame($copyFields, iterator_to_array($managedSchema->getCopyFields()));
+        self::assertSame($dynamicFields, iterator_to_array($managedSchema->getDynamicFields()));
+        self::assertSame($fieldTypes, iterator_to_array($managedSchema->getFieldTypes()));
     }
 
     /**
@@ -54,11 +54,11 @@ class ManagedSchemaTest extends TestCase
     public function testManagedSchemaAccessors(): void
     {
         $key = 'foo';
-        $core = $this->getCores()->first();
-        $field = $this->getFields()->first();
-        $copyField = $this->getCopyFields()->first();
-        $dynamicField = $this->getFields()->first();
-        $fieldType = $this->getFieldTypes()->first();
+        $core = $this->getCores()[0];
+        $field = $this->getFields()[0];
+        $copyField = $this->getCopyFields()[0];
+        $dynamicField = $this->getFields()[0];
+        $fieldType = $this->getFieldTypes()[0];
 
         $managedSchema = new ManagedSchema('foo');
 
@@ -117,65 +117,65 @@ class ManagedSchemaTest extends TestCase
     }
 
     /**
-     * @return ArrayCollection<int, \Solrphp\SolariumBundle\SolrApi\Schema\Model\FieldType>
+     * @return array<int, \Solrphp\SolariumBundle\SolrApi\Schema\Model\FieldType>
      */
-    public function getFieldTypes(): ArrayCollection
+    public function getFieldTypes(): array
     {
-        $return = new ArrayCollection();
+        $return = [];
 
         for ($i = 0; $i < 3; ++$i) {
             $field = new FieldType();
             $field->setClass('foo');
             $field->setName('bar');
 
-            $return->add($field);
+            $return[] = $field;
         }
 
         return $return;
     }
 
     /**
-     * @return ArrayCollection<int, string>
+     * @return array<int, string>
      */
-    private function getCores(): ArrayCollection
+    private function getCores(): array
     {
-        return new ArrayCollection([
+        return [
             'foo',
             'bar',
             'baz',
-        ]);
+        ];
     }
 
     /**
-     * @return ArrayCollection<int, \Solrphp\SolariumBundle\SolrApi\Schema\Model\Field>
+     * @return array<int, \Solrphp\SolariumBundle\SolrApi\Schema\Model\Field>
      */
-    private function getFields(): ArrayCollection
+    private function getFields(): array
     {
-        $return = new ArrayCollection();
+        $return = [];
 
         for ($i = 0; $i < 3; ++$i) {
             $field = new Field();
             $field->setName('foo');
 
-            $return->add($field);
+            $return[] = $field;
         }
 
         return $return;
     }
 
     /**
-     * @return ArrayCollection<int, \Solrphp\SolariumBundle\SolrApi\Schema\Model\CopyField>
+     * @return array<int, \Solrphp\SolariumBundle\SolrApi\Schema\Model\CopyField>
      */
-    private function getCopyFields(): ArrayCollection
+    private function getCopyFields(): array
     {
-        $return = new ArrayCollection();
+        $return = [];
 
         for ($i = 0; $i < 3; ++$i) {
             $field = new CopyField();
             $field->setSource('foo');
             $field->setDest('bar');
 
-            $return->add($field);
+            $return[] = $field;
         }
 
         return $return;

@@ -93,7 +93,7 @@ class UpdateHandlerConfigNodeProcessorTest extends TestCase
 
         $node = new ConfigNode('foo', 'bar', $configuredHandler);
 
-        $currentConfig = new SolrConfig(new ArrayCollection(['foo']), null, null, null, $currentHandler);
+        $currentConfig = new SolrConfig(['foo'], null, null, null, $currentHandler);
 
         $response = new ConfigResponse();
         $response->setConfig($currentConfig);
@@ -154,7 +154,7 @@ class UpdateHandlerConfigNodeProcessorTest extends TestCase
 
         $node = new ConfigNode('foo', 'bar', $configuredHandler);
 
-        $currentConfig = new SolrConfig(new ArrayCollection(['foo']), null, null, null, $currentHandler);
+        $currentConfig = new SolrConfig(['foo'], null, null, null, $currentHandler);
 
         $response = new ConfigResponse();
         $response->setConfig($currentConfig);
@@ -220,7 +220,7 @@ class UpdateHandlerConfigNodeProcessorTest extends TestCase
 
         $node = new ConfigNode('foo', 'bar', $configuredHandler);
 
-        $currentConfig = new SolrConfig(new ArrayCollection(['foo']), null, null, null, $currentHandler);
+        $currentConfig = new SolrConfig(['foo'], null, null, null, $currentHandler);
 
         $response = new ConfigResponse();
         $response->setConfig($currentConfig);

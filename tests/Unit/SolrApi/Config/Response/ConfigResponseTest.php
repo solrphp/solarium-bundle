@@ -12,7 +12,6 @@ declare(strict_types=1);
 
 namespace Solrphp\SolariumBundle\Tests\Unit\SolrApi\Config\Response;
 
-use Doctrine\Common\Collections\ArrayCollection;
 use PHPUnit\Framework\TestCase;
 use Solrphp\SolariumBundle\SolrApi\Config\Config\SolrConfig;
 use Solrphp\SolariumBundle\SolrApi\Config\Response\ConfigResponse;
@@ -30,7 +29,7 @@ class ConfigResponseTest extends TestCase
     public function testConfigResponseAccessors(): void
     {
         $response = new ConfigResponse();
-        $config = new SolrConfig(new ArrayCollection(['foo']));
+        $config = new SolrConfig(['foo']);
 
         $response->setConfig($config);
 

@@ -34,7 +34,7 @@ class SolrConfig implements CoreDependentConfigInterface
     private ArrayCollection $cores;
 
     /**
-     * @var ArrayCollection<int, \Solrphp\SolariumBundle\SolrApi\Config\Model\SearchComponent>
+     * @var ArrayCollection<int|string, \Solrphp\SolariumBundle\SolrApi\Config\Model\SearchComponent>
      *
      * @Serializer\SerializedName("searchComponent")
      * @Serializer\Type("ArrayCollection<Solrphp\SolariumBundle\SolrApi\Config\Model\SearchComponent>")
@@ -42,7 +42,7 @@ class SolrConfig implements CoreDependentConfigInterface
     private ArrayCollection $searchComponents;
 
     /**
-     * @var ArrayCollection<int, \Solrphp\SolariumBundle\SolrApi\Config\Model\RequestHandler>
+     * @var ArrayCollection<int|string, \Solrphp\SolariumBundle\SolrApi\Config\Model\RequestHandler>
      *
      * @Serializer\SerializedName("requestHandler")
      * @Serializer\Type("ArrayCollection<Solrphp\SolariumBundle\SolrApi\Config\Model\RequestHandler>")
@@ -65,18 +65,18 @@ class SolrConfig implements CoreDependentConfigInterface
     private ?RequestDispatcher $requestDispatcher;
 
     /**
-     * @param ArrayCollection<int, string>                                                            $cores
-     * @param ArrayCollection<int, \Solrphp\SolariumBundle\SolrApi\Config\Model\SearchComponent>|null $searchComponents
-     * @param ArrayCollection<int, \Solrphp\SolariumBundle\SolrApi\Config\Model\RequestHandler>|null  $requestHandlers
-     * @param \Solrphp\SolariumBundle\SolrApi\Config\Model\Query|null                                 $query
-     * @param \Solrphp\SolariumBundle\SolrApi\Config\Model\UpdateHandler|null                         $updateHandler
-     * @param \Solrphp\SolariumBundle\SolrApi\Config\Model\RequestDispatcher|null                     $requestDispatcher
+     * @param array<string>                                                       $cores
+     * @param array<string|int, SearchComponent>|null                             $searchComponents
+     * @param array<string|int, RequestHandler>|null                              $requestHandlers
+     * @param \Solrphp\SolariumBundle\SolrApi\Config\Model\Query|null             $query
+     * @param \Solrphp\SolariumBundle\SolrApi\Config\Model\UpdateHandler|null     $updateHandler
+     * @param \Solrphp\SolariumBundle\SolrApi\Config\Model\RequestDispatcher|null $requestDispatcher
      */
-    public function __construct(ArrayCollection $cores, ArrayCollection $searchComponents = null, ArrayCollection $requestHandlers = null, Query $query = null, UpdateHandler $updateHandler = null, RequestDispatcher $requestDispatcher = null)
+    public function __construct(array $cores, array $searchComponents = null, array $requestHandlers = null, Query $query = null, UpdateHandler $updateHandler = null, RequestDispatcher $requestDispatcher = null)
     {
-        $this->cores = $cores;
-        $this->searchComponents = $searchComponents ?? new ArrayCollection();
-        $this->requestHandlers = $requestHandlers ?? new ArrayCollection();
+        $this->cores = new ArrayCollection($cores);
+        $this->searchComponents = new ArrayCollection($searchComponents ?? []);
+        $this->requestHandlers = new ArrayCollection($requestHandlers ?? []);
         $this->query = $query;
         $this->updateHandler = $updateHandler;
         $this->requestDispatcher = $requestDispatcher;
@@ -109,7 +109,7 @@ class SolrConfig implements CoreDependentConfigInterface
     }
 
     /**
-     * @return ArrayCollection<int, \Solrphp\SolariumBundle\SolrApi\Config\Model\SearchComponent>
+     * @return ArrayCollection<int|string, \Solrphp\SolariumBundle\SolrApi\Config\Model\SearchComponent>
      */
     public function getSearchComponents(): ArrayCollection
     {
@@ -135,7 +135,7 @@ class SolrConfig implements CoreDependentConfigInterface
     }
 
     /**
-     * @return ArrayCollection<int, \Solrphp\SolariumBundle\SolrApi\Config\Model\RequestHandler>
+     * @return ArrayCollection<int|string, \Solrphp\SolariumBundle\SolrApi\Config\Model\RequestHandler>
      */
     public function getRequestHandlers(): ArrayCollection
     {

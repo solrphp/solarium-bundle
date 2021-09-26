@@ -42,9 +42,9 @@ class SolrConfigTest extends TestCase
 
         $solrConfig = new SolrConfig($cores, $searchComponents, $requestHandlers, $query, $handler, $dispatcher);
 
-        self::assertSame($cores, $solrConfig->getCores());
-        self::assertSame($searchComponents, $solrConfig->getSearchComponents());
-        self::assertSame($requestHandlers, $solrConfig->getRequestHandlers());
+        self::assertSame($cores, iterator_to_array($solrConfig->getCores()));
+        self::assertSame($searchComponents, iterator_to_array($solrConfig->getSearchComponents()));
+        self::assertSame($requestHandlers, iterator_to_array($solrConfig->getRequestHandlers()));
         self::assertSame($query, $solrConfig->getQuery());
         self::assertSame($handler, $solrConfig->getUpdateHandler());
     }
@@ -56,9 +56,9 @@ class SolrConfigTest extends TestCase
     public function testSolrConfigAccessor(): void
     {
         $cores = $this->getCores();
-        $core = $cores->first();
-        $searchComponent = $this->getSearchComponents()->first();
-        $requestHandler = $this->getRequestHandlers()->first();
+        $core = $cores[0];
+        $searchComponent = $this->getSearchComponents()[0];
+        $requestHandler = $this->getRequestHandlers()[0];
         $query = $this->getQuery();
         $handler = $this->getUpdateHandler();
         $dispatcher = $this->getRequestDispatcher();
@@ -94,7 +94,7 @@ class SolrConfigTest extends TestCase
      */
     public function testOptionalArguments(): void
     {
-        $solrConfig = new SolrConfig(new ArrayCollection(['foo']));
+        $solrConfig = new SolrConfig(['foo']);
 
         self::assertInstanceOf(ArrayCollection::class, $solrConfig->getRequestHandlers());
         self::assertEmpty($solrConfig->getRequestHandlers());
@@ -108,48 +108,48 @@ class SolrConfigTest extends TestCase
     }
 
     /**
-     * @return ArrayCollection<int, string>
+     * @return array<int, string>
      */
-    private function getCores(): ArrayCollection
+    private function getCores(): array
     {
-        return new ArrayCollection([
+        return [
             'foo',
             'bar',
             'baz',
-        ]);
+        ];
     }
 
     /**
      * @return ArrayCollection<int, SearchComponent>
      */
-    private function getSearchComponents(): ArrayCollection
+    private function getSearchComponents(): array
     {
-        $return = new ArrayCollection();
+        $return = [];
 
         for ($i = 0; $i < 3; ++$i) {
             $searchComponent = new SearchComponent();
             $searchComponent->setName('foo');
             $searchComponent->setClass('bar');
 
-            $return->add($searchComponent);
+            $return[] = $searchComponent;
         }
 
         return $return;
     }
 
     /**
-     * @return ArrayCollection<int, RequestHandler>
+     * @return array<int, RequestHandler>
      */
-    private function getRequestHandlers(): ArrayCollection
+    private function getRequestHandlers(): array
     {
-        $return = new ArrayCollection();
+        $return = [];
 
         for ($i = 0; $i < 3; ++$i) {
             $requestHandler = new RequestHandler();
             $requestHandler->setName('foo');
             $requestHandler->setClass('bar');
 
-            $return->add($requestHandler);
+            $return[] = $requestHandler;
         }
 
         return $return;

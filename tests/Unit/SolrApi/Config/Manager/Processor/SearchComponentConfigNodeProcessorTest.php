@@ -100,7 +100,7 @@ class SearchComponentConfigNodeProcessorTest extends TestCase
 
         $currentHandler = new RequestHandler();
         $currentHandler->setName('bar');
-        $currentConfig = new SolrConfig(new ArrayCollection(['foo']), new ArrayCollection([$currentHandler]));
+        $currentConfig = new SolrConfig(['foo'], [$currentHandler]);
 
         $response = new ConfigResponse();
         $response->setConfig($currentConfig);
@@ -132,7 +132,7 @@ class SearchComponentConfigNodeProcessorTest extends TestCase
 
         $currentHandler = new RequestHandler();
         $currentHandler->setName('foo');
-        $currentConfig = new SolrConfig(new ArrayCollection(['foo']), new ArrayCollection([$currentHandler]));
+        $currentConfig = new SolrConfig(['foo'], [$currentHandler]);
 
         $response = new ConfigResponse();
         $response->setConfig($currentConfig);
@@ -164,7 +164,7 @@ class SearchComponentConfigNodeProcessorTest extends TestCase
         $requestHandler->setName('foo');
 
         $node = new IterableConfigNode('foo', 'bar', new ArrayCollection([$requestHandler]));
-        $currentConfig = new SolrConfig(new ArrayCollection(['foo']), new ArrayCollection([$requestHandler]));
+        $currentConfig = new SolrConfig(['foo'], [$requestHandler]);
 
         $response = new ConfigResponse();
         $response->setConfig($currentConfig);

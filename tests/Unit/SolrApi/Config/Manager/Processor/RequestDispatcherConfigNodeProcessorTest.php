@@ -96,7 +96,7 @@ class RequestDispatcherConfigNodeProcessorTest extends TestCase
 
         $node = new ConfigNode('foo', 'bar', $requestDispatcher);
 
-        $currentConfig = new SolrConfig(new ArrayCollection(['foo']), null, null, null, null, $configuredDispatcher);
+        $currentConfig = new SolrConfig(['foo'], null, null, null, null, $configuredDispatcher);
 
         $response = new ConfigResponse();
         $response->setConfig($currentConfig);
@@ -160,7 +160,7 @@ class RequestDispatcherConfigNodeProcessorTest extends TestCase
 
         $node = new ConfigNode('foo', 'bar', $requestDispatcher);
 
-        $currentConfig = new SolrConfig(new ArrayCollection(['foo']), null, null, null, null, $currentDispatcher);
+        $currentConfig = new SolrConfig(['foo'], null, null, null, null, $currentDispatcher);
 
         $response = new ConfigResponse();
         $response->setConfig($currentConfig);
@@ -229,7 +229,7 @@ class RequestDispatcherConfigNodeProcessorTest extends TestCase
 
         $node = new ConfigNode('foo', 'bar', $requestDispatcher);
 
-        $currentConfig = new SolrConfig(new ArrayCollection(['foo']), null, null, null, null, $currentDispatcher);
+        $currentConfig = new SolrConfig(['foo'], null, null, null, null, $currentDispatcher);
 
         $response = new ConfigResponse();
         $response->setConfig($currentConfig);

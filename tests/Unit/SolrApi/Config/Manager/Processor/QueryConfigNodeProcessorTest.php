@@ -87,7 +87,7 @@ class QueryConfigNodeProcessorTest extends TestCase
 
         $node = new ConfigNode('foo', 'bar', $configuredQuery);
 
-        $currentConfig = new SolrConfig(new ArrayCollection(['foo']), null, null, $currentQuery);
+        $currentConfig = new SolrConfig(['foo'], null, null, $currentQuery);
 
         $response = new ConfigResponse();
         $response->setConfig($currentConfig);
@@ -144,7 +144,7 @@ class QueryConfigNodeProcessorTest extends TestCase
 
         $node = new ConfigNode('foo', 'bar', $configuredQuery);
 
-        $currentConfig = new SolrConfig(new ArrayCollection(['foo']), null, null, $currentQuery);
+        $currentConfig = new SolrConfig(['foo'], null, null, $currentQuery);
 
         $response = new ConfigResponse();
         $response->setConfig($currentConfig);
@@ -206,7 +206,7 @@ class QueryConfigNodeProcessorTest extends TestCase
 
         $node = new ConfigNode('foo', 'bar', $configuredQuery);
 
-        $currentConfig = new SolrConfig(new ArrayCollection(['foo']), null, null, $currentQuery);
+        $currentConfig = new SolrConfig(['foo'], null, null, $currentQuery);
 
         $response = new ConfigResponse();
         $response->setConfig($currentConfig);

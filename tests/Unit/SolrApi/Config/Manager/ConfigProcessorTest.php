@@ -39,7 +39,7 @@ class ConfigProcessorTest extends TestCase
     public function testProcess()
     {
         $searchComponent = ObjectUtil::reflect(new SearchComponent());
-        $config = new SolrConfig(new ArrayCollection(['foo']), new ArrayCollection([$searchComponent]));
+        $config = new SolrConfig(['foo'], [$searchComponent]);
 
         $manager = $this->getMockBuilder(ConfigManager::class)->disableOriginalConstructor()->getMock();
 
@@ -90,7 +90,7 @@ class ConfigProcessorTest extends TestCase
 
         $searchComponent = ObjectUtil::reflect(new SearchComponent());
 
-        $config = new SolrConfig(new ArrayCollection(['foo']), new ArrayCollection([$searchComponent]));
+        $config = new SolrConfig(['foo'], [$searchComponent]);
 
         $response = new ConfigResponse();
         $response->setConfig($config);
@@ -117,7 +117,7 @@ class ConfigProcessorTest extends TestCase
         $generator->expects(self::once())->method('get');
         $manager = $this->getMockBuilder(ConfigManager::class)->disableOriginalConstructor()->getMock();
 
-        $config = new SolrConfig(new ArrayCollection(['foo']));
+        $config = new SolrConfig(['foo']);
 
         $processor = new ConfigProcessor(new ArrayCollection(), $manager, $generator);
         $processor
