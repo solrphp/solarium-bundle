@@ -56,7 +56,7 @@ class PrepareCallable
         $ret = [];
 
         foreach ($data as $k => $v) {
-            $key = preg_replace('/(?<=[a-z])(?=[A-Z])/', '_', str_replace('-', '_', $k)) ?? (string) $k;
+            $key = preg_replace('/(?<=[a-z])(?=[A-Z])/', '_', str_replace('-', '_', $k)) ?? $k;
             $ret[strtolower($key)] = $this->normalize($v);
         }
 
