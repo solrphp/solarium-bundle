@@ -71,8 +71,15 @@ class QueryConfigNodeHandler implements ConfigNodeHandlerInterface
         $configured = ConfigUtil::toPropertyPaths($configNode->get(), 'query');
         $actual = null !== $current->getConfig()->getQuery() ? ConfigUtil::toPropertyPaths($current->getConfig()->getQuery(), 'query') : [];
 
-        $this->processValues($configured, Command::SET_PROPERTY);
-        $this->processValues(array_diff_key($actual, $configured), Command::UNSET_PROPERTY);
+        $updates = array_diff_assoc($configured, $actual) + array_fill_keys(array_flip(array_diff_key($actual, $configured)), null);
+
+        foreach ($updates as $name => $value) {
+            try {
+                $this->manager->addCommand($command = (null === $value) ? Command::UNSET_PROPERTY : Command::SET_PROPERTY, new Property($name, $value));
+            } catch (UnexpectedValueException $e) {
+                throw new ProcessorException(sprintf('unable to %s %s', $command ?? '[command not found]]', $name), $e);
+            }
+        }
     }
 
     /**
@@ -89,22 +96,5 @@ class QueryConfigNodeHandler implements ConfigNodeHandlerInterface
     public static function getDefaultPriority(): int
     {
         return ConfigNodeHandlerInterface::PRIORITY;
-    }
-
-    /**
-     * @param array<string, string|null> $values
-     * @param string                     $command
-     *
-     * @throws \Solrphp\SolariumBundle\Exception\ProcessorException
-     */
-    private function processValues(array $values, string $command): void
-    {
-        foreach ($values as $name => $value) {
-            try {
-                $this->manager->addCommand($command, new Property($name, $value));
-            } catch (UnexpectedValueException $e) {
-                throw new ProcessorException(sprintf('unable to %s %s', $command, $name), $e);
-            }
-        }
     }
 }

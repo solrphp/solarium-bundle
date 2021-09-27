@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace Solrphp\SolariumBundle\SolrApi\CoreAdmin\Manager;
 
+use JMS\Serializer\DeserializationContext;
 use JMS\Serializer\SerializerInterface;
 use Solarium\Client;
 use Solarium\Core\Client\Endpoint;
@@ -68,7 +69,7 @@ class CoreManager
      */
     public function status(array $options = []): ResponseInterface
     {
-        return $this->call($this->getRequest(self::ACTION_STATUS, $options), new StatusResponse());
+        return $this->call($this->getRequest(self::ACTION_STATUS, $options), StatusResponse::class);
     }
 
     /**
@@ -142,19 +143,35 @@ class CoreManager
     }
 
     /**
-     * @param \Solarium\Core\Client\Request                                            $request
-     * @param \Solrphp\SolariumBundle\Contract\SolrApi\Response\ResponseInterface|null $responseClass
+     * @param \Solarium\Core\Client\Request $request
+     * @param string|null                   $responseClass
      *
      * @return \Solrphp\SolariumBundle\Contract\SolrApi\Response\ResponseInterface
      *
      * @throws \JMS\Serializer\Exception\RuntimeException
      */
-    private function call(Request $request, ResponseInterface $responseClass = null): ResponseInterface
+    private function call(Request $request, string $responseClass = null): ResponseInterface
     {
-        $class = $responseClass ?? new CoreResponse();
         $response = $this->client->executeRequest($request, $this->getEndpoint());
 
-        return $this->serializer->deserialize($response->getBody(), \get_class($class), 'solr');
+        return $this->serializer->deserialize($response->getBody(), ResponseInterface::class, 'json', $this->createContext($responseClass));
+    }
+
+    /**
+     * the solr pre-deserialization event subscriber will modify data
+     * and change type to the one set in the solrphp.real_class attribute.
+     *
+     * @param string|null $class
+     *
+     * @return \JMS\Serializer\DeserializationContext
+     */
+    private function createContext(?string $class): DeserializationContext
+    {
+        $realClass = is_subclass_of($class ?? '', ResponseInterface::class) ? $class : CoreResponse::class;
+
+        return DeserializationContext::create()
+            ->setAttribute('solrphp.real_class', $realClass)
+        ;
     }
 
     /**

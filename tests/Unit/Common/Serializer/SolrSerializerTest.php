@@ -41,13 +41,13 @@ class SolrSerializerTest extends TestCase
      */
     public function testHandlers(): void
     {
-        $status = json_encode(['name' => 'foo', 'startTime' => '2021-09-26T15:16:08Z']);
+        $status = json_encode(['name' => 'foo', 'start_time' => '2006-02-13T15:26:37Z']);
         $serializer = new SolrSerializer();
 
-        $result = $serializer->deserialize($status, Status::class, 'solr');
+        $result = $serializer->deserialize($status, Status::class, 'json');
         $dt = $result->getStartTime();
 
         self::assertInstanceOf(\DateTime::class, $dt);
-        self::assertSame('2021-09-26T15:16:08Z', sprintf('%s%s', strstr($dt->format(\DateTime::ATOM), '+', true), 'Z'));
+        self::assertSame('2006-02-13 15:26:37', $dt->format('Y-m-d H:i:s'));
     }
 }

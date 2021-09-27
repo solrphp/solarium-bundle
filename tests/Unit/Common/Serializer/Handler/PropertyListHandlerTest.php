@@ -36,9 +36,6 @@ class PropertyListHandlerTest extends TestCase
         self::assertSame(GraphNavigatorInterface::DIRECTION_DESERIALIZATION, $subs[0]['direction']);
         self::assertSame('json', $subs[0]['format']);
         self::assertSame('PropertyList', $subs[0]['type']);
-        self::assertSame(GraphNavigatorInterface::DIRECTION_DESERIALIZATION, $subs[1]['direction']);
-        self::assertSame('solr', $subs[1]['format']);
-        self::assertSame('PropertyList', $subs[1]['type']);
     }
 
     /**

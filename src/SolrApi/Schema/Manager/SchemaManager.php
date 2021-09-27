@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace Solrphp\SolariumBundle\SolrApi\Schema\Manager;
 
+use JMS\Serializer\DeserializationContext;
 use Solarium\Core\Client\Request;
 use Solrphp\SolariumBundle\Common\Manager\AbstractApiManager;
 use Solrphp\SolariumBundle\Contract\SolrApi\Response\ResponseInterface;
@@ -57,10 +58,21 @@ class SchemaManager extends AbstractApiManager
     {
         $response = parent::call($path);
 
-        if (false === \array_key_exists($path, SchemaSubPaths::RESPONSE_CLASSES)) {
-            return $this->serializer->deserialize($response->getBody() ?? '{}', SchemaResponse::class, 'solr');
-        }
+        return $this->serializer->deserialize($response->getBody() ?? '{}', ResponseInterface::class, 'json', $this->createContext($path));
+    }
 
-        return $this->serializer->deserialize($response->getBody() ?? '{}', SchemaSubPaths::RESPONSE_CLASSES[$path], 'solr');
+    /**
+     * the solr pre-deserialization event subscriber will modify data
+     * and change type to the one set in the solrphp.real_class attribute.
+     *
+     * @param string $path
+     *
+     * @return \JMS\Serializer\DeserializationContext
+     */
+    private function createContext(string $path): DeserializationContext
+    {
+        return DeserializationContext::create()
+            ->setAttribute('solrphp.real_class', SchemaSubPaths::RESPONSE_CLASSES[$path] ?? SchemaResponse::class)
+        ;
     }
 }

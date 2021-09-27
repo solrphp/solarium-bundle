@@ -137,10 +137,12 @@ class QueryConfigNodeProcessorTest extends TestCase
         $configuredQuery = new Query();
         $configuredQuery->setEnableLazyFieldLoading(true);
         $configuredQuery->setQueryResultMaxDocsCached(10);
+        $configuredQuery->setUseFilterForSortedQuery(true);
 
         $currentQuery = new Query();
         $currentQuery->setMaxBooleanClauses(1024);
         $currentQuery->setQueryResultMaxDocsCached(20);
+        $currentQuery->setUseFilterForSortedQuery(true);
 
         $node = new ConfigNode('foo', 'bar', $configuredQuery);
 

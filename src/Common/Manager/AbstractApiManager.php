@@ -132,8 +132,12 @@ abstract class AbstractApiManager implements SolrApiManagerInterface
     /**
      * {@inheritdoc}
      */
-    public function persist(): ResultInterface
+    public function persist(): ?ResultInterface
     {
+        if ($this->commands->isEmpty()) {
+            return null;
+        }
+
         $query = $this->client
             ->createApi([
                 'version' => static::$api,

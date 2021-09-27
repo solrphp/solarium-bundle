@@ -95,11 +95,13 @@ class SchemaProcessor
         }
 
         try {
-            $this->manager->persist();
+            $response = $this->manager->persist();
         } catch (\JsonException $e) {
             throw new ProcessorException('unable to persist managed schema', $e);
         }
 
-        $this->manager->flush();
+        if (null !== $response) {
+            $this->manager->flush();
+        }
     }
 }

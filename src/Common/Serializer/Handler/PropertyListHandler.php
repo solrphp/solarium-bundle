@@ -37,12 +37,6 @@ class PropertyListHandler implements SubscribingHandlerInterface
                 'type' => 'PropertyList',
                 'method' => 'deserializePropertyList',
             ],
-            [
-                'direction' => GraphNavigatorInterface::DIRECTION_DESERIALIZATION,
-                'format' => 'solr',
-                'type' => 'PropertyList',
-                'method' => 'deserializePropertyList',
-            ],
         ];
     }
 

@@ -143,6 +143,14 @@ final class CommandCollection implements \ArrayAccess, \IteratorAggregate, \Json
     }
 
     /**
+     * @return bool
+     */
+    public function isEmpty(): bool
+    {
+        return 0 === \count($this->jsonSerialize());
+    }
+
+    /**
      * @param string $command
      *
      * @return array<\JsonSerializable>|null

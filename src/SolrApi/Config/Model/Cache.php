@@ -22,11 +22,11 @@ use JMS\Serializer\Annotation as Serializer;
 class Cache implements \JsonSerializable
 {
     /**
-     * @var string|null
+     * @var int|null
      *
-     * @Serializer\Type("string")
+     * @Serializer\Type("int")
      */
-    private ?string $autowarmCount = null;
+    private ?int $autowarmCount = null;
 
     /**
      * @var int|null
@@ -57,17 +57,17 @@ class Cache implements \JsonSerializable
     private ?string $name = null;
 
     /**
-     * @return string|null
+     * @return int|null
      */
-    public function getAutowarmCount(): ?string
+    public function getAutowarmCount(): ?int
     {
         return $this->autowarmCount;
     }
 
     /**
-     * @param string|null $autowarmCount
+     * @param int|null $autowarmCount
      */
-    public function setAutowarmCount(?string $autowarmCount): void
+    public function setAutowarmCount(?int $autowarmCount): void
     {
         $this->autowarmCount = $autowarmCount;
     }

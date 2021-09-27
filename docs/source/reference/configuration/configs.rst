@@ -25,7 +25,7 @@ configs
                     enable_lazy_field_loading: true
                     max_boolean_clauses: 1024
                     filter_cache:
-                        autowarm_count: '50%'
+                        autowarm_count: 50
                         size: 30000
                         initial_size: 1512
                         class: 'solr.CaffeineCache'

@@ -93,6 +93,8 @@ class SolrConfigUpdateCommand extends Command
             return Command::FAILURE;
         }
 
+        $output->writeln(sprintf('<info>Successfully updated config for %s core</info>', $core));
+
         return Command::SUCCESS;
     }
 }

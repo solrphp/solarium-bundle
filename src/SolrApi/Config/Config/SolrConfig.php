@@ -36,7 +36,7 @@ class SolrConfig implements CoreDependentConfigInterface
     /**
      * @var ArrayCollection<int|string, \Solrphp\SolariumBundle\SolrApi\Config\Model\SearchComponent>
      *
-     * @Serializer\SerializedName("searchComponent")
+     * @Serializer\SerializedName("search_component")
      * @Serializer\Type("ArrayCollection<Solrphp\SolariumBundle\SolrApi\Config\Model\SearchComponent>")
      */
     private ArrayCollection $searchComponents;
@@ -44,7 +44,7 @@ class SolrConfig implements CoreDependentConfigInterface
     /**
      * @var ArrayCollection<int|string, \Solrphp\SolariumBundle\SolrApi\Config\Model\RequestHandler>
      *
-     * @Serializer\SerializedName("requestHandler")
+     * @Serializer\SerializedName("request_handler")
      * @Serializer\Type("ArrayCollection<Solrphp\SolariumBundle\SolrApi\Config\Model\RequestHandler>")
      */
     private ArrayCollection $requestHandlers;

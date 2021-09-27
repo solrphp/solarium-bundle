@@ -13,15 +13,15 @@ declare(strict_types=1);
 namespace Solrphp\SolariumBundle\Common\Serializer;
 
 use JMS\Serializer\DeserializationContext;
+use JMS\Serializer\EventDispatcher\EventDispatcher;
 use JMS\Serializer\Handler\HandlerRegistry;
 use JMS\Serializer\SerializationContext;
 use JMS\Serializer\Serializer;
 use JMS\Serializer\SerializerBuilder;
 use JMS\Serializer\SerializerInterface;
+use Solrphp\SolariumBundle\Common\Serializer\Data\PrepareCallable;
+use Solrphp\SolariumBundle\Common\Serializer\EventDispatcher\SolrPreDeserializeEventSubscriber;
 use Solrphp\SolariumBundle\Common\Serializer\Handler\PropertyListHandler;
-use Solrphp\SolariumBundle\Common\Serializer\Handler\SolrDateHandler;
-use Solrphp\SolariumBundle\Common\Serializer\Visitor\PrepareCallable;
-use Solrphp\SolariumBundle\Common\Serializer\Visitor\SolrDeserializationVisitorFactory;
 
 /**
  * Solr Serializer.
@@ -44,11 +44,12 @@ class SolrSerializer implements SerializerInterface
             ->addDefaultHandlers()
             ->addDefaultSerializationVisitors()
             ->addDefaultDeserializationVisitors()
-            ->setDeserializationVisitor('solr', new SolrDeserializationVisitorFactory(\Closure::fromCallable([new PrepareCallable(), 'prepareSolrResponse'])))
             ->addDefaultHandlers()
             ->configureHandlers(static function (HandlerRegistry $registry) {
                 $registry->registerSubscribingHandler(new PropertyListHandler());
-                $registry->registerSubscribingHandler(new SolrDateHandler());
+            })
+            ->configureListeners(static function (EventDispatcher $dispatcher) {
+                $dispatcher->addSubscriber(new SolrPreDeserializeEventSubscriber(\Closure::fromCallable([new PrepareCallable(), 'prepareSolrResponse'])));
             })
             ->addMetadataDir(__DIR__.'/../../Resources/serializer/schema')
             ->build()

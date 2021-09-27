@@ -14,6 +14,9 @@ namespace Solrphp\SolariumBundle\Tests\Unit\SolrApi\Schema\Manager;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use PHPUnit\Framework\TestCase;
+use Solarium\Core\Client\Response;
+use Solarium\QueryType\Select\Query\Query;
+use Solarium\QueryType\Select\Result\Result;
 use Solrphp\SolariumBundle\Exception\ProcessorException;
 use Solrphp\SolariumBundle\SolrApi\Schema\Config\ManagedSchema;
 use Solrphp\SolariumBundle\SolrApi\Schema\Generator\SchemaNodeGenerator;
@@ -47,7 +50,7 @@ class SchemaProcessorTest extends TestCase
         $response->addField($field);
 
         $manager->expects(self::once())->method('setCore')->with('foo')->willReturnSelf();
-        $manager->expects(self::once())->method('persist');
+        $manager->expects(self::once())->method('persist')->willReturn(new Result(new Query(), new Response('{}', ['HTTP 200 OK'])));
         $manager->expects(self::once())->method('flush');
 
         $copyFieldProcessor = $this->getMockBuilder(CopyFieldConfigNodeHandler::class)->getMock();

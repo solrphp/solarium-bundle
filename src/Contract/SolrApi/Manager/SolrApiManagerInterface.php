@@ -49,9 +49,11 @@ interface SolrApiManagerInterface
     public function call(string $path): ResponseInterface;
 
     /**
-     * @return \Solarium\Core\Query\Result\ResultInterface
+     * returns null in case there's nothing to persist.
+     *
+     * @return \Solarium\Core\Query\Result\ResultInterface|null
      */
-    public function persist(): ResultInterface;
+    public function persist(): ?ResultInterface;
 
     /**
      * @return \Solrphp\SolariumBundle\Contract\SolrApi\Response\ResponseInterface

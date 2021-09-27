@@ -32,7 +32,7 @@ final class CacheTest extends TestCase
      * @var array<string, mixed>
      */
     private array $values = [
-        'autowarmCount' => 'foo',
+        'autowarmCount' => 3,
         'size' => 1,
         'initialSize' => 5,
         'class' => 'foo',

@@ -12,7 +12,6 @@ declare(strict_types=1);
 
 namespace Solrphp\SolariumBundle\Tests\Unit\SolrApi\Schema\Manager;
 
-use JMS\Serializer\SerializerInterface;
 use PHPUnit\Framework\TestCase;
 use Solarium\Client;
 use Solarium\Core\Client\Adapter\Curl;
@@ -21,6 +20,7 @@ use Solarium\Core\Client\Response;
 use Solarium\Core\Query\Result\QueryType;
 use Solarium\Core\Query\Result\Result;
 use Solarium\QueryType\Server\Api\Query;
+use Solrphp\SolariumBundle\Common\Serializer\SolrSerializer;
 use Solrphp\SolariumBundle\Exception\UnexpectedValueException;
 use Solrphp\SolariumBundle\SolrApi\CoreAdmin\Manager\CoreManager;
 use Solrphp\SolariumBundle\SolrApi\CoreAdmin\Response\CoreResponse;
@@ -47,7 +47,7 @@ class SchemaManagerTest extends TestCase
         $this->expectException(UnexpectedValueException::class);
 
         $client = $this->getExecutingClient([]);
-        $serializer = $this->getSerializer();
+        $serializer = new SolrSerializer();
         $coreManager = new CoreManager($client, $serializer);
         $schemaManager = new SchemaManager($client, $coreManager, $serializer);
 
@@ -67,7 +67,7 @@ class SchemaManagerTest extends TestCase
         ];
 
         $client = $this->getExecutingClient($options);
-        $serializer = $this->getSerializer(1, '', SchemaResponse::class);
+        $serializer = new SolrSerializer();
         $coreManager = new CoreManager($client, $serializer);
         $schemaManager = new SchemaManager($client, $coreManager, $serializer);
         $schemaManager
@@ -76,6 +76,7 @@ class SchemaManagerTest extends TestCase
         $response = $schemaManager->call(SubPathSchema::SHOW_GLOBAL_SIMILARITY);
 
         self::assertInstanceOf(SchemaResponse::class, $response);
+        self::assertSame('lorem ipsum', $response->getBody());
     }
 
     /**
@@ -91,7 +92,7 @@ class SchemaManagerTest extends TestCase
         ];
 
         $client = $this->getExecutingClient($options);
-        $serializer = $this->getSerializer(1, '', FieldsResponse::class);
+        $serializer = new SolrSerializer();
         $coreManager = new CoreManager($client, $serializer);
         $schemaManager = new SchemaManager($client, $coreManager, $serializer);
         $schemaManager
@@ -100,6 +101,7 @@ class SchemaManagerTest extends TestCase
         $response = $schemaManager->call(SubPathSchema::LIST_FIELDS);
 
         self::assertInstanceOf(FieldsResponse::class, $response);
+        self::assertSame('lorem ipsum', $response->getBody());
     }
 
     /**
@@ -110,7 +112,7 @@ class SchemaManagerTest extends TestCase
         $this->expectException(UnexpectedValueException::class);
 
         $client = $this->getExecutingClient([]);
-        $serializer = $this->getSerializer();
+        $serializer = new SolrSerializer();
         $coreManager = new CoreManager($client, $serializer);
         $schemaManager = new SchemaManager($client, $coreManager, $serializer);
         $schemaManager->addCommand('foo', new Field());
@@ -122,7 +124,7 @@ class SchemaManagerTest extends TestCase
     public function testAddCommand(): void
     {
         $client = $this->getExecutingClient([]);
-        $serializer = $this->getSerializer();
+        $serializer = new SolrSerializer();
         $coreManager = new CoreManager($client, $serializer);
         $schemaManager = new SchemaManager($client, $coreManager, $serializer);
 
@@ -148,7 +150,7 @@ class SchemaManagerTest extends TestCase
             ]
         );
 
-        $serializer = $this->getSerializer(1, '', CoreResponse::class);
+        $serializer = new SolrSerializer();
         $coreManager = new CoreManager($client, $serializer);
         $configManager = (new SchemaManager($client, $coreManager, $serializer))->setCore('foo');
 
@@ -176,7 +178,7 @@ class SchemaManagerTest extends TestCase
         ];
 
         $client = $this->getExecutingClient($options);
-        $serializer = $this->getSerializer();
+        $serializer = new SolrSerializer();
 
         $coreManager = new CoreManager($client, $serializer);
         $schemaManager = (new SchemaManager($client, $coreManager, $serializer))->setCore('foo');
@@ -189,6 +191,21 @@ class SchemaManagerTest extends TestCase
     }
 
     /**
+     * @throws \JsonException
+     * @throws \PHPUnit\Framework\ExpectationFailedException
+     */
+    public function testEmptyPersist(): void
+    {
+        $client = $this->getExecutingClient();
+        $serializer = new SolrSerializer();
+
+        $coreManager = new CoreManager($client, $serializer);
+        $schemaManager = (new SchemaManager($client, $coreManager, $serializer))->setCore('foo');
+
+        self::assertNull($schemaManager->persist());
+    }
+
+    /**
      * @param array $options
      * @param array $params
      *
@@ -196,7 +213,7 @@ class SchemaManagerTest extends TestCase
      */
     private function getRequestingClient(array $options = [], array $params = [])
     {
-        $response = new Response('', ['HTTP 200 OK']);
+        $response = new Response('{"body":"lorem ipsum"}', ['HTTP 200 OK']);
 
         $client = $this->getMockBuilder(Client::class)
             ->setConstructorArgs([new Curl(), new EventDispatcher()])
@@ -227,7 +244,7 @@ class SchemaManagerTest extends TestCase
      */
     private function getExecutingClient(array $options = [])
     {
-        $response = new Response('', ['HTTP 200 OK']);
+        $response = new Response('{"body":"lorem ipsum"}', ['HTTP 200 OK']);
         $result = new Result(new Query(), $response);
 
         $client = $this->getMockBuilder(Client::class)
@@ -254,25 +271,5 @@ class SchemaManagerTest extends TestCase
         ;
 
         return $client;
-    }
-
-    /**
-     * @param int         $deserializeCount
-     * @param string|null $responseData
-     * @param string      $responseClass
-     *
-     * @return mixed|\PHPUnit\Framework\MockObject\MockObject|\Symfony\Component\Serializer\SerializerInterface
-     */
-    private function getSerializer(int $deserializeCount = 0, string $responseData = null, string $responseClass = \stdClass::class)
-    {
-        $serializer = $this->getMockBuilder(SerializerInterface::class)->getMock();
-
-        $serializer
-            ->expects(self::exactly($deserializeCount))
-            ->method('deserialize')
-            ->with($responseData, $responseClass, 'solr')
-            ->willReturn(new $responseClass());
-
-        return $serializer;
     }
 }

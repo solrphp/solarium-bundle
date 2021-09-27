@@ -12,7 +12,6 @@ declare(strict_types=1);
 
 namespace Solrphp\SolariumBundle\Tests\Unit\SolrApi\Config\Manager;
 
-use JMS\Serializer\SerializerInterface;
 use PHPUnit\Framework\TestCase;
 use Solarium\Client;
 use Solarium\Core\Client\Adapter\Curl;
@@ -21,10 +20,12 @@ use Solarium\Core\Client\Response;
 use Solarium\Core\Query\Result\QueryType;
 use Solarium\Core\Query\Result\Result;
 use Solarium\QueryType\Server\Api\Query;
+use Solrphp\SolariumBundle\Common\Serializer\SolrSerializer;
 use Solrphp\SolariumBundle\Exception\UnexpectedValueException;
 use Solrphp\SolariumBundle\SolrApi\Config\Enum\Command;
 use Solrphp\SolariumBundle\SolrApi\Config\Enum\SubPath as SubPathConfig;
 use Solrphp\SolariumBundle\SolrApi\Config\Manager\ConfigManager;
+use Solrphp\SolariumBundle\SolrApi\Config\Model\Property;
 use Solrphp\SolariumBundle\SolrApi\Config\Response\ConfigResponse;
 use Solrphp\SolariumBundle\SolrApi\CoreAdmin\Manager\CoreManager;
 use Solrphp\SolariumBundle\SolrApi\CoreAdmin\Response\CoreResponse;
@@ -46,7 +47,7 @@ class ConfigManagerTest extends TestCase
         $this->expectException(UnexpectedValueException::class);
 
         $client = $this->getExecutingClient([]);
-        $serializer = $this->getSerializer();
+        $serializer = new SolrSerializer();
 
         $coreManager = new CoreManager($client, $serializer);
         $configManager = new ConfigManager($client, $coreManager, $serializer);
@@ -67,7 +68,7 @@ class ConfigManagerTest extends TestCase
         ];
 
         $client = $this->getExecutingClient($options);
-        $serializer = $this->getSerializer(1, '', ConfigResponse::class);
+        $serializer = new SolrSerializer();
 
         $coreManager = new CoreManager($client, $serializer);
         $configManager = new ConfigManager($client, $coreManager, $serializer);
@@ -76,6 +77,7 @@ class ConfigManagerTest extends TestCase
         $response = $configManager->call(SubPathConfig::GET_OVERLAY);
 
         self::assertInstanceOf(ConfigResponse::class, $response);
+        self::assertSame('lorem ipsum', $response->getBody());
     }
 
     /**
@@ -91,7 +93,7 @@ class ConfigManagerTest extends TestCase
         ];
 
         $client = $this->getExecutingClient($options);
-        $serializer = $this->getSerializer(1, '', ConfigResponse::class);
+        $serializer = new SolrSerializer();
 
         $coreManager = new CoreManager($client, $serializer);
         $configManager = new ConfigManager($client, $coreManager, $serializer);
@@ -100,6 +102,7 @@ class ConfigManagerTest extends TestCase
         $response = $configManager->call(SubPathConfig::GET_REQUEST_HANDLERS);
 
         self::assertInstanceOf(ConfigResponse::class, $response);
+        self::assertSame('lorem ipsum', $response->getBody());
     }
 
     /**
@@ -110,7 +113,7 @@ class ConfigManagerTest extends TestCase
         $this->expectException(UnexpectedValueException::class);
 
         $client = $this->getExecutingClient([]);
-        $serializer = $this->getSerializer();
+        $serializer = new SolrSerializer();
 
         $coreManager = new CoreManager($client, $serializer);
         $schemaManager = new ConfigManager($client, $coreManager, $serializer);
@@ -124,7 +127,7 @@ class ConfigManagerTest extends TestCase
     public function testAddCommand(): void
     {
         $client = $this->getExecutingClient([]);
-        $serializer = $this->getSerializer();
+        $serializer = new SolrSerializer();
 
         $coreManager = new CoreManager($client, $serializer);
         $configManager = new ConfigManager($client, $coreManager, $serializer);
@@ -150,7 +153,7 @@ class ConfigManagerTest extends TestCase
                 'action' => 'RELOAD',
             ]
         );
-        $serializer = $this->getSerializer(1, '', CoreResponse::class);
+        $serializer = new SolrSerializer();
 
         $coreManager = new CoreManager($client, $serializer);
         $configManager = (new ConfigManager($client, $coreManager, $serializer))->setCore('foo');
@@ -171,18 +174,33 @@ class ConfigManagerTest extends TestCase
             'resultclass' => QueryType::class,
             'contenttype' => 'application/json',
             'handler' => 'foo/config',
-            'rawdata' => '[]',
+            'rawdata' => '{"set-property":[{"foo":"bar"}]}',
         ];
 
-        $serializer = $this->getSerializer();
+        $serializer = new SolrSerializer();
         $client = $this->getExecutingClient($options);
 
         $coreManager = new CoreManager($client, $serializer);
         $configManager = (new ConfigManager($client, $coreManager, $serializer))->setCore('foo');
+        $configManager->addCommand(Command::SET_PROPERTY, new Property('foo', 'bar'));
 
         $response = $configManager->persist();
 
         self::assertInstanceOf(Result::class, $response);
+    }
+
+    /**
+     * @throws \JsonException
+     * @throws \PHPUnit\Framework\ExpectationFailedException
+     */
+    public function testEmptyPersist(): void
+    {
+        $serializer = new SolrSerializer();
+        $client = $this->getExecutingClient();
+        $coreManager = new CoreManager($client, $serializer);
+        $configManager = (new ConfigManager($client, $coreManager, $serializer))->setCore('foo');
+
+        self::assertNull($configManager->persist());
     }
 
     /**
@@ -193,7 +211,7 @@ class ConfigManagerTest extends TestCase
      */
     private function getRequestingClient(array $options = [], array $params = [])
     {
-        $response = new Response('', ['HTTP 200 OK']);
+        $response = new Response('{"body":"lorem ipsum"}', ['HTTP 200 OK']);
 
         $client = $this->getMockBuilder(Client::class)
             ->setConstructorArgs([new Curl(), new EventDispatcher()])
@@ -224,7 +242,7 @@ class ConfigManagerTest extends TestCase
      */
     private function getExecutingClient(array $options = [])
     {
-        $response = new Response('', ['HTTP 200 OK']);
+        $response = new Response('{"body":"lorem ipsum"}', ['HTTP 200 OK']);
         $result = new Result(new Query(), $response);
 
         $client = $this->getMockBuilder(Client::class)
@@ -251,25 +269,5 @@ class ConfigManagerTest extends TestCase
         ;
 
         return $client;
-    }
-
-    /**
-     * @param int         $deserializeCount
-     * @param string|null $responseData
-     * @param string      $responseClass
-     *
-     * @return mixed|\PHPUnit\Framework\MockObject\MockObject|\Symfony\Component\Serializer\SerializerInterface
-     */
-    private function getSerializer(int $deserializeCount = 0, string $responseData = null, string $responseClass = \stdClass::class)
-    {
-        $serializer = $this->getMockBuilder(SerializerInterface::class)->getMock();
-
-        $serializer
-            ->expects(self::exactly($deserializeCount))
-            ->method('deserialize')
-            ->with($responseData, $responseClass, 'solr')
-            ->willReturn(new $responseClass($responseData));
-
-        return $serializer;
     }
 }

@@ -10,25 +10,25 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Solrphp\SolariumBundle\Common\Serializer\Visitor;
+namespace Solrphp\SolariumBundle\Common\Serializer\Data;
 
 /**
  * Prepare Callable.
  *
- * if the only thing you're willing to achieve is to override the prepare method of a deserialization visitor.
+ * prepares solr response data.
  *
  * @author wicliff <wicliff.wolda@gmail.com>
  */
 class PrepareCallable
 {
     /**
-     * @param string $data
+     * @param array<string, mixed> $data
      *
      * @return array<string, mixed>|mixed
      */
-    public function prepareSolrResponse(string $data)
+    public function prepareSolrResponse(array $data)
     {
-        return $this->normalize(json_decode($data, true));
+        return $this->normalize($data);
     }
 
     /**

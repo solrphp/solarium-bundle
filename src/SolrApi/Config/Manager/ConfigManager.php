@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace Solrphp\SolariumBundle\SolrApi\Config\Manager;
 
+use JMS\Serializer\DeserializationContext;
 use Solrphp\SolariumBundle\Common\Manager\AbstractApiManager;
 use Solrphp\SolariumBundle\Contract\SolrApi\Response\ResponseInterface;
 use Solrphp\SolariumBundle\SolrApi\Config\Enum\Command as ConfigCommands;
@@ -52,10 +53,19 @@ class ConfigManager extends AbstractApiManager
     {
         $response = parent::call($path);
 
-        if (false === \array_key_exists($path, ConfigSubPaths::RESPONSE_CLASSES)) {
-            return $this->serializer->deserialize($response->getBody() ?? '{}', ConfigResponse::class, 'solr');
-        }
+        return $this->serializer->deserialize($response->getBody() ?? '{}', ResponseInterface::class, 'json', $this->createContext());
+    }
 
-        return $this->serializer->deserialize($response->getBody() ?? '{}', ConfigSubPaths::RESPONSE_CLASSES[$path], 'solr');
+    /**
+     * the solr pre-deserialization event subscriber will modify data
+     * and change type to the one set in the solrphp.real_class attribute.
+     *
+     * @return \JMS\Serializer\DeserializationContext
+     */
+    private function createContext(): DeserializationContext
+    {
+        return DeserializationContext::create()
+            ->setAttribute('solrphp.real_class', ConfigResponse::class)
+        ;
     }
 }

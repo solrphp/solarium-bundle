@@ -96,11 +96,13 @@ class ConfigProcessor
         }
 
         try {
-            $this->manager->persist();
+            $response = $this->manager->persist();
         } catch (JsonException $e) {
             throw new ProcessorException('unable to persist configuration', $e);
         }
 
-        $this->manager->flush();
+        if (null === $response) {
+            $this->manager->flush();
+        }
     }
 }

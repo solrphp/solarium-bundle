@@ -79,6 +79,7 @@ class SolrConfigUpdateCommandTest extends TestCase
         ]);
 
         self::assertSame(Command::SUCCESS, $commandTester->getStatusCode());
+        self::assertSame('Successfully updated config for foo core', trim($commandTester->getDisplay()));
     }
 
     /**
