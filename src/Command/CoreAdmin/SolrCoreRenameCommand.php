@@ -81,26 +81,20 @@ class SolrCoreRenameCommand extends Command
     }
 
     /**
+     * solarium filters out null options:.
+     *
+     * @see vendor/solarium/solarium/src/Component/RequestBuilder/RequestParamsTrait.php:81
+     *
      * @param \Symfony\Component\Console\Input\InputInterface $input
      *
      * @return array<string, bool|string>
      */
     private function getOptions(InputInterface $input): array
     {
-        $options = [];
-
-        if (null !== ($core = $input->getArgument('core'))) {
-            $options['core'] = $core;
-        }
-
-        if (null !== ($other = $input->getArgument('other'))) {
-            $options['other'] = $other;
-        }
-
-        if (null !== ($value = $input->getOption('async'))) {
-            $options['async'] = $value;
-        }
-
-        return $options;
+        return [
+            'core' => $input->getArgument('core'),
+            'other' => $input->getArgument('other'),
+            'async' => $input->getOption('async'),
+        ];
     }
 }

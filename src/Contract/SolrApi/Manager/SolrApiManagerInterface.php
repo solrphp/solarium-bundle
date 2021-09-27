@@ -52,6 +52,9 @@ interface SolrApiManagerInterface
      * returns null in case there's nothing to persist.
      *
      * @return \Solarium\Core\Query\Result\ResultInterface|null
+     *
+     * @throws \Solarium\Exception\HttpException
+     * @throws \JsonException
      */
     public function persist(): ?ResultInterface;
 

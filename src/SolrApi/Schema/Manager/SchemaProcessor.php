@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace Solrphp\SolariumBundle\SolrApi\Schema\Manager;
 
+use Solarium\Exception\HttpException;
 use Solrphp\SolariumBundle\Exception\ProcessorException;
 use Solrphp\SolariumBundle\SolrApi\Schema\Config\ManagedSchema;
 use Solrphp\SolariumBundle\SolrApi\Schema\Generator\SchemaNodeGenerator;
@@ -95,13 +96,15 @@ class SchemaProcessor
         }
 
         try {
-            $response = $this->manager->persist();
-        } catch (\JsonException $e) {
+            $result = $this->manager->persist();
+        } catch (\JsonException|HttpException $e) {
             throw new ProcessorException('unable to persist managed schema', $e);
         }
 
-        if (null !== $response) {
-            $this->manager->flush();
+        if (null === $result) {
+            return;
         }
+
+        $this->manager->flush();
     }
 }

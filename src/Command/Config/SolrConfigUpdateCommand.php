@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace Solrphp\SolariumBundle\Command\Config;
 
+use Solrphp\SolariumBundle\Common\Util\ErrorUtil;
 use Solrphp\SolariumBundle\Exception\ProcessorException;
 use Solrphp\SolariumBundle\SolrApi\Config\Manager\ConfigProcessor;
 use Solrphp\SolariumBundle\SolrApi\SolrConfigurationStore;
@@ -87,8 +88,7 @@ class SolrConfigUpdateCommand extends Command
                 ->process()
             ;
         } catch (ProcessorException $e) {
-            /* @infection-ignore-all tested @ \Solrphp\SolariumBundle\Tests\Unit\Command\SolrConfigUpdateCommandTest::testExecuteFailure */
-            $output->writeln(sprintf('<error>Unable to process config for %s core: %s</error>', $core, $e->getMessage()));
+            $output->writeln(sprintf('<error>Unable to process config for %s core: %s</error>', $core, ErrorUtil::fromSolrphpException($e, $output->getVerbosity())));
 
             return Command::FAILURE;
         }

@@ -14,6 +14,9 @@ namespace Solrphp\SolariumBundle\Tests\Unit\SolrApi\Config\Manager;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use PHPUnit\Framework\TestCase;
+use Solarium\Core\Client\Response;
+use Solarium\Core\Query\Result\Result;
+use Solarium\QueryType\Server\Api\Query;
 use Solrphp\SolariumBundle\Exception\ProcessorException;
 use Solrphp\SolariumBundle\SolrApi\Config\Config\SolrConfig;
 use Solrphp\SolariumBundle\SolrApi\Config\Generator\ConfigNodeGenerator;
@@ -47,7 +50,7 @@ class ConfigProcessorTest extends TestCase
         $response->setConfig($config);
 
         $manager->expects(self::once())->method('setCore')->with('foo')->willReturnSelf();
-        $manager->expects(self::once())->method('persist');
+        $manager->expects(self::once())->method('persist')->willReturn(new Result(new Query(), new Response('', ['HTTP 200 OK'])));
         $manager->expects(self::once())->method('flush');
 
         $requestProcessor = $this->getMockBuilder(RequestHandlerConfigNodeHandler::class)->getMock();

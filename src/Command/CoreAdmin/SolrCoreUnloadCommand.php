@@ -83,34 +83,22 @@ class SolrCoreUnloadCommand extends Command
     }
 
     /**
+     * solarium filters out null options:.
+     *
+     * @see vendor/solarium/solarium/src/Component/RequestBuilder/RequestParamsTrait.php:81
+     *
      * @param \Symfony\Component\Console\Input\InputInterface $input
      *
      * @return array<string, bool|string>
      */
     private function getOptions(InputInterface $input): array
     {
-        $options = [];
-
-        if (null !== ($value = $input->getArgument('core'))) {
-            $options['core'] = $value;
-        }
-
-        if ($input->getOption('delete-index')) {
-            $options['deleteIndex'] = true;
-        }
-
-        if ($input->getOption('delete-data-dir')) {
-            $options['deleteDataDir'] = true;
-        }
-
-        if ($input->getOption('delete-instance-dir')) {
-            $options['deleteInstanceDir'] = true;
-        }
-
-        if (null !== ($value = $input->getOption('async'))) {
-            $options['async'] = $value;
-        }
-
-        return $options;
+        return [
+            'core' => $input->getArgument('core'),
+            'deleteIndex' => $input->getOption('delete-index'),
+            'deleteDataDir' => $input->getOption('delete-data-dir'),
+            'deleteInstanceDir' => $input->getOption('delete-instance-dir'),
+            'async' => $input->getOption('async'),
+        ];
     }
 }

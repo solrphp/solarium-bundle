@@ -107,7 +107,7 @@ class SolrConfigUpdateCommandTest extends TestCase
         ]);
 
         self::assertSame(Command::FAILURE, $commandTester->getStatusCode());
-        self::assertSame('Unable to process config for foo core: error message', trim($commandTester->getDisplay()));
+        self::assertSame('Unable to process config for foo core:', trim($commandTester->getDisplay()));
     }
 
     /**

@@ -8,10 +8,7 @@ Config API
 
 .. include:: ../partials/config-handler.rstinc
 
-console commands
-----------------
-| in order to use these commands, make sure you've got at least one :doc:`endpoint <../reference/configuration/endpoints>`, :doc:`client <../reference/configuration/endpoints>` and :doc:`config <../reference/configuration/configs>` configured.
-| currently supported features and commands:
+.. include:: ../partials/console-commands.rstinc
 
 update
 ~~~~~~

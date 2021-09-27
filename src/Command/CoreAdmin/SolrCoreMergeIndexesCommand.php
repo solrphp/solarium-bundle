@@ -82,30 +82,21 @@ class SolrCoreMergeIndexesCommand extends Command
     }
 
     /**
+     * solarium filters out null options:.
+     *
+     * @see vendor/solarium/solarium/src/Component/RequestBuilder/RequestParamsTrait.php:81
+     *
      * @param \Symfony\Component\Console\Input\InputInterface $input
      *
      * @return array<string, string|array<string>>
      */
     private function getOptions(InputInterface $input): array
     {
-        $options = [];
-
-        if (null !== ($value = $input->getArgument('core'))) {
-            $options['core'] = $value;
-        }
-
-        if (null !== ($indexDir = $input->getOption('index-dir'))) {
-            $options['indexDir'] = $indexDir;
-        }
-
-        if (null !== ($srcCore = $input->getOption('src-core'))) {
-            $options['srcCore'] = $srcCore;
-        }
-
-        if (null !== ($value = $input->getOption('async'))) {
-            $options['async'] = $value;
-        }
-
-        return $options;
+        return [
+            'core' => $input->getArgument('core'),
+            'indexDir' => $input->getOption('index-dir'),
+            'srcCore' => $input->getOption('src-core'),
+            'async' => $input->getOption('async'),
+        ];
     }
 }

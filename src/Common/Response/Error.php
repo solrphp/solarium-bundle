@@ -24,8 +24,22 @@ class Error implements ResponseErrorInterface
 {
     /**
      * @var string[]
+     *
+     * @Serializer\Type("array<string>")
      */
     private array $metadata = [];
+
+    /**
+     * @var array<int, array<string, array<string>>>
+     *
+     * @Serializer\Type("array")
+     */
+    private array $details = [];
+
+    /**
+     * @var string|null
+     */
+    private ?string $trace = null;
 
     /**
      * @var string|null
@@ -53,6 +67,38 @@ class Error implements ResponseErrorInterface
     public function setMetadata(array $metadata): void
     {
         $this->metadata = $metadata;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getDetails(): array
+    {
+        return $this->details;
+    }
+
+    /**
+     * @param array<int, array<string, array<string>>> $details
+     */
+    public function setDetails(array $details): void
+    {
+        $this->details = $details;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getTrace(): ?string
+    {
+        return $this->trace;
+    }
+
+    /**
+     * @param string|null $trace
+     */
+    public function setTrace(?string $trace): void
+    {
+        $this->trace = $trace;
     }
 
     /**

@@ -12,21 +12,11 @@ declare(strict_types=1);
 
 namespace Solrphp\SolariumBundle\Exception;
 
-use Throwable;
-
 /**
  * Unexpected Value Exception.
  *
  * @author wicliff <wicliff.wolda@gmail.com>
  */
-class UnexpectedValueException extends \RuntimeException
+class UnexpectedValueException extends SolrphpException
 {
-    /**
-     * @param string          $message
-     * @param \Throwable|null $previous
-     */
-    public function __construct($message = '', Throwable $previous = null)
-    {
-        parent::__construct($message, 0, $previous);
-    }
 }

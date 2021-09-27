@@ -3,10 +3,7 @@ CoreAdmin API
 | see the `official CoreAdmin API reference <https://solr.apache.org/guide/coreadmin-api.html>`_ for the api's official documentation.
 | currently supported features and commands:
 
-console commands
-----------------
-| in order to use these commands, make sure you've got at least one :doc:`endpoint <../reference/configuration/endpoints>` configured.
-
+.. include:: ../partials/console-commands.rstinc
 
 status
 ~~~~~~

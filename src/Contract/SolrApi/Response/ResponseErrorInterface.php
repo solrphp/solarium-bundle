@@ -34,7 +34,17 @@ interface ResponseErrorInterface
     public function getMessage(): ?string;
 
     /**
-     * @return array<string>
+     * @return array<string, string>
      */
     public function getMetaData(): array;
+
+    /**
+     * @return string|null
+     */
+    public function getTrace(): ?string;
+
+    /**
+     * @return array<int, array<string, array<string>>>
+     */
+    public function getDetails(): array;
 }

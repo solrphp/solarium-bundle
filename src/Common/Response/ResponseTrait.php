@@ -24,6 +24,7 @@ trait ResponseTrait
     /**
      * @var \Solrphp\SolariumBundle\Common\Response\Header
      *
+     * @Serializer\SerializedName("responseHeader")
      * @Serializer\Type("Solrphp\SolariumBundle\Common\Response\Header")
      */
     private Header $responseHeader;

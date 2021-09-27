@@ -13,6 +13,7 @@ declare(strict_types=1);
 namespace Solrphp\SolariumBundle\SolrApi\Config\Manager;
 
 use JsonException;
+use Solarium\Exception\HttpException;
 use Solrphp\SolariumBundle\Exception\ProcessorException;
 use Solrphp\SolariumBundle\SolrApi\Config\Config\SolrConfig;
 use Solrphp\SolariumBundle\SolrApi\Config\Generator\ConfigNodeGenerator;
@@ -96,13 +97,15 @@ class ConfigProcessor
         }
 
         try {
-            $response = $this->manager->persist();
-        } catch (JsonException $e) {
+            $result = $this->manager->persist();
+        } catch (JsonException|HttpException $e) {
             throw new ProcessorException('unable to persist configuration', $e);
         }
 
-        if (null === $response) {
-            $this->manager->flush();
+        if (null === $result) {
+            return;
         }
+
+        $this->manager->flush();
     }
 }

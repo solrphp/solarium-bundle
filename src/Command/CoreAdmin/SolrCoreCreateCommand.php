@@ -93,44 +93,16 @@ class SolrCoreCreateCommand extends Command
      */
     private function getOptions(InputInterface $input): array
     {
-        $options = [];
-
-        if (null !== ($core = $input->getArgument('core'))) {
-            $options['name'] = $core;
-        }
-
-        if (null !== ($instanceDir = $input->getOption('instance-dir'))) {
-            $options['instanceDir'] = $instanceDir;
-        }
-
-        if (null !== ($config = $input->getOption('config'))) {
-            $options['config'] = $config;
-        }
-
-        if (null !== ($schema = $input->getOption('schema'))) {
-            $options['schema'] = $schema;
-        }
-
-        if (null !== ($dataDir = $input->getOption('data-dir'))) {
-            $options['dataDir'] = $dataDir;
-        }
-
-        if (null !== ($configSet = $input->getOption('config-set'))) {
-            $options['configSet'] = $configSet;
-        }
-
-        if (null !== ($collection = $input->getOption('collection'))) {
-            $options['collection'] = $collection;
-        }
-
-        if (null !== ($shard = $input->getOption('shard'))) {
-            $options['shard'] = $shard;
-        }
-
-        if (null !== ($async = $input->getOption('async'))) {
-            $options['async'] = $async;
-        }
-
-        return $options;
+        return [
+            'name' => $input->getArgument('core'),
+            'instanceDir' => $input->getOption('instance-dir'),
+            'config' => $input->getOption('config'),
+            'schema' => $input->getOption('schema'),
+            'dataDir' => $input->getOption('data-dir'),
+            'configSet' => $input->getOption('config-set'),
+            'collection' => $input->getOption('collection'),
+            'shard' => $input->getOption('shard'),
+            'async' => $input->getOption('async'),
+        ];
     }
 }

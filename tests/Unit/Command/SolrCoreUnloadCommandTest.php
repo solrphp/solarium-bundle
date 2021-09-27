@@ -184,6 +184,8 @@ class SolrCoreUnloadCommandTest extends TestCase
             'keys' => [
                 'core' => 'foo',
                 'deleteIndex' => 'true',
+                'deleteDataDir' => 'false',
+                'deleteInstanceDir' => 'false',
                 'action' => 'UNLOAD',
             ],
         ];
@@ -194,7 +196,9 @@ class SolrCoreUnloadCommandTest extends TestCase
             ],
             'keys' => [
                 'core' => 'foo',
+                'deleteIndex' => 'false',
                 'deleteDataDir' => 'true',
+                'deleteInstanceDir' => 'false',
                 'action' => 'UNLOAD',
             ],
         ];
@@ -205,6 +209,8 @@ class SolrCoreUnloadCommandTest extends TestCase
             ],
             'keys' => [
                 'core' => 'foo',
+                'deleteIndex' => 'false',
+                'deleteDataDir' => 'false',
                 'deleteInstanceDir' => 'true',
                 'action' => 'UNLOAD',
             ],
@@ -216,6 +222,9 @@ class SolrCoreUnloadCommandTest extends TestCase
             ],
             'keys' => [
                 'core' => 'foo',
+                'deleteIndex' => 'false',
+                'deleteDataDir' => 'false',
+                'deleteInstanceDir' => 'false',
                 'async' => 'foo',
                 'action' => 'UNLOAD',
             ],

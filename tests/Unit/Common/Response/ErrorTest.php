@@ -27,6 +27,8 @@ final class ErrorTest extends TestCase
     private $values = [
         'metadata' => ['foo'],
         'message' => 'foo',
+        'details' => ['foo'],
+        'trace' => 'qux',
         'code' => 1,
     ];
 
@@ -49,6 +51,16 @@ final class ErrorTest extends TestCase
         'code' => [
             'reader' => 'getCode',
             'writer' => 'setCode',
+            'remover' => null,
+        ],
+        'details' => [
+            'reader' => 'getDetails',
+            'writer' => 'setDetails',
+            'remover' => null,
+        ],
+        'trace' => [
+            'reader' => 'getTrace',
+            'writer' => 'setTrace',
             'remover' => null,
         ],
     ];

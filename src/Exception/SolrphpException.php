@@ -12,11 +12,21 @@ declare(strict_types=1);
 
 namespace Solrphp\SolariumBundle\Exception;
 
+use Throwable;
+
 /**
- * Processor Exception.
+ * Solrphp Exception.
  *
  * @author wicliff <wicliff.wolda@gmail.com>
  */
-class ProcessorException extends SolrphpException
+class SolrphpException extends \RuntimeException
 {
+    /**
+     * @param string          $message
+     * @param \Throwable|null $previous
+     */
+    public function __construct(string $message = '', Throwable $previous = null)
+    {
+        parent::__construct($message, 0, $previous);
+    }
 }
