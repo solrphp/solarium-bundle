@@ -1,0 +1,295 @@
+{% extends '@WebProfiler/Profiler/layout.html.twig' %}
+
+{% block toolbar %}
+    {% set profiler_markup_version = profiler_markup_version|default(1) %}
+    {% set icon %}
+        <span style="filter: invert(1); padding-right: 1em;">
+            {{ include('@SolrphpSolarium/data_collector/solr.svg') }}
+        </span>
+        <span class="sf-toolbar-value">{{ collector.total }}</span>
+        <span class="sf-toolbar-info-piece-additional-detail">
+            <span class="sf-toolbar-label">in</span>
+            <span class="sf-toolbar-value">{{ '%0.2f'|format(collector.time) }}</span>
+            <span class="sf-toolbar-label">s</span>
+        </span>
+    {% endset %}
+
+    {% set text %}
+        <div class="sf-toolbar-info-piece">
+            <b>Solr Requests</b>
+            <span class="sf-toolbar-status">{{ collector.total }}</span>
+        </div>
+
+        <div class="sf-toolbar-info-piece">
+            <b>Total time</b>
+            <span>{{ '%0.2f'|format(collector.time) }} s</span>
+        </div>
+    {% endset %}
+
+    {{ include('@WebProfiler/Profiler/toolbar_item.html.twig', { link: true }) }}
+{% endblock %}
+
+{% block menu %}
+    <span class="label {{ collector.total == 0 ? 'disabled' }}">
+        <span class="icon">{{ include('@SolrphpSolarium/data_collector/solr.svg') }}</span>
+        <strong>Solr</strong>
+        {% if collector.total > 0 %}
+            <span class="count">
+                <span>{{ collector.total }}</span>
+                <span>{{ '%0.2f'|format(collector.time) }} s</span>
+            </span>
+        {% endif %}
+    </span>
+{% endblock %}
+
+{% block head %}
+    {{ parent() }}
+    <style>
+        pre.sf-dump {
+            color: #FF8400;
+        }
+
+        pre.sf-dump .sf-dump-str {
+            font-weight: bold;
+            color: #56DB3A;
+        }
+
+        table.solr-response-table {
+            display: inherit;
+            overflow-x: hidden;
+        }
+        .solr-response-container {
+            background: #F5F5F5;
+            margin: .5em 0;
+            padding: 1em;
+            border: 1px solid #DDD;
+        }
+
+        .call {
+            border: 1px solid #DDD;
+        }
+
+        .call header {
+            background: #DDD;
+            padding: 5px;
+        }
+
+        .call header .duration {
+            float: right;
+        }
+
+        .call header .index {
+            font-weight: bold;
+        }
+
+        .accordion .accordion-header {
+            cursor: pointer;
+            background: var(--color-muted);
+            color: var(--metric-label-color);
+        }
+
+        .accordion-header.solr-error {
+            background: var(--color-error);
+            color: white;
+        }
+
+        .accordion .accordion-content {
+            display: none;
+            transition: all 1s ease;
+            padding: 5px;
+        }
+
+        .accordion .accordion-content.expanded {
+            display: block;
+            padding: 5px;
+        }
+
+        .accordion .solr-response-container {
+            background: var(--metric-label-background);
+            color: var(--metric-label-color);
+        }
+
+        .call .accordion .accordion-content h4 {
+            margin: 0;
+            padding: 5px 0;
+        }
+
+        .tab-navigation {
+            border-bottom: 1px solid #666;
+        }
+
+        {% if profiler_markup_version == 1 %}
+        .solr-requests-table td, .queries-table th {
+            vertical-align: top;
+        }
+
+        .solr-requests-table td > div {
+            margin-bottom: 6px;
+        }
+
+        {% endif %}
+    </style>
+{% endblock %}
+
+{% block panel %}
+    <div id="collector-content">
+        <h2>Solr Requests</h2>
+
+        <div class="metrics">
+            <div class="metric">
+                <span class="value">{{ collector.total }}</span>
+                <span class="label">Solr Requests</span>
+            </div>
+
+            <div class="metric">
+                <span class="value">{{ '%0.2f'|format(collector.time) }} s</span>
+                <span class="label">Total Time</span>
+            </div>
+        </div>
+
+        <h2>Requests</h2>
+
+        {% if collector.requests is empty %}
+        <div class="empty">
+            <p>No Solr requests were performed.</p>
+        </div>
+        {% else %}
+        <div class="accordion tab-content">
+            {% for request in collector.requests %}
+                <section class="call">
+                    <header class="accordion-header {{ loop.index }}{% if request.status_code != 200 %} solr-error{% endif %}">
+                        <span class="index">#{{ loop.index }}</span>
+                        <span>{{ request.resource }}</span>
+                        <span class="duration">{{ '%0.2f'|format(request.duration) }} s</span>
+                    </header>
+                    <div class="accordion-content{{ loop.first ? ' expanded': '' }}">
+                        <div class="sf-tabs">
+                            <div class="tab">
+                                <h3 class="tab-title">Request</h3>
+
+                                <div class="tab-content">
+                                    <h3>headers</h3>
+                                    {% if request.request_headers.all is empty %}
+                                        <div class="empty">
+                                            <p>no request headers</p>
+                                        </div>
+                                    {% else %}
+                                        {{ include('@SolrphpSolarium/data_collector/attributes.twig', { bag: request.request_headers, labels: ['header', 'value'] }) }}
+                                    {% endif %}
+
+                                    <h3>query parameters</h3>
+                                    {% if request.request_params.all is empty %}
+                                        <div class="empty">
+                                            <p>no request parameters</p>
+                                        </div>
+                                    {% else %}
+                                        {{ include('@SolrphpSolarium/data_collector/attributes.twig', { bag: request.request_params, labels: ['param', 'value'] }) }}
+                                    {% endif %}
+
+                                    <h3>options</h3>
+                                    {% if request.request_options.all is empty %}
+                                        <div class="empty">
+                                            <p>no request options</p>
+                                        </div>
+                                    {% else %}
+                                        {{ include('@SolrphpSolarium/data_collector/attributes.twig', { bag: request.request_options, labels: ['option', 'value'] }) }}
+                                    {% endif %}
+
+                                    <h3>body</h3>
+                                    {% if request.request_body is empty %}
+                                        <div class="empty">
+                                            <p>no request body</p>
+                                        </div>
+                                    {% else %}
+                                        <pre class="solr-response-container">{{ request.request_body }}</pre>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div class="tab">
+                                <h3 class="tab-title">Response</h3>
+                                <div class="tab-content">
+                                    <h3>headers</h3>
+                                    {% if request.response_headers.all is empty %}
+                                        <div class="empty">
+                                            <p>no request headers</p>
+                                        </div>
+                                    {% else %}
+                                        {{ include('@SolrphpSolarium/data_collector/attributes.twig', { bag: request.response_headers, labels: ['header', 'value'] }) }}
+                                    {% endif %}
+                                    <h3>body</h3>
+                                    {% if request.response_body is empty %}
+                                        <div class="empty">
+                                            <p>no response body</p>
+                                        </div>
+                                    {% else %}
+                                        <table class="solr-response-table">
+                                            <thead>
+                                            <th>response body</th>
+                                            <th></th>
+                                            </thead>
+                                            <tbody>
+                                            <tr>
+                                                <td colspan="2">
+                                                    <pre>{{ request.response_body }}</pre>
+                                                </td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            {% endfor %}
+        </div>
+        </tbody>
+        </table>
+    </div>
+    <script type="text/javascript">
+        var solr = solr || {};
+        solr.accordion = function () {
+            var elements = document.querySelectorAll('.accordion .accordion-header');
+
+            for (var i = 0, l = elements.length, element; i < l, element = elements[i]; i++) {
+                element.addEventListener('click', function () {
+                    this
+                        .parentNode
+                        .getElementsByClassName('accordion-content')[0]
+                        .classList
+                        .toggle('expanded')
+                    ;
+                });
+
+                var links = element.getElementsByTagName('a');
+
+                for (var j = 0, k = links.length, link; j < k, link = links[j]; j++) {
+                    link.addEventListener('click', function (e) {
+                        e.stopPropagation();
+                    });
+                }
+            }
+        };
+        document.addEventListener('DOMContentLoaded', solr.accordion, false);
+        {% if profiler_markup_version == 1 %}
+        //<![CDATA[
+        function toggle(target) {
+            var targetSelector = target.getAttribute('data-toggle-selector');
+            var targetDataAltContent = target.getAttribute('data-toggle-alt-content');
+            var targetElement = document.querySelector(targetSelector);
+            target.setAttribute('data-toggle-alt-content', target.innerHTML);
+            if (targetElement.style.display != 'block') {
+                targetElement.style.display = 'block';
+                target.innerHTML = targetDataAltContent;
+            } else {
+                targetElement.style.display = 'none';
+                target.innerHTML = targetDataAltContent;
+            }
+            return false;
+        }
+
+        //]]>
+        {% endif %}
+    </script>
+    {% endif %}
+{% endblock %}

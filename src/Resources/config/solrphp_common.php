@@ -29,24 +29,24 @@ return static function (ContainerConfigurator $container) {
         ->instanceof(DumperInterface::class)
         ->tag('solrphp.config_dumper')
 
-        ->set('solrphp.serializer', SolrSerializer::class)
-        ->alias(SolrSerializer::class, 'solrphp.serializer')
+        ->set(SolrSerializer::class)
+        ->alias('solrphp.serializer', SolrSerializer::class)
 
-        ->set('solrphp.config_generator', ConfigGenerator::class)
+        ->set(ConfigGenerator::class)
             ->args([
                 tagged_iterator('solrphp.config_generator_handler'),
                 tagged_iterator('solrphp.config_dumper'),
                 param('kernel.project_dir'),
                 service('solarium.client.default'),
             ])
-        ->alias(ConfigGenerator::class, 'solrphp.config_generator')
+        ->alias('solrphp.config_generator', ConfigGenerator::class)
 
-        ->set('solrphp.command.config_generate', SolrphpConfigGenerateCommand::class)
+        ->set(SolrphpConfigGenerateCommand::class)
             ->args([
                 service('solrphp.config_generator'),
             ])
         ->tag('console.command')
-        ->alias(SolrphpConfigGenerateCommand::class, 'solrphp.command.config_generate')
+        ->alias('solrphp.command.config_generate', SolrphpConfigGenerateCommand::class)
 
         ->load('Solrphp\\SolariumBundle\\ConfigGenerator\\', '../../ConfigGenerator/{Handler,Dumper,Handler/Visitor}')
     ;

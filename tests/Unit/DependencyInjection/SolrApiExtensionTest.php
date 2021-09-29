@@ -16,6 +16,12 @@ use PHPUnit\Framework\TestCase;
 use Solarium\Client;
 use Solarium\Core\Client\Adapter\Curl;
 use Solrphp\SolariumBundle\Command\Config\SolrConfigUpdateCommand;
+use Solrphp\SolariumBundle\Command\ConfigGenerator\SolrphpConfigGenerateCommand;
+use Solrphp\SolariumBundle\Common\Serializer\SolrSerializer;
+use Solrphp\SolariumBundle\ConfigGenerator\ConfigGenerator;
+use Solrphp\SolariumBundle\DataCollector\SolrCallRegistry;
+use Solrphp\SolariumBundle\DataCollector\SolrCollector;
+use Solrphp\SolariumBundle\DataCollector\SolrRequestSubscriber;
 use Solrphp\SolariumBundle\DependencyInjection\SolrphpSolariumExtension;
 use Solrphp\SolariumBundle\SolrApi\Config\Manager\ConfigManager;
 use Solrphp\SolariumBundle\SolrApi\CoreAdmin\Manager\CoreManager;
@@ -83,7 +89,9 @@ class SolrApiExtensionTest extends TestCase
 
         $definition = $container->getDefinition(SolrConfigurationStore::class);
 
-        self::assertTrue($container->hasDefinition('solrphp.serializer'));
+        self::assertTrue($container->hasDefinition(SolrSerializer::class));
+        self::assertTrue($container->hasDefinition(ConfigGenerator::class));
+        self::assertTrue($container->hasDefinition(SolrphpConfigGenerateCommand::class));
 
         self::assertCount(3, $definition->getArguments());
 
@@ -147,6 +155,32 @@ class SolrApiExtensionTest extends TestCase
         self::assertCount(3, $definition->getArguments());
 
         self::assertTrue($container->hasAlias(SchemaManager::class));
+    }
+
+    /**
+     * @throws \PHPUnit\Framework\ExpectationFailedException
+     */
+    public function testLoadDataCollector(): void
+    {
+        $config = [
+            'clients' => [
+                'default' => [],
+            ],
+        ];
+
+        $container = $this->createContainer();
+        $this->extension->load([$config], $container);
+
+        self::assertFalse($container->hasDefinition(SolrCollector::class));
+        self::assertFalse($container->hasDefinition(SolrCallRegistry::class));
+        self::assertFalse($container->hasDefinition(SolrRequestSubscriber::class));
+
+        $container = $this->createContainer(true);
+        $this->extension->load([$config], $container);
+
+        self::assertTrue($container->hasDefinition(SolrCollector::class));
+        self::assertTrue($container->hasDefinition(SolrCallRegistry::class));
+        self::assertTrue($container->hasDefinition(SolrRequestSubscriber::class));
     }
 
     /**
@@ -443,12 +477,14 @@ class SolrApiExtensionTest extends TestCase
     }
 
     /**
+     * @param bool $debug
+     *
      * @return \Symfony\Component\DependencyInjection\ContainerBuilder
      */
-    private function createContainer(): ContainerBuilder
+    private function createContainer(bool $debug = false): ContainerBuilder
     {
         return new ContainerBuilder(
-            new ParameterBag(['kernel.debug' => false])
+            new ParameterBag(['kernel.debug' => $debug])
         );
     }
 

@@ -22,6 +22,7 @@ use JMS\Serializer\SerializerInterface;
 use Solrphp\SolariumBundle\Common\Serializer\Data\PrepareCallable;
 use Solrphp\SolariumBundle\Common\Serializer\EventDispatcher\SolrPreDeserializeEventSubscriber;
 use Solrphp\SolariumBundle\Common\Serializer\Handler\PropertyListHandler;
+use Solrphp\SolariumBundle\Common\Serializer\Handler\SolrDateHandler;
 
 /**
  * Solr Serializer.
@@ -47,6 +48,7 @@ class SolrSerializer implements SerializerInterface
             ->addDefaultHandlers()
             ->configureHandlers(static function (HandlerRegistry $registry) {
                 $registry->registerSubscribingHandler(new PropertyListHandler());
+                $registry->registerSubscribingHandler(new SolrDateHandler());
             })
             ->configureListeners(static function (EventDispatcher $dispatcher) {
                 $dispatcher->addSubscriber(new SolrPreDeserializeEventSubscriber(\Closure::fromCallable([new PrepareCallable(), 'prepareSolrResponse'])));
