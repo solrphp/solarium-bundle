@@ -15,3 +15,7 @@ parameters:
     excludePaths:
         analyseAndScan:
             - src/Common/Serializer/Visitor/DeserializationVisitorDecorator
+    ignoreErrors:
+        # $doc->saveXML() is called after a successful $doc->loadXML() so will never return false
+        - message: '#Method [a-zA-Z0-9\\_]+::prettyXml\(\) should return string but returns string\|false.#'
+          path: src/Common/Util/StringUtil.php

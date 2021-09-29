@@ -27,6 +27,10 @@
     {
       "name": "Config Generator",
       "match": "!ConfigGenerator\\\\!i"
+    },
+    {
+      "name": "Data Collector",
+      "match": "!DataCollector\\\\!i"
     }
   ],
   "plugins": {

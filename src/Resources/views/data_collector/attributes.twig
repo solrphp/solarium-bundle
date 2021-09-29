@@ -1,0 +1,21 @@
+{% import '@SolrphpSolarium/data_collector/macros.twig' as macro %}
+<table class="{{ class|default('') }}">
+    <thead>
+    <tr>
+        <th scope="col" class="key">{{ labels is defined ? labels[0] : 'Key' }}</th>
+        <th scope="col">{{ labels is defined ? labels[1] : 'Value' }}</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for key in bag.keys|sort %}
+        <tr>
+            <th>{{ key }}</th>
+            <td>{{ macro.sfdumpstr(bag.get(key)) }}</td>
+        </tr>
+    {% else %}
+        <tr>
+            <td colspan="2">(no data)</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
