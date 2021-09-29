@@ -31,7 +31,7 @@ class CopyFieldsResponse implements ResponseInterface
     /**
      * @var ArrayCollection<int, \Solrphp\SolariumBundle\SolrApi\Schema\Model\CopyField>
      *
-     * @Serializer\Type("ArrayCollection<\Solrphp\SolariumBundle\SolrApi\Schema\Model\CopyField>")
+     * @Serializer\Type("ArrayCollection<Solrphp\SolariumBundle\SolrApi\Schema\Model\CopyField>")
      */
     private ArrayCollection $copyFields;
 

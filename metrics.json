@@ -23,6 +23,10 @@
     {
       "name": "Solr Core Admin API",
       "match": "!SolrApi\\\\CoreAdmin\\\\!i"
+    },
+    {
+      "name": "Config Generator",
+      "match": "!ConfigGenerator\\\\!i"
     }
   ],
   "plugins": {

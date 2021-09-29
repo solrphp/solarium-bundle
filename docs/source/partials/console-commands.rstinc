@@ -1,8 +1,8 @@
 console commands
 ----------------
-| in order to use these commands, make sure you've got at least one :doc:`endpoint <../reference/configuration/endpoints>`, :doc:`client <../reference/configuration/endpoints>` and :doc:`config <../reference/configuration/configs>` configured.
+| in order to use these commands, make sure you've got at least one :doc:`endpoint <../reference/configuration/endpoints>` and :doc:`client <../reference/configuration/endpoints>` configured.
 
 .. tip::
-    | use the verbosity options (`-v|vv|vvv`) for displaying errors
+    | use the verbosity options (`-v|vv|vvv`) for displaying more verbose errors once they occur.
 
 | currently supported features and commands:

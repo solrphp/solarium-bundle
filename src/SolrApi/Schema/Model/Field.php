@@ -31,11 +31,11 @@ class Field implements \JsonSerializable
     private string $name;
 
     /**
-     * @var string
+     * @var string|null
      *
      * @Serializer\Type("string")
      */
-    private string $type;
+    private ?string $type = null;
 
     /**
      * @var string|null
@@ -69,17 +69,17 @@ class Field implements \JsonSerializable
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getType(): string
+    public function getType(): ?string
     {
         return $this->type;
     }
 
     /**
-     * @param string $type
+     * @param string|null $type
      */
-    public function setType(string $type): void
+    public function setType(?string $type): void
     {
         $this->type = $type;
     }

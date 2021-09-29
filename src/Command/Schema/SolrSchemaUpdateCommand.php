@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace Solrphp\SolariumBundle\Command\Schema;
 
+use Solrphp\SolariumBundle\Common\Util\ErrorUtil;
 use Solrphp\SolariumBundle\Exception\ProcessorException;
 use Solrphp\SolariumBundle\SolrApi\Schema\Manager\SchemaProcessor;
 use Solrphp\SolariumBundle\SolrApi\SolrConfigurationStore;
@@ -87,7 +88,7 @@ class SolrSchemaUpdateCommand extends Command
                 ->process()
             ;
         } catch (ProcessorException $e) {
-            $output->writeln(sprintf('<error>Unable to process managed schema for %s core: %s</error>', $core, $e->getMessage()));
+            $output->writeln(sprintf('<error>Unable to process managed schema for %s core: %s</error>', $core, ErrorUtil::fromSolrphpException($e, $output->getVerbosity())));
 
             return Command::FAILURE;
         }
