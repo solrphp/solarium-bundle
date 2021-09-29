@@ -42,9 +42,7 @@
         "symfony/filesystem": "5.3.*",
         "symfony/framework-bundle": "5.3.*",
         "symfony/http-kernel": "^5.3",
-        "symfony/property-access": "5.3.*",
         "symfony/property-info": "5.3.*",
-        "symfony/serializer": "5.3.*",
         "symfony/yaml": "5.3.*"
     },
     "require-dev": {
