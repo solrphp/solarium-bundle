@@ -59,7 +59,6 @@ final class FieldTest extends TestCase
      */
     private static array $nonNullable = [
         'name' => 'foo',
-        'type' => 'foo',
     ];
 
     /**

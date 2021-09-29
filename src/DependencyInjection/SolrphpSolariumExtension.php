@@ -59,7 +59,7 @@ class SolrphpSolariumExtension extends Extension
             return;
         }
 
-        $loader->load('serializer.php');
+        $loader->load('solrphp_common.php');
         $loader->load('core_admin_api.php');
 
         if (\count($config['managed_schemas']) || \count($config['solr_configs'])) {

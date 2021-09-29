@@ -106,7 +106,7 @@ class SolrSchemaUpdateCommandTest extends TestCase
         ]);
 
         self::assertSame(Command::FAILURE, $commandTester->getStatusCode());
-        self::assertSame('Unable to process managed schema for foo core: error message', trim($commandTester->getDisplay()));
+        self::assertSame('Unable to process managed schema for foo core:', trim($commandTester->getDisplay()));
     }
 
     /**

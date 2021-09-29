@@ -15,6 +15,7 @@ Contents
     :maxdepth: 2
 
     overview
+    getting_started
     apis
     reference
     code_quality

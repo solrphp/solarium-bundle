@@ -42,7 +42,7 @@ class CommandCollectionTest extends TestCase
      */
     public function testSet(): void
     {
-        $this->collection->set('foo', ['bar']);
+        $this->collection->set('foo', [new Field()]);
 
         self::assertTrue($this->collection->containsCommand('foo'));
         self::assertNotNull($this->collection->get('foo'));
