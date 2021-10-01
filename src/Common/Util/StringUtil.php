@@ -19,6 +19,9 @@ namespace Solrphp\SolariumBundle\Common\Util;
  */
 class StringUtil
 {
+    public const FORMAT_XML = 'xml';
+    public const FORMAT_JSON = 'json';
+
     private const JSON_DEPTH = 512;
 
     /**
@@ -26,6 +29,25 @@ class StringUtil
      */
     private function __construct()
     {
+    }
+
+    /**
+     * @param string|null $data
+     * @param string      $format
+     *
+     * @return string
+     */
+    public static function prettify(?string $data, string $format): string
+    {
+        if (str_ends_with($format, self::FORMAT_XML)) {
+            return self::prettyXML($data);
+        }
+
+        if (self::FORMAT_JSON === $format) {
+            return self::prettyJson($data);
+        }
+
+        return $data ?? '';
     }
 
     /**

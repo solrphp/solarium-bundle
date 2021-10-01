@@ -54,6 +54,7 @@ class SolrCallRegistryTest extends TestCase
         self::assertSame('{"foo": "bar}', $call['request_body']);
         self::assertSame('', $call['response_headers']);
         self::assertSame('', $call['response_body']);
+        self::assertSame('', $call['status_code']);
         self::assertArrayHasKey('start', $call);
     }
 
@@ -73,6 +74,7 @@ class SolrCallRegistryTest extends TestCase
         $call = current($registry->getCalls());
 
         self::assertSame(['HTTP 200 OK'], $call['response_headers']->all());
+        self::assertSame(200, $call['status_code']);
 
         $expected = <<<'JSON'
 {
