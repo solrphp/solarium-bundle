@@ -50,4 +50,15 @@ class ParamsNodeGeneratorTest extends TestCase
             self::assertSame($result[$key]['first'], $value);
         }
     }
+
+    /**
+     * @throws \PHPUnit\Framework\Exception
+     * @throws \PHPUnit\Framework\ExpectationFailedException
+     */
+    public function testEmptyConfig(): void
+    {
+        $parameters = new RequestParameters(['foo'], []);
+
+        self::assertCount(0, (new ParamsNodeGenerator())->get($parameters));
+    }
 }
