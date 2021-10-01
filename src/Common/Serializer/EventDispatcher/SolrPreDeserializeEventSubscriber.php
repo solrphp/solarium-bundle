@@ -15,6 +15,7 @@ namespace Solrphp\SolariumBundle\Common\Serializer\EventDispatcher;
 use JMS\Serializer\EventDispatcher\EventSubscriberInterface;
 use JMS\Serializer\EventDispatcher\PreDeserializeEvent;
 use Solrphp\SolariumBundle\Contract\SolrApi\Response\ResponseInterface;
+use Solrphp\SolariumBundle\SolrApi\Param\Response\ParamResponse;
 
 /**
  * Solr Pre-Deserialize EventSubscriber.
@@ -50,6 +51,12 @@ class SolrPreDeserializeEventSubscriber implements EventSubscriberInterface
                 'format' => 'json',
                 'class' => ResponseInterface::class,
             ],
+            [
+                'event' => 'serializer.pre_deserialize',
+                'method' => 'normalizeParamsResponse',
+                'format' => 'json',
+                'class' => ResponseInterface::class,
+            ],
         ];
     }
 
@@ -62,5 +69,38 @@ class SolrPreDeserializeEventSubscriber implements EventSubscriberInterface
 
         $event->setData($this->prepare->__invoke($event->getData()));
         $event->setType($realClass, $event->getType()['params'] ?? []);
+    }
+
+    /**
+     * @param \JMS\Serializer\EventDispatcher\PreDeserializeEvent $event
+     */
+    public function normalizeParamsResponse(PreDeserializeEvent $event): void
+    {
+        if (ParamResponse::class !== $event->getContext()->getAttribute('solrphp.real_class')) {
+            return;
+        }
+
+        $data = $event->getData();
+
+        if (!isset($data['response'])) {
+            return;
+        }
+
+        $data['params'] = [];
+
+        foreach ($data['response']['params'] as $name => $map) {
+            unset($map['']);
+            $data['params'][] = array_merge(
+                array_intersect_key($map, array_flip(['_appends_', '_invariants_'])),
+                [
+                    'parameters' => array_diff_key($map, array_flip(['_appends_', '_invariants_'])),
+                    'name' => $name,
+                ]
+            );
+        }
+
+        unset($data['response']);
+
+        $event->setData($data);
     }
 }

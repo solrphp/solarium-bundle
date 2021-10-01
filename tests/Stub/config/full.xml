@@ -101,7 +101,7 @@
 
             <search_component name="foo" class="bar" />
 
-            <request_handler name="foo" class="bar">
+            <request_handler name="foo" class="bar" use_params="foo">
                 <default name="baz" value="qux" />
                 <append name="baz" value="qux" />
                 <invariant name="baz" value="qux" />
@@ -138,6 +138,14 @@
                         add_http_request_to_context="true" />
             </request_dispatcher>
         </solr_config>
+        <parameter>
+            <core>foo</core>
+            <parameter_set_map name="foo">
+                <parameter name="foo" value="bar" />
+                <_invariant_ name="baz" value="qux" />
+                <_append_ name="quux" value="wut" />
+            </parameter_set_map>
+        </parameter>
     </config>
 
 </container>

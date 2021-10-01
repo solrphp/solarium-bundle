@@ -44,7 +44,7 @@ class SolrConfigUpdateCommandTest extends TestCase
 
         $manager = $this->getMockBuilder(ConfigManager::class)->disableOriginalConstructor()->getMock();
         $processor = new ConfigProcessor(new ArrayCollection(), $manager);
-        $store = new SolrConfigurationStore([], [], new SolrSerializer());
+        $store = new SolrConfigurationStore([], [], [], new SolrSerializer());
 
         $application->add(new SolrConfigUpdateCommand($processor, $store));
 
@@ -60,7 +60,7 @@ class SolrConfigUpdateCommandTest extends TestCase
      */
     public function testExecute(): void
     {
-        $store = new SolrConfigurationStore([$this->getEmptySchemaConfig()], [$this->getEmptyConfigConfig()], new SolrSerializer());
+        $store = new SolrConfigurationStore([$this->getEmptySchemaConfig()], [$this->getEmptyConfigConfig()], [$this->getEmptyParamsConfig()], new SolrSerializer());
 
         $application = new Application();
 
@@ -87,7 +87,7 @@ class SolrConfigUpdateCommandTest extends TestCase
      */
     public function testExecuteFailure(): void
     {
-        $store = new SolrConfigurationStore([$this->getEmptySchemaConfig()], [$this->getEmptyConfigConfig()], new SolrSerializer());
+        $store = new SolrConfigurationStore([$this->getEmptySchemaConfig()], [$this->getEmptyConfigConfig()], [$this->getEmptyParamsConfig()], new SolrSerializer());
 
         $application = new Application();
         $exception = new ProcessorException('error message');
@@ -115,7 +115,7 @@ class SolrConfigUpdateCommandTest extends TestCase
      */
     public function testExecuteNoConfig(): void
     {
-        $store = new SolrConfigurationStore([$this->getEmptySchemaConfig()], [$this->getEmptyConfigConfig()], new SolrSerializer());
+        $store = new SolrConfigurationStore([$this->getEmptySchemaConfig()], [$this->getEmptyConfigConfig()], [$this->getEmptyParamsConfig()], new SolrSerializer());
 
         $application = new Application();
 
@@ -161,6 +161,17 @@ class SolrConfigUpdateCommandTest extends TestCase
             'cores' => ['foo'],
             'search_components' => [],
             'request_handlers' => [],
+        ];
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    private function getEmptyParamsConfig(): array
+    {
+        return [
+            'cores' => ['foo'],
+            'parameter_set_maps' => [],
         ];
     }
 }

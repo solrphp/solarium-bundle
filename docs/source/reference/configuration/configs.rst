@@ -69,5 +69,5 @@ configs
 | the `update handler settings <https://solr.apache.org/guide/8_9/updatehandlers-in-solrconfig.html>`_ for your configuration
 
 ``request dispatcher``
-------------------
+----------------------
 | the `request dispatcher settings <https://solr.apache.org/guide/8_9/requestdispatcher-in-solrconfig.html>`_ for your configuration

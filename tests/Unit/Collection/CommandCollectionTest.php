@@ -15,6 +15,8 @@ namespace Solrphp\SolariumBundle\Tests\Unit\Collection;
 use PHPUnit\Framework\TestCase;
 use Solrphp\SolariumBundle\Common\Collection\CommandCollection;
 use Solrphp\SolariumBundle\SolrApi\Config\Model\Property;
+use Solrphp\SolariumBundle\SolrApi\Param\Enum\Command;
+use Solrphp\SolariumBundle\SolrApi\Param\Model\ParameterSetMap;
 use Solrphp\SolariumBundle\SolrApi\Schema\Model\Field;
 
 /**
@@ -168,5 +170,19 @@ class CommandCollectionTest extends TestCase
 
         self::assertArrayHasKey('bar', $collection->jsonSerialize());
         self::assertArrayNotHasKey('foo', $collection->jsonSerialize());
+    }
+
+    /**
+     * @throws \PHPUnit\Framework\Exception
+     * @throws \PHPUnit\Framework\ExpectationFailedException
+     */
+    public function testToObjects(): void
+    {
+        $collection = new CommandCollection([Command::SET_PARAM => []], true);
+        $collection->add(Command::SET_PARAM, new ParameterSetMap('foo'));
+        $collection->add(Command::SET_PARAM, new ParameterSetMap('bar'));
+
+        self::assertArrayHasKey('set', $collection->jsonSerialize()[0]);
+        self::assertArrayHasKey('set', $collection->jsonSerialize()[1]);
     }
 }

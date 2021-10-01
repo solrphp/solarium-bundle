@@ -48,13 +48,13 @@ return static function (ContainerConfigurator $container) {
             ])
         ->alias(SchemaProcessor::class, 'solrphp.processor.schema')
 
-        ->set('solrphp.command.schema_update', SolrSchemaUpdateCommand::class)
+        ->set(SolrSchemaUpdateCommand::class)
             ->args([
                 service('solrphp.processor.schema'),
                 service(SolrConfigurationStore::class),
             ])
         ->tag('console.command')
-        ->alias(SolrSchemaUpdateCommand::class, 'solrphp.command.schema_update')
+        ->alias('solrphp.command.schema_update', SolrSchemaUpdateCommand::class)
 
         // load config processors for this api.
         ->load('Solrphp\\SolariumBundle\\SolrApi\\Schema\\Manager\\Handler\\', '../../SolrApi/Schema/Manager/Handler')

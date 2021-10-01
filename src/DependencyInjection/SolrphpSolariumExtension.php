@@ -67,7 +67,7 @@ class SolrphpSolariumExtension extends Extension
 
         $loader->load('core_admin_api.php');
 
-        if (\count($config['managed_schemas']) || \count($config['solr_configs'])) {
+        if (\count($config['managed_schemas']) || \count($config['solr_configs']) || \count($config['parameters'])) {
             $this->loadSolrConfigurationStore($container, $config);
         }
 
@@ -77,6 +77,10 @@ class SolrphpSolariumExtension extends Extension
 
         if (\count($config['solr_configs'])) {
             $loader->load('config_api.php');
+        }
+
+        if (\count($config['parameters'])) {
+            $loader->load('parameter_api.php');
         }
     }
 
@@ -89,6 +93,7 @@ class SolrphpSolariumExtension extends Extension
         $definition = new Definition(SolrConfigurationStore::class, [
             $config['managed_schemas'],
             $config['solr_configs'],
+            $config['parameters'],
             new Reference('solrphp.serializer'),
         ]);
 

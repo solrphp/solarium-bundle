@@ -15,3 +15,4 @@ configuration
     configuration/clients
     configuration/schemas
     configuration/configs
+    configuration/params

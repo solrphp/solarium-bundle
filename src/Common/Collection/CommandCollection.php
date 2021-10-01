@@ -30,11 +30,18 @@ final class CommandCollection implements \ArrayAccess, \IteratorAggregate, \Json
     private array $commands;
 
     /**
-     * @param array<string, array<\JsonSerializable>|null> $commands
+     * @var bool
      */
-    public function __construct(array $commands = [])
+    private bool $generateObjects;
+
+    /**
+     * @param array<string, array<\JsonSerializable>|null> $commands
+     * @param bool                                         $generateObjects
+     */
+    public function __construct(array $commands = [], bool $generateObjects = false)
     {
         $this->commands = $commands;
+        $this->generateObjects = $generateObjects;
     }
 
     /**
@@ -139,7 +146,17 @@ final class CommandCollection implements \ArrayAccess, \IteratorAggregate, \Json
      */
     public function jsonSerialize()
     {
-        return array_filter($this->commands);
+        if (false === $this->generateObjects) {
+            return array_filter($this->commands);
+        }
+
+        $objects = [];
+
+        foreach ($this->commands as $name => $commands) {
+            $objects[] = $this->toObjects($name, $this->commands[$name] ?? []);
+        }
+
+        return array_merge(...$objects);
     }
 
     /**
@@ -147,7 +164,7 @@ final class CommandCollection implements \ArrayAccess, \IteratorAggregate, \Json
      */
     public function isEmpty(): bool
     {
-        return 0 === \count($this->jsonSerialize());
+        return 0 === \count(array_filter($this->commands));
     }
 
     /**
@@ -158,5 +175,22 @@ final class CommandCollection implements \ArrayAccess, \IteratorAggregate, \Json
     public function get(string $command): ?array
     {
         return $this->commands[$command] ?? null;
+    }
+
+    /**
+     * @param string       $name
+     * @param array<mixed> $values
+     *
+     * @return array<int, array<string, mixed>>
+     */
+    private function toObjects(string $name, array $values): array
+    {
+        $result = [];
+
+        foreach ($values as $value) {
+            $result[] = [$name => $value];
+        }
+
+        return $result;
     }
 }

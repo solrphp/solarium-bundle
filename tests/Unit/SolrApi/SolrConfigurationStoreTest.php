@@ -18,6 +18,7 @@ use Solrphp\SolariumBundle\SolrApi\Config\Config\SolrConfig;
 use Solrphp\SolariumBundle\SolrApi\Config\Model\Property;
 use Solrphp\SolariumBundle\SolrApi\Config\Model\RequestHandler;
 use Solrphp\SolariumBundle\SolrApi\Config\Model\SearchComponent;
+use Solrphp\SolariumBundle\SolrApi\Param\Model\Parameter;
 use Solrphp\SolariumBundle\SolrApi\Schema\Config\ManagedSchema;
 use Solrphp\SolariumBundle\SolrApi\Schema\Model\CharFilter\ICUNormalizer2CharFilter;
 use Solrphp\SolariumBundle\SolrApi\Schema\Model\CopyField;
@@ -50,7 +51,7 @@ class SolrConfigurationStoreTest extends TestCase
      */
     public function testConfigInitialization(array $configs, string $coreConfig, int $searchComponentCount, int $requestHandlerCount, bool $queryObject, bool $handlerObject): void
     {
-        $config = (new SolrConfigurationStore([], $configs, new SolrSerializer()))
+        $config = (new SolrConfigurationStore([], $configs, [], new SolrSerializer()))
             ->getConfigForCore($coreConfig);
 
         self::assertInstanceOf(SolrConfig::class, $config);
@@ -83,7 +84,7 @@ class SolrConfigurationStoreTest extends TestCase
      */
     public function testManagedSchemaInitialization(array $schemas, string $coreConfig, string $key, int $fieldCount, int $dynamicFieldCount, int $copyFieldCount, int $fieldTypeCount): void
     {
-        $schema = (new SolrConfigurationStore($schemas, [], new SolrSerializer()))
+        $schema = (new SolrConfigurationStore($schemas, [], [], new SolrSerializer()))
             ->getSchemaForCore($coreConfig);
 
         self::assertInstanceOf(ManagedSchema::class, $schema);
@@ -138,13 +139,52 @@ class SolrConfigurationStoreTest extends TestCase
             'update_handler' => null,
         ];
 
-        $config = (new SolrConfigurationStore([], [$config], new SolrSerializer()))
+        $config = (new SolrConfigurationStore([], [$config], [], new SolrSerializer()))
             ->getConfigForCore('foo');
 
         $handler = $config->getRequestHandlers()[0];
         self::assertCount(2, $handler->getLastComponents());
         self::assertCount(2, $handler->getInvariants());
         self::assertInstanceOf(Property::class, $handler->getInvariants()[0]);
+    }
+
+    /**
+     * make sure property name normalization and array denormalization is properly done.
+     */
+    public function testParamsNormalization(): void
+    {
+        $config = [
+            'cores' => [
+                'foo',
+            ],
+            'parameter_set_maps' => [
+                [
+                    'name' => 'foo',
+                    'parameters' => [
+                        ['name' => 'foo', 'value' => 'bar'],
+                        ['name' => 'baz', 'value' => 'qux'],
+                    ],
+                    '_invariants_' => [
+                        ['name' => 'foo', 'value' => 'bar'],
+                        ['name' => 'baz', 'value' => 'qux'],
+                    ],
+                    '_appends_' => [
+                        ['name' => 'foo', 'value' => 'bar'],
+                        ['name' => 'baz', 'value' => 'qux'],
+                    ],
+                ],
+            ],
+        ];
+
+        $config = (new SolrConfigurationStore([], [], [$config], new SolrSerializer()))
+            ->getParamsForCore('foo');
+
+        $parameterSetMap = $config->getParameterSetMaps()[0];
+        self::assertSame('foo', $parameterSetMap->getName());
+        self::assertCount(2, $parameterSetMap->getParameters());
+        self::assertCount(2, $parameterSetMap->getInvariants());
+        self::assertCount(2, $parameterSetMap->getAppends());
+        self::assertInstanceOf(Parameter::class, $parameterSetMap->getInvariants()[0]);
     }
 
     /**
@@ -171,7 +211,7 @@ class SolrConfigurationStoreTest extends TestCase
             'unique_key' => 'foo',
         ];
 
-        $schema = (new SolrConfigurationStore([$schema], [], new SolrSerializer()))
+        $schema = (new SolrConfigurationStore([$schema], [], [], new SolrSerializer()))
             ->getSchemaForCore('foo');
 
         self::assertFalse($schema->getFields()[0]->getTermPayloads());
@@ -226,7 +266,7 @@ class SolrConfigurationStoreTest extends TestCase
             'unique_key' => 'foo',
         ];
 
-        $schema = (new SolrConfigurationStore([$schema], [], new SolrSerializer()))
+        $schema = (new SolrConfigurationStore([$schema], [], [], new SolrSerializer()))
             ->getSchemaForCore('foo');
 
         /** @var FieldType $fieldType */
@@ -259,10 +299,11 @@ class SolrConfigurationStoreTest extends TestCase
      */
     public function testNoConfigurations(): void
     {
-        $store = new SolrConfigurationStore([], [], new SolrSerializer());
+        $store = new SolrConfigurationStore([], [], [], new SolrSerializer());
 
         self::assertNull($store->getConfigForCore('foo'));
         self::assertNull($store->getSchemaForCore('foo'));
+        self::assertNull($store->getParamsForCore('foo'));
     }
 
     /**

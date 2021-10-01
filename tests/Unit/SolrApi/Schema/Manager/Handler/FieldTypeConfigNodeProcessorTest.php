@@ -10,7 +10,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Solrphp\SolariumBundle\Tests\Unit\SolrApi\Schema\Manager\Processor;
+namespace Solrphp\SolariumBundle\Tests\Unit\SolrApi\Schema\Manager\Handler;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use PHPUnit\Framework\TestCase;
@@ -23,18 +23,19 @@ use Solrphp\SolariumBundle\SolrApi\Config\Manager\ConfigManager;
 use Solrphp\SolariumBundle\SolrApi\Config\Model\UpdateHandler;
 use Solrphp\SolariumBundle\SolrApi\Config\Response\ConfigResponse;
 use Solrphp\SolariumBundle\SolrApi\Schema\Enum\Command;
-use Solrphp\SolariumBundle\SolrApi\Schema\Manager\Handler\CopyFieldConfigNodeHandler;
+use Solrphp\SolariumBundle\SolrApi\Schema\Enum\SubPath;
+use Solrphp\SolariumBundle\SolrApi\Schema\Manager\Handler\FieldTypeConfigNodeHandler;
 use Solrphp\SolariumBundle\SolrApi\Schema\Manager\SchemaManager;
-use Solrphp\SolariumBundle\SolrApi\Schema\Model\CopyField;
 use Solrphp\SolariumBundle\SolrApi\Schema\Model\Field;
-use Solrphp\SolariumBundle\SolrApi\Schema\Response\CopyFieldsResponse;
+use Solrphp\SolariumBundle\SolrApi\Schema\Model\FieldType;
+use Solrphp\SolariumBundle\SolrApi\Schema\Response\FieldTypeResponse;
 
 /**
- * CopyField ConfigNode Processor Test.
+ * FieldType ConfigNode Processor Test.
  *
  * @author wicliff <wicliff.wolda@gmail.com>
  */
-class CopyFieldConfigNodeProcessorTest extends TestCase
+class FieldTypeConfigNodeProcessorTest extends TestCase
 {
     /**
      * @throws \PHPUnit\Framework\InvalidArgumentException
@@ -48,9 +49,10 @@ class CopyFieldConfigNodeProcessorTest extends TestCase
         $manager = $this->getMockBuilder(SchemaManager::class)->disableOriginalConstructor()->getMock();
         $manager->expects(self::once())
             ->method('call')
-            ->willThrowException(new UnexpectedValueException('foo'));
+            ->willThrowException(new UnexpectedValueException('foo'))
+        ;
 
-        (new CopyFieldConfigNodeHandler())->setManager($manager)->handle($node);
+        (new FieldTypeConfigNodeHandler())->setManager($manager)->handle($node);
     }
 
     /**
@@ -65,9 +67,10 @@ class CopyFieldConfigNodeProcessorTest extends TestCase
         $manager = $this->getMockBuilder(SchemaManager::class)->disableOriginalConstructor()->getMock();
         $manager->expects(self::once())
             ->method('call')
-            ->willReturn(new ConfigResponse());
+            ->willReturn(new ConfigResponse())
+        ;
 
-        (new CopyFieldConfigNodeHandler())->setManager($manager)->handle($node);
+        (new FieldTypeConfigNodeHandler())->setManager($manager)->handle($node);
     }
 
     /**
@@ -82,7 +85,7 @@ class CopyFieldConfigNodeProcessorTest extends TestCase
         $manager = $this->getMockBuilder(ConfigManager::class)->disableOriginalConstructor()->getMock();
         $manager->expects(self::never())->method('call');
 
-        (new CopyFieldConfigNodeHandler())->setManager($manager)->handle($node);
+        (new FieldTypeConfigNodeHandler())->setManager($manager)->handle($node);
     }
 
     /**
@@ -91,34 +94,34 @@ class CopyFieldConfigNodeProcessorTest extends TestCase
      */
     public function testAddFieldCommand(): void
     {
-        $field = new CopyField();
-        $field->setSource('foo');
-        $field->setDest('bar');
+        $field = new FieldType('foo');
+        $secondField = new FieldType('qux');
 
-        $node = new IterableConfigNode('foo', 'bar', new ArrayCollection([$field]));
+        $node = new IterableConfigNode('foo', SubPath::LIST_FIELD_TYPES, new ArrayCollection([$field, $secondField]));
 
-        $currentField = new CopyField();
-        $currentField->setSource('bar');
-        $currentField->setDest('foo');
-        //$currentSchema = new ManagedSchema('foo', new ArrayCollection(['foo']), new ArrayCollection([$currentField]));
+        $currentField = new FieldType('bar');
+        $secondCurrentField = new FieldType('qux');
 
-        $response = new CopyFieldsResponse();
-        $response->addCopyField($currentField);
+        $response = new FieldTypeResponse();
+        $response->addFieldType($currentField);
+        $response->addFieldType($secondCurrentField);
 
         $manager = $this->getMockBuilder(SchemaManager::class)->disableOriginalConstructor()->getMock();
         $manager->expects(self::once())
             ->method('call')
-            ->with('bar')
+            ->with(SubPath::LIST_FIELD_TYPES)
             ->willReturn($response);
 
-        $manager->expects(self::exactly(2))
+        $manager->expects(self::exactly(3))
             ->method('addCommand')
             ->withConsecutive(
-                [Command::ADD_COPY_FIELD, $field],
-                [Command::DELETE_COPY_FIELD, $currentField]
-            );
+                [Command::ADD_FIELD_TYPE, $field],
+                [Command::REPLACE_FIELD_TYPE, $secondField],
+                [Command::DELETE_FIELD_TYPE, $currentField]
+            )
+        ;
 
-        (new CopyFieldConfigNodeHandler())->setManager($manager)->handle($node);
+        (new FieldTypeConfigNodeHandler())->setManager($manager)->handle($node);
     }
 
     /**
@@ -130,18 +133,14 @@ class CopyFieldConfigNodeProcessorTest extends TestCase
         $this->expectException(ProcessorException::class);
         $this->expectExceptionMessage('unable to add command for type foo: [error message]');
 
-        $field = new CopyField();
-        $field->setSource('foo');
-        $field->setDest('bar');
+        $field = new FieldType('foo');
 
         $node = new IterableConfigNode('foo', 'bar', new ArrayCollection([$field]));
 
-        $currentField = new CopyField();
-        $currentField->setSource('bar');
-        $currentField->setDest('foo');
+        $currentField = new FieldType('bar');
 
-        $response = new CopyFieldsResponse();
-        $response->addCopyField($currentField);
+        $response = new FieldTypeResponse();
+        $response->addFieldType($currentField);
 
         $manager = $this->getMockBuilder(ConfigManager::class)->disableOriginalConstructor()->getMock();
         $manager->expects(self::once())
@@ -151,10 +150,11 @@ class CopyFieldConfigNodeProcessorTest extends TestCase
 
         $manager->expects(self::once())
             ->method('addCommand')
-            ->with(Command::ADD_COPY_FIELD, $field)
-            ->willThrowException(new UnexpectedValueException('[error message]'));
+            ->with(Command::ADD_FIELD_TYPE, $field)
+            ->willThrowException(new UnexpectedValueException('[error message]'))
+        ;
 
-        (new CopyFieldConfigNodeHandler())->setManager($manager)->handle($node);
+        (new FieldTypeConfigNodeHandler())->setManager($manager)->handle($node);
     }
 
     /**
@@ -162,11 +162,11 @@ class CopyFieldConfigNodeProcessorTest extends TestCase
      */
     public function testSupports(): void
     {
-        $nodeOne = new IterableConfigNode(CopyField::class, 'bar', new ArrayCollection());
-        $nodeTwo = new IterableConfigNode(Field::class, 'bar', new ArrayCollection());
+        $nodeOne = new IterableConfigNode(FieldType::class, 'foo', new ArrayCollection());
+        $nodeTwo = new IterableConfigNode(Field::class, SubPath::LIST_DYNAMIC_FIELDS, new ArrayCollection());
 
-        self::assertTrue((new CopyFieldConfigNodeHandler())->supports($nodeOne));
-        self::assertFalse((new CopyFieldConfigNodeHandler())->supports($nodeTwo));
+        self::assertTrue((new FieldTypeConfigNodeHandler())->supports($nodeOne));
+        self::assertFalse((new FieldTypeConfigNodeHandler())->supports($nodeTwo));
     }
 
     /**
@@ -174,6 +174,6 @@ class CopyFieldConfigNodeProcessorTest extends TestCase
      */
     public function testPriority(): void
     {
-        self::assertSame(ConfigNodeHandlerInterface::PRIORITY, CopyFieldConfigNodeHandler::getDefaultPriority());
+        self::assertSame(ConfigNodeHandlerInterface::PRIORITY, FieldTypeConfigNodeHandler::getDefaultPriority());
     }
 }

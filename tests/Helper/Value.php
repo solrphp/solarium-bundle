@@ -96,7 +96,7 @@ class Value
 
         return array_map(
             static function ($key) {
-                return strtolower(preg_replace('/(?<=[a-z])(?=[A-Z])/', '-', $key));
+                return 'useParams' === $key ? $key : strtolower(preg_replace('/(?<=[a-z])(?=[A-Z])/', '-', $key));
             },
             array_keys($array)
         );

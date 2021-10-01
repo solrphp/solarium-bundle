@@ -32,18 +32,25 @@ use Solrphp\SolariumBundle\SolrApi\CoreAdmin\Manager\CoreManager;
 abstract class AbstractApiManager implements SolrApiManagerInterface
 {
     /**
-     * Available commands for API v2 endpoint.
+     * Available commands for API endpoint.
      *
      * @var array<string, array<\JsonSerializable>|null>
      */
     protected static array $availableCommands = [];
 
     /**
-     * Available sub paths for API v2 endpoint.
+     * Available sub paths for API endpoint.
      *
      * @var array<int, string>
      */
     protected static array $availableSubPaths = [];
+
+    /**
+     * changes the way commands are serialized.
+     *
+     * @var bool
+     */
+    protected static bool $isObjectApi = false;
 
     /**
      * API v2 handler.
@@ -102,7 +109,7 @@ abstract class AbstractApiManager implements SolrApiManagerInterface
         $this->coreManager = $coreManager;
         $this->serializer = $serializer;
 
-        $this->commands = new CommandCollection(static::$availableCommands);
+        $this->commands = new CommandCollection(static::$availableCommands, static::$isObjectApi);
     }
 
     /**
@@ -146,7 +153,7 @@ abstract class AbstractApiManager implements SolrApiManagerInterface
                 'handler' => $this->getHandler(),
             ]);
 
-        $query->setOptions(['rawdata' => json_encode($this->commands, \JSON_THROW_ON_ERROR)], false);
+        $query->setOptions(['rawdata' => $this->encodeCommands()], false);
 
         return $this->client->execute($query, $this->core);
     }
@@ -173,12 +180,28 @@ abstract class AbstractApiManager implements SolrApiManagerInterface
             ->createApi([
                 'version' => static::$api,
                 'method' => Request::METHOD_GET,
-                'handler' => sprintf('%s/%s', $this->getHandler(), $path),
+                'handler' => '' !== $path ? sprintf('%s/%s', $this->getHandler(), $path) : $this->getHandler(),
             ]);
 
         $response = $this->client->execute($query, $this->core)->getResponse();
 
         return new RawSolrApiResponse($response->getBody());
+    }
+
+    /**
+     * @return string
+     *
+     * @throws \JsonException
+     */
+    private function encodeCommands(): string
+    {
+        $data = json_encode($this->commands, \JSON_THROW_ON_ERROR);
+
+        if (false === static::$isObjectApi) {
+            return $data;
+        }
+
+        return str_replace(['},{', ':[]'], [',', ':{}'], substr($data, 1, -1));
     }
 
     /**

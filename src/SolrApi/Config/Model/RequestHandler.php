@@ -36,6 +36,13 @@ class RequestHandler implements \JsonSerializable
     private string $class;
 
     /**
+     * @var string|null
+     *
+     * @Serializer\Type("string")
+     */
+    private ?string $useParams = null;
+
+    /**
      * @var \Solrphp\SolariumBundle\SolrApi\Config\Model\Property[]
      *
      * @Serializer\Type("PropertyList")
@@ -107,6 +114,22 @@ class RequestHandler implements \JsonSerializable
     public function getClass(): string
     {
         return $this->class;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getUseParams(): ?string
+    {
+        return $this->useParams;
+    }
+
+    /**
+     * @param string|null $useParams
+     */
+    public function setUseParams(?string $useParams): void
+    {
+        $this->useParams = $useParams;
     }
 
     /**
@@ -274,6 +297,7 @@ class RequestHandler implements \JsonSerializable
             [
                 'name' => $this->name,
                 'class' => $this->class,
+                'useParams' => $this->useParams,
                 'defaults' => $this->map($this->defaults),
                 'appends' => $this->map($this->appends),
                 'invariants' => $this->map($this->invariants),
