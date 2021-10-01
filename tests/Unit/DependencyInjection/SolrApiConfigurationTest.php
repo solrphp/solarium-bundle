@@ -41,6 +41,7 @@ class SolrApiConfigurationTest extends AbstractExtensionConfigurationTestCase
             'clients' => [],
             'managed_schemas' => [],
             'solr_configs' => [],
+            'parameters' => [],
         ];
 
         $formats = array_map(
@@ -252,6 +253,7 @@ class SolrApiConfigurationTest extends AbstractExtensionConfigurationTestCase
                             'last_components' => [
                                 'bar',
                             ],
+                            'use_params' => 'foo',
                         ],
                     ],
                     'query' => [
@@ -322,6 +324,36 @@ class SolrApiConfigurationTest extends AbstractExtensionConfigurationTestCase
                             'multipart_upload_limit_in_kB' => 10,
                             'formdata_upload_limit_in_kB' => 10,
                             'add_http_request_to_context' => true,
+                        ],
+                    ],
+                ],
+            ],
+            'parameters' => [
+                [
+                    'cores' => [
+                        'foo',
+                    ],
+                    'parameter_set_maps' => [
+                        [
+                            'name' => 'foo',
+                            'parameters' => [
+                                [
+                                    'name' => 'foo',
+                                    'value' => 'bar',
+                                ],
+                            ],
+                            '_invariants_' => [
+                                [
+                                    'name' => 'baz',
+                                    'value' => 'qux',
+                                ],
+                            ],
+                            '_appends_' => [
+                                [
+                                    'name' => 'quux',
+                                    'value' => 'wut',
+                                ],
+                            ],
                         ],
                     ],
                 ],

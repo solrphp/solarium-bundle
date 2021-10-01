@@ -93,6 +93,8 @@ class SolrSchemaUpdateCommand extends Command
             return Command::FAILURE;
         }
 
+        $output->writeln(sprintf('<info>Successfully updated schema for %s core</info>', $core));
+
         return Command::SUCCESS;
     }
 }

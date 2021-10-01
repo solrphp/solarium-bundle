@@ -82,6 +82,6 @@ class Property implements \JsonSerializable
      */
     public function jsonSerialize(): array
     {
-        return [$this->name => $this->value];
+        return [$this->name => (string) $this->value];
     }
 }

@@ -10,7 +10,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Solrphp\SolariumBundle\Tests\Unit\SolrApi\Schema\Manager\Processor;
+namespace Solrphp\SolariumBundle\Tests\Unit\SolrApi\Param\Manager\Handler;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use PHPUnit\Framework\TestCase;
@@ -20,21 +20,22 @@ use Solrphp\SolariumBundle\Contract\SolrApi\Manager\ConfigNodeHandlerInterface;
 use Solrphp\SolariumBundle\Exception\ProcessorException;
 use Solrphp\SolariumBundle\Exception\UnexpectedValueException;
 use Solrphp\SolariumBundle\SolrApi\Config\Manager\ConfigManager;
-use Solrphp\SolariumBundle\SolrApi\Config\Model\UpdateHandler;
 use Solrphp\SolariumBundle\SolrApi\Config\Response\ConfigResponse;
-use Solrphp\SolariumBundle\SolrApi\Schema\Enum\Command;
-use Solrphp\SolariumBundle\SolrApi\Schema\Enum\SubPath;
-use Solrphp\SolariumBundle\SolrApi\Schema\Manager\Handler\DynamicFieldConfigNodeHandler;
+use Solrphp\SolariumBundle\SolrApi\Param\Enum\Command;
+use Solrphp\SolariumBundle\SolrApi\Param\Enum\SubPath;
+use Solrphp\SolariumBundle\SolrApi\Param\Manager\Handler\ParamsConfigNodeHandler;
+use Solrphp\SolariumBundle\SolrApi\Param\Manager\ParamManager;
+use Solrphp\SolariumBundle\SolrApi\Param\Model\ParameterSetMap;
+use Solrphp\SolariumBundle\SolrApi\Param\Response\ParamResponse;
 use Solrphp\SolariumBundle\SolrApi\Schema\Manager\SchemaManager;
 use Solrphp\SolariumBundle\SolrApi\Schema\Model\Field;
-use Solrphp\SolariumBundle\SolrApi\Schema\Response\DynamicFieldsResponse;
 
 /**
- * DynamicField ConfigNode Processor Test.
+ * ParamsConfigNodeHandlerTest.
  *
  * @author wicliff <wicliff.wolda@gmail.com>
  */
-class DynamicFieldConfigNodeProcessorTest extends TestCase
+class ParamsConfigNodeHandlerTest extends TestCase
 {
     /**
      * @throws \PHPUnit\Framework\InvalidArgumentException
@@ -42,15 +43,15 @@ class DynamicFieldConfigNodeProcessorTest extends TestCase
     public function testCurrentException(): void
     {
         $this->expectException(ProcessorException::class);
-        $this->expectExceptionMessage('unable to retrieve current dynamic field config: foo');
+        $this->expectExceptionMessage('unable to retrieve params config from sub path');
 
         $node = new IterableConfigNode('foo', 'bar', new ArrayCollection());
-        $manager = $this->getMockBuilder(SchemaManager::class)->disableOriginalConstructor()->getMock();
+        $manager = $this->getMockBuilder(ParamManager::class)->disableOriginalConstructor()->getMock();
         $manager->expects(self::once())
             ->method('call')
             ->willThrowException(new UnexpectedValueException('foo'));
 
-        (new DynamicFieldConfigNodeHandler())->setManager($manager)->handle($node);
+        (new ParamsConfigNodeHandler())->setManager($manager)->handle($node);
     }
 
     /**
@@ -59,15 +60,15 @@ class DynamicFieldConfigNodeProcessorTest extends TestCase
     public function testInvalidResponse(): void
     {
         $this->expectException(ProcessorException::class);
-        $this->expectExceptionMessage('invalid dynamic field response for sub path bar');
+        $this->expectExceptionMessage('invalid params response for sub path');
 
         $node = new IterableConfigNode('foo', 'bar', new ArrayCollection());
-        $manager = $this->getMockBuilder(SchemaManager::class)->disableOriginalConstructor()->getMock();
+        $manager = $this->getMockBuilder(ParamManager::class)->disableOriginalConstructor()->getMock();
         $manager->expects(self::once())
             ->method('call')
             ->willReturn(new ConfigResponse());
 
-        (new DynamicFieldConfigNodeHandler())->setManager($manager)->handle($node);
+        (new ParamsConfigNodeHandler())->setManager($manager)->handle($node);
     }
 
     /**
@@ -78,46 +79,46 @@ class DynamicFieldConfigNodeProcessorTest extends TestCase
         $this->expectException(ProcessorException::class);
         $this->expectExceptionMessage(sprintf('invalid config node use %s', IterableConfigNode::class));
 
-        $node = new ConfigNode('foo', 'bar', new UpdateHandler());
+        $node = new ConfigNode('foo', 'bar', new ParameterSetMap());
         $manager = $this->getMockBuilder(ConfigManager::class)->disableOriginalConstructor()->getMock();
         $manager->expects(self::never())->method('call');
 
-        (new DynamicFieldConfigNodeHandler())->setManager($manager)->handle($node);
+        (new ParamsConfigNodeHandler())->setManager($manager)->handle($node);
     }
 
     /**
      * @throws \PHPUnit\Framework\Exception
      * @throws \Solrphp\SolariumBundle\Exception\ProcessorException
      */
-    public function testAddFieldCommand(): void
+    public function testAddParamsCommand(): void
     {
-        $field = new Field('foo');
-        $secondField = new Field('qux');
+        $setMapOne = new ParameterSetMap('foo');
+        $setMapTwo = new ParameterSetMap('qux');
 
-        $node = new IterableConfigNode('foo', SubPath::LIST_DYNAMIC_FIELDS, new ArrayCollection([$field, $secondField]));
+        $node = new IterableConfigNode('foo', SubPath::LIST_PARAMS, new ArrayCollection([$setMapOne, $setMapTwo]));
 
-        $currentField = new Field('bar');
-        $secondCurrentField = new Field('qux');
+        $currentSetMapOne = new ParameterSetMap('bar');
+        $currentSetMapTwo = new ParameterSetMap('qux');
 
-        $response = new DynamicFieldsResponse();
-        $response->addDynamicField($currentField);
-        $response->addDynamicField($secondCurrentField);
+        $response = new ParamResponse();
+        $response->addParam($currentSetMapOne);
+        $response->addParam($currentSetMapTwo);
 
         $manager = $this->getMockBuilder(SchemaManager::class)->disableOriginalConstructor()->getMock();
         $manager->expects(self::once())
             ->method('call')
-            ->with(SubPath::LIST_DYNAMIC_FIELDS)
+            ->with(SubPath::LIST_PARAMS)
             ->willReturn($response);
 
         $manager->expects(self::exactly(3))
             ->method('addCommand')
             ->withConsecutive(
-                [Command::ADD_DYNAMIC_FIELD, $field],
-                [Command::REPLACE_DYNAMIC_FIELD, $secondField],
-                [Command::DELETE_DYNAMIC_FIELD, $currentField]
+                [Command::SET_PARAM, $setMapOne],
+                [Command::UPDATE_PARAM, $setMapTwo],
+                [Command::DELETE_PARAM, $currentSetMapOne]
             );
 
-        (new DynamicFieldConfigNodeHandler())->setManager($manager)->handle($node);
+        (new ParamsConfigNodeHandler())->setManager($manager)->handle($node);
     }
 
     /**
@@ -129,16 +130,16 @@ class DynamicFieldConfigNodeProcessorTest extends TestCase
         $this->expectException(ProcessorException::class);
         $this->expectExceptionMessage('unable to add command for type foo: [error message]');
 
-        $field = new Field('foo');
+        $setMapOne = new ParameterSetMap('foo');
 
-        $node = new IterableConfigNode('foo', 'bar', new ArrayCollection([$field]));
+        $node = new IterableConfigNode('foo', 'bar', new ArrayCollection([$setMapOne]));
 
-        $currentField = new Field('bar');
+        $setMapTwo = new ParameterSetMap('bar');
 
-        $response = new DynamicFieldsResponse();
-        $response->addDynamicField($currentField);
+        $response = new ParamResponse();
+        $response->addParam($setMapTwo);
 
-        $manager = $this->getMockBuilder(ConfigManager::class)->disableOriginalConstructor()->getMock();
+        $manager = $this->getMockBuilder(ParamManager::class)->disableOriginalConstructor()->getMock();
         $manager->expects(self::once())
             ->method('call')
             ->with('bar')
@@ -146,10 +147,10 @@ class DynamicFieldConfigNodeProcessorTest extends TestCase
 
         $manager->expects(self::once())
             ->method('addCommand')
-            ->with(Command::ADD_DYNAMIC_FIELD, $field)
+            ->with(Command::SET_PARAM, $setMapOne)
             ->willThrowException(new UnexpectedValueException('[error message]'));
 
-        (new DynamicFieldConfigNodeHandler())->setManager($manager)->handle($node);
+        (new ParamsConfigNodeHandler())->setManager($manager)->handle($node);
     }
 
     /**
@@ -157,11 +158,11 @@ class DynamicFieldConfigNodeProcessorTest extends TestCase
      */
     public function testSupports(): void
     {
-        $nodeOne = new IterableConfigNode(Field::class, SubPath::LIST_DYNAMIC_FIELDS, new ArrayCollection());
-        $nodeTwo = new IterableConfigNode(Field::class, SubPath::LIST_FIELDS, new ArrayCollection());
+        $nodeOne = new IterableConfigNode(ParameterSetMap::class, SubPath::LIST_PARAMS, new ArrayCollection());
+        $nodeTwo = new IterableConfigNode(Field::class, 'foo', new ArrayCollection());
 
-        self::assertTrue((new DynamicFieldConfigNodeHandler())->supports($nodeOne));
-        self::assertFalse((new DynamicFieldConfigNodeHandler())->supports($nodeTwo));
+        self::assertTrue((new ParamsConfigNodeHandler())->supports($nodeOne));
+        self::assertFalse((new ParamsConfigNodeHandler())->supports($nodeTwo));
     }
 
     /**
@@ -169,6 +170,6 @@ class DynamicFieldConfigNodeProcessorTest extends TestCase
      */
     public function testPriority(): void
     {
-        self::assertSame(ConfigNodeHandlerInterface::PRIORITY, DynamicFieldConfigNodeHandler::getDefaultPriority());
+        self::assertSame(ConfigNodeHandlerInterface::PRIORITY, ParamsConfigNodeHandler::getDefaultPriority());
     }
 }

@@ -17,6 +17,10 @@
       "match": "!SolrApi\\\\Config\\\\!i"
     },
     {
+      "name": "Solr Params API",
+      "match": "!SolrApi\\\\Param\\\\!i"
+    },
+    {
       "name": "Solr Schema API",
       "match": "!SolrApi\\\\Schema\\\\!i"
     },

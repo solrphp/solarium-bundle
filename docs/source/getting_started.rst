@@ -22,3 +22,12 @@ config generate command
 * ``--exclude-copy-fields``: do not dump copy fields configuration
 * ``--exclude-dynamic-fields``: do not dump dynamic fields configuration
 * ``--exclude-fields-types``: do not dump field types configuration
+
+data collector
+--------------
+| this bundle comes with a data collector to ease debugging of your solr requests.
+
+.. note::
+
+    | if you have a custom ``dispatcher_service`` or ``dispatcher_class`` defined in your :doc:`client config <../reference/configuration/clients>`, the data collector will only work if its an instance of ``Symfony\Component\EventDispatcher\EventDispatcherInterface``
+

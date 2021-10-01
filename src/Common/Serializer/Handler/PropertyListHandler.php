@@ -17,6 +17,7 @@ use JMS\Serializer\GraphNavigatorInterface;
 use JMS\Serializer\Handler\SubscribingHandlerInterface;
 use JMS\Serializer\Visitor\DeserializationVisitorInterface;
 use Solrphp\SolariumBundle\SolrApi\Config\Model\Property;
+use Solrphp\SolariumBundle\SolrApi\Param\Model\Parameter;
 
 /**
  * Config Property Handler.
@@ -37,6 +38,12 @@ class PropertyListHandler implements SubscribingHandlerInterface
                 'type' => 'PropertyList',
                 'method' => 'deserializePropertyList',
             ],
+            [
+                'direction' => GraphNavigatorInterface::DIRECTION_DESERIALIZATION,
+                'format' => 'json',
+                'type' => 'ParameterList',
+                'method' => 'deserializeParameterList',
+            ],
         ];
     }
 
@@ -50,21 +57,45 @@ class PropertyListHandler implements SubscribingHandlerInterface
      */
     public function deserializePropertyList(DeserializationVisitorInterface $visitor, array $data, array $type, Context $context): array
     {
+        return $this->deserialize($data, Property::class);
+    }
+
+    /**
+     * @param \JMS\Serializer\Visitor\DeserializationVisitorInterface $visitor
+     * @param array<mixed>                                            $data
+     * @param array<string, string|array<mixed>>                      $type
+     * @param \JMS\Serializer\Context                                 $context
+     *
+     * @return array<int, Parameter>
+     */
+    public function deserializeParameterList(DeserializationVisitorInterface $visitor, array $data, array $type, Context $context): array
+    {
+        return $this->deserialize($data, Parameter::class);
+    }
+
+    /**
+     * @param array<mixed> $data
+     * @param class-string $class
+     *
+     * @return array<int, mixed>
+     */
+    private function deserialize(array $data, string $class): array
+    {
         $return = [];
 
         foreach ($data as $key => $value) {
             if (\is_array($value)) {
-                if (!isset($value['name'], $value['value']) || !\is_string($value['value'])) {
+                if (!isset($value['name'], $value['value'])) {
                     continue;
                 }
 
-                $return[] = new Property($value['name'], $value['value']);
+                $return[] = new $class($value['name'], $value['value']);
 
                 continue;
             }
 
             if (\is_string($value)) {
-                $return[] = new Property($key, $value);
+                $return[] = new $class($key, $value);
             }
         }
 

@@ -114,6 +114,15 @@ final class PropertyTest extends TestCase
     }
 
     /**
+     * @throws \PHPUnit\Framework\ExpectationFailedException
+     */
+    public function testStringCast(): void
+    {
+        $property = new Property('foo', 0.0);
+        self::assertIsString(current($property->jsonSerialize()));
+    }
+
+    /**
      * @param string|int|float|bool|iterable<int|string, mixed> $value
      *
      * @return object|string|int|float|bool|iterable<int|string, mixed>

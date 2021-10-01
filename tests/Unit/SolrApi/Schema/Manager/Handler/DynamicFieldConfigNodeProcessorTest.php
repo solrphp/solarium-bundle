@@ -10,7 +10,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Solrphp\SolariumBundle\Tests\Unit\SolrApi\Schema\Manager\Processor;
+namespace Solrphp\SolariumBundle\Tests\Unit\SolrApi\Schema\Manager\Handler;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use PHPUnit\Framework\TestCase;
@@ -24,18 +24,17 @@ use Solrphp\SolariumBundle\SolrApi\Config\Model\UpdateHandler;
 use Solrphp\SolariumBundle\SolrApi\Config\Response\ConfigResponse;
 use Solrphp\SolariumBundle\SolrApi\Schema\Enum\Command;
 use Solrphp\SolariumBundle\SolrApi\Schema\Enum\SubPath;
-use Solrphp\SolariumBundle\SolrApi\Schema\Manager\Handler\FieldTypeConfigNodeHandler;
+use Solrphp\SolariumBundle\SolrApi\Schema\Manager\Handler\DynamicFieldConfigNodeHandler;
 use Solrphp\SolariumBundle\SolrApi\Schema\Manager\SchemaManager;
 use Solrphp\SolariumBundle\SolrApi\Schema\Model\Field;
-use Solrphp\SolariumBundle\SolrApi\Schema\Model\FieldType;
-use Solrphp\SolariumBundle\SolrApi\Schema\Response\FieldTypeResponse;
+use Solrphp\SolariumBundle\SolrApi\Schema\Response\DynamicFieldsResponse;
 
 /**
- * FieldType ConfigNode Processor Test.
+ * DynamicField ConfigNode Processor Test.
  *
  * @author wicliff <wicliff.wolda@gmail.com>
  */
-class FieldTypeConfigNodeProcessorTest extends TestCase
+class DynamicFieldConfigNodeProcessorTest extends TestCase
 {
     /**
      * @throws \PHPUnit\Framework\InvalidArgumentException
@@ -43,16 +42,15 @@ class FieldTypeConfigNodeProcessorTest extends TestCase
     public function testCurrentException(): void
     {
         $this->expectException(ProcessorException::class);
-        $this->expectExceptionMessage('unable to retrieve current field type config: foo');
+        $this->expectExceptionMessage('unable to retrieve current dynamic field config: foo');
 
         $node = new IterableConfigNode('foo', 'bar', new ArrayCollection());
         $manager = $this->getMockBuilder(SchemaManager::class)->disableOriginalConstructor()->getMock();
         $manager->expects(self::once())
             ->method('call')
-            ->willThrowException(new UnexpectedValueException('foo'))
-        ;
+            ->willThrowException(new UnexpectedValueException('foo'));
 
-        (new FieldTypeConfigNodeHandler())->setManager($manager)->handle($node);
+        (new DynamicFieldConfigNodeHandler())->setManager($manager)->handle($node);
     }
 
     /**
@@ -61,16 +59,15 @@ class FieldTypeConfigNodeProcessorTest extends TestCase
     public function testInvalidResponse(): void
     {
         $this->expectException(ProcessorException::class);
-        $this->expectExceptionMessage('invalid field type response for sub path bar');
+        $this->expectExceptionMessage('invalid dynamic field response for sub path bar');
 
         $node = new IterableConfigNode('foo', 'bar', new ArrayCollection());
         $manager = $this->getMockBuilder(SchemaManager::class)->disableOriginalConstructor()->getMock();
         $manager->expects(self::once())
             ->method('call')
-            ->willReturn(new ConfigResponse())
-        ;
+            ->willReturn(new ConfigResponse());
 
-        (new FieldTypeConfigNodeHandler())->setManager($manager)->handle($node);
+        (new DynamicFieldConfigNodeHandler())->setManager($manager)->handle($node);
     }
 
     /**
@@ -85,7 +82,7 @@ class FieldTypeConfigNodeProcessorTest extends TestCase
         $manager = $this->getMockBuilder(ConfigManager::class)->disableOriginalConstructor()->getMock();
         $manager->expects(self::never())->method('call');
 
-        (new FieldTypeConfigNodeHandler())->setManager($manager)->handle($node);
+        (new DynamicFieldConfigNodeHandler())->setManager($manager)->handle($node);
     }
 
     /**
@@ -94,34 +91,33 @@ class FieldTypeConfigNodeProcessorTest extends TestCase
      */
     public function testAddFieldCommand(): void
     {
-        $field = new FieldType('foo');
-        $secondField = new FieldType('qux');
+        $field = new Field('foo');
+        $secondField = new Field('qux');
 
-        $node = new IterableConfigNode('foo', SubPath::LIST_FIELD_TYPES, new ArrayCollection([$field, $secondField]));
+        $node = new IterableConfigNode('foo', SubPath::LIST_DYNAMIC_FIELDS, new ArrayCollection([$field, $secondField]));
 
-        $currentField = new FieldType('bar');
-        $secondCurrentField = new FieldType('qux');
+        $currentField = new Field('bar');
+        $secondCurrentField = new Field('qux');
 
-        $response = new FieldTypeResponse();
-        $response->addFieldType($currentField);
-        $response->addFieldType($secondCurrentField);
+        $response = new DynamicFieldsResponse();
+        $response->addDynamicField($currentField);
+        $response->addDynamicField($secondCurrentField);
 
         $manager = $this->getMockBuilder(SchemaManager::class)->disableOriginalConstructor()->getMock();
         $manager->expects(self::once())
             ->method('call')
-            ->with(SubPath::LIST_FIELD_TYPES)
+            ->with(SubPath::LIST_DYNAMIC_FIELDS)
             ->willReturn($response);
 
         $manager->expects(self::exactly(3))
             ->method('addCommand')
             ->withConsecutive(
-                [Command::ADD_FIELD_TYPE, $field],
-                [Command::REPLACE_FIELD_TYPE, $secondField],
-                [Command::DELETE_FIELD_TYPE, $currentField]
-            )
-        ;
+                [Command::ADD_DYNAMIC_FIELD, $field],
+                [Command::REPLACE_DYNAMIC_FIELD, $secondField],
+                [Command::DELETE_DYNAMIC_FIELD, $currentField]
+            );
 
-        (new FieldTypeConfigNodeHandler())->setManager($manager)->handle($node);
+        (new DynamicFieldConfigNodeHandler())->setManager($manager)->handle($node);
     }
 
     /**
@@ -133,14 +129,14 @@ class FieldTypeConfigNodeProcessorTest extends TestCase
         $this->expectException(ProcessorException::class);
         $this->expectExceptionMessage('unable to add command for type foo: [error message]');
 
-        $field = new FieldType('foo');
+        $field = new Field('foo');
 
         $node = new IterableConfigNode('foo', 'bar', new ArrayCollection([$field]));
 
-        $currentField = new FieldType('bar');
+        $currentField = new Field('bar');
 
-        $response = new FieldTypeResponse();
-        $response->addFieldType($currentField);
+        $response = new DynamicFieldsResponse();
+        $response->addDynamicField($currentField);
 
         $manager = $this->getMockBuilder(ConfigManager::class)->disableOriginalConstructor()->getMock();
         $manager->expects(self::once())
@@ -150,11 +146,10 @@ class FieldTypeConfigNodeProcessorTest extends TestCase
 
         $manager->expects(self::once())
             ->method('addCommand')
-            ->with(Command::ADD_FIELD_TYPE, $field)
-            ->willThrowException(new UnexpectedValueException('[error message]'))
-        ;
+            ->with(Command::ADD_DYNAMIC_FIELD, $field)
+            ->willThrowException(new UnexpectedValueException('[error message]'));
 
-        (new FieldTypeConfigNodeHandler())->setManager($manager)->handle($node);
+        (new DynamicFieldConfigNodeHandler())->setManager($manager)->handle($node);
     }
 
     /**
@@ -162,11 +157,11 @@ class FieldTypeConfigNodeProcessorTest extends TestCase
      */
     public function testSupports(): void
     {
-        $nodeOne = new IterableConfigNode(FieldType::class, 'foo', new ArrayCollection());
-        $nodeTwo = new IterableConfigNode(Field::class, SubPath::LIST_DYNAMIC_FIELDS, new ArrayCollection());
+        $nodeOne = new IterableConfigNode(Field::class, SubPath::LIST_DYNAMIC_FIELDS, new ArrayCollection());
+        $nodeTwo = new IterableConfigNode(Field::class, SubPath::LIST_FIELDS, new ArrayCollection());
 
-        self::assertTrue((new FieldTypeConfigNodeHandler())->supports($nodeOne));
-        self::assertFalse((new FieldTypeConfigNodeHandler())->supports($nodeTwo));
+        self::assertTrue((new DynamicFieldConfigNodeHandler())->supports($nodeOne));
+        self::assertFalse((new DynamicFieldConfigNodeHandler())->supports($nodeTwo));
     }
 
     /**
@@ -174,6 +169,6 @@ class FieldTypeConfigNodeProcessorTest extends TestCase
      */
     public function testPriority(): void
     {
-        self::assertSame(ConfigNodeHandlerInterface::PRIORITY, FieldTypeConfigNodeHandler::getDefaultPriority());
+        self::assertSame(ConfigNodeHandlerInterface::PRIORITY, DynamicFieldConfigNodeHandler::getDefaultPriority());
     }
 }

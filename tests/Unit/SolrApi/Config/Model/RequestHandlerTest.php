@@ -35,6 +35,7 @@ final class RequestHandlerTest extends TestCase
     private array $values = [
         'name' => 'foo',
         'class' => 'foo',
+        'useParams' => 'qux',
         'defaults' => Property::class,
         'appends' => Property::class,
         'invariants' => Property::class,
@@ -63,6 +64,11 @@ final class RequestHandlerTest extends TestCase
         'class' => [
             'reader' => 'getClass',
             'writer' => 'setClass',
+            'remover' => null,
+        ],
+        'useParams' => [
+            'reader' => 'getUseParams',
+            'writer' => 'setUseParams',
             'remover' => null,
         ],
         'defaults' => [

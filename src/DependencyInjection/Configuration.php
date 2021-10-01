@@ -37,6 +37,7 @@ class Configuration implements ConfigurationInterface
         $this->addClientsSection($rootNode);
         $this->addManagedSchemasSection($rootNode);
         $this->addSolrConfigSection($rootNode);
+        $this->addParamsSection($rootNode);
 
         return $treeBuilder;
     }
@@ -114,6 +115,63 @@ class Configuration implements ConfigurationInterface
     /**
      * @param \Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition $rootNode
      */
+    private function addParamsSection(ArrayNodeDefinition $rootNode): void
+    {
+        $rootNode
+            ->fixXmlConfig('parameter')
+            ->children()
+                ->arrayNode('parameters')
+                    ->arrayPrototype()
+                        ->fixXmlConfig('core')
+                        ->fixXmlConfig('parameter_set_map')
+                        ->children()
+                            ->arrayNode('cores')
+                                ->scalarPrototype()->end()
+                            ->end()
+                            ->arrayNode('parameter_set_maps')
+                                ->arrayPrototype()
+                                    ->fixXmlConfig('parameter')
+                                    ->fixXmlConfig('_invariant_', '_invariants_')
+                                    ->fixXmlConfig('_append_', '_appends_')
+                                    ->children()
+                                        ->scalarNode('name')->end()
+                                        ->arrayNode('parameters')
+                                            ->arrayPrototype()
+                                                ->children()
+                                                    ->scalarNode('name')->end()
+                                                    ->scalarNode('value')->end()
+                                                ->end()
+                                            ->end()
+                                        ->end()
+                                        ->arrayNode('_invariants_')
+                                            ->arrayPrototype()
+                                                ->children()
+                                                    ->scalarNode('name')->end()
+                                                    ->scalarNode('value')->end()
+                                                ->end()
+                                            ->end()
+                                        ->end()
+                                        ->arrayNode('_appends_')
+                                            ->arrayPrototype()
+                                                ->children()
+                                                    ->scalarNode('name')->end()
+                                                    ->scalarNode('value')->end()
+                                                ->end()
+                                            ->end()
+                                        ->end()
+                                    ->end()
+                                ->end()
+                            ->end()
+                        ->end()
+                    ->end()
+                ->end()
+            ->end()
+        ;
+    }
+
+    /**
+     * @param \Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition $rootNode
+     */
     private function addSolrConfigSection(ArrayNodeDefinition $rootNode): void
     {
         $rootNode
@@ -161,6 +219,7 @@ class Configuration implements ConfigurationInterface
                                     ->children()
                                         ->scalarNode('name')->isRequired()->end()
                                         ->scalarNode('class')->isRequired()->end()
+                                        ->scalarNode('use_params')->end()
                                         ->arrayNode('defaults')
                                             ->arrayPrototype()
                                                 ->children()

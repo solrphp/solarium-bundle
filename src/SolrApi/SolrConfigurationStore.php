@@ -16,6 +16,8 @@ use JMS\Serializer\SerializerInterface;
 use Solrphp\SolariumBundle\Common\Generator\LazyLoadingGenerator;
 use Solrphp\SolariumBundle\SolrApi\Config\Config\SolrConfig;
 use Solrphp\SolariumBundle\SolrApi\Config\Generator\ConfigGenerator;
+use Solrphp\SolariumBundle\SolrApi\Param\Config\RequestParameters;
+use Solrphp\SolariumBundle\SolrApi\Param\Generator\ParamsGenerator;
 use Solrphp\SolariumBundle\SolrApi\Schema\Config\ManagedSchema;
 use Solrphp\SolariumBundle\SolrApi\Schema\Generator\SchemaGenerator;
 
@@ -37,16 +39,23 @@ final class SolrConfigurationStore
     private LazyLoadingGenerator $solrConfigs;
 
     /**
-     * @param array<int, array<string, ManagedSchema>> $managedSchemas
-     * @param array<int, array<string, SolrConfig>>    $solrConfigs
-     * @param \JMS\Serializer\SerializerInterface      $serializer
+     * @var LazyLoadingGenerator<\Generator<int, \Solrphp\SolariumBundle\Contract\SolrApi\CoreDependentConfigInterface>>
+     */
+    private LazyLoadingGenerator $parameters;
+
+    /**
+     * @param array<int, array<string, ManagedSchema>>     $managedSchemas
+     * @param array<int, array<string, SolrConfig>>        $solrConfigs
+     * @param array<int, array<string, RequestParameters>> $parameters
+     * @param \JMS\Serializer\SerializerInterface          $serializer
      *
      * @throws \JsonException
      */
-    public function __construct(array $managedSchemas, array $solrConfigs, SerializerInterface $serializer)
+    public function __construct(array $managedSchemas, array $solrConfigs, array $parameters, SerializerInterface $serializer)
     {
         $this->managedSchemas = new LazyLoadingGenerator((new SchemaGenerator($serializer))->generate($managedSchemas));
         $this->solrConfigs = new LazyLoadingGenerator((new ConfigGenerator($serializer))->generate($solrConfigs));
+        $this->parameters = new LazyLoadingGenerator((new ParamsGenerator($serializer))->generate($parameters));
     }
 
     /**
@@ -75,6 +84,22 @@ final class SolrConfigurationStore
         foreach ($this->solrConfigs as $config) {
             if (true === \in_array($core, $config->getCores()->toArray(), true)) {
                 return $config;
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * @param string $core
+     *
+     * @return \Solrphp\SolariumBundle\SolrApi\Param\Config\RequestParameters|null
+     */
+    public function getParamsForCore(string $core): ?RequestParameters
+    {
+        foreach ($this->parameters as $param) {
+            if (true === \in_array($core, $param->getCores()->toArray(), true)) {
+                return $param;
             }
         }
 

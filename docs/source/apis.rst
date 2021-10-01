@@ -15,4 +15,5 @@ supported APIs
 
     apis/coreadmin
     apis/config
+    apis/param
     apis/schema

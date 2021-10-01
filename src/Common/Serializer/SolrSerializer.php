@@ -19,6 +19,7 @@ use JMS\Serializer\SerializationContext;
 use JMS\Serializer\Serializer;
 use JMS\Serializer\SerializerBuilder;
 use JMS\Serializer\SerializerInterface;
+use Solrphp\SolariumBundle\Common\Serializer\Construction\ObjectConstructor;
 use Solrphp\SolariumBundle\Common\Serializer\Data\PrepareCallable;
 use Solrphp\SolariumBundle\Common\Serializer\EventDispatcher\SolrPreDeserializeEventSubscriber;
 use Solrphp\SolariumBundle\Common\Serializer\Handler\PropertyListHandler;
@@ -53,6 +54,7 @@ class SolrSerializer implements SerializerInterface
             ->configureListeners(static function (EventDispatcher $dispatcher) {
                 $dispatcher->addSubscriber(new SolrPreDeserializeEventSubscriber(\Closure::fromCallable([new PrepareCallable(), 'prepareSolrResponse'])));
             })
+            ->setObjectConstructor(new ObjectConstructor())
             ->addMetadataDir(__DIR__.'/../../Resources/serializer/schema')
             ->build()
         ;

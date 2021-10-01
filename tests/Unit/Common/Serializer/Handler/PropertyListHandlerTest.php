@@ -36,6 +36,10 @@ class PropertyListHandlerTest extends TestCase
         self::assertSame(GraphNavigatorInterface::DIRECTION_DESERIALIZATION, $subs[0]['direction']);
         self::assertSame('json', $subs[0]['format']);
         self::assertSame('PropertyList', $subs[0]['type']);
+
+        self::assertSame(GraphNavigatorInterface::DIRECTION_DESERIALIZATION, $subs[1]['direction']);
+        self::assertSame('json', $subs[1]['format']);
+        self::assertSame('ParameterList', $subs[1]['type']);
     }
 
     /**
@@ -110,16 +114,6 @@ class PropertyListHandlerTest extends TestCase
                 'name' => 'foo',
                 'value' => 1,
             ],
-        ];
-
-        $result = $handler->deserializePropertyList($visitor, $data, [], $context);
-        self::assertCount(0, $result);
-
-        $data = [
-            [
-                'name' => 'foo',
-                'value' => 1,
-            ],
             [
                 'name' => 'foo',
                 'value' => 'bar',
@@ -127,7 +121,7 @@ class PropertyListHandlerTest extends TestCase
         ];
 
         $result = $handler->deserializePropertyList($visitor, $data, [], $context);
-        self::assertCount(1, $result);
+        self::assertCount(2, $result);
 
         $data = [
             'foo' => 1,
@@ -135,6 +129,21 @@ class PropertyListHandlerTest extends TestCase
 
         $result = $handler->deserializePropertyList($visitor, $data, [], $context);
         self::assertCount(0, $result);
+
+        $data = [
+            [
+                'foo' => 'foo',
+                'bar' => 1,
+            ],
+            [
+                'name' => 'foo',
+                'value' => '1',
+            ],
+        ];
+
+        $result = $handler->deserializePropertyList($visitor, $data, [], $context);
+        self::assertCount(1, $result);
+        self::assertIsString($result[0]->getValue());
     }
 
     /**

@@ -44,7 +44,7 @@ class SolrSchemaUpdateCommandTest extends TestCase
 
         $manager = $this->getMockBuilder(SchemaManager::class)->disableOriginalConstructor()->getMock();
         $processor = new SchemaProcessor(new ArrayCollection(), $manager);
-        $store = new SolrConfigurationStore([], [], new SolrSerializer());
+        $store = new SolrConfigurationStore([], [], [], new SolrSerializer());
 
         $application->add(new SolrSchemaUpdateCommand($processor, $store));
 
@@ -60,7 +60,7 @@ class SolrSchemaUpdateCommandTest extends TestCase
      */
     public function testExecute(): void
     {
-        $store = new SolrConfigurationStore([$this->getEmptySchemaConfig()], [$this->getEmptyConfigConfig()], new SolrSerializer());
+        $store = new SolrConfigurationStore([$this->getEmptySchemaConfig()], [$this->getEmptyConfigConfig()], [$this->getEmptyParamsConfig()], new SolrSerializer());
 
         $application = new Application();
 
@@ -79,6 +79,7 @@ class SolrSchemaUpdateCommandTest extends TestCase
         ]);
 
         self::assertSame(Command::SUCCESS, $commandTester->getStatusCode());
+        self::assertSame('Successfully updated schema for foo core', trim($commandTester->getDisplay()));
     }
 
     /**
@@ -86,7 +87,7 @@ class SolrSchemaUpdateCommandTest extends TestCase
      */
     public function testExecuteFailure(): void
     {
-        $store = new SolrConfigurationStore([$this->getEmptySchemaConfig()], [$this->getEmptyConfigConfig()], new SolrSerializer());
+        $store = new SolrConfigurationStore([$this->getEmptySchemaConfig()], [$this->getEmptyConfigConfig()], [$this->getEmptyParamsConfig()], new SolrSerializer());
 
         $application = new Application();
         $exception = new ProcessorException('error message');
@@ -114,7 +115,7 @@ class SolrSchemaUpdateCommandTest extends TestCase
      */
     public function testExecuteNoConfig(): void
     {
-        $store = new SolrConfigurationStore([$this->getEmptySchemaConfig()], [$this->getEmptyConfigConfig()], new SolrSerializer());
+        $store = new SolrConfigurationStore([$this->getEmptySchemaConfig()], [$this->getEmptyConfigConfig()], [$this->getEmptyParamsConfig()], new SolrSerializer());
 
         $application = new Application();
 
@@ -160,6 +161,17 @@ class SolrSchemaUpdateCommandTest extends TestCase
             'cores' => ['foo'],
             'search_components' => [],
             'request_handlers' => [],
+        ];
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    private function getEmptyParamsConfig(): array
+    {
+        return [
+            'cores' => ['foo'],
+            'parameter_set_maps' => [],
         ];
     }
 }

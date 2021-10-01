@@ -25,6 +25,7 @@ use Solrphp\SolariumBundle\DataCollector\SolrRequestSubscriber;
 use Solrphp\SolariumBundle\DependencyInjection\SolrphpSolariumExtension;
 use Solrphp\SolariumBundle\SolrApi\Config\Manager\ConfigManager;
 use Solrphp\SolariumBundle\SolrApi\CoreAdmin\Manager\CoreManager;
+use Solrphp\SolariumBundle\SolrApi\Param\Manager\ParamManager;
 use Solrphp\SolariumBundle\SolrApi\Schema\Manager\SchemaManager;
 use Solrphp\SolariumBundle\SolrApi\SolrConfigurationStore;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -77,6 +78,18 @@ class SolrApiExtensionTest extends TestCase
                 ],
             ],
         ];
+
+        $paramConfig = [
+            'clients' => [
+                'default' => [],
+            ],
+            'parameters' => [
+                [
+                    'cores' => ['demo'],
+                ],
+            ],
+        ];
+
         $container = $this->createContainer();
         $this->extension->load([$this->getBaseConfig()], $container);
 
@@ -93,11 +106,15 @@ class SolrApiExtensionTest extends TestCase
         self::assertTrue($container->hasDefinition(ConfigGenerator::class));
         self::assertTrue($container->hasDefinition(SolrphpConfigGenerateCommand::class));
 
-        self::assertCount(3, $definition->getArguments());
+        self::assertCount(4, $definition->getArguments());
 
         // test with new container config config only
         $container = $this->createContainer();
         $this->extension->load([$configConfig], $container);
+        self::assertTrue($container->hasDefinition(SolrConfigurationStore::class));
+
+        $container = $this->createContainer();
+        $this->extension->load([$paramConfig], $container);
         self::assertTrue($container->hasDefinition(SolrConfigurationStore::class));
     }
 
@@ -155,6 +172,40 @@ class SolrApiExtensionTest extends TestCase
         self::assertCount(3, $definition->getArguments());
 
         self::assertTrue($container->hasAlias(SchemaManager::class));
+    }
+
+    /**
+     * @throws \PHPUnit\Framework\Exception
+     * @throws \PHPUnit\Framework\ExpectationFailedException
+     */
+    public function testLoadParamManager(): void
+    {
+        $config = [
+            'clients' => [
+                'default' => [],
+            ],
+            'parameters' => [
+                [
+                    'cores' => ['demo'],
+                    'parameter_set_maps' => [],
+                ],
+            ],
+        ];
+
+        $container = $this->createContainer();
+        $this->extension->load([$this->getBaseConfig()], $container);
+
+        // no client, no schema manager
+        self::assertFalse($container->hasDefinition(ParamManager::class));
+
+        $this->extension->load([$config], $container);
+        self::assertTrue($container->hasDefinition(ParamManager::class));
+
+        $definition = $container->getDefinition(ParamManager::class);
+
+        self::assertCount(3, $definition->getArguments());
+
+        self::assertTrue($container->hasAlias('solrphp.manager.param'));
     }
 
     /**
@@ -501,6 +552,7 @@ class SolrApiExtensionTest extends TestCase
             ],
             'managed_schemas' => [],
             'solr_configs' => [],
+            'parameters' => [],
         ];
     }
 

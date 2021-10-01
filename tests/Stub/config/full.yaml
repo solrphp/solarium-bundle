@@ -80,7 +80,7 @@ solrphp_solarium:
       search_components:
         - { name: 'foo', class: 'bar' }
       request_handlers:
-        - { name: 'foo', class: 'bar', defaults: [{ name: 'baz', value: 'qux' }], appends: [{ name: 'baz', value: 'qux' }], invariants: [{ name: 'baz', value: 'qux' }], first_components: ['foo'], last_components: ['bar'] }
+        - { name: 'foo', class: 'bar', use_params: 'foo', defaults: [{ name: 'baz', value: 'qux' }], appends: [{ name: 'baz', value: 'qux' }], invariants: [{ name: 'baz', value: 'qux' }], first_components: ['foo'], last_components: ['bar'] }
       query:
         use_filter_for_sorted_query: true
         query_result_window_size: 10
@@ -134,3 +134,15 @@ solrphp_solarium:
       request_dispatcher:
         handle_select: true
         request_parsers: { enable_remote_streaming: true, enable_stream_body: false, multipart_upload_limit_in_kB: 10, formdata_upload_limit_in_kB: 10, add_http_request_to_context: true }
+  parameters:
+    -
+      cores:
+        - foo
+      parameter_set_maps:
+        - name: 'foo'
+          parameters:
+            - { name: 'foo', value: 'bar'}
+          _invariants_:
+            - { name: 'baz', value: 'qux' }
+          _appends_:
+            - { name: 'quux', value: 'wut' }
