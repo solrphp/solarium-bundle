@@ -13,6 +13,7 @@ declare(strict_types=1);
 namespace Solrphp\SolariumBundle\ConfigGenerator\Dumper;
 
 use Laminas\Code\Generator\FileGenerator;
+use Solrphp\SolariumBundle\ConfigGenerator\Exception\GeneratorException;
 use Solrphp\SolariumBundle\Contract\ConfigGenerator\DumperInterface;
 
 /**
@@ -25,8 +26,12 @@ class PhpDumper implements DumperInterface
     /**
      * {@inheritdoc}
      */
-    public function dump(array $config, string $rootNode, array $types): string
+    public function dump(array $config, string $rootNode, array $types, bool $beautify = true): string
     {
+        if (false === $beautify) {
+            throw new GeneratorException('php needs to be dumped beautifully');
+        }
+
         $content = preg_replace(['/[0-9]+ => /', '/(^array \(|\n[\s]+array \()/', '/\)/', '/([\s]+)\],\[/'], ['', '[', ']', '$1],$1['], var_export($config, true));
 
         $file = FileGenerator::fromArray([

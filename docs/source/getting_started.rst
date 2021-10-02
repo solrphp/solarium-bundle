@@ -9,8 +9,8 @@ getting started
 
 config generate command
 -----------------------
-| to dump a config file from your schema.xml run the command below.
-| by default it dumps all the manageable schema nodes. if you want to filter out one or more nodes, use the provided options
+| to dump a dummy config file from your schema.xml and solrconfig.xml run the command below.
+| by default it dumps all the manageable nodes. if you want to filter out one or more nodes, use the provided options.
 
 .. code-block:: bash
 
@@ -22,6 +22,11 @@ config generate command
 * ``--exclude-copy-fields``: do not dump copy fields configuration
 * ``--exclude-dynamic-fields``: do not dump dynamic fields configuration
 * ``--exclude-fields-types``: do not dump field types configuration
+* ``--exclude-update-handler``: do not dump update handler configuration
+* ``--exclude-query``: do not dump query configuration
+* ``--exclude-request-dispatcher``: do not dump request dispatcher configuration
+* ``--exclude-request-handlers``: do not dump request handler configuration
+* ``--exclude-search-components``: do not dump search component configuration
 
 data collector
 --------------

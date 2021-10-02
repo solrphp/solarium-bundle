@@ -15,16 +15,16 @@ namespace Solrphp\SolariumBundle\Contract\ConfigGenerator;
 use Symfony\Component\DomCrawler\Crawler;
 
 /**
- * FieldTypeVisitorInterface.
+ * ConfigGenerator Visitor Interface.
  *
  * @author wicliff <wicliff.wolda@gmail.com>
  */
-interface FieldTypeVisitorInterface
+interface ConfigGeneratorVisitorInterface
 {
     /**
      * @param \Symfony\Component\DomCrawler\Crawler $crawler
      * @param \Closure                              $closure
-     * @param array<string, string>                 $analyzer
+     * @param array<string, string>                 $query
      */
-    public function visit(Crawler $crawler, \Closure $closure, array &$analyzer): void;
+    public function visit(Crawler $crawler, \Closure $closure, array &$query): void;
 }

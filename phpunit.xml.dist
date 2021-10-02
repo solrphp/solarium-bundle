@@ -7,6 +7,7 @@
          colors="true"
          bootstrap="tests/bootstrap.php"
          convertDeprecationsToExceptions="false"
+         printerClass="WickedOne\PHPUnitPrinter\PhpStormPrinter"
 >
     <php>
         <ini name="display_errors" value="1" />

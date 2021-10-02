@@ -25,7 +25,7 @@ interface ConfigGeneratorHandlerInterface
      * @param \Symfony\Component\DomCrawler\Crawler $crawler
      * @param \Closure                              $closure
      *
-     * @return array<int, array<string, string|array<int, mixed>>|null>
+     * @return array<int|string, mixed>
      */
     public function handle(Crawler $crawler, \Closure $closure): array;
 

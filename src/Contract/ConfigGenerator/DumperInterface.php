@@ -28,13 +28,16 @@ interface DumperInterface
     ];
 
     /**
-     * @param array<string, array<int, array<string, array<int, mixed>|string>|null>> $config
-     * @param string                                                                  $rootNode
-     * @param array<string>                                                           $types
+     * @param array<string, array<mixed>> $config
+     * @param string                      $rootNode
+     * @param array<string>               $types
+     * @param bool                        $beautify
+     *
+     * @return string
      *
      * @throws \Solrphp\SolariumBundle\ConfigGenerator\Exception\GeneratorException
      */
-    public function dump(array $config, string $rootNode, array $types): string;
+    public function dump(array $config, string $rootNode, array $types, bool $beautify = true): string;
 
     /**
      * @return string

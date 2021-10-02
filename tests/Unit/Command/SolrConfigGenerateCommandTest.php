@@ -198,6 +198,11 @@ class SolrConfigGenerateCommandTest extends TestCase
                 ConfigGenerator::TYPE_COPY_FIELD,
                 ConfigGenerator::TYPE_DYNAMIC_FIELD,
                 ConfigGenerator::TYPE_FIELD_TYPE,
+                ConfigGenerator::TYPE_UPDATE_HANDLER,
+                ConfigGenerator::TYPE_QUERY,
+                ConfigGenerator::TYPE_REQUEST_DISPATCHER,
+                ConfigGenerator::TYPE_REQUEST_HANDLER,
+                ConfigGenerator::TYPE_SEARCH_COMPONENT,
             ],
         ];
 
@@ -211,6 +216,11 @@ class SolrConfigGenerateCommandTest extends TestCase
                 ConfigGenerator::TYPE_COPY_FIELD,
                 ConfigGenerator::TYPE_DYNAMIC_FIELD,
                 ConfigGenerator::TYPE_FIELD_TYPE,
+                ConfigGenerator::TYPE_UPDATE_HANDLER,
+                ConfigGenerator::TYPE_QUERY,
+                ConfigGenerator::TYPE_REQUEST_DISPATCHER,
+                ConfigGenerator::TYPE_REQUEST_HANDLER,
+                ConfigGenerator::TYPE_SEARCH_COMPONENT,
             ],
         ];
 
@@ -224,6 +234,11 @@ class SolrConfigGenerateCommandTest extends TestCase
                 ConfigGenerator::TYPE_FIELD,
                 ConfigGenerator::TYPE_DYNAMIC_FIELD,
                 ConfigGenerator::TYPE_FIELD_TYPE,
+                ConfigGenerator::TYPE_UPDATE_HANDLER,
+                ConfigGenerator::TYPE_QUERY,
+                ConfigGenerator::TYPE_REQUEST_DISPATCHER,
+                ConfigGenerator::TYPE_REQUEST_HANDLER,
+                ConfigGenerator::TYPE_SEARCH_COMPONENT,
             ],
         ];
 
@@ -237,6 +252,11 @@ class SolrConfigGenerateCommandTest extends TestCase
                 ConfigGenerator::TYPE_FIELD,
                 ConfigGenerator::TYPE_COPY_FIELD,
                 ConfigGenerator::TYPE_FIELD_TYPE,
+                ConfigGenerator::TYPE_UPDATE_HANDLER,
+                ConfigGenerator::TYPE_QUERY,
+                ConfigGenerator::TYPE_REQUEST_DISPATCHER,
+                ConfigGenerator::TYPE_REQUEST_HANDLER,
+                ConfigGenerator::TYPE_SEARCH_COMPONENT,
             ],
         ];
 
@@ -250,6 +270,101 @@ class SolrConfigGenerateCommandTest extends TestCase
                 ConfigGenerator::TYPE_FIELD,
                 ConfigGenerator::TYPE_COPY_FIELD,
                 ConfigGenerator::TYPE_DYNAMIC_FIELD,
+                ConfigGenerator::TYPE_UPDATE_HANDLER,
+                ConfigGenerator::TYPE_QUERY,
+                ConfigGenerator::TYPE_REQUEST_DISPATCHER,
+                ConfigGenerator::TYPE_REQUEST_HANDLER,
+                ConfigGenerator::TYPE_SEARCH_COMPONENT,
+            ],
+        ];
+
+        yield 'no_update_handler' => [
+            'options' => [
+                'core' => 'demo',
+                'filetype' => DumperInterface::EXTENSION_YAML,
+                '--exclude-update-handler' => null,
+            ],
+            'keys' => [
+                ConfigGenerator::TYPE_FIELD,
+                ConfigGenerator::TYPE_COPY_FIELD,
+                ConfigGenerator::TYPE_DYNAMIC_FIELD,
+                ConfigGenerator::TYPE_FIELD_TYPE,
+                ConfigGenerator::TYPE_QUERY,
+                ConfigGenerator::TYPE_REQUEST_DISPATCHER,
+                ConfigGenerator::TYPE_REQUEST_HANDLER,
+                ConfigGenerator::TYPE_SEARCH_COMPONENT,
+            ],
+        ];
+
+        yield 'no_query' => [
+            'options' => [
+                'core' => 'demo',
+                'filetype' => DumperInterface::EXTENSION_YAML,
+                '--exclude-query' => null,
+            ],
+            'keys' => [
+                ConfigGenerator::TYPE_FIELD,
+                ConfigGenerator::TYPE_COPY_FIELD,
+                ConfigGenerator::TYPE_DYNAMIC_FIELD,
+                ConfigGenerator::TYPE_FIELD_TYPE,
+                ConfigGenerator::TYPE_UPDATE_HANDLER,
+                ConfigGenerator::TYPE_REQUEST_DISPATCHER,
+                ConfigGenerator::TYPE_REQUEST_HANDLER,
+                ConfigGenerator::TYPE_SEARCH_COMPONENT,
+            ],
+        ];
+
+        yield 'no_request_dispatcher' => [
+            'options' => [
+                'core' => 'demo',
+                'filetype' => DumperInterface::EXTENSION_YAML,
+                '--exclude-request-dispatcher' => null,
+            ],
+            'keys' => [
+                ConfigGenerator::TYPE_FIELD,
+                ConfigGenerator::TYPE_COPY_FIELD,
+                ConfigGenerator::TYPE_DYNAMIC_FIELD,
+                ConfigGenerator::TYPE_FIELD_TYPE,
+                ConfigGenerator::TYPE_UPDATE_HANDLER,
+                ConfigGenerator::TYPE_QUERY,
+                ConfigGenerator::TYPE_REQUEST_HANDLER,
+                ConfigGenerator::TYPE_SEARCH_COMPONENT,
+            ],
+        ];
+
+        yield 'no_request_handler' => [
+            'options' => [
+                'core' => 'demo',
+                'filetype' => DumperInterface::EXTENSION_YAML,
+                '--exclude-request-handlers' => null,
+            ],
+            'keys' => [
+                ConfigGenerator::TYPE_FIELD,
+                ConfigGenerator::TYPE_COPY_FIELD,
+                ConfigGenerator::TYPE_DYNAMIC_FIELD,
+                ConfigGenerator::TYPE_FIELD_TYPE,
+                ConfigGenerator::TYPE_UPDATE_HANDLER,
+                ConfigGenerator::TYPE_QUERY,
+                ConfigGenerator::TYPE_REQUEST_DISPATCHER,
+                ConfigGenerator::TYPE_SEARCH_COMPONENT,
+            ],
+        ];
+
+        yield 'no_search_component' => [
+            'options' => [
+                'core' => 'demo',
+                'filetype' => DumperInterface::EXTENSION_YAML,
+                '--exclude-search-components' => null,
+            ],
+            'keys' => [
+                ConfigGenerator::TYPE_FIELD,
+                ConfigGenerator::TYPE_COPY_FIELD,
+                ConfigGenerator::TYPE_DYNAMIC_FIELD,
+                ConfigGenerator::TYPE_FIELD_TYPE,
+                ConfigGenerator::TYPE_UPDATE_HANDLER,
+                ConfigGenerator::TYPE_QUERY,
+                ConfigGenerator::TYPE_REQUEST_DISPATCHER,
+                ConfigGenerator::TYPE_REQUEST_HANDLER,
             ],
         ];
 
@@ -261,6 +376,11 @@ class SolrConfigGenerateCommandTest extends TestCase
                 '--exclude-copy-fields' => null,
                 '--exclude-dynamic-fields' => null,
                 '--exclude-field-types' => null,
+                '--exclude-update-handler' => null,
+                '--exclude-query' => null,
+                '--exclude-request-dispatcher' => null,
+                '--exclude-request-handlers' => null,
+                '--exclude-search-components' => null,
             ],
             'keys' => [],
         ];

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "b73e6b565279947452ed64f0a00f2252",
+    "content-hash": "92c856db5a9cc91005f793a9dea7d732",
     "packages": [
         {
             "name": "doctrine/annotations",
@@ -9024,6 +9024,98 @@
                 "source": "https://github.com/webmozart/path-util/tree/2.3.0"
             },
             "time": "2015-12-17T08:42:14+00:00"
+        },
+        {
+            "name": "wickedone/phpcs-reporter",
+            "version": "1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/wickedOne/phpcs-reporter.git",
+                "reference": "47d311cd08201af9da65614644657b2c8a2791d2"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/wickedOne/phpcs-reporter/zipball/47d311cd08201af9da65614644657b2c8a2791d2",
+                "reference": "47d311cd08201af9da65614644657b2c8a2791d2",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.3",
+                "squizlabs/php_codesniffer": "^3.6"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "WickedOne\\PHPCSReport\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "wickedOne",
+                    "email": "wicliff.wolda@gmail.com"
+                }
+            ],
+            "description": "PHP Codesniffer output with phpstorm editor url",
+            "keywords": [
+                "phpcs",
+                "phpstorm",
+                "testing"
+            ],
+            "support": {
+                "issues": "https://github.com/wickedOne/phpcs-reporter/issues",
+                "source": "https://github.com/wickedOne/phpcs-reporter/tree/1.0.0"
+            },
+            "time": "2021-10-02T09:55:26+00:00"
+        },
+        {
+            "name": "wickedone/phpunit-printer",
+            "version": "1.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/wickedOne/phpunit-printer.git",
+                "reference": "9e1b41fc94b83ed306a9a2768ef884f058a9c1c0"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/wickedOne/phpunit-printer/zipball/9e1b41fc94b83ed306a9a2768ef884f058a9c1c0",
+                "reference": "9e1b41fc94b83ed306a9a2768ef884f058a9c1c0",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.3",
+                "phpunit/phpunit": "^9.5"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "WickedOne\\PHPUnitPrinter\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "wickedOne",
+                    "email": "wicliff.wolda@gmail.com"
+                }
+            ],
+            "description": "phpunit output with phpstorm editor url",
+            "keywords": [
+                "phpstorm",
+                "phpunit",
+                "testing"
+            ],
+            "support": {
+                "issues": "https://github.com/wickedOne/phpunit-printer/issues",
+                "source": "https://github.com/wickedOne/phpunit-printer/tree/1.0.1"
+            },
+            "time": "2021-10-02T12:04:39+00:00"
         }
     ],
     "aliases": [],
