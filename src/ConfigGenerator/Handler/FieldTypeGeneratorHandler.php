@@ -67,12 +67,12 @@ class FieldTypeGeneratorHandler implements ConfigGeneratorHandlerInterface
     ];
 
     /**
-     * @var iterable<\Solrphp\SolariumBundle\Contract\ConfigGenerator\FieldTypeVisitorInterface>
+     * @var iterable<\Solrphp\SolariumBundle\Contract\ConfigGenerator\ConfigGeneratorVisitorInterface>
      */
     private iterable $visitors;
 
     /**
-     * @param iterable<\Solrphp\SolariumBundle\Contract\ConfigGenerator\FieldTypeVisitorInterface>|null $visitors
+     * @param iterable<\Solrphp\SolariumBundle\Contract\ConfigGenerator\ConfigGeneratorVisitorInterface>|null $visitors
      */
     public function __construct(iterable $visitors = null)
     {
@@ -126,7 +126,7 @@ class FieldTypeGeneratorHandler implements ConfigGeneratorHandlerInterface
     }
 
     /**
-     * @return iterable<\Solrphp\SolariumBundle\Contract\ConfigGenerator\FieldTypeVisitorInterface>
+     * @return iterable<\Solrphp\SolariumBundle\Contract\ConfigGenerator\ConfigGeneratorVisitorInterface>
      */
     private function getDefaultVisitors(): iterable
     {

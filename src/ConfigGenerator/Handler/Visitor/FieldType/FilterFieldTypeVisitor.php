@@ -12,7 +12,8 @@ declare(strict_types=1);
 
 namespace Solrphp\SolariumBundle\ConfigGenerator\Handler\Visitor\FieldType;
 
-use Solrphp\SolariumBundle\Contract\ConfigGenerator\FieldTypeVisitorInterface;
+use Solrphp\SolariumBundle\Common\Util\ArrayUtil;
+use Solrphp\SolariumBundle\Contract\ConfigGenerator\ConfigGeneratorVisitorInterface;
 use Symfony\Component\DomCrawler\Crawler;
 
 /**
@@ -20,7 +21,7 @@ use Symfony\Component\DomCrawler\Crawler;
  *
  * @author wicliff <wicliff.wolda@gmail.com>
  */
-class FilterFieldTypeVisitor implements FieldTypeVisitorInterface
+class FilterFieldTypeVisitor implements ConfigGeneratorVisitorInterface
 {
     /**
      * @var array|string[]
@@ -89,7 +90,7 @@ class FilterFieldTypeVisitor implements FieldTypeVisitorInterface
                 continue;
             }
 
-            $analyzer['filters'][] = $closure(array_filter($combined));
+            $analyzer['filters'][] = $closure(ArrayUtil::filter($combined));
         }
 
         if (empty($analyzer['filters'])) {

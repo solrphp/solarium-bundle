@@ -24,24 +24,45 @@ use Symfony\Component\Yaml\Yaml;
 class YamlDumper implements DumperInterface
 {
     /**
-     * @var array<string, array<int>>
+     * @var array<string, array<string, array<int|string, mixed>>>
      */
     private static array $dumpVars = [
-        ConfigGenerator::TYPE_FIELD => [2, 2],
-        ConfigGenerator::TYPE_COPY_FIELD => [2, 2],
-        ConfigGenerator::TYPE_DYNAMIC_FIELD => [2, 2],
-        ConfigGenerator::TYPE_FIELD_TYPE => [4, 2],
+        'managed_schemas' => [
+            ConfigGenerator::TYPE_FIELD => [2, 2],
+            ConfigGenerator::TYPE_COPY_FIELD => [2, 2],
+            ConfigGenerator::TYPE_DYNAMIC_FIELD => [2, 2],
+            ConfigGenerator::TYPE_FIELD_TYPE => [4, 2],
+        ],
+        'solr_configs' => [
+            ConfigGenerator::TYPE_UPDATE_HANDLER => [2, 2],
+            ConfigGenerator::TYPE_QUERY => [2, 2],
+            ConfigGenerator::TYPE_REQUEST_DISPATCHER => [2, 2],
+            ConfigGenerator::TYPE_REQUEST_HANDLER => [2, 2],
+            ConfigGenerator::TYPE_SEARCH_COMPONENT => [2, 2],
+        ],
     ];
 
     /**
      * {@inheritdoc}
      */
-    public function dump(array $config, string $rootNode, array $types): string
+    public function dump(array $config, string $rootNode, array $types, bool $beautify = true): string
     {
-        $output = $rootNode.':'.\PHP_EOL;
+        if (false === $beautify) {
+            return Yaml::dump([$rootNode => $config]);
+        }
 
-        foreach ($types as $type) {
-            $output .= Yaml::dump([$type => $config[$type]], ...self::$dumpVars[$type]);
+        $output = $rootNode.':'.\PHP_EOL.'  ';
+
+        foreach ($config as $configNode => $configData) {
+            $output .= $configNode.':'.\PHP_EOL.'  ';
+
+            foreach ($types as $type) {
+                if (!isset(self::$dumpVars[$configNode][$type], $configData[$type])) {
+                    continue;
+                }
+
+                $output .= Yaml::dump([$type => $configData[$type]], ...self::$dumpVars[$configNode][$type]);
+            }
         }
 
         return $output;

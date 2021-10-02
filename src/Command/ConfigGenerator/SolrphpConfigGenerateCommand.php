@@ -61,6 +61,11 @@ class SolrphpConfigGenerateCommand extends Command
                 new InputOption('exclude-copy-fields', null, InputOption::VALUE_NONE, 'do not dump copy field definitions'),
                 new InputOption('exclude-dynamic-fields', null, InputOption::VALUE_NONE, 'do not dump dynamic field definitions'),
                 new InputOption('exclude-field-types', null, InputOption::VALUE_NONE, 'do not dump field type definitions'),
+                new InputOption('exclude-update-handler', null, InputOption::VALUE_NONE, 'do not dump update handler definition'),
+                new InputOption('exclude-query', null, InputOption::VALUE_NONE, 'do not dump query definition'),
+                new InputOption('exclude-request-dispatcher', null, InputOption::VALUE_NONE, 'do not dump request dispatcher definitions'),
+                new InputOption('exclude-request-handlers', null, InputOption::VALUE_NONE, 'do not dump request handler definitions'),
+                new InputOption('exclude-search-components', null, InputOption::VALUE_NONE, 'do not dump search component definitions'),
             ])
         ;
     }
@@ -102,6 +107,11 @@ class SolrphpConfigGenerateCommand extends Command
             ConfigGenerator::TYPE_COPY_FIELD => !$input->getOption('exclude-copy-fields'),
             ConfigGenerator::TYPE_DYNAMIC_FIELD => !$input->getOption('exclude-dynamic-fields'),
             ConfigGenerator::TYPE_FIELD_TYPE => !$input->getOption('exclude-field-types'),
+            ConfigGenerator::TYPE_UPDATE_HANDLER => !$input->getOption('exclude-update-handler'),
+            ConfigGenerator::TYPE_QUERY => !$input->getOption('exclude-query'),
+            ConfigGenerator::TYPE_REQUEST_DISPATCHER => !$input->getOption('exclude-request-dispatcher'),
+            ConfigGenerator::TYPE_REQUEST_HANDLER => !$input->getOption('exclude-request-handlers'),
+            ConfigGenerator::TYPE_SEARCH_COMPONENT => !$input->getOption('exclude-search-components'),
         ]));
     }
 }
