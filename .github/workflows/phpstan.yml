@@ -11,7 +11,7 @@ jobs:
     runs-on: ${{ matrix.operating-system }}
 
     concurrency:
-      group: ${{ github.ref }}
+      group: phpstan-${{ github.ref }}
       cancel-in-progress: true
 
     strategy:
