@@ -11,7 +11,7 @@ jobs:
     name: merge dependabot upgrades
     runs-on: ubuntu-latest
     concurrency:
-      group: ${{ github.ref }}
+      group: dependabot-${{ github.ref }}
       cancel-in-progress: true
     steps:
       - name: merge
