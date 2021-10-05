@@ -7,6 +7,8 @@ getting started
 | this command requests the schema.xml from the given core, parses it and outputs the result in a config file (yaml and php only for now).
 | from there you can copy & paste / re-format / etc. and use the contents for your ``solrphp_solarium`` config node
 
+.. _config-generate-label:
+
 config generate command
 -----------------------
 | to dump a dummy config file from your schema.xml and solrconfig.xml run the command below.
