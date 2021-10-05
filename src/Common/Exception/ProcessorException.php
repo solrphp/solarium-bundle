@@ -10,13 +10,13 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Solrphp\SolariumBundle\Exception;
+namespace Solrphp\SolariumBundle\Common\Exception;
 
 /**
- * Unexpected Value Exception.
+ * Processor Exception.
  *
  * @author wicliff <wicliff.wolda@gmail.com>
  */
-class UnexpectedValueException extends SolrphpException
+class ProcessorException extends SolrphpException
 {
 }

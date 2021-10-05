@@ -12,7 +12,7 @@ declare(strict_types=1);
 
 namespace Solrphp\SolariumBundle\ConfigGenerator\Exception;
 
-use Solrphp\SolariumBundle\Exception\SolrphpException;
+use Solrphp\SolariumBundle\Common\Exception\SolrphpException;
 
 /**
  * Dumper Exception.

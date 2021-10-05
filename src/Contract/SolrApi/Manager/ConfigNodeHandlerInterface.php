@@ -24,7 +24,7 @@ interface ConfigNodeHandlerInterface
     /**
      * @param \Solrphp\SolariumBundle\Contract\SolrApi\Manager\ConfigNodeInterface $configNode
      *
-     * @throws \Solrphp\SolariumBundle\Exception\ProcessorException
+     * @throws \Solrphp\SolariumBundle\Common\Exception\ProcessorException
      */
     public function handle(ConfigNodeInterface $configNode): void;
 

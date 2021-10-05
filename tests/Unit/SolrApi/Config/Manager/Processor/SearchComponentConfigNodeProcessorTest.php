@@ -14,11 +14,11 @@ namespace Solrphp\SolariumBundle\Tests\Unit\SolrApi\Config\Manager\Processor;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use PHPUnit\Framework\TestCase;
+use Solrphp\SolariumBundle\Common\Exception\ProcessorException;
+use Solrphp\SolariumBundle\Common\Exception\UnexpectedValueException;
 use Solrphp\SolariumBundle\Common\Manager\ConfigNode;
 use Solrphp\SolariumBundle\Common\Manager\IterableConfigNode;
 use Solrphp\SolariumBundle\Contract\SolrApi\Manager\ConfigNodeHandlerInterface;
-use Solrphp\SolariumBundle\Exception\ProcessorException;
-use Solrphp\SolariumBundle\Exception\UnexpectedValueException;
 use Solrphp\SolariumBundle\SolrApi\Config\Config\SolrConfig;
 use Solrphp\SolariumBundle\SolrApi\Config\Enum\Command;
 use Solrphp\SolariumBundle\SolrApi\Config\Manager\ConfigManager;
@@ -89,7 +89,7 @@ class SearchComponentConfigNodeProcessorTest extends TestCase
 
     /**
      * @throws \PHPUnit\Framework\Exception
-     * @throws \Solrphp\SolariumBundle\Exception\ProcessorException
+     * @throws \Solrphp\SolariumBundle\Common\Exception\ProcessorException
      */
     public function testAddRequestHandlerCommand(): void
     {
@@ -121,7 +121,7 @@ class SearchComponentConfigNodeProcessorTest extends TestCase
 
     /**
      * @throws \PHPUnit\Framework\Exception
-     * @throws \Solrphp\SolariumBundle\Exception\ProcessorException
+     * @throws \Solrphp\SolariumBundle\Common\Exception\ProcessorException
      */
     public function testUpdateRequestHandlerCommand(): void
     {
@@ -153,7 +153,7 @@ class SearchComponentConfigNodeProcessorTest extends TestCase
 
     /**
      * @throws \PHPUnit\Framework\Exception
-     * @throws \Solrphp\SolariumBundle\Exception\ProcessorException
+     * @throws \Solrphp\SolariumBundle\Common\Exception\ProcessorException
      */
     public function testFailedToCreateOrUpdateRequestHandler(): void
     {

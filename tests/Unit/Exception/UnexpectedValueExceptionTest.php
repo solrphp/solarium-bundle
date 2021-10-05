@@ -13,7 +13,7 @@ declare(strict_types=1);
 namespace Solrphp\SolariumBundle\Tests\Unit\Exception;
 
 use PHPUnit\Framework\TestCase;
-use Solrphp\SolariumBundle\Exception\UnexpectedValueException;
+use Solrphp\SolariumBundle\Common\Exception\UnexpectedValueException;
 
 /**
  * Unexpected Value Exception Test.

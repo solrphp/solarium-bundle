@@ -35,7 +35,7 @@ interface SolrApiManagerInterface
      *
      * @return \Solrphp\SolariumBundle\Contract\SolrApi\Manager\SolrApiManagerInterface
      *
-     * @throws \Solrphp\SolariumBundle\Exception\UnexpectedValueException
+     * @throws \Solrphp\SolariumBundle\Common\Exception\UnexpectedValueException
      */
     public function addCommand(string $command, \JsonSerializable $data): self;
 
@@ -44,7 +44,7 @@ interface SolrApiManagerInterface
      *
      * @return \Solrphp\SolariumBundle\Contract\SolrApi\Response\ResponseInterface
      *
-     * @throws \Solrphp\SolariumBundle\Exception\UnexpectedValueException
+     * @throws \Solrphp\SolariumBundle\Common\Exception\UnexpectedValueException
      */
     public function call(string $path): ResponseInterface;
 

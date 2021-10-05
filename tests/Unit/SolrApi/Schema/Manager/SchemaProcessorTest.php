@@ -17,7 +17,7 @@ use PHPUnit\Framework\TestCase;
 use Solarium\Core\Client\Response;
 use Solarium\QueryType\Select\Query\Query;
 use Solarium\QueryType\Select\Result\Result;
-use Solrphp\SolariumBundle\Exception\ProcessorException;
+use Solrphp\SolariumBundle\Common\Exception\ProcessorException;
 use Solrphp\SolariumBundle\SolrApi\Schema\Config\ManagedSchema;
 use Solrphp\SolariumBundle\SolrApi\Schema\Generator\SchemaNodeGenerator;
 use Solrphp\SolariumBundle\SolrApi\Schema\Manager\Handler\CopyFieldConfigNodeHandler;
@@ -37,7 +37,7 @@ class SchemaProcessorTest extends TestCase
 {
     /**
      * @throws \PHPUnit\Framework\Exception
-     * @throws \Solrphp\SolariumBundle\Exception\ProcessorException
+     * @throws \Solrphp\SolariumBundle\Common\Exception\ProcessorException
      */
     public function testProcess()
     {
@@ -74,7 +74,7 @@ class SchemaProcessorTest extends TestCase
 
     /**
      * @throws \PHPUnit\Framework\Exception
-     * @throws \Solrphp\SolariumBundle\Exception\ProcessorException
+     * @throws \Solrphp\SolariumBundle\Common\Exception\ProcessorException
      */
     public function testPersistException(): void
     {
@@ -112,7 +112,7 @@ class SchemaProcessorTest extends TestCase
 
     /**
      * @throws \PHPUnit\Framework\InvalidArgumentException
-     * @throws \Solrphp\SolariumBundle\Exception\ProcessorException
+     * @throws \Solrphp\SolariumBundle\Common\Exception\ProcessorException
      */
     public function testGeneratorAssignment(): void
     {

@@ -14,7 +14,7 @@ namespace Solrphp\SolariumBundle\SolrApi\Config\Manager;
 
 use JsonException;
 use Solarium\Exception\HttpException;
-use Solrphp\SolariumBundle\Exception\ProcessorException;
+use Solrphp\SolariumBundle\Common\Exception\ProcessorException;
 use Solrphp\SolariumBundle\SolrApi\Config\Config\SolrConfig;
 use Solrphp\SolariumBundle\SolrApi\Config\Generator\ConfigNodeGenerator;
 
@@ -82,7 +82,7 @@ class ConfigProcessor
     }
 
     /**
-     * @throws \Solrphp\SolariumBundle\Exception\ProcessorException
+     * @throws \Solrphp\SolariumBundle\Common\Exception\ProcessorException
      */
     public function process(): void
     {

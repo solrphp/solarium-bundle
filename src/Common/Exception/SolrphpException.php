@@ -10,7 +10,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Solrphp\SolariumBundle\Exception;
+namespace Solrphp\SolariumBundle\Common\Exception;
 
 use Throwable;
 

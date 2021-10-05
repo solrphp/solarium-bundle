@@ -14,11 +14,11 @@ namespace Solrphp\SolariumBundle\Tests\Unit\Common\Util;
 
 use PHPUnit\Framework\TestCase;
 use Solarium\Exception\HttpException;
+use Solrphp\SolariumBundle\Common\Exception\ProcessorException;
 use Solrphp\SolariumBundle\Common\Response\Error;
 use Solrphp\SolariumBundle\Common\Response\Header;
 use Solrphp\SolariumBundle\Common\Response\RawSolrApiResponse;
 use Solrphp\SolariumBundle\Common\Util\ErrorUtil;
-use Solrphp\SolariumBundle\Exception\ProcessorException;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**

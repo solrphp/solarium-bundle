@@ -13,7 +13,7 @@ declare(strict_types=1);
 namespace Solrphp\SolariumBundle\SolrApi\Schema\Manager;
 
 use Solarium\Exception\HttpException;
-use Solrphp\SolariumBundle\Exception\ProcessorException;
+use Solrphp\SolariumBundle\Common\Exception\ProcessorException;
 use Solrphp\SolariumBundle\SolrApi\Schema\Config\ManagedSchema;
 use Solrphp\SolariumBundle\SolrApi\Schema\Generator\SchemaNodeGenerator;
 
@@ -81,7 +81,7 @@ class SchemaProcessor
     }
 
     /**
-     * @throws \Solrphp\SolariumBundle\Exception\ProcessorException
+     * @throws \Solrphp\SolariumBundle\Common\Exception\ProcessorException
      */
     public function process(): void
     {

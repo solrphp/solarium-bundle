@@ -14,7 +14,7 @@ namespace Solrphp\SolariumBundle\SolrApi\Param\Manager;
 
 use JsonException;
 use Solarium\Exception\HttpException;
-use Solrphp\SolariumBundle\Exception\ProcessorException;
+use Solrphp\SolariumBundle\Common\Exception\ProcessorException;
 use Solrphp\SolariumBundle\SolrApi\Param\Config\RequestParameters;
 use Solrphp\SolariumBundle\SolrApi\Param\Generator\ParamsNodeGenerator;
 
@@ -82,7 +82,7 @@ class ParamProcessor
     }
 
     /**
-     * @throws \Solrphp\SolariumBundle\Exception\ProcessorException
+     * @throws \Solrphp\SolariumBundle\Common\Exception\ProcessorException
      */
     public function process(): void
     {

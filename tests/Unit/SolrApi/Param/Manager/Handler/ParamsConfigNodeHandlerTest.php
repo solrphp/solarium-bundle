@@ -14,11 +14,11 @@ namespace Solrphp\SolariumBundle\Tests\Unit\SolrApi\Param\Manager\Handler;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use PHPUnit\Framework\TestCase;
+use Solrphp\SolariumBundle\Common\Exception\ProcessorException;
+use Solrphp\SolariumBundle\Common\Exception\UnexpectedValueException;
 use Solrphp\SolariumBundle\Common\Manager\ConfigNode;
 use Solrphp\SolariumBundle\Common\Manager\IterableConfigNode;
 use Solrphp\SolariumBundle\Contract\SolrApi\Manager\ConfigNodeHandlerInterface;
-use Solrphp\SolariumBundle\Exception\ProcessorException;
-use Solrphp\SolariumBundle\Exception\UnexpectedValueException;
 use Solrphp\SolariumBundle\SolrApi\Config\Manager\ConfigManager;
 use Solrphp\SolariumBundle\SolrApi\Config\Response\ConfigResponse;
 use Solrphp\SolariumBundle\SolrApi\Param\Enum\Command;
@@ -88,7 +88,7 @@ class ParamsConfigNodeHandlerTest extends TestCase
 
     /**
      * @throws \PHPUnit\Framework\Exception
-     * @throws \Solrphp\SolariumBundle\Exception\ProcessorException
+     * @throws \Solrphp\SolariumBundle\Common\Exception\ProcessorException
      */
     public function testAddParamsCommand(): void
     {
@@ -123,7 +123,7 @@ class ParamsConfigNodeHandlerTest extends TestCase
 
     /**
      * @throws \PHPUnit\Framework\Exception
-     * @throws \Solrphp\SolariumBundle\Exception\ProcessorException
+     * @throws \Solrphp\SolariumBundle\Common\Exception\ProcessorException
      */
     public function testFailedToCreateOrUpdateField(): void
     {

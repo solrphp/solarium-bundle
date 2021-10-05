@@ -17,7 +17,7 @@ use PHPUnit\Framework\TestCase;
 use Solarium\Core\Client\Response;
 use Solarium\QueryType\Select\Query\Query;
 use Solarium\QueryType\Select\Result\Result;
-use Solrphp\SolariumBundle\Exception\ProcessorException;
+use Solrphp\SolariumBundle\Common\Exception\ProcessorException;
 use Solrphp\SolariumBundle\SolrApi\Param\Config\RequestParameters;
 use Solrphp\SolariumBundle\SolrApi\Param\Generator\ParamsNodeGenerator;
 use Solrphp\SolariumBundle\SolrApi\Param\Manager\Handler\ParamsConfigNodeHandler;
@@ -37,7 +37,7 @@ class ParamProcessorTest extends TestCase
 {
     /**
      * @throws \PHPUnit\Framework\Exception
-     * @throws \Solrphp\SolariumBundle\Exception\ProcessorException
+     * @throws \Solrphp\SolariumBundle\Common\Exception\ProcessorException
      */
     public function testProcess()
     {
@@ -77,7 +77,7 @@ class ParamProcessorTest extends TestCase
 
     /**
      * @throws \PHPUnit\Framework\Exception
-     * @throws \Solrphp\SolariumBundle\Exception\ProcessorException
+     * @throws \Solrphp\SolariumBundle\Common\Exception\ProcessorException
      */
     public function testPersistException()
     {
@@ -113,7 +113,7 @@ class ParamProcessorTest extends TestCase
 
     /**
      * @throws \PHPUnit\Framework\InvalidArgumentException
-     * @throws \Solrphp\SolariumBundle\Exception\ProcessorException
+     * @throws \Solrphp\SolariumBundle\Common\Exception\ProcessorException
      */
     public function testGeneratorAssignment(): void
     {

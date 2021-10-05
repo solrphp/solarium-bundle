@@ -17,7 +17,7 @@ use PHPUnit\Framework\TestCase;
 use Solarium\Core\Client\Response;
 use Solarium\Core\Query\Result\Result;
 use Solarium\QueryType\Server\Api\Query;
-use Solrphp\SolariumBundle\Exception\ProcessorException;
+use Solrphp\SolariumBundle\Common\Exception\ProcessorException;
 use Solrphp\SolariumBundle\SolrApi\Config\Config\SolrConfig;
 use Solrphp\SolariumBundle\SolrApi\Config\Generator\ConfigNodeGenerator;
 use Solrphp\SolariumBundle\SolrApi\Config\Manager\ConfigManager;
@@ -37,7 +37,7 @@ class ConfigProcessorTest extends TestCase
 {
     /**
      * @throws \PHPUnit\Framework\Exception
-     * @throws \Solrphp\SolariumBundle\Exception\ProcessorException
+     * @throws \Solrphp\SolariumBundle\Common\Exception\ProcessorException
      */
     public function testProcess()
     {
@@ -74,7 +74,7 @@ class ConfigProcessorTest extends TestCase
 
     /**
      * @throws \PHPUnit\Framework\Exception
-     * @throws \Solrphp\SolariumBundle\Exception\ProcessorException
+     * @throws \Solrphp\SolariumBundle\Common\Exception\ProcessorException
      */
     public function testPersistException(): void
     {
@@ -112,7 +112,7 @@ class ConfigProcessorTest extends TestCase
 
     /**
      * @throws \PHPUnit\Framework\InvalidArgumentException
-     * @throws \Solrphp\SolariumBundle\Exception\ProcessorException
+     * @throws \Solrphp\SolariumBundle\Common\Exception\ProcessorException
      */
     public function testGeneratorAssignment(): void
     {

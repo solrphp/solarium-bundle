@@ -12,8 +12,8 @@ declare(strict_types=1);
 
 namespace Solrphp\SolariumBundle\Command\Schema;
 
+use Solrphp\SolariumBundle\Common\Exception\ProcessorException;
 use Solrphp\SolariumBundle\Common\Util\ErrorUtil;
-use Solrphp\SolariumBundle\Exception\ProcessorException;
 use Solrphp\SolariumBundle\SolrApi\Schema\Manager\SchemaProcessor;
 use Solrphp\SolariumBundle\SolrApi\SolrConfigurationStore;
 use Symfony\Component\Console\Command\Command;

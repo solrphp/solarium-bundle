@@ -13,12 +13,12 @@ declare(strict_types=1);
 namespace Solrphp\SolariumBundle\SolrApi\Config\Manager\Handler;
 
 use Doctrine\Common\Collections\Criteria;
+use Solrphp\SolariumBundle\Common\Exception\ProcessorException;
+use Solrphp\SolariumBundle\Common\Exception\UnexpectedValueException;
 use Solrphp\SolariumBundle\Common\Manager\IterableConfigNode;
 use Solrphp\SolariumBundle\Contract\SolrApi\Manager\ConfigNodeHandlerInterface;
 use Solrphp\SolariumBundle\Contract\SolrApi\Manager\ConfigNodeInterface;
 use Solrphp\SolariumBundle\Contract\SolrApi\Manager\SolrApiManagerInterface;
-use Solrphp\SolariumBundle\Exception\ProcessorException;
-use Solrphp\SolariumBundle\Exception\UnexpectedValueException;
 use Solrphp\SolariumBundle\SolrApi\Config\Enum\Command;
 use Solrphp\SolariumBundle\SolrApi\Config\Model\SearchComponent;
 use Solrphp\SolariumBundle\SolrApi\Config\Response\ConfigResponse;

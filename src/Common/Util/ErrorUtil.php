@@ -14,10 +14,10 @@ namespace Solrphp\SolariumBundle\Common\Util;
 
 use const PHP_EOL;
 use Solarium\Exception\HttpException;
+use Solrphp\SolariumBundle\Common\Exception\SolrphpException;
 use Solrphp\SolariumBundle\Common\Response\RawSolrApiResponse;
 use Solrphp\SolariumBundle\Common\Serializer\SolrSerializer;
 use Solrphp\SolariumBundle\Contract\SolrApi\Response\ResponseInterface;
-use Solrphp\SolariumBundle\Exception\SolrphpException;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
@@ -35,8 +35,8 @@ final class ErrorUtil
     }
 
     /**
-     * @param \Solrphp\SolariumBundle\Exception\SolrphpException $exception
-     * @param int                                                $verbosity
+     * @param \Solrphp\SolariumBundle\Common\Exception\SolrphpException $exception
+     * @param int                                                       $verbosity
      *
      * @return string
      *

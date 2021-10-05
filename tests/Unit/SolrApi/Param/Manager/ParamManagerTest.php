@@ -20,8 +20,8 @@ use Solarium\Core\Client\Response;
 use Solarium\Core\Query\Result\QueryType;
 use Solarium\Core\Query\Result\Result;
 use Solarium\QueryType\Server\Api\Query;
+use Solrphp\SolariumBundle\Common\Exception\UnexpectedValueException;
 use Solrphp\SolariumBundle\Common\Serializer\SolrSerializer;
-use Solrphp\SolariumBundle\Exception\UnexpectedValueException;
 use Solrphp\SolariumBundle\SolrApi\CoreAdmin\Manager\CoreManager;
 use Solrphp\SolariumBundle\SolrApi\CoreAdmin\Response\CoreResponse;
 use Solrphp\SolariumBundle\SolrApi\Param\Enum\Command;
@@ -140,7 +140,7 @@ class ParamManagerTest extends TestCase
      * @throws \PHPUnit\Framework\Exception
      * @throws \PHPUnit\Framework\ExpectationFailedException
      * @throws \Solarium\Exception\HttpException
-     * @throws \Solrphp\SolariumBundle\Exception\UnexpectedValueException
+     * @throws \Solrphp\SolariumBundle\Common\Exception\UnexpectedValueException
      */
     public function testPersistDelete(): void
     {

@@ -15,12 +15,12 @@ namespace Solrphp\SolariumBundle\SolrApi\Schema\Manager\Handler;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\Criteria;
+use Solrphp\SolariumBundle\Common\Exception\ProcessorException;
+use Solrphp\SolariumBundle\Common\Exception\UnexpectedValueException;
 use Solrphp\SolariumBundle\Common\Manager\IterableConfigNode;
 use Solrphp\SolariumBundle\Contract\SolrApi\Manager\ConfigNodeHandlerInterface;
 use Solrphp\SolariumBundle\Contract\SolrApi\Manager\ConfigNodeInterface;
 use Solrphp\SolariumBundle\Contract\SolrApi\Manager\SolrApiManagerInterface;
-use Solrphp\SolariumBundle\Exception\ProcessorException;
-use Solrphp\SolariumBundle\Exception\UnexpectedValueException;
 use Solrphp\SolariumBundle\SolrApi\Schema\Enum\Command;
 use Solrphp\SolariumBundle\SolrApi\Schema\Enum\SubPath;
 use Solrphp\SolariumBundle\SolrApi\Schema\Model\Field;
@@ -109,7 +109,7 @@ final class DynamicFieldConfigNodeHandler implements ConfigNodeHandlerInterface
      * @param \Solrphp\SolariumBundle\Common\Manager\IterableConfigNode $configNode
      * @param \Doctrine\Common\Collections\ArrayCollection<Field>       $current
      *
-     * @throws \Solrphp\SolariumBundle\Exception\UnexpectedValueException
+     * @throws \Solrphp\SolariumBundle\Common\Exception\UnexpectedValueException
      */
     private function processConfigured(IterableConfigNode $configNode, ArrayCollection $current): void
     {
@@ -123,7 +123,7 @@ final class DynamicFieldConfigNodeHandler implements ConfigNodeHandlerInterface
      * @param \Solrphp\SolariumBundle\Common\Manager\IterableConfigNode $configNode
      * @param ArrayCollection<array-key, Field>                         $current
      *
-     * @throws \Solrphp\SolariumBundle\Exception\UnexpectedValueException
+     * @throws \Solrphp\SolariumBundle\Common\Exception\UnexpectedValueException
      */
     private function processCurrent(IterableConfigNode $configNode, ArrayCollection $current): void
     {
