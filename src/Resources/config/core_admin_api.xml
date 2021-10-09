@@ -12,37 +12,37 @@
         </service>
 
         <service id="Solrphp\SolariumBundle\Command\CoreAdmin\SolrCoreCreateCommand">
-            <argument id="Solrphp\SolariumBundle\SolrApi\CoreAdmin\Manager\CoreManager"/>
+            <argument type="service" id="Solrphp\SolariumBundle\SolrApi\CoreAdmin\Manager\CoreManager"/>
             <tag name="console.command"/>
         </service>
 
         <service id="Solrphp\SolariumBundle\Command\CoreAdmin\SolrCoreMergeIndexesCommand">
-            <argument id="Solrphp\SolariumBundle\SolrApi\CoreAdmin\Manager\CoreManager"/>
+            <argument type="service" id="Solrphp\SolariumBundle\SolrApi\CoreAdmin\Manager\CoreManager"/>
             <tag name="console.command"/>
         </service>
 
         <service id="Solrphp\SolariumBundle\Command\CoreAdmin\SolrCoreReloadCommand">
-            <argument id="Solrphp\SolariumBundle\SolrApi\CoreAdmin\Manager\CoreManager"/>
+            <argument type="service" id="Solrphp\SolariumBundle\SolrApi\CoreAdmin\Manager\CoreManager"/>
             <tag name="console.command"/>
         </service>
 
         <service id="Solrphp\SolariumBundle\Command\CoreAdmin\SolrCoreRenameCommand">
-            <argument id="Solrphp\SolariumBundle\SolrApi\CoreAdmin\Manager\CoreManager"/>
+            <argument type="service" id="Solrphp\SolariumBundle\SolrApi\CoreAdmin\Manager\CoreManager"/>
             <tag name="console.command"/>
         </service>
 
         <service id="Solrphp\SolariumBundle\Command\CoreAdmin\SolrCoreSplitCommand">
-            <argument id="Solrphp\SolariumBundle\SolrApi\CoreAdmin\Manager\CoreManager"/>
+            <argument type="service" id="Solrphp\SolariumBundle\SolrApi\CoreAdmin\Manager\CoreManager"/>
             <tag name="console.command"/>
         </service>
 
         <service id="Solrphp\SolariumBundle\Command\CoreAdmin\SolrCoreStatusCommand">
-            <argument id="Solrphp\SolariumBundle\SolrApi\CoreAdmin\Manager\CoreManager"/>
+            <argument type="service" id="Solrphp\SolariumBundle\SolrApi\CoreAdmin\Manager\CoreManager"/>
             <tag name="console.command"/>
         </service>
 
         <service id="Solrphp\SolariumBundle\Command\CoreAdmin\SolrCoreUnloadCommand">
-            <argument id="Solrphp\SolariumBundle\SolrApi\CoreAdmin\Manager\CoreManager"/>
+            <argument type="service" id="Solrphp\SolariumBundle\SolrApi\CoreAdmin\Manager\CoreManager"/>
             <tag name="console.command"/>
         </service>
     </services>

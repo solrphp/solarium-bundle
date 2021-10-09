@@ -28,8 +28,8 @@
         </service>
 
         <service id="Solrphp\SolariumBundle\Command\Param\SolrParamUpdateCommand">
-            <argument id="Solrphp\SolariumBundle\SolrApi\Param\Manager\ParamProcessor"/>
-            <argument id="Solrphp\SolariumBundle\SolrApi\ConfigApi\SolrConfigurationStore"/>
+            <argument type="service" id="Solrphp\SolariumBundle\SolrApi\Param\Manager\ParamProcessor"/>
+            <argument type="service" id="Solrphp\SolariumBundle\SolrApi\SolrConfigurationStore"/>
             <tag name="console.command"/>
         </service>
     </services>
