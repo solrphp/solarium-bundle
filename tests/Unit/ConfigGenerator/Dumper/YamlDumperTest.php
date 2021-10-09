@@ -13,10 +13,9 @@ declare(strict_types=1);
 namespace Solrphp\SolariumBundle\Tests\Unit\ConfigGenerator\Dumper;
 
 use PHPUnit\Framework\TestCase;
-use Solrphp\SolariumBundle\ConfigGenerator\ConfigGenerator;
+use Solrphp\SolariumBundle\ConfigGenerator\Contract\DumperInterface;
 use Solrphp\SolariumBundle\ConfigGenerator\Dumper\YamlDumper;
-use Solrphp\SolariumBundle\Contract\ConfigGenerator\DumperInterface;
-use Symfony\Component\Yaml\Yaml;
+use Solrphp\SolariumBundle\ConfigGenerator\Generator\SchemaConfigurationGenerator;
 
 /**
  * YamlDumperTest.
@@ -31,7 +30,16 @@ class YamlDumperTest extends TestCase
      */
     public function testDump(): void
     {
-        self::assertSame($this->getExpected(), (new YamlDumper())->dump($this->getSchemaNode(), 'solrphp_solarium', ConfigGenerator::SCHEMA_TYPES));
+        self::assertSame($this->getExpected(), (new YamlDumper())->dump($this->getSchemaNode(), 'managed_schemas', SchemaConfigurationGenerator::$nodeTypes));
+    }
+
+    /**
+     * @throws \PHPUnit\Framework\ExpectationFailedException
+     * @throws \Solrphp\SolariumBundle\ConfigGenerator\Exception\GeneratorException
+     */
+    public function testremovedNode(): void
+    {
+        self::assertStringNotContainsString('dynamic_fields', (new YamlDumper())->dump($this->getSchemaNode(), 'managed_schemas', SchemaConfigurationGenerator::$nodeTypes));
     }
 
     /**
@@ -40,10 +48,13 @@ class YamlDumperTest extends TestCase
      */
     public function testBeautify(): void
     {
-        $readable = (new YamlDumper())->dump($this->getSchemaNode(), 'solrphp_solarium', ConfigGenerator::SCHEMA_TYPES);
-        $nonReadable = (new YamlDumper())->dump($this->getSchemaNode(), 'solrphp_solarium', ConfigGenerator::SCHEMA_TYPES, false);
+        $readable = (new YamlDumper())->dump($this->getSchemaNode(), 'managed_schemas', SchemaConfigurationGenerator::$nodeTypes);
+        $nonReadable = (new YamlDumper())->dump($this->getSchemaNode(), 'managed_schemas', SchemaConfigurationGenerator::$nodeTypes, false);
 
         self::assertNotSame($readable, $nonReadable);
+
+        self::assertStringContainsString('position_increment_gap', $readable);
+        self::assertStringContainsString('position_increment_gap', $nonReadable);
     }
 
     /**
@@ -52,8 +63,8 @@ class YamlDumperTest extends TestCase
      */
     public function testDefaultValue(): void
     {
-        $default = (new YamlDumper())->dump($this->getSchemaNode(), 'solrphp_solarium', ConfigGenerator::SCHEMA_TYPES);
-        $defined = (new YamlDumper())->dump($this->getSchemaNode(), 'solrphp_solarium', ConfigGenerator::SCHEMA_TYPES, true);
+        $default = (new YamlDumper())->dump($this->getSchemaNode(), 'managed_schemas', SchemaConfigurationGenerator::$nodeTypes);
+        $defined = (new YamlDumper())->dump($this->getSchemaNode(), 'managed_schemas', SchemaConfigurationGenerator::$nodeTypes, true);
 
         self::assertSame($default, $defined);
     }
@@ -67,37 +78,14 @@ class YamlDumperTest extends TestCase
     }
 
     /**
-     * this test is borked and provided to please infection.
-     * note that it's not likeable that more config nodes are provided
-     * than are defined in the $types property passsed to the dumper.
-     *
-     * @throws \PHPUnit\Framework\Exception
-     * @throws \PHPUnit\Framework\ExpectationFailedException
-     * @throws \Solrphp\SolariumBundle\ConfigGenerator\Exception\GeneratorException
-     * @throws \Symfony\Component\Yaml\Exception\ParseException
-     */
-    public function testUndefinedType(): void
-    {
-        $config = Yaml::parse((new YamlDumper())->dump($this->getConfigNode(), 'solrphp_solarium', array_merge(ConfigGenerator::CONFIG_TYPES, [ConfigGenerator::TYPE_FIELD])));
-
-        self::assertArrayNotHasKey('solr_configs', $config);
-        self::assertArrayNotHasKey('solr_configs', $config['solrphp_solarium']);
-        self::assertArrayHasKey('managed_schemas', $config['solrphp_solarium']);
-        self::assertArrayHasKey('fields', $config['solrphp_solarium']);
-    }
-
-    /**
      * @return string
      */
     public function getExpected(): string
     {
         return <<<'YAML'
-solrphp_solarium:
-  managed_schemas:
+managed_schemas:
   fields:
   - { name: foo, type: bar, sort_missing_first: true }
-dynamic_fields:
-  - { name: '*_foo', type: bar, omit_norms: true }
 copy_fields:
   - { source: foo, dest: bar, max_chars: 24 }
 field_types:
@@ -136,53 +124,46 @@ YAML;
     public function getSchemaNode(): array
     {
         return [
-            'managed_schemas' => [
-                'fields' => [
-                    [
-                        'name' => 'foo',
-                        'type' => 'bar',
-                        'sort_missing_first' => true,
-                    ],
+            'fields' => [
+                [
+                    'name' => 'foo',
+                    'type' => 'bar',
+                    'sort_missing_first' => true,
                 ],
-                'copy_fields' => [
-                    [
-                        'source' => 'foo',
-                        'dest' => 'bar',
-                        'max_chars' => 24,
-                    ],
+            ],
+            'copy_fields' => [
+                [
+                    'source' => 'foo',
+                    'dest' => 'bar',
+                    'max_chars' => 24,
                 ],
-                'dynamic_fields' => [
-                    [
-                        'name' => '*_foo',
-                        'type' => 'bar',
-                        'omit_norms' => true,
-                    ],
-                ],
-                'field_types' => [
-                    [
-                        'name' => 'foo',
-                        'class' => 'baz',
-                        'position_increment_gap' => 1,
-                        'analyzers' => [
-                            [
-                                'class' => 'foo',
-                                'type' => 'bar',
-                                'char_filters' => [
-                                    [
-                                        'class' => 'foo',
-                                        'pattern' => 'bar',
-                                        'replacement' => 'baz',
-                                    ],
-                                ],
-                                'tokenizer' => [
+            ],
+            'dynamic_fields' => [
+            ],
+            'field_types' => [
+                [
+                    'name' => 'foo',
+                    'class' => 'baz',
+                    'position_increment_gap' => 1,
+                    'analyzers' => [
+                        [
+                            'class' => 'foo',
+                            'type' => 'bar',
+                            'char_filters' => [
+                                [
                                     'class' => 'foo',
-                                    'pattern' => 'pattern',
+                                    'pattern' => 'bar',
+                                    'replacement' => 'baz',
                                 ],
-                                'filters' => [
-                                    [
-                                        'class' => 'bar',
-                                        'min_gram_size' => 1,
-                                    ],
+                            ],
+                            'tokenizer' => [
+                                'class' => 'foo',
+                                'pattern' => 'pattern',
+                            ],
+                            'filters' => [
+                                [
+                                    'class' => 'bar',
+                                    'min_gram_size' => 1,
                                 ],
                             ],
                         ],

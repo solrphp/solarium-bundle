@@ -13,10 +13,10 @@ declare(strict_types=1);
 namespace Solrphp\SolariumBundle\Tests\Unit\ConfigGenerator\Dumper;
 
 use PHPUnit\Framework\TestCase;
-use Solrphp\SolariumBundle\ConfigGenerator\ConfigGenerator;
+use Solrphp\SolariumBundle\ConfigGenerator\Contract\DumperInterface;
 use Solrphp\SolariumBundle\ConfigGenerator\Dumper\PhpDumper;
 use Solrphp\SolariumBundle\ConfigGenerator\Exception\GeneratorException;
-use Solrphp\SolariumBundle\Contract\ConfigGenerator\DumperInterface;
+use Solrphp\SolariumBundle\ConfigGenerator\Generator\SchemaConfigurationGenerator;
 
 /**
  * PhpDumperTest.
@@ -31,7 +31,7 @@ class PhpDumperTest extends TestCase
      */
     public function testDump(): void
     {
-        self::assertSame($this->getExpected(), (new PhpDumper())->dump($this->getConfig(), 'solrphp_solarium', ConfigGenerator::SCHEMA_TYPES));
+        self::assertSame($this->getExpected(), (new PhpDumper())->dump($this->getConfig(), 'solrphp_solarium', SchemaConfigurationGenerator::$nodeTypes));
     }
 
     /**
@@ -42,7 +42,7 @@ class PhpDumperTest extends TestCase
         $this->expectException(GeneratorException::class);
         $this->expectExceptionMessage('php needs to be dumped beautifully');
 
-        (new PhpDumper())->dump($this->getConfig(), 'solrphp_solarium', ConfigGenerator::SCHEMA_TYPES, false);
+        (new PhpDumper())->dump($this->getConfig(), 'solrphp_solarium', SchemaConfigurationGenerator::$nodeTypes, false);
     }
 
     /**

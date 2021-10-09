@@ -12,8 +12,9 @@ declare(strict_types=1);
 
 namespace Solrphp\SolariumBundle\ConfigGenerator\Dumper;
 
-use Solrphp\SolariumBundle\ConfigGenerator\ConfigGenerator;
-use Solrphp\SolariumBundle\Contract\ConfigGenerator\DumperInterface;
+use Solrphp\SolariumBundle\ConfigGenerator\Contract\DumperInterface;
+use Solrphp\SolariumBundle\ConfigGenerator\Generator\ConfigConfigurationGenerator;
+use Solrphp\SolariumBundle\ConfigGenerator\Generator\SchemaConfigurationGenerator;
 use Symfony\Component\Yaml\Yaml;
 
 /**
@@ -21,24 +22,24 @@ use Symfony\Component\Yaml\Yaml;
  *
  * @author wicliff <wicliff.wolda@gmail.com>
  */
-class YamlDumper implements DumperInterface
+final class YamlDumper implements DumperInterface
 {
     /**
      * @var array<string, array<string, array<int|string, mixed>>>
      */
     private static array $dumpVars = [
         'managed_schemas' => [
-            ConfigGenerator::TYPE_FIELD => [2, 2],
-            ConfigGenerator::TYPE_COPY_FIELD => [2, 2],
-            ConfigGenerator::TYPE_DYNAMIC_FIELD => [2, 2],
-            ConfigGenerator::TYPE_FIELD_TYPE => [4, 2],
+            SchemaConfigurationGenerator::TYPE_FIELD => [2, 2],
+            SchemaConfigurationGenerator::TYPE_COPY_FIELD => [2, 2],
+            SchemaConfigurationGenerator::TYPE_DYNAMIC_FIELD => [2, 2],
+            SchemaConfigurationGenerator::TYPE_FIELD_TYPE => [4, 2],
         ],
         'solr_configs' => [
-            ConfigGenerator::TYPE_UPDATE_HANDLER => [2, 2],
-            ConfigGenerator::TYPE_QUERY => [2, 2],
-            ConfigGenerator::TYPE_REQUEST_DISPATCHER => [2, 2],
-            ConfigGenerator::TYPE_REQUEST_HANDLER => [2, 2],
-            ConfigGenerator::TYPE_SEARCH_COMPONENT => [2, 2],
+            ConfigConfigurationGenerator::TYPE_UPDATE_HANDLER => [3, 2],
+            ConfigConfigurationGenerator::TYPE_QUERY => [3, 2],
+            ConfigConfigurationGenerator::TYPE_REQUEST_DISPATCHER => [3, 2],
+            ConfigConfigurationGenerator::TYPE_REQUEST_HANDLER => [3, 2],
+            ConfigConfigurationGenerator::TYPE_SEARCH_COMPONENT => [3, 2],
         ],
     ];
 
@@ -53,16 +54,12 @@ class YamlDumper implements DumperInterface
 
         $output = $rootNode.':'.\PHP_EOL.'  ';
 
-        foreach ($config as $configNode => $configData) {
-            $output .= $configNode.':'.\PHP_EOL.'  ';
-
-            foreach ($types as $type) {
-                if (!isset(self::$dumpVars[$configNode][$type], $configData[$type])) {
-                    continue;
-                }
-
-                $output .= Yaml::dump([$type => $configData[$type]], ...self::$dumpVars[$configNode][$type]);
+        foreach ($types as $type) {
+            if (!isset(self::$dumpVars[$rootNode][$type], $config[$type]) || empty($config[$type])) {
+                continue;
             }
+
+            $output .= Yaml::dump([$type => $config[$type]], ...self::$dumpVars[$rootNode][$type]);
         }
 
         return $output;

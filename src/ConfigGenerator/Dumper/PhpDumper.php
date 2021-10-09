@@ -13,15 +13,15 @@ declare(strict_types=1);
 namespace Solrphp\SolariumBundle\ConfigGenerator\Dumper;
 
 use Laminas\Code\Generator\FileGenerator;
+use Solrphp\SolariumBundle\ConfigGenerator\Contract\DumperInterface;
 use Solrphp\SolariumBundle\ConfigGenerator\Exception\GeneratorException;
-use Solrphp\SolariumBundle\Contract\ConfigGenerator\DumperInterface;
 
 /**
  * Php Dumper.
  *
  * @author wicliff <wicliff.wolda@gmail.com>
  */
-class PhpDumper implements DumperInterface
+final class PhpDumper implements DumperInterface
 {
     /**
      * {@inheritdoc}

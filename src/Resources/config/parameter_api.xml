@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services https://symfony.com/schema/dic/services/services-1.0.xsd"
+>
+
+    <services>
+        <prototype namespace="Solrphp\SolariumBundle\SolrApi\Param\Manager\Handler\" resource="../../SolrApi/Param/Manager/Handler"/>
+
+        <instanceof id="Solrphp\SolariumBundle\Contract\SolrApi\Manager\ConfigNodeHandlerInterface">
+            <tag name="solrphp.config_node_handler"/>
+        </instanceof>
+
+        <service id="Solrphp\SolariumBundle\SolrApi\Param\Manager\ParamManager">
+            <argument type="service" id="solarium.client.default"/>
+            <argument type="service" id="Solrphp\SolariumBundle\SolrApi\CoreAdmin\Manager\CoreManager"/>
+            <argument type="service" id="Solrphp\SolariumBundle\Common\Serializer\SolrSerializer"/>
+        </service>
+
+        <service id="Solrphp\SolariumBundle\SolrApi\Param\Generator\ParamsGenerator">
+            <argument type="service" id="Solrphp\SolariumBundle\Common\Serializer\SolrSerializer"/>
+        </service>
+
+        <service id="Solrphp\SolariumBundle\SolrApi\Param\Manager\ParamProcessor">
+            <argument type="tagged_iterator" tag="solrphp.config_node_handler"/>
+            <argument type="service" id="Solrphp\SolariumBundle\SolrApi\Param\Manager\ParamManager"/>
+        </service>
+
+        <service id="Solrphp\SolariumBundle\Command\Param\SolrParamUpdateCommand">
+            <argument id="Solrphp\SolariumBundle\SolrApi\Param\Manager\ParamProcessor"/>
+            <argument id="Solrphp\SolariumBundle\SolrApi\ConfigApi\SolrConfigurationStore"/>
+            <tag name="console.command"/>
+        </service>
+    </services>
+</container>

@@ -49,7 +49,7 @@ class SchemaProcessor
      * @param \Solrphp\SolariumBundle\SolrApi\Schema\Manager\SchemaManager                           $manager
      * @param \Solrphp\SolariumBundle\SolrApi\Schema\Generator\SchemaNodeGenerator|null              $generator
      */
-    public function __construct($handlers, SchemaManager $manager, SchemaNodeGenerator $generator = null)
+    public function __construct(iterable $handlers, SchemaManager $manager, SchemaNodeGenerator $generator = null)
     {
         $this->handlerChain = $handlers;
         $this->manager = $manager;

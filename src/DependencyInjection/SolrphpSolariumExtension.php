@@ -13,13 +13,14 @@ declare(strict_types=1);
 namespace Solrphp\SolariumBundle\DependencyInjection;
 
 use Solarium\Core\Client\Endpoint;
+use Solrphp\SolariumBundle\Common\Serializer\SolrSerializer;
 use Solrphp\SolariumBundle\SolrApi\SolrConfigurationStore;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\Alias;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Extension\Extension;
-use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
+use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
 use Symfony\Component\DependencyInjection\Reference;
 
 /**
@@ -48,7 +49,7 @@ class SolrphpSolariumExtension extends Extension
         $configuration = $this->getConfiguration($configs, $container);
         $config = $this->processConfiguration($configuration, $configs);
 
-        $loader = new PhpFileLoader($container, new FileLocator(\dirname(__DIR__).'/Resources/config'));
+        $xmlLoader = new XmlFileLoader($container, new FileLocator(\dirname(__DIR__).'/Resources/config'));
 
         $endpointReferences = $this->loadSolrEndpoints($container, $config);
 
@@ -59,28 +60,28 @@ class SolrphpSolariumExtension extends Extension
             return;
         }
 
-        $loader->load('solrphp_common.php');
+        $xmlLoader->load('common.xml');
+        $xmlLoader->load('core_admin_api.xml');
 
         if (true === $container->getParameter('kernel.debug')) {
-            $loader->load('data_collector.php');
+            $xmlLoader->load('data_collector.xml');
         }
-
-        $loader->load('core_admin_api.php');
 
         if (\count($config['managed_schemas']) || \count($config['solr_configs']) || \count($config['parameters'])) {
             $this->loadSolrConfigurationStore($container, $config);
+            $xmlLoader->load('config_generator.xml');
         }
 
         if (\count($config['managed_schemas'])) {
-            $loader->load('schema_api.php');
+            $xmlLoader->load('schema_api.xml');
         }
 
         if (\count($config['solr_configs'])) {
-            $loader->load('config_api.php');
+            $xmlLoader->load('config_api.xml');
         }
 
         if (\count($config['parameters'])) {
-            $loader->load('parameter_api.php');
+            $xmlLoader->load('parameter_api.xml');
         }
     }
 
@@ -94,7 +95,7 @@ class SolrphpSolariumExtension extends Extension
             $config['managed_schemas'],
             $config['solr_configs'],
             $config['parameters'],
-            new Reference('solrphp.serializer'),
+            new Reference(SolrSerializer::class),
         ]);
 
         $container->setDefinition(SolrConfigurationStore::class, $definition);
