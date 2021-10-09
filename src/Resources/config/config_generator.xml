@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services https://symfony.com/schema/dic/services/services-1.0.xsd"
+>
+    <services>
+        <prototype namespace="Solrphp\SolariumBundle\ConfigGenerator\Handler\" resource="../../ConfigGenerator/Handler"/>
+        <prototype namespace="Solrphp\SolariumBundle\ConfigGenerator\Dumper\" resource="../../ConfigGenerator/Dumper"/>
+
+        <instanceof id="Solrphp\SolariumBundle\ConfigGenerator\Contract\SchemaGeneratorHandlerInterface">
+            <tag name="solrphp.generator_handler.schema"/>
+        </instanceof>
+
+        <instanceof id="Solrphp\SolariumBundle\ConfigGenerator\Contract\ConfigGeneratorHandlerInterface" autowire="true">
+            <tag name="solrphp.generator_handler.config"/>
+        </instanceof>
+
+        <instanceof id="Solrphp\SolariumBundle\ConfigGenerator\Contract\ConfigGeneratorVisitorInterface" autowire="true">
+            <tag name="solrphp.generator_visitor.config"/>
+        </instanceof>
+
+        <instanceof id="Solrphp\SolariumBundle\ConfigGenerator\Contract\SchemaGeneratorVisitorInterface" autowire="true">
+            <tag name="solrphp.generator_visitor.schema"/>
+        </instanceof>
+
+        <instanceof id="Solrphp\SolariumBundle\ConfigGenerator\Contract\DumperInterface" autowire="true">
+            <tag name="solrphp.config_dumper"/>
+        </instanceof>
+
+        <service id="Solrphp\SolariumBundle\ConfigGenerator\Fetcher\ConfigFetcher">
+            <argument type="service" id="solarium.client.default"/>
+            <tag name="solrphp.generator.fetcher"/>
+        </service>
+
+        <service id="Solrphp\SolariumBundle\ConfigGenerator\Fetcher\SchemaFetcher">
+            <argument type="service" id="solarium.client.default"/>
+            <tag name="solrphp.generator.fetcher"/>
+        </service>
+
+        <service id="Solrphp\SolariumBundle\ConfigGenerator\Generator\ConfigConfigurationGenerator">
+            <argument type="tagged_iterator" tag="solrphp.generator_handler.config"/>
+            <argument type="service" id="Solrphp\SolariumBundle\ConfigGenerator\Fetcher\ConfigFetcher"/>
+            <tag name="solrphp.configuration_generator"/>
+        </service>
+
+        <service id="Solrphp\SolariumBundle\ConfigGenerator\Generator\SchemaConfigurationGenerator">
+            <argument type="tagged_iterator" tag="solrphp.generator_handler.schema"/>
+            <argument type="service" id="Solrphp\SolariumBundle\ConfigGenerator\Fetcher\SchemaFetcher"/>
+            <tag name="solrphp.configuration_generator"/>
+        </service>
+
+        <service id="Solrphp\SolariumBundle\ConfigGenerator\Handler\Schema\FieldTypeGeneratorHandler">
+            <argument type="tagged_iterator" tag="solrphp.generator_visitor.schema"/>
+        </service>
+
+        <service id="Solrphp\SolariumBundle\ConfigGenerator\ConfigGenerator">
+            <argument type="tagged_iterator" tag="solrphp.configuration_generator"/>
+            <argument type="tagged_iterator" tag="solrphp.config_dumper"/>
+            <argument key="$projectDir">%kernel.project_dir%</argument>
+        </service>
+
+        <service id="Solrphp\SolariumBundle\Command\ConfigGenerator\SolrphpConfigGenerateCommand">
+            <argument type="service" id="Solrphp\SolariumBundle\ConfigGenerator\ConfigGenerator"/>
+            <tag name="console.command"/>
+        </service>
+
+    </services>
+</container>

@@ -128,16 +128,14 @@ class SolrApiExtensionTest extends TestCase
         $this->extension->load([$this->getBaseConfig()], $container);
 
         // no client, no core manager
-        self::assertFalse($container->hasDefinition('solrphp.manager.core_admin'));
+        self::assertFalse($container->hasDefinition(CoreManager::class));
 
         $this->extension->load($this->getClientConfig(), $container);
-        self::assertTrue($container->hasDefinition('solrphp.manager.core_admin'));
+        self::assertTrue($container->hasDefinition(CoreManager::class));
 
-        $definition = $container->getDefinition('solrphp.manager.core_admin');
+        $definition = $container->getDefinition(CoreManager::class);
 
         self::assertCount(2, $definition->getArguments());
-
-        self::assertTrue($container->hasAlias(CoreManager::class));
     }
 
     /**
@@ -162,16 +160,14 @@ class SolrApiExtensionTest extends TestCase
         $this->extension->load([$this->getBaseConfig()], $container);
 
         // no client, no schema manager
-        self::assertFalse($container->hasDefinition('solrphp.manager.schema'));
+        self::assertFalse($container->hasDefinition(SchemaManager::class));
 
         $this->extension->load([$config], $container);
-        self::assertTrue($container->hasDefinition('solrphp.manager.schema'));
+        self::assertTrue($container->hasDefinition(SchemaManager::class));
 
-        $definition = $container->getDefinition('solrphp.manager.schema');
+        $definition = $container->getDefinition(SchemaManager::class);
 
         self::assertCount(3, $definition->getArguments());
-
-        self::assertTrue($container->hasAlias(SchemaManager::class));
     }
 
     /**
@@ -204,8 +200,6 @@ class SolrApiExtensionTest extends TestCase
         $definition = $container->getDefinition(ParamManager::class);
 
         self::assertCount(3, $definition->getArguments());
-
-        self::assertTrue($container->hasAlias('solrphp.manager.param'));
     }
 
     /**
@@ -255,25 +249,23 @@ class SolrApiExtensionTest extends TestCase
         $this->extension->load([$this->getBaseConfig()], $container);
 
         // no client, no schema manager
-        self::assertFalse($container->hasDefinition('solrphp.manager.config'));
+        self::assertFalse($container->hasDefinition(ConfigManager::class));
         self::assertFalse($container->hasDefinition('solrphp.command.config_update'));
 
         $this->extension->load([$configConfig], $container);
-        self::assertTrue($container->hasDefinition('solrphp.manager.config'));
+        self::assertTrue($container->hasDefinition(ConfigManager::class));
 
-        $definition = $container->getDefinition('solrphp.manager.config');
+        $definition = $container->getDefinition(ConfigManager::class);
 
         self::assertCount(3, $definition->getArguments());
-        self::assertTrue($container->hasAlias(ConfigManager::class));
 
         // config update command should be registered as well
-        self::assertTrue($container->hasDefinition('solrphp.command.config_update'));
+        self::assertTrue($container->hasDefinition(SolrConfigUpdateCommand::class));
 
-        $definition = $container->getDefinition('solrphp.command.config_update');
+        $definition = $container->getDefinition(SolrConfigUpdateCommand::class);
 
         self::assertTrue($definition->hasTag('console.command'));
         self::assertCount(2, $definition->getArguments());
-        self::assertTrue($container->hasAlias(SolrConfigUpdateCommand::class));
     }
 
     /**
@@ -325,7 +317,7 @@ class SolrApiExtensionTest extends TestCase
         self::assertTrue($container->hasDefinition('solarium.client.third'));
 
         // core manager should be available at this point as well
-        self::assertTrue($container->hasDefinition('solrphp.manager.core_admin'));
+        self::assertTrue($container->hasDefinition(CoreManager::class));
 
         //client configurations
         $default = $container->getDefinition('solarium.client.default');

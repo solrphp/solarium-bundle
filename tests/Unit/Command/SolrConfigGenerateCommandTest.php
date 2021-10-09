@@ -15,8 +15,10 @@ namespace Solrphp\SolariumBundle\Tests\Unit\Command;
 use PHPUnit\Framework\TestCase;
 use Solrphp\SolariumBundle\Command\ConfigGenerator\SolrphpConfigGenerateCommand;
 use Solrphp\SolariumBundle\ConfigGenerator\ConfigGenerator;
+use Solrphp\SolariumBundle\ConfigGenerator\Contract\DumperInterface;
 use Solrphp\SolariumBundle\ConfigGenerator\Exception\GeneratorException;
-use Solrphp\SolariumBundle\Contract\ConfigGenerator\DumperInterface;
+use Solrphp\SolariumBundle\ConfigGenerator\Generator\ConfigConfigurationGenerator;
+use Solrphp\SolariumBundle\ConfigGenerator\Generator\SchemaConfigurationGenerator;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Exception\RuntimeException;
@@ -194,15 +196,15 @@ class SolrConfigGenerateCommandTest extends TestCase
                 'filetype' => DumperInterface::EXTENSION_YAML,
             ],
             'keys' => [
-                ConfigGenerator::TYPE_FIELD,
-                ConfigGenerator::TYPE_COPY_FIELD,
-                ConfigGenerator::TYPE_DYNAMIC_FIELD,
-                ConfigGenerator::TYPE_FIELD_TYPE,
-                ConfigGenerator::TYPE_UPDATE_HANDLER,
-                ConfigGenerator::TYPE_QUERY,
-                ConfigGenerator::TYPE_REQUEST_DISPATCHER,
-                ConfigGenerator::TYPE_REQUEST_HANDLER,
-                ConfigGenerator::TYPE_SEARCH_COMPONENT,
+                SchemaConfigurationGenerator::TYPE_FIELD,
+                SchemaConfigurationGenerator::TYPE_COPY_FIELD,
+                SchemaConfigurationGenerator::TYPE_DYNAMIC_FIELD,
+                SchemaConfigurationGenerator::TYPE_FIELD_TYPE,
+                ConfigConfigurationGenerator::TYPE_UPDATE_HANDLER,
+                ConfigConfigurationGenerator::TYPE_QUERY,
+                ConfigConfigurationGenerator::TYPE_REQUEST_DISPATCHER,
+                ConfigConfigurationGenerator::TYPE_REQUEST_HANDLER,
+                ConfigConfigurationGenerator::TYPE_SEARCH_COMPONENT,
             ],
         ];
 
@@ -213,14 +215,14 @@ class SolrConfigGenerateCommandTest extends TestCase
                 '--exclude-fields' => null,
             ],
             'keys' => [
-                ConfigGenerator::TYPE_COPY_FIELD,
-                ConfigGenerator::TYPE_DYNAMIC_FIELD,
-                ConfigGenerator::TYPE_FIELD_TYPE,
-                ConfigGenerator::TYPE_UPDATE_HANDLER,
-                ConfigGenerator::TYPE_QUERY,
-                ConfigGenerator::TYPE_REQUEST_DISPATCHER,
-                ConfigGenerator::TYPE_REQUEST_HANDLER,
-                ConfigGenerator::TYPE_SEARCH_COMPONENT,
+                SchemaConfigurationGenerator::TYPE_COPY_FIELD,
+                SchemaConfigurationGenerator::TYPE_DYNAMIC_FIELD,
+                SchemaConfigurationGenerator::TYPE_FIELD_TYPE,
+                ConfigConfigurationGenerator::TYPE_UPDATE_HANDLER,
+                ConfigConfigurationGenerator::TYPE_QUERY,
+                ConfigConfigurationGenerator::TYPE_REQUEST_DISPATCHER,
+                ConfigConfigurationGenerator::TYPE_REQUEST_HANDLER,
+                ConfigConfigurationGenerator::TYPE_SEARCH_COMPONENT,
             ],
         ];
 
@@ -231,14 +233,14 @@ class SolrConfigGenerateCommandTest extends TestCase
                 '--exclude-copy-fields' => null,
             ],
             'keys' => [
-                ConfigGenerator::TYPE_FIELD,
-                ConfigGenerator::TYPE_DYNAMIC_FIELD,
-                ConfigGenerator::TYPE_FIELD_TYPE,
-                ConfigGenerator::TYPE_UPDATE_HANDLER,
-                ConfigGenerator::TYPE_QUERY,
-                ConfigGenerator::TYPE_REQUEST_DISPATCHER,
-                ConfigGenerator::TYPE_REQUEST_HANDLER,
-                ConfigGenerator::TYPE_SEARCH_COMPONENT,
+                SchemaConfigurationGenerator::TYPE_FIELD,
+                SchemaConfigurationGenerator::TYPE_DYNAMIC_FIELD,
+                SchemaConfigurationGenerator::TYPE_FIELD_TYPE,
+                ConfigConfigurationGenerator::TYPE_UPDATE_HANDLER,
+                ConfigConfigurationGenerator::TYPE_QUERY,
+                ConfigConfigurationGenerator::TYPE_REQUEST_DISPATCHER,
+                ConfigConfigurationGenerator::TYPE_REQUEST_HANDLER,
+                ConfigConfigurationGenerator::TYPE_SEARCH_COMPONENT,
             ],
         ];
 
@@ -249,14 +251,14 @@ class SolrConfigGenerateCommandTest extends TestCase
                 '--exclude-dynamic-fields' => null,
             ],
             'keys' => [
-                ConfigGenerator::TYPE_FIELD,
-                ConfigGenerator::TYPE_COPY_FIELD,
-                ConfigGenerator::TYPE_FIELD_TYPE,
-                ConfigGenerator::TYPE_UPDATE_HANDLER,
-                ConfigGenerator::TYPE_QUERY,
-                ConfigGenerator::TYPE_REQUEST_DISPATCHER,
-                ConfigGenerator::TYPE_REQUEST_HANDLER,
-                ConfigGenerator::TYPE_SEARCH_COMPONENT,
+                SchemaConfigurationGenerator::TYPE_FIELD,
+                SchemaConfigurationGenerator::TYPE_COPY_FIELD,
+                SchemaConfigurationGenerator::TYPE_FIELD_TYPE,
+                ConfigConfigurationGenerator::TYPE_UPDATE_HANDLER,
+                ConfigConfigurationGenerator::TYPE_QUERY,
+                ConfigConfigurationGenerator::TYPE_REQUEST_DISPATCHER,
+                ConfigConfigurationGenerator::TYPE_REQUEST_HANDLER,
+                ConfigConfigurationGenerator::TYPE_SEARCH_COMPONENT,
             ],
         ];
 
@@ -267,14 +269,14 @@ class SolrConfigGenerateCommandTest extends TestCase
                 '--exclude-field-types' => null,
             ],
             'keys' => [
-                ConfigGenerator::TYPE_FIELD,
-                ConfigGenerator::TYPE_COPY_FIELD,
-                ConfigGenerator::TYPE_DYNAMIC_FIELD,
-                ConfigGenerator::TYPE_UPDATE_HANDLER,
-                ConfigGenerator::TYPE_QUERY,
-                ConfigGenerator::TYPE_REQUEST_DISPATCHER,
-                ConfigGenerator::TYPE_REQUEST_HANDLER,
-                ConfigGenerator::TYPE_SEARCH_COMPONENT,
+                SchemaConfigurationGenerator::TYPE_FIELD,
+                SchemaConfigurationGenerator::TYPE_COPY_FIELD,
+                SchemaConfigurationGenerator::TYPE_DYNAMIC_FIELD,
+                ConfigConfigurationGenerator::TYPE_UPDATE_HANDLER,
+                ConfigConfigurationGenerator::TYPE_QUERY,
+                ConfigConfigurationGenerator::TYPE_REQUEST_DISPATCHER,
+                ConfigConfigurationGenerator::TYPE_REQUEST_HANDLER,
+                ConfigConfigurationGenerator::TYPE_SEARCH_COMPONENT,
             ],
         ];
 
@@ -285,14 +287,14 @@ class SolrConfigGenerateCommandTest extends TestCase
                 '--exclude-update-handler' => null,
             ],
             'keys' => [
-                ConfigGenerator::TYPE_FIELD,
-                ConfigGenerator::TYPE_COPY_FIELD,
-                ConfigGenerator::TYPE_DYNAMIC_FIELD,
-                ConfigGenerator::TYPE_FIELD_TYPE,
-                ConfigGenerator::TYPE_QUERY,
-                ConfigGenerator::TYPE_REQUEST_DISPATCHER,
-                ConfigGenerator::TYPE_REQUEST_HANDLER,
-                ConfigGenerator::TYPE_SEARCH_COMPONENT,
+                SchemaConfigurationGenerator::TYPE_FIELD,
+                SchemaConfigurationGenerator::TYPE_COPY_FIELD,
+                SchemaConfigurationGenerator::TYPE_DYNAMIC_FIELD,
+                SchemaConfigurationGenerator::TYPE_FIELD_TYPE,
+                ConfigConfigurationGenerator::TYPE_QUERY,
+                ConfigConfigurationGenerator::TYPE_REQUEST_DISPATCHER,
+                ConfigConfigurationGenerator::TYPE_REQUEST_HANDLER,
+                ConfigConfigurationGenerator::TYPE_SEARCH_COMPONENT,
             ],
         ];
 
@@ -303,14 +305,14 @@ class SolrConfigGenerateCommandTest extends TestCase
                 '--exclude-query' => null,
             ],
             'keys' => [
-                ConfigGenerator::TYPE_FIELD,
-                ConfigGenerator::TYPE_COPY_FIELD,
-                ConfigGenerator::TYPE_DYNAMIC_FIELD,
-                ConfigGenerator::TYPE_FIELD_TYPE,
-                ConfigGenerator::TYPE_UPDATE_HANDLER,
-                ConfigGenerator::TYPE_REQUEST_DISPATCHER,
-                ConfigGenerator::TYPE_REQUEST_HANDLER,
-                ConfigGenerator::TYPE_SEARCH_COMPONENT,
+                SchemaConfigurationGenerator::TYPE_FIELD,
+                SchemaConfigurationGenerator::TYPE_COPY_FIELD,
+                SchemaConfigurationGenerator::TYPE_DYNAMIC_FIELD,
+                SchemaConfigurationGenerator::TYPE_FIELD_TYPE,
+                ConfigConfigurationGenerator::TYPE_UPDATE_HANDLER,
+                ConfigConfigurationGenerator::TYPE_REQUEST_DISPATCHER,
+                ConfigConfigurationGenerator::TYPE_REQUEST_HANDLER,
+                ConfigConfigurationGenerator::TYPE_SEARCH_COMPONENT,
             ],
         ];
 
@@ -321,14 +323,14 @@ class SolrConfigGenerateCommandTest extends TestCase
                 '--exclude-request-dispatcher' => null,
             ],
             'keys' => [
-                ConfigGenerator::TYPE_FIELD,
-                ConfigGenerator::TYPE_COPY_FIELD,
-                ConfigGenerator::TYPE_DYNAMIC_FIELD,
-                ConfigGenerator::TYPE_FIELD_TYPE,
-                ConfigGenerator::TYPE_UPDATE_HANDLER,
-                ConfigGenerator::TYPE_QUERY,
-                ConfigGenerator::TYPE_REQUEST_HANDLER,
-                ConfigGenerator::TYPE_SEARCH_COMPONENT,
+                SchemaConfigurationGenerator::TYPE_FIELD,
+                SchemaConfigurationGenerator::TYPE_COPY_FIELD,
+                SchemaConfigurationGenerator::TYPE_DYNAMIC_FIELD,
+                SchemaConfigurationGenerator::TYPE_FIELD_TYPE,
+                ConfigConfigurationGenerator::TYPE_UPDATE_HANDLER,
+                ConfigConfigurationGenerator::TYPE_QUERY,
+                ConfigConfigurationGenerator::TYPE_REQUEST_HANDLER,
+                ConfigConfigurationGenerator::TYPE_SEARCH_COMPONENT,
             ],
         ];
 
@@ -339,14 +341,14 @@ class SolrConfigGenerateCommandTest extends TestCase
                 '--exclude-request-handlers' => null,
             ],
             'keys' => [
-                ConfigGenerator::TYPE_FIELD,
-                ConfigGenerator::TYPE_COPY_FIELD,
-                ConfigGenerator::TYPE_DYNAMIC_FIELD,
-                ConfigGenerator::TYPE_FIELD_TYPE,
-                ConfigGenerator::TYPE_UPDATE_HANDLER,
-                ConfigGenerator::TYPE_QUERY,
-                ConfigGenerator::TYPE_REQUEST_DISPATCHER,
-                ConfigGenerator::TYPE_SEARCH_COMPONENT,
+                SchemaConfigurationGenerator::TYPE_FIELD,
+                SchemaConfigurationGenerator::TYPE_COPY_FIELD,
+                SchemaConfigurationGenerator::TYPE_DYNAMIC_FIELD,
+                SchemaConfigurationGenerator::TYPE_FIELD_TYPE,
+                ConfigConfigurationGenerator::TYPE_UPDATE_HANDLER,
+                ConfigConfigurationGenerator::TYPE_QUERY,
+                ConfigConfigurationGenerator::TYPE_REQUEST_DISPATCHER,
+                ConfigConfigurationGenerator::TYPE_SEARCH_COMPONENT,
             ],
         ];
 
@@ -357,14 +359,14 @@ class SolrConfigGenerateCommandTest extends TestCase
                 '--exclude-search-components' => null,
             ],
             'keys' => [
-                ConfigGenerator::TYPE_FIELD,
-                ConfigGenerator::TYPE_COPY_FIELD,
-                ConfigGenerator::TYPE_DYNAMIC_FIELD,
-                ConfigGenerator::TYPE_FIELD_TYPE,
-                ConfigGenerator::TYPE_UPDATE_HANDLER,
-                ConfigGenerator::TYPE_QUERY,
-                ConfigGenerator::TYPE_REQUEST_DISPATCHER,
-                ConfigGenerator::TYPE_REQUEST_HANDLER,
+                SchemaConfigurationGenerator::TYPE_FIELD,
+                SchemaConfigurationGenerator::TYPE_COPY_FIELD,
+                SchemaConfigurationGenerator::TYPE_DYNAMIC_FIELD,
+                SchemaConfigurationGenerator::TYPE_FIELD_TYPE,
+                ConfigConfigurationGenerator::TYPE_UPDATE_HANDLER,
+                ConfigConfigurationGenerator::TYPE_QUERY,
+                ConfigConfigurationGenerator::TYPE_REQUEST_DISPATCHER,
+                ConfigConfigurationGenerator::TYPE_REQUEST_HANDLER,
             ],
         ];
 

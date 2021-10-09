@@ -14,6 +14,8 @@ namespace Solrphp\SolariumBundle\Command\ConfigGenerator;
 
 use Solrphp\SolariumBundle\ConfigGenerator\ConfigGenerator;
 use Solrphp\SolariumBundle\ConfigGenerator\Exception\GeneratorException;
+use Solrphp\SolariumBundle\ConfigGenerator\Generator\ConfigConfigurationGenerator;
+use Solrphp\SolariumBundle\ConfigGenerator\Generator\SchemaConfigurationGenerator;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -103,15 +105,15 @@ class SolrphpConfigGenerateCommand extends Command
     private function getTypes(InputInterface $input): array
     {
         return array_keys(array_filter([
-            ConfigGenerator::TYPE_FIELD => !$input->getOption('exclude-fields'),
-            ConfigGenerator::TYPE_COPY_FIELD => !$input->getOption('exclude-copy-fields'),
-            ConfigGenerator::TYPE_DYNAMIC_FIELD => !$input->getOption('exclude-dynamic-fields'),
-            ConfigGenerator::TYPE_FIELD_TYPE => !$input->getOption('exclude-field-types'),
-            ConfigGenerator::TYPE_UPDATE_HANDLER => !$input->getOption('exclude-update-handler'),
-            ConfigGenerator::TYPE_QUERY => !$input->getOption('exclude-query'),
-            ConfigGenerator::TYPE_REQUEST_DISPATCHER => !$input->getOption('exclude-request-dispatcher'),
-            ConfigGenerator::TYPE_REQUEST_HANDLER => !$input->getOption('exclude-request-handlers'),
-            ConfigGenerator::TYPE_SEARCH_COMPONENT => !$input->getOption('exclude-search-components'),
+            SchemaConfigurationGenerator::TYPE_FIELD => !$input->getOption('exclude-fields'),
+            SchemaConfigurationGenerator::TYPE_COPY_FIELD => !$input->getOption('exclude-copy-fields'),
+            SchemaConfigurationGenerator::TYPE_DYNAMIC_FIELD => !$input->getOption('exclude-dynamic-fields'),
+            SchemaConfigurationGenerator::TYPE_FIELD_TYPE => !$input->getOption('exclude-field-types'),
+            ConfigConfigurationGenerator::TYPE_UPDATE_HANDLER => !$input->getOption('exclude-update-handler'),
+            ConfigConfigurationGenerator::TYPE_QUERY => !$input->getOption('exclude-query'),
+            ConfigConfigurationGenerator::TYPE_REQUEST_DISPATCHER => !$input->getOption('exclude-request-dispatcher'),
+            ConfigConfigurationGenerator::TYPE_REQUEST_HANDLER => !$input->getOption('exclude-request-handlers'),
+            ConfigConfigurationGenerator::TYPE_SEARCH_COMPONENT => !$input->getOption('exclude-search-components'),
         ]));
     }
 }
