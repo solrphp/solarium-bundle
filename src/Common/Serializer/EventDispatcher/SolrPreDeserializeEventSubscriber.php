@@ -82,7 +82,7 @@ class SolrPreDeserializeEventSubscriber implements EventSubscriberInterface
 
         $data = $event->getData();
 
-        if (!isset($data['response'])) {
+        if (!isset($data['response']['params'])) {
             return;
         }
 
