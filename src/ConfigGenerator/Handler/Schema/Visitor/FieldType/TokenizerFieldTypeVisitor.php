@@ -39,14 +39,14 @@ class TokenizerFieldTypeVisitor implements SchemaGeneratorVisitorInterface
     /**
      * {@inheritdoc}
      */
-    public function visit(Crawler $crawler, \Closure $closure, array &$analyzer): void
+    public function visit(Crawler $crawler, \Closure $closure, array &$result): void
     {
         foreach ($crawler->filterXPath('//tokenizer')->extract(self::$attributes) as $filter) {
             if (false === $combined = @array_combine(self::$attributes, $filter)) {
                 continue;
             }
 
-            $analyzer['tokenizer'] = $closure(ArrayUtil::filter($combined));
+            $result['tokenizer'] = $closure(ArrayUtil::filter($combined));
         }
     }
 }

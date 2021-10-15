@@ -14,6 +14,7 @@ namespace Solrphp\SolariumBundle\ConfigGenerator\Dumper;
 
 use Solrphp\SolariumBundle\ConfigGenerator\Contract\DumperInterface;
 use Solrphp\SolariumBundle\ConfigGenerator\Generator\ConfigConfigurationGenerator;
+use Solrphp\SolariumBundle\ConfigGenerator\Generator\ParamConfigurationGenerator;
 use Solrphp\SolariumBundle\ConfigGenerator\Generator\SchemaConfigurationGenerator;
 use Symfony\Component\Yaml\Yaml;
 
@@ -40,6 +41,9 @@ final class YamlDumper implements DumperInterface
             ConfigConfigurationGenerator::TYPE_REQUEST_DISPATCHER => [3, 2],
             ConfigConfigurationGenerator::TYPE_REQUEST_HANDLER => [3, 2],
             ConfigConfigurationGenerator::TYPE_SEARCH_COMPONENT => [3, 2],
+        ],
+        'parameters' => [
+            ParamConfigurationGenerator::TYPE_PARAMETER_SET_MAP => [4, 2],
         ],
     ];
 

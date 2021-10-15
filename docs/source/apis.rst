@@ -6,7 +6,7 @@ APIs
 
 configuration store
 -------------------
-| the ``SolrConfigurationStore`` service from this bundle provides access to your serialized configuration. its methods ``getConfigForCore(<core-name>)`` and ``getSchemaForCore(<core-name>)`` will provide you with the appropriate configuration.
+| the ``SolrConfigurationStore`` service from this bundle provides access to your serialized configuration. its methods ``getConfigForCore(<core-name>)``, ``getSchemaForCore(<core-name>)`` and ``getParamsForCore(<core-name>)`` will provide you with the appropriate configuration.
 
 .. warning::
     | as there's no way to distinguish which values are set through configuration for the schema api, usage of the config, param and schema api is an all or nothing situation.

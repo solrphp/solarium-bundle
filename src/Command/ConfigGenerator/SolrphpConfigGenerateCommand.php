@@ -15,6 +15,7 @@ namespace Solrphp\SolariumBundle\Command\ConfigGenerator;
 use Solrphp\SolariumBundle\ConfigGenerator\ConfigGenerator;
 use Solrphp\SolariumBundle\ConfigGenerator\Exception\GeneratorException;
 use Solrphp\SolariumBundle\ConfigGenerator\Generator\ConfigConfigurationGenerator;
+use Solrphp\SolariumBundle\ConfigGenerator\Generator\ParamConfigurationGenerator;
 use Solrphp\SolariumBundle\ConfigGenerator\Generator\SchemaConfigurationGenerator;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -68,6 +69,7 @@ class SolrphpConfigGenerateCommand extends Command
                 new InputOption('exclude-request-dispatcher', null, InputOption::VALUE_NONE, 'do not dump request dispatcher definitions'),
                 new InputOption('exclude-request-handlers', null, InputOption::VALUE_NONE, 'do not dump request handler definitions'),
                 new InputOption('exclude-search-components', null, InputOption::VALUE_NONE, 'do not dump search component definitions'),
+                new InputOption('exclude-parameters', null, InputOption::VALUE_NONE, 'do not dump parameter definitions'),
             ])
         ;
     }
@@ -114,6 +116,7 @@ class SolrphpConfigGenerateCommand extends Command
             ConfigConfigurationGenerator::TYPE_REQUEST_DISPATCHER => !$input->getOption('exclude-request-dispatcher'),
             ConfigConfigurationGenerator::TYPE_REQUEST_HANDLER => !$input->getOption('exclude-request-handlers'),
             ConfigConfigurationGenerator::TYPE_SEARCH_COMPONENT => !$input->getOption('exclude-search-components'),
+            ParamConfigurationGenerator::TYPE_PARAMETER_SET_MAP => !$input->getOption('exclude-parameters'),
         ]));
     }
 }

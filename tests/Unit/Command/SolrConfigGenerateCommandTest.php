@@ -18,6 +18,7 @@ use Solrphp\SolariumBundle\ConfigGenerator\ConfigGenerator;
 use Solrphp\SolariumBundle\ConfigGenerator\Contract\DumperInterface;
 use Solrphp\SolariumBundle\ConfigGenerator\Exception\GeneratorException;
 use Solrphp\SolariumBundle\ConfigGenerator\Generator\ConfigConfigurationGenerator;
+use Solrphp\SolariumBundle\ConfigGenerator\Generator\ParamConfigurationGenerator;
 use Solrphp\SolariumBundle\ConfigGenerator\Generator\SchemaConfigurationGenerator;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Command\Command;
@@ -186,9 +187,9 @@ class SolrConfigGenerateCommandTest extends TestCase
     }
 
     /**
-     * @return \Generator<string, array<string, array<string, string>|string>>
+     * @return \Generator<array<string, array<int|string, string>>>
      */
-    public function provideOptions()
+    public function provideOptions(): \Generator
     {
         yield 'no_exclusion' => [
             'options' => [
@@ -205,6 +206,7 @@ class SolrConfigGenerateCommandTest extends TestCase
                 ConfigConfigurationGenerator::TYPE_REQUEST_DISPATCHER,
                 ConfigConfigurationGenerator::TYPE_REQUEST_HANDLER,
                 ConfigConfigurationGenerator::TYPE_SEARCH_COMPONENT,
+                ParamConfigurationGenerator::TYPE_PARAMETER_SET_MAP,
             ],
         ];
 
@@ -223,6 +225,7 @@ class SolrConfigGenerateCommandTest extends TestCase
                 ConfigConfigurationGenerator::TYPE_REQUEST_DISPATCHER,
                 ConfigConfigurationGenerator::TYPE_REQUEST_HANDLER,
                 ConfigConfigurationGenerator::TYPE_SEARCH_COMPONENT,
+                ParamConfigurationGenerator::TYPE_PARAMETER_SET_MAP,
             ],
         ];
 
@@ -241,6 +244,7 @@ class SolrConfigGenerateCommandTest extends TestCase
                 ConfigConfigurationGenerator::TYPE_REQUEST_DISPATCHER,
                 ConfigConfigurationGenerator::TYPE_REQUEST_HANDLER,
                 ConfigConfigurationGenerator::TYPE_SEARCH_COMPONENT,
+                ParamConfigurationGenerator::TYPE_PARAMETER_SET_MAP,
             ],
         ];
 
@@ -259,6 +263,7 @@ class SolrConfigGenerateCommandTest extends TestCase
                 ConfigConfigurationGenerator::TYPE_REQUEST_DISPATCHER,
                 ConfigConfigurationGenerator::TYPE_REQUEST_HANDLER,
                 ConfigConfigurationGenerator::TYPE_SEARCH_COMPONENT,
+                ParamConfigurationGenerator::TYPE_PARAMETER_SET_MAP,
             ],
         ];
 
@@ -277,6 +282,7 @@ class SolrConfigGenerateCommandTest extends TestCase
                 ConfigConfigurationGenerator::TYPE_REQUEST_DISPATCHER,
                 ConfigConfigurationGenerator::TYPE_REQUEST_HANDLER,
                 ConfigConfigurationGenerator::TYPE_SEARCH_COMPONENT,
+                ParamConfigurationGenerator::TYPE_PARAMETER_SET_MAP,
             ],
         ];
 
@@ -295,6 +301,7 @@ class SolrConfigGenerateCommandTest extends TestCase
                 ConfigConfigurationGenerator::TYPE_REQUEST_DISPATCHER,
                 ConfigConfigurationGenerator::TYPE_REQUEST_HANDLER,
                 ConfigConfigurationGenerator::TYPE_SEARCH_COMPONENT,
+                ParamConfigurationGenerator::TYPE_PARAMETER_SET_MAP,
             ],
         ];
 
@@ -313,6 +320,7 @@ class SolrConfigGenerateCommandTest extends TestCase
                 ConfigConfigurationGenerator::TYPE_REQUEST_DISPATCHER,
                 ConfigConfigurationGenerator::TYPE_REQUEST_HANDLER,
                 ConfigConfigurationGenerator::TYPE_SEARCH_COMPONENT,
+                ParamConfigurationGenerator::TYPE_PARAMETER_SET_MAP,
             ],
         ];
 
@@ -331,6 +339,7 @@ class SolrConfigGenerateCommandTest extends TestCase
                 ConfigConfigurationGenerator::TYPE_QUERY,
                 ConfigConfigurationGenerator::TYPE_REQUEST_HANDLER,
                 ConfigConfigurationGenerator::TYPE_SEARCH_COMPONENT,
+                ParamConfigurationGenerator::TYPE_PARAMETER_SET_MAP,
             ],
         ];
 
@@ -349,6 +358,7 @@ class SolrConfigGenerateCommandTest extends TestCase
                 ConfigConfigurationGenerator::TYPE_QUERY,
                 ConfigConfigurationGenerator::TYPE_REQUEST_DISPATCHER,
                 ConfigConfigurationGenerator::TYPE_SEARCH_COMPONENT,
+                ParamConfigurationGenerator::TYPE_PARAMETER_SET_MAP,
             ],
         ];
 
@@ -367,6 +377,26 @@ class SolrConfigGenerateCommandTest extends TestCase
                 ConfigConfigurationGenerator::TYPE_QUERY,
                 ConfigConfigurationGenerator::TYPE_REQUEST_DISPATCHER,
                 ConfigConfigurationGenerator::TYPE_REQUEST_HANDLER,
+                ParamConfigurationGenerator::TYPE_PARAMETER_SET_MAP,
+            ],
+        ];
+
+        yield 'no_parameter_set_map' => [
+            'options' => [
+                'core' => 'demo',
+                'filetype' => DumperInterface::EXTENSION_YAML,
+                '--exclude-parameters' => null,
+            ],
+            'keys' => [
+                SchemaConfigurationGenerator::TYPE_FIELD,
+                SchemaConfigurationGenerator::TYPE_COPY_FIELD,
+                SchemaConfigurationGenerator::TYPE_DYNAMIC_FIELD,
+                SchemaConfigurationGenerator::TYPE_FIELD_TYPE,
+                ConfigConfigurationGenerator::TYPE_UPDATE_HANDLER,
+                ConfigConfigurationGenerator::TYPE_QUERY,
+                ConfigConfigurationGenerator::TYPE_REQUEST_DISPATCHER,
+                ConfigConfigurationGenerator::TYPE_REQUEST_HANDLER,
+                ConfigConfigurationGenerator::TYPE_SEARCH_COMPONENT,
             ],
         ];
 
@@ -383,6 +413,7 @@ class SolrConfigGenerateCommandTest extends TestCase
                 '--exclude-request-dispatcher' => null,
                 '--exclude-request-handlers' => null,
                 '--exclude-search-components' => null,
+                '--exclude-parameters' => null,
             ],
             'keys' => [],
         ];

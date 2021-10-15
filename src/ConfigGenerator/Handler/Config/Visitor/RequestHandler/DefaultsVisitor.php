@@ -17,7 +17,7 @@ use Solrphp\SolariumBundle\ConfigGenerator\Util\QueryUtil;
 use Symfony\Component\DomCrawler\Crawler;
 
 /**
- * DefaultsVisitor.
+ * Defaults Visitor.
  *
  * @author wicliff <wicliff.wolda@gmail.com>
  */
@@ -28,6 +28,7 @@ class DefaultsVisitor implements ConfigGeneratorVisitorInterface
      */
     public static array $attributes = [
         'defaults',
+        '_defaults_',
     ];
 
     /**
@@ -43,7 +44,7 @@ class DefaultsVisitor implements ConfigGeneratorVisitorInterface
     /**
      * {@inheritdoc}
      */
-    public function visit(Crawler $crawler, \Closure $closure, array &$requestHandler): void
+    public function visit(Crawler $crawler, \Closure $closure, array &$result): void
     {
         $defaults = $crawler->filterXPath(QueryUtil::attributeValues(self::$root, self::$nodeAttribute, self::$attributes));
 
@@ -57,6 +58,6 @@ class DefaultsVisitor implements ConfigGeneratorVisitorInterface
             $node[$crawler->attr('name')] = $crawler->text();
         });
 
-        $requestHandler['defaults'] = $closure($node);
+        $result['defaults'] = $closure($node);
     }
 }

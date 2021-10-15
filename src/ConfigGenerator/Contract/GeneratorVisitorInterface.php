@@ -24,7 +24,7 @@ interface GeneratorVisitorInterface
     /**
      * @param \Symfony\Component\DomCrawler\Crawler $crawler
      * @param \Closure                              $closure
-     * @param array<string, string>                 $query
+     * @param array<string, string>                 $result
      */
-    public function visit(Crawler $crawler, \Closure $closure, array &$query): void;
+    public function visit(Crawler $crawler, \Closure $closure, array &$result): void;
 }

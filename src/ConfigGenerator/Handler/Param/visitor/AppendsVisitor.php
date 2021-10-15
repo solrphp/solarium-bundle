@@ -10,23 +10,23 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Solrphp\SolariumBundle\ConfigGenerator\Handler\Config\Visitor\RequestHandler;
+namespace Solrphp\SolariumBundle\ConfigGenerator\Handler\Param\visitor;
 
-use Solrphp\SolariumBundle\ConfigGenerator\Contract\ConfigGeneratorVisitorInterface;
+use Solrphp\SolariumBundle\ConfigGenerator\Contract\ParamGeneratorVisitorInterface;
 use Solrphp\SolariumBundle\ConfigGenerator\Util\QueryUtil;
 use Symfony\Component\DomCrawler\Crawler;
 
 /**
- * Invariants Visitor.
+ * Appends Visitor.
  *
  * @author wicliff <wicliff.wolda@gmail.com>
  */
-class InvariantsVisitor implements ConfigGeneratorVisitorInterface
+class AppendsVisitor implements ParamGeneratorVisitorInterface
 {
     /**
      * @var string
      */
-    private static string $root = 'requestHandler';
+    private static string $root = 'lst';
 
     /**
      * @var string
@@ -37,7 +37,7 @@ class InvariantsVisitor implements ConfigGeneratorVisitorInterface
      * @var array|string[]
      */
     private static array $attributes = [
-        'invariants',
+        '_appends_',
     ];
 
     /**
@@ -51,12 +51,12 @@ class InvariantsVisitor implements ConfigGeneratorVisitorInterface
             return;
         }
 
-        $node = [];
+        $nodes = [];
 
-        $invariants->children()->each(static function (Crawler $crawler) use (&$node) {
-            $node[$crawler->attr('name')] = $crawler->text();
+        $invariants->children()->each(static function (Crawler $crawler) use (&$nodes) {
+            $nodes[] = ['name' => $crawler->attr('name'), 'value' => $crawler->text()];
         });
 
-        $result['invariants'] = $closure($node);
+        $result['_appends_'] = $closure($nodes);
     }
 }

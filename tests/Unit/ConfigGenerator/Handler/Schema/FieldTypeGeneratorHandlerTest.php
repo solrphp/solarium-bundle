@@ -102,7 +102,7 @@ class FieldTypeGeneratorHandlerTest extends TestCase
     /**
      * @return string
      */
-    public function getBrokedXml(): string
+    public function getBorkedXml(): string
     {
         return <<<'XML'
 <?xml version="1.0" encoding="UTF-8"?>

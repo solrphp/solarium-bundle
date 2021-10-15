@@ -46,7 +46,7 @@ class UpdateLogVisitor implements ConfigGeneratorVisitorInterface
     /**
      * {@inheritdoc}
      */
-    public function visit(Crawler $crawler, \Closure $closure, array &$updateHandler): void
+    public function visit(Crawler $crawler, \Closure $closure, array &$result): void
     {
         $node = [];
 
@@ -55,6 +55,6 @@ class UpdateLogVisitor implements ConfigGeneratorVisitorInterface
             $node[$updateLogProperty->getAttribute(self::$nodeAttribute)] = $updateLogProperty->textContent; /* @phpstan-ignore-line */
         }
 
-        $updateHandler['update_log'] = $closure($node);
+        $result['update_log'] = $closure($node);
     }
 }

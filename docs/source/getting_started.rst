@@ -4,14 +4,14 @@ getting started
 | a big part of this bundle's functionality is about managing your solr instance from within your application / the command line.
 | knowing solr config files can be huge and you might have to multiply that for each of your cores, a config dump command is provided.
 
-| this command requests the schema.xml from the given core, parses it and outputs the result in a config file (yaml and php only for now).
+| this command requests the configuration values from the given core, parses it and outputs the result in several config files (yaml and php only for now).
 | from there you can copy & paste / re-format / etc. and use the contents for your ``solrphp_solarium`` config node
 
 .. _config-generate-label:
 
 config generate command
 -----------------------
-| to dump a dummy config file from your schema.xml and solrconfig.xml run the command below.
+| to dump a dummy config file from your schema.xml, solrconfig.xml and params.json run the command below.
 | by default it dumps all the manageable nodes. if you want to filter out one or more nodes, use the provided options.
 
 .. code-block:: bash
@@ -29,6 +29,7 @@ config generate command
 * ``--exclude-request-dispatcher``: do not dump request dispatcher configuration
 * ``--exclude-request-handlers``: do not dump request handler configuration
 * ``--exclude-search-components``: do not dump search component configuration
+* ``--exclude-parameters``: do not dump parameters configuration
 
 data collector
 --------------

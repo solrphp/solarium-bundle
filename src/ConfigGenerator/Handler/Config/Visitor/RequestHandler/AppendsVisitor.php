@@ -17,7 +17,7 @@ use Solrphp\SolariumBundle\ConfigGenerator\Util\QueryUtil;
 use Symfony\Component\DomCrawler\Crawler;
 
 /**
- * AppendsVisitor.
+ * Appends Visitor.
  *
  * @author wicliff <wicliff.wolda@gmail.com>
  */
@@ -28,6 +28,7 @@ class AppendsVisitor implements ConfigGeneratorVisitorInterface
      */
     public static array $attributes = [
         'appends',
+        '_appends_',
     ];
 
     /**
@@ -43,7 +44,7 @@ class AppendsVisitor implements ConfigGeneratorVisitorInterface
     /**
      * {@inheritdoc}
      */
-    public function visit(Crawler $crawler, \Closure $closure, array &$requestHandler): void
+    public function visit(Crawler $crawler, \Closure $closure, array &$result): void
     {
         $appends = $crawler->filterXPath(QueryUtil::attributeValues(self::$root, self::$nodeAttribute, self::$attributes));
 
@@ -57,6 +58,6 @@ class AppendsVisitor implements ConfigGeneratorVisitorInterface
             $node[$crawler->attr('name')] = $crawler->text();
         });
 
-        $requestHandler['appends'] = $closure($node);
+        $result['appends'] = $closure($node);
     }
 }
