@@ -38,6 +38,17 @@ final class QueryUtil
     }
 
     /**
+     * @param string   $root
+     * @param string[] $names
+     *
+     * @return string
+     */
+    public static function nodeNameExclude(string $root, array $names): string
+    {
+        return sprintf('%s/*[not(%s)]', $root, implode(' or ', array_map(static fn ($value) => sprintf('self::%s', $value), $names)));
+    }
+
+    /**
      * @param string        $root
      * @param string        $attribute
      * @param array<string> $values

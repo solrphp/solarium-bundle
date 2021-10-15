@@ -95,5 +95,5 @@ abstract class AbstractConfigurationGenerator
     /**
      * @return string[]
      */
-    abstract protected function getTypes(): array;
+    abstract public function getTypes(): array;
 }

@@ -16,12 +16,20 @@
             <tag name="solrphp.generator_handler.config"/>
         </instanceof>
 
+        <instanceof id="Solrphp\SolariumBundle\ConfigGenerator\Contract\ParamGeneratorHandlerInterface" autowire="true">
+            <tag name="solrphp.generator_handler.param"/>
+        </instanceof>
+
         <instanceof id="Solrphp\SolariumBundle\ConfigGenerator\Contract\ConfigGeneratorVisitorInterface" autowire="true">
             <tag name="solrphp.generator_visitor.config"/>
         </instanceof>
 
         <instanceof id="Solrphp\SolariumBundle\ConfigGenerator\Contract\SchemaGeneratorVisitorInterface" autowire="true">
             <tag name="solrphp.generator_visitor.schema"/>
+        </instanceof>
+
+        <instanceof id="Solrphp\SolariumBundle\ConfigGenerator\Contract\ParamGeneratorVisitorInterface" autowire="true">
+            <tag name="solrphp.generator_visitor.param"/>
         </instanceof>
 
         <instanceof id="Solrphp\SolariumBundle\ConfigGenerator\Contract\DumperInterface" autowire="true">
@@ -38,6 +46,11 @@
             <tag name="solrphp.generator.fetcher"/>
         </service>
 
+        <service id="Solrphp\SolariumBundle\ConfigGenerator\Fetcher\ParamFetcher">
+            <argument type="service" id="solarium.client.default"/>
+            <tag name="solrphp.generator.fetcher"/>
+        </service>
+
         <service id="Solrphp\SolariumBundle\ConfigGenerator\Generator\ConfigConfigurationGenerator">
             <argument type="tagged_iterator" tag="solrphp.generator_handler.config"/>
             <argument type="service" id="Solrphp\SolariumBundle\ConfigGenerator\Fetcher\ConfigFetcher"/>
@@ -50,8 +63,18 @@
             <tag name="solrphp.configuration_generator"/>
         </service>
 
+        <service id="Solrphp\SolariumBundle\ConfigGenerator\Generator\ParamConfigurationGenerator">
+            <argument type="tagged_iterator" tag="solrphp.generator_handler.param"/>
+            <argument type="service" id="Solrphp\SolariumBundle\ConfigGenerator\Fetcher\ParamFetcher"/>
+            <tag name="solrphp.configuration_generator"/>
+        </service>
+
         <service id="Solrphp\SolariumBundle\ConfigGenerator\Handler\Schema\FieldTypeGeneratorHandler">
             <argument type="tagged_iterator" tag="solrphp.generator_visitor.schema"/>
+        </service>
+
+        <service id="Solrphp\SolariumBundle\ConfigGenerator\Handler\Param\ParameterSetMapGeneratorHandler">
+            <argument type="tagged_iterator" tag="solrphp.generator_visitor.param"/>
         </service>
 
         <service id="Solrphp\SolariumBundle\ConfigGenerator\ConfigGenerator">

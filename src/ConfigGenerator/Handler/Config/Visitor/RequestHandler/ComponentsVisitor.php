@@ -17,7 +17,7 @@ use Solrphp\SolariumBundle\ConfigGenerator\Util\QueryUtil;
 use Symfony\Component\DomCrawler\Crawler;
 
 /**
- * ComponentsVisitor.
+ * Components Visitor.
  *
  * @author wicliff <wicliff.wolda@gmail.com>
  */
@@ -38,12 +38,13 @@ class ComponentsVisitor implements ConfigGeneratorVisitorInterface
      */
     private static array $attributes = [
         'components',
+        '_components_',
     ];
 
     /**
      * {@inheritdoc}
      */
-    public function visit(Crawler $crawler, \Closure $closure, array &$requestHandler): void
+    public function visit(Crawler $crawler, \Closure $closure, array &$result): void
     {
         $components = $crawler->filterXPath(QueryUtil::attributeValues(self::$root, self::$nodeAttribute, self::$attributes));
 
@@ -57,6 +58,6 @@ class ComponentsVisitor implements ConfigGeneratorVisitorInterface
             $node[] = $crawler->text();
         });
 
-        $requestHandler['components'] = $closure($node);
+        $result['components'] = $closure($node);
     }
 }

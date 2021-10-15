@@ -42,7 +42,7 @@ class RequestParserVisitor implements ConfigGeneratorVisitorInterface
     /**
      * {@inheritdoc}
      */
-    public function visit(Crawler $crawler, \Closure $closure, array &$updateHandler): void
+    public function visit(Crawler $crawler, \Closure $closure, array &$result): void
     {
         $nodes = [];
 
@@ -55,7 +55,7 @@ class RequestParserVisitor implements ConfigGeneratorVisitorInterface
         }
 
         if (\count($nodes)) {
-            $updateHandler['request_parsers'] = $nodes;
+            $result['request_parsers'] = $nodes;
         }
     }
 }

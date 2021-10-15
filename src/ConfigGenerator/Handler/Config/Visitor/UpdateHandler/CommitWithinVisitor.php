@@ -38,7 +38,7 @@ class CommitWithinVisitor implements ConfigGeneratorVisitorInterface
     /**
      * {@inheritdoc}
      */
-    public function visit(Crawler $crawler, \Closure $closure, array &$updateHandler): void
+    public function visit(Crawler $crawler, \Closure $closure, array &$result): void
     {
         $node = [];
 
@@ -46,6 +46,6 @@ class CommitWithinVisitor implements ConfigGeneratorVisitorInterface
             $node[$autoCommit->nodeName] = $autoCommit->textContent;
         }
 
-        $updateHandler['commit_within'] = $closure($node);
+        $result['commit_within'] = $closure($node);
     }
 }

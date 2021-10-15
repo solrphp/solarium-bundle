@@ -42,7 +42,7 @@ class FilterCacheVisitor implements ConfigGeneratorVisitorInterface
     /**
      * {@inheritdoc}
      */
-    public function visit(Crawler $crawler, \Closure $closure, array &$query): void
+    public function visit(Crawler $crawler, \Closure $closure, array &$result): void
     {
         $node = [];
 
@@ -55,7 +55,7 @@ class FilterCacheVisitor implements ConfigGeneratorVisitorInterface
         }
 
         if (null !== $cache = array_shift($node)) {
-            $query['filter_cache'] = $cache;
+            $result['filter_cache'] = $cache;
         }
     }
 }

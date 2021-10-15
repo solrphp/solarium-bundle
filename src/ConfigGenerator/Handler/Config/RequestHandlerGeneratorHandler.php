@@ -60,7 +60,7 @@ final class RequestHandlerGeneratorHandler implements ConfigGeneratorHandlerInte
         $crawler->filterXPath('//config/requestHandler')->each(function (Crawler $crawler) use ($closure, &$nodes) {
             /* @infection-ignore-all */
             if (false === $combined = @array_combine(self::$attributes, $crawler->extract(self::$attributes)[0])) {
-                return;
+                return; // @codeCoverageIgnore
             }
 
             $node = $closure(ArrayUtil::filter($combined));

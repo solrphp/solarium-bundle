@@ -90,7 +90,7 @@ final class FieldTypeGeneratorHandler implements SchemaGeneratorHandlerInterface
             // this inspection is disabled as the crawler's extract method will not return another array as the one fed
             /* @infection-ignore-all */
             if (false === $combined = @array_combine(self::$attributes, $crawler->extract(self::$attributes)[0])) {
-                return;
+                return; // @codeCoverageIgnore
             }
 
             $node = $closure(array_filter($combined));
@@ -99,7 +99,7 @@ final class FieldTypeGeneratorHandler implements SchemaGeneratorHandlerInterface
                 // this inspection is disabled as the crawler's extract method will not return another array as the one fed
                 /* @infection-ignore-all */
                 if (false === $combined = @array_combine(self::$analyzerAttributes, $crawler->extract(self::$analyzerAttributes))) {
-                    return;
+                    return; // @codeCoverageIgnore
                 }
 
                 $analyzer = $closure(array_filter($combined));

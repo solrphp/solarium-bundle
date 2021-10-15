@@ -81,20 +81,20 @@ class FilterFieldTypeVisitor implements SchemaGeneratorVisitorInterface
     /**
      * {@inheritDoc}
      */
-    public function visit(Crawler $crawler, \Closure $closure, array &$analyzer): void
+    public function visit(Crawler $crawler, \Closure $closure, array &$result): void
     {
-        $analyzer['filters'] = [];
+        $result['filters'] = [];
 
         foreach ($crawler->filterXPath('//filter')->extract(self::$attributes) as $filter) {
             if (false === $combined = @array_combine(self::$attributes, $filter)) {
                 continue;
             }
 
-            $analyzer['filters'][] = $closure(ArrayUtil::filter($combined));
+            $result['filters'][] = $closure(ArrayUtil::filter($combined));
         }
 
-        if (empty($analyzer['filters'])) {
-            unset($analyzer['filters']);
+        if (empty($result['filters'])) {
+            unset($result['filters']);
         }
     }
 }

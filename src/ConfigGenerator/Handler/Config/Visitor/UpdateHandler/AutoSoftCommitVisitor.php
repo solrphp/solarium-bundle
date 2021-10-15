@@ -39,7 +39,7 @@ class AutoSoftCommitVisitor implements ConfigGeneratorVisitorInterface
     /**
      * {@inheritdoc}
      */
-    public function visit(Crawler $crawler, \Closure $closure, array &$updateHandler): void
+    public function visit(Crawler $crawler, \Closure $closure, array &$result): void
     {
         $node = [];
 
@@ -47,6 +47,6 @@ class AutoSoftCommitVisitor implements ConfigGeneratorVisitorInterface
             $node[$autoCommit->nodeName] = $autoCommit->textContent;
         }
 
-        $updateHandler['auto_soft_commit'] = $closure($node);
+        $result['auto_soft_commit'] = $closure($node);
     }
 }
