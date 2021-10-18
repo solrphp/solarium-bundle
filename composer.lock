@@ -7667,6 +7667,7 @@
                     "type": "github"
                 }
             ],
+            "abandoned": true,
             "time": "2020-09-28T06:45:17+00:00"
         },
         {
@@ -9078,23 +9079,31 @@
         },
         {
             "name": "wickedone/phpunit-printer",
-            "version": "1.0.1",
+            "version": "1.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wickedOne/phpunit-printer.git",
-                "reference": "9e1b41fc94b83ed306a9a2768ef884f058a9c1c0"
+                "reference": "83b02e9383251d7bf2a16a892404aca381ab2c2d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wickedOne/phpunit-printer/zipball/9e1b41fc94b83ed306a9a2768ef884f058a9c1c0",
-                "reference": "9e1b41fc94b83ed306a9a2768ef884f058a9c1c0",
+                "url": "https://api.github.com/repos/wickedOne/phpunit-printer/zipball/83b02e9383251d7bf2a16a892404aca381ab2c2d",
+                "reference": "83b02e9383251d7bf2a16a892404aca381ab2c2d",
                 "shasum": ""
             },
             "require": {
-                "php": ">=7.3",
+                "php": ">=7.4",
                 "phpunit/phpunit": "^9.5"
             },
+            "require-dev": {
+                "infection/infection": "^0.25.3"
+            },
             "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-main": "0.1.x-dev"
+                }
+            },
             "autoload": {
                 "psr-4": {
                     "WickedOne\\PHPUnitPrinter\\": "src/"
@@ -9118,9 +9127,9 @@
             ],
             "support": {
                 "issues": "https://github.com/wickedOne/phpunit-printer/issues",
-                "source": "https://github.com/wickedOne/phpunit-printer/tree/1.0.1"
+                "source": "https://github.com/wickedOne/phpunit-printer/tree/1.0.2"
             },
-            "time": "2021-10-02T12:04:39+00:00"
+            "time": "2021-10-15T07:00:25+00:00"
         }
     ],
     "aliases": [],
