@@ -46,7 +46,6 @@ class SolrSerializer implements SerializerInterface
             ->addDefaultHandlers()
             ->addDefaultSerializationVisitors()
             ->addDefaultDeserializationVisitors()
-            ->addDefaultHandlers()
             ->configureHandlers(static function (HandlerRegistry $registry) {
                 $registry->registerSubscribingHandler(new PropertyListHandler());
                 $registry->registerSubscribingHandler(new SolrDateHandler());
