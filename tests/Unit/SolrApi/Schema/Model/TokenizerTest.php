@@ -40,6 +40,7 @@ final class TokenizerTest extends TestCase
         'replace' => 'foo',
         'group' => 3,
         'rule' => 'foo',
+        'mode' => 'foo',
     ];
 
     /**
@@ -91,6 +92,11 @@ final class TokenizerTest extends TestCase
         'rule' => [
             'reader' => 'getRule',
             'writer' => 'setRule',
+            'remover' => null,
+        ],
+        'mode' => [
+            'reader' => 'getMode',
+            'writer' => 'setMode',
             'remover' => null,
         ],
     ];

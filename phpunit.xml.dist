@@ -22,6 +22,9 @@
         <testsuite name="unit">
             <directory>tests/Unit</directory>
         </testsuite>
+        <testsuite name="integration-standalone">
+            <directory>tests/Integration/StandAlone</directory>
+        </testsuite>
     </testsuites>
 
     <coverage cacheDirectory=".coverage-cache" processUncoveredFiles="true">

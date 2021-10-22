@@ -274,7 +274,7 @@ MESSAGE;
     {
         $message = <<<'MESSAGE'
 {
-    "responseHeader":{
+    "response_header":{
         "status":500,
         "QTime":0
     },
@@ -293,7 +293,7 @@ MESSAGE;
     {
         return <<<'JSON'
 {
-"responseHeader":{
+"response_header":{
     "status":500,
     "QTime":0
 },

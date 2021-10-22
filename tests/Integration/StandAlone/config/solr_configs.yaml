@@ -1,0 +1,77 @@
+solrphp_solarium:
+  solr_configs:
+    -
+      cores:
+        - demo
+      update_handler:
+        class: solr.DirectUpdateHandler2
+        auto_commit:
+          max_time: '${solr.autoCommit.maxTime:15000}'
+          open_searcher: false
+        auto_soft_commit:
+          max_time: '${solr.autoSoftCommit.maxTime:-1}'
+        update_log:
+          dir: '${solr.ulog.dir:}'
+          num_version_buckets: '${solr.ulog.numVersionBuckets:65536}'
+      query:
+        max_boolean_clauses: '${solr.max.booleanClauses:1024}'
+        enable_lazy_field_loading: true
+        query_result_window_size: '20'
+        query_result_max_docs_cached: '200'
+        filter_cache:
+          autowarm_count: '0'
+          size: '512'
+          initial_size: '512'
+        query_result_cache:
+          autowarm_count: '0'
+          size: '512'
+          initial_size: '512'
+        document_cache:
+          autowarm_count: '0'
+          size: '512'
+          initial_size: '512'
+      request_handlers:
+        -
+          name: /select
+          class: solr.SearchHandler
+          defaults:
+            - { name: echo_params, value: 'explicit' }
+            - { name: rows, value: '10' }
+        -
+          name: /query
+          class: solr.SearchHandler
+          defaults:
+            - { name: echo_params, value: 'explicit' }
+            - { name: wt, value: 'json' }
+            - { name: indent, value: true }
+        -
+          name: /spell
+          class: solr.SearchHandler
+          defaults:
+            - { name: 'spellcheck.dictionary', value: 'default' }
+            - { name: 'spellcheck', value: 'on' }
+            - { name: 'spellcheck.extended_results', value: true }
+            - { name: 'spellcheck.count', value: 10 }
+            - { name: 'spellcheck.alternative_term_count', value: 5 }
+            - { name: 'spellcheck.max_results_for_suggest', value: 5 }
+            - { name: 'spellcheck.collate', value: true }
+            - { name: 'spellcheck.collate_extended_results', value: true }
+            - { name: 'spellcheck.max_collation_tries', value: 10 }
+            - { name: 'spellcheck.max_collations', value: 5 }
+        -
+          name: /terms
+          class: solr.SearchHandler
+          defaults:
+            - { name: 'terms', value: true }
+            - { name: 'distrib', value: false }
+          components: [terms]
+      search_components:
+        -
+          name: spellcheck
+          class: solr.SpellCheckComponent
+        -
+          name: terms
+          class: solr.TermsComponent
+        -
+          name: highlight
+          class: solr.HighlightComponent

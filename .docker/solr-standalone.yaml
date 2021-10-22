@@ -1,0 +1,18 @@
+version: '3.7'
+services:
+    solr:
+        image: solr:latest
+        ports:
+            - "8983:8983"
+        volumes:
+            - data:/var/solr
+        environment:
+            SOLR_OPTS: "
+                -Dsolr.ssl.checkPeerName=false
+                -Dsolr.allow.unsafe.resourceloading=true
+            "
+        command:
+            - solr-demo
+volumes:
+    data:
+

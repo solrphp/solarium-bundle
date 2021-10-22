@@ -127,7 +127,7 @@
                 <auto_commit max_docs="10" max_time="10" max_size="10" open_searcher="false" />
                 <auto_soft_commit max_docs="10" max_time="10" />
                 <commit_within soft_commit="true" />
-                <update_log name="foo" num_records_to_keep="10" max_num_logs_to_keep="10" num_version_buckets="10" />
+                <update_log dir="foo" num_records_to_keep="10" max_num_logs_to_keep="10" num_version_buckets="10" />
             </update_handler>
             <request_dispatcher handle_select="true">
                 <request_parsers

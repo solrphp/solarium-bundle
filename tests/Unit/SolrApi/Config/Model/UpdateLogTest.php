@@ -32,7 +32,7 @@ final class UpdateLogTest extends TestCase
      * @var array<string, int|string|bool>
      */
     private array $values = [
-        'name' => 'foo',
+        'dir' => 'foo',
         'numRecordsToKeep' => 5,
         'maxNumLogsToKeep' => 5,
         'numVersionBuckets' => 4,
@@ -42,16 +42,16 @@ final class UpdateLogTest extends TestCase
      * @var array<string, int|string|bool>
      */
     private static array $nonNullable = [
-        'name' => 'foo',
+        'dir' => 'foo',
     ];
 
     /**
      * @var array<string, array<string, string|null>>
      */
     private static array $accessors = [
-        'name' => [
-            'reader' => 'getName',
-            'writer' => 'setName',
+        'dir' => [
+            'reader' => 'getDir',
+            'writer' => 'setDir',
             'remover' => null,
         ],
         'numRecordsToKeep' => [

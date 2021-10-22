@@ -26,7 +26,7 @@ class UpdateLog implements \JsonSerializable
      *
      * @Serializer\Type("string")
      */
-    private string $name;
+    private string $dir;
 
     /**
      * @var int|null
@@ -52,17 +52,17 @@ class UpdateLog implements \JsonSerializable
     /**
      * @return string
      */
-    public function getName(): string
+    public function getDir(): string
     {
-        return $this->name;
+        return $this->dir;
     }
 
     /**
-     * @param string $name
+     * @param string $dir
      */
-    public function setName(string $name): void
+    public function setDir(string $dir): void
     {
-        $this->name = $name;
+        $this->dir = $dir;
     }
 
     /**
@@ -120,7 +120,7 @@ class UpdateLog implements \JsonSerializable
     {
         return array_filter(
             [
-                'name' => $this->name,
+                'dir' => $this->dir,
                 'numRecordsToKeep' => $this->numRecordsToKeep,
                 'maxNumLogsToKeep' => $this->maxNumLogsToKeep,
                 'numVersionBuckets' => $this->numVersionBuckets,
