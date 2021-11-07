@@ -14,7 +14,7 @@ namespace Solrphp\SolariumBundle\Tests\Unit\SolrApi\Config\Model;
 
 use PHPUnit\Framework\TestCase;
 use Solrphp\SolariumBundle\SolrApi\Config\Model\AutoSoftCommit;
-use Solrphp\SolariumBundle\Tests\Helper\Value;
+use Solrphp\SolariumBundle\Tests\Helper\ArrayHelper;
 
 /**
  * Auto Soft Commit Test.
@@ -82,7 +82,7 @@ final class AutoSoftCommitTest extends TestCase
             }
         }
 
-        self::assertSame(array_keys(Value::keysort($this->values)), array_keys(Value::keysort($instance->jsonSerialize())));
+        self::assertSame(array_keys(ArrayHelper::keysort($this->values)), array_keys(ArrayHelper::keysort($instance->jsonSerialize())));
 
         foreach (self::$accessors as $property => $accessors) {
             if (null === $remover = $accessors['remover']) {
@@ -105,7 +105,7 @@ final class AutoSoftCommitTest extends TestCase
                 $instance->$writer($value);
             }
 
-            self::assertSame(array_keys(Value::keysort(self::$nonNullable)), array_keys(Value::keysort($instance->jsonSerialize())));
+            self::assertSame(array_keys(ArrayHelper::keysort(self::$nonNullable)), array_keys(ArrayHelper::keysort($instance->jsonSerialize())));
         } else {
             self::assertEmpty($instance->jsonSerialize());
         }

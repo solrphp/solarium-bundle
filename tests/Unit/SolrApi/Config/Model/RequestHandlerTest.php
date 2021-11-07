@@ -15,7 +15,7 @@ namespace Solrphp\SolariumBundle\Tests\Unit\SolrApi\Config\Model;
 use PHPUnit\Framework\TestCase;
 use Solrphp\SolariumBundle\SolrApi\Config\Model\Property;
 use Solrphp\SolariumBundle\SolrApi\Config\Model\RequestHandler;
-use Solrphp\SolariumBundle\Tests\Helper\Value;
+use Solrphp\SolariumBundle\Tests\Helper\ArrayHelper;
 
 /**
  * Request Handler Test.
@@ -134,7 +134,7 @@ final class RequestHandlerTest extends TestCase
             }
         }
 
-        self::assertSame(Value::ksortnormalized($this->values), array_keys(Value::keysort($instance->jsonSerialize())));
+        self::assertSame(ArrayHelper::ksortnormalized($this->values), array_keys(ArrayHelper::keysort($instance->jsonSerialize())));
 
         foreach (self::$accessors as $property => $accessors) {
             if (null === $remover = $accessors['remover']) {
@@ -157,7 +157,7 @@ final class RequestHandlerTest extends TestCase
                 $instance->$writer($value);
             }
 
-            self::assertSame(Value::ksortnormalized(self::$nonNullable), array_keys(Value::keysort($instance->jsonSerialize())));
+            self::assertSame(ArrayHelper::ksortnormalized(self::$nonNullable), array_keys(ArrayHelper::keysort($instance->jsonSerialize())));
         } else {
             self::assertEmpty($instance->jsonSerialize());
         }

@@ -15,7 +15,7 @@ namespace Solrphp\SolariumBundle\Tests\Unit\SolrApi\Param\Model;
 use PHPUnit\Framework\TestCase;
 use Solrphp\SolariumBundle\SolrApi\Param\Model\Parameter;
 use Solrphp\SolariumBundle\SolrApi\Param\Model\ParameterSetMap;
-use Solrphp\SolariumBundle\Tests\Helper\Value;
+use Solrphp\SolariumBundle\Tests\Helper\ArrayHelper;
 
 /**
  * Parameter Set Map Test.
@@ -103,9 +103,9 @@ final class ParameterSetMapTest extends TestCase
             }
         }
 
-        self::assertArrayHasKey('_invariants_', Value::keysort($instance->jsonSerialize())['foo']);
-        self::assertArrayHasKey('_appends_', Value::keysort($instance->jsonSerialize())['foo']);
-        self::assertArrayNotHasKey('parameters', Value::keysort($instance->jsonSerialize())['foo']);
+        self::assertArrayHasKey('_invariants_', ArrayHelper::keysort($instance->jsonSerialize())['foo']);
+        self::assertArrayHasKey('_appends_', ArrayHelper::keysort($instance->jsonSerialize())['foo']);
+        self::assertArrayNotHasKey('parameters', ArrayHelper::keysort($instance->jsonSerialize())['foo']);
 
         foreach (self::$accessors as $property => $accessors) {
             if (null === $remover = $accessors['remover']) {

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "8ae556b9051aa07a5c792231d5a4bed0",
+    "content-hash": "1d21cf0c85b88ad9680fb1f2c5be6dfc",
     "packages": [
         {
             "name": "doctrine/annotations",
@@ -4773,6 +4773,159 @@
             "time": "2020-11-13T09:40:50+00:00"
         },
         {
+            "name": "nette/php-generator",
+            "version": "v3.6.4",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/nette/php-generator.git",
+                "reference": "b8375ac20760c62b6816f8c2eaeabbbca305eed7"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/nette/php-generator/zipball/b8375ac20760c62b6816f8c2eaeabbbca305eed7",
+                "reference": "b8375ac20760c62b6816f8c2eaeabbbca305eed7",
+                "shasum": ""
+            },
+            "require": {
+                "nette/utils": "^3.1.2",
+                "php": ">=7.2 <8.2"
+            },
+            "require-dev": {
+                "nette/tester": "^2.4",
+                "nikic/php-parser": "^4.13",
+                "phpstan/phpstan": "^0.12",
+                "tracy/tracy": "^2.8"
+            },
+            "suggest": {
+                "nikic/php-parser": "to use ClassType::withBodiesFrom() & GlobalFunction::withBodyFrom()"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "3.6-dev"
+                }
+            },
+            "autoload": {
+                "classmap": [
+                    "src/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause",
+                "GPL-2.0-only",
+                "GPL-3.0-only"
+            ],
+            "authors": [
+                {
+                    "name": "David Grudl",
+                    "homepage": "https://davidgrudl.com"
+                },
+                {
+                    "name": "Nette Community",
+                    "homepage": "https://nette.org/contributors"
+                }
+            ],
+            "description": "🐘 Nette PHP Generator: generates neat PHP code for you. Supports new PHP 8.1 features.",
+            "homepage": "https://nette.org",
+            "keywords": [
+                "code",
+                "nette",
+                "php",
+                "scaffolding"
+            ],
+            "support": {
+                "issues": "https://github.com/nette/php-generator/issues",
+                "source": "https://github.com/nette/php-generator/tree/v3.6.4"
+            },
+            "time": "2021-10-15T10:28:31+00:00"
+        },
+        {
+            "name": "nette/utils",
+            "version": "v3.2.5",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/nette/utils.git",
+                "reference": "9cd80396ca58d7969ab44fc7afcf03624dfa526e"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/nette/utils/zipball/9cd80396ca58d7969ab44fc7afcf03624dfa526e",
+                "reference": "9cd80396ca58d7969ab44fc7afcf03624dfa526e",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.2 <8.2"
+            },
+            "conflict": {
+                "nette/di": "<3.0.6"
+            },
+            "require-dev": {
+                "nette/tester": "~2.0",
+                "phpstan/phpstan": "^0.12",
+                "tracy/tracy": "^2.3"
+            },
+            "suggest": {
+                "ext-gd": "to use Image",
+                "ext-iconv": "to use Strings::webalize(), toAscii(), chr() and reverse()",
+                "ext-intl": "to use Strings::webalize(), toAscii(), normalize() and compare()",
+                "ext-json": "to use Nette\\Utils\\Json",
+                "ext-mbstring": "to use Strings::lower() etc...",
+                "ext-tokenizer": "to use Nette\\Utils\\Reflection::getUseStatements()",
+                "ext-xml": "to use Strings::length() etc. when mbstring is not available"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "3.2-dev"
+                }
+            },
+            "autoload": {
+                "classmap": [
+                    "src/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause",
+                "GPL-2.0-only",
+                "GPL-3.0-only"
+            ],
+            "authors": [
+                {
+                    "name": "David Grudl",
+                    "homepage": "https://davidgrudl.com"
+                },
+                {
+                    "name": "Nette Community",
+                    "homepage": "https://nette.org/contributors"
+                }
+            ],
+            "description": "🛠  Nette Utils: lightweight utilities for string & array manipulation, image handling, safe JSON encoding/decoding, validation, slug or strong password generating etc.",
+            "homepage": "https://nette.org",
+            "keywords": [
+                "array",
+                "core",
+                "datetime",
+                "images",
+                "json",
+                "nette",
+                "paginator",
+                "password",
+                "slugify",
+                "string",
+                "unicode",
+                "utf-8",
+                "utility",
+                "validation"
+            ],
+            "support": {
+                "issues": "https://github.com/nette/utils/issues",
+                "source": "https://github.com/nette/utils/tree/v3.2.5"
+            },
+            "time": "2021-09-20T10:50:11+00:00"
+        },
+        {
             "name": "nikic/php-parser",
             "version": "v4.13.1",
             "source": {
@@ -9044,6 +9197,76 @@
                 "source": "https://github.com/webmozart/path-util/tree/2.3.0"
             },
             "time": "2015-12-17T08:42:14+00:00"
+        },
+        {
+            "name": "wickedone/muppet",
+            "version": "1.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/wickedOne/muppet.git",
+                "reference": "5c28301f45daaa33fa58ba66cbec34dec8cfca1e"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/wickedOne/muppet/zipball/5c28301f45daaa33fa58ba66cbec34dec8cfca1e",
+                "reference": "5c28301f45daaa33fa58ba66cbec34dec8cfca1e",
+                "shasum": ""
+            },
+            "require": {
+                "doctrine/collections": "^1.6",
+                "nette/php-generator": "^3.6",
+                "nikic/php-parser": "^4.13",
+                "php": ">=7.4",
+                "phpunit/phpunit": "^9.5",
+                "roave/better-reflection": "^4.12",
+                "symfony/finder": "^5.3",
+                "symfony/options-resolver": "^5.3"
+            },
+            "require-dev": {
+                "escapestudios/symfony2-coding-standard": "^3.12",
+                "friendsofphp/php-cs-fixer": "^3.2",
+                "infection/infection": "^0.25.3",
+                "phpmetrics/phpmetrics": "^2.7",
+                "phpstan/phpstan": "^0.12.99",
+                "phpstan/phpstan-deprecation-rules": "^0.12.6",
+                "phpstan/phpstan-php-parser": "^0.12.3",
+                "phpstan/phpstan-phpunit": "^0.12.22",
+                "phpstan/phpstan-strict-rules": "^0.12.11",
+                "roave/security-advisories": "dev-latest",
+                "wickedone/phpcs-reporter": "^1.0",
+                "wickedone/phpunit-printer": "^1.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "WickedOne\\Muppet\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "wickedOne",
+                    "email": "wicliff.wolda@gmail.com"
+                }
+            ],
+            "description": "testing your getters, setters, adders, removers, issers and whatevers",
+            "keywords": [
+                "phpunit",
+                "testing"
+            ],
+            "support": {
+                "issues": "https://github.com/wickedOne/muppet/issues",
+                "source": "https://github.com/wickedOne/muppet/tree/1.0.1"
+            },
+            "time": "2021-11-03T14:41:35+00:00"
         },
         {
             "name": "wickedone/phpcs-reporter",
