@@ -1,0 +1,16 @@
+imports:
+  - { resource: managed_schemas.yaml }
+  - { resource: solr_configs.yaml }
+  - { resource: parameters.yaml }
+
+solrphp_solarium:
+  endpoints:
+    demo:
+      scheme: 'http'
+      host: '127.0.0.1'
+      port: 8983
+      core: demo
+
+  clients:
+    default:
+      endpoints: ['demo']

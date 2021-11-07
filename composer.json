@@ -86,7 +86,7 @@
         "run-phpcsf": "vendor/bin/php-cs-fixer fix",
         "run-phpmetrics": "vendor/bin/phpmetrics --config=metrics.json --report-html=build/phpmetrics --quiet",
         "run-sphinx":  "cd docs && make html",
-        "run-infection": ["@run-phpunitc", "vendor/bin/infection --coverage=build/coverage -j$(sysctl -n hw.ncpu) -s -vv"],
+        "run-infection": ["@run-phpunitc", "vendor/bin/infection --coverage=build/coverage --skip-initial-tests -j$(sysctl -n hw.ncpu) -s -vv"],
         "run-all": ["@run-phpunitc", "@run-phpstan", "@run-phpcsf", "@run-phpcs" ,"@run-phpmetrics", "@run-sphinx", "@run-infection"]
     }
 }

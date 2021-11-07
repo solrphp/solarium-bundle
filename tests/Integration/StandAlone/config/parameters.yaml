@@ -1,0 +1,14 @@
+solrphp_solarium:
+  parameters:
+    -
+      cores:
+        - demo
+      parameter_set_maps:
+        -
+          name: henkelmans
+          _invariants_:
+            - { name: facet, value: 'true' }
+            - { name: foo, value: bar }
+          parameters:
+            - { name: facet, value: 'true' }
+            - { name: facet.limit, value: '5' }

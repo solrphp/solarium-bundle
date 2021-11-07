@@ -253,7 +253,7 @@ $container->loadFromExtension('solrphp_solarium', [
                     'soft_commit' => true,
                 ],
                 'update_log' => [
-                    'name' => 'foo',
+                    'dir' => 'foo',
                     'num_records_to_keep' => 10,
                     'max_num_logs_to_keep' => 10,
                     'num_version_buckets' => 10,

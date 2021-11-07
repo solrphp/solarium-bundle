@@ -37,7 +37,7 @@ class UpdateLogVisitor implements ConfigGeneratorVisitorInterface
      * @var array|string[]
      */
     private static array $attributes = [
-        'name',
+        'dir',
         'numRecordsToKeep',
         'maxNumLogsToKeep',
         'numVersionBuckets',

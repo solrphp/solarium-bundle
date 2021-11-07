@@ -1,17 +1,16 @@
-name: "phpunit"
+name: "phpunit integration standalone"
 
 on:
   pull_request:
   push:
 
 jobs:
-  phpunit:
-    name: "phpunit"
-
+  phpunit_integration_standalone:
+    name: "phpunit integration standalone"
     runs-on: ${{ matrix.operating-system }}
 
     concurrency:
-      group: phpunit-${{ github.ref }}
+      group: phpunit-standalone-${{ github.ref }}
       cancel-in-progress: true
 
     strategy:
@@ -27,9 +26,31 @@ jobs:
             dependencies: "locked"
             operating-system: "ubuntu-latest"
 
+    services:
+      solr:
+        image: solr:latest
+        ports:
+          - "8983:8983"
+        env:
+          SOLR_OPTS: "
+                        -Dsolr.ssl.checkPeerName=false
+                        -Dsolr.allow.unsafe.resourceloading=true
+                    "
+        volumes:
+          - data:/var/solr
+
+        options: --name solr-standalone-server
+
     steps:
       - name: "checkout"
         uses: "actions/checkout@v2"
+
+      - name: "setup solr"
+        run: |
+          docker exec solr-standalone-server bash /opt/solr/bin/solr create -c demo -p 8983 \
+          && docker exec solr-standalone-server bash /opt/solr/bin/post -c demo -commit no example/exampledocs/{gb18030-example,hd,ipod_other,ipod_video,manufacturers,mem,money,monitor,monitor2,mp500,sd500,solr,utf8-example,vidcard}.xml \
+          && docker exec solr-standalone-server bash /opt/solr/bin/post -c demo -commit no example/exampledocs/books.json \
+          && docker exec solr-standalone-server bash /opt/solr/bin/post -c demo -commit yes example/exampledocs/books.csv \
 
       - name: "install php"
         uses: "shivammathur/setup-php@v2"
@@ -60,8 +81,5 @@ jobs:
         if: ${{ matrix.dependencies == 'locked' }}
         run: "composer install --no-interaction --no-progress --ignore-platform-req=php"
 
-      - name: "phpunit tests"
-        run: "vendor/bin/phpunit --coverage-clover coverage.xml --testsuite=unit"
-
-      - name: "upload to codecov"
-        uses: codecov/codecov-action@v2
+      - name: "phpunit integration tests"
+        run: "vendor/bin/phpunit --coverage-clover coverage.xml --testsuite=integration-standalone"

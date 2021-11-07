@@ -298,9 +298,9 @@ class Index implements \JsonSerializable
     }
 
     /**
-     * @return \DateTime
+     * @return \DateTime|null
      */
-    public function getLastModified(): \DateTime
+    public function getLastModified(): ?\DateTime
     {
         return $this->lastModified;
     }

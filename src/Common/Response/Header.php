@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace Solrphp\SolariumBundle\Common\Response;
 
+use JMS\Serializer\Annotation as Serializer;
 use Solrphp\SolariumBundle\Contract\SolrApi\Response\ResponseHeaderInterface;
 
 /**
@@ -23,11 +24,15 @@ class Header implements ResponseHeaderInterface
 {
     /**
      * @var int
+     *
+     * @Serializer\Type("int")
      */
     private int $status;
 
     /**
      * @var int
+     *
+     * @Serializer\Type("int")
      */
     private int $qTime;
 

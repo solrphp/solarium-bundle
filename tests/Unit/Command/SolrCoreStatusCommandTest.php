@@ -14,6 +14,7 @@ namespace Solrphp\SolariumBundle\Tests\Unit\Command;
 
 use JMS\Serializer\SerializerInterface;
 use PHPUnit\Framework\TestCase;
+use Solarium\Client;
 use Solarium\Core\Client\Adapter\Curl;
 use Solarium\Core\Client\Response;
 use Solrphp\SolariumBundle\Command\CoreAdmin\SolrCoreStatusCommand;
@@ -113,7 +114,7 @@ class SolrCoreStatusCommandTest extends TestCase
     {
         $application = new Application();
 
-        $client = $this->getMockBuilder(\Solarium\Client::class)
+        $client = $this->getMockBuilder(Client::class)
             ->setConstructorArgs([new Curl(), new EventDispatcher()])
             ->onlyMethods(['executeRequest'])
             ->getMock()

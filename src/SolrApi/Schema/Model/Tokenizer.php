@@ -78,6 +78,13 @@ final class Tokenizer implements \JsonSerializable
     private ?string $rule = null;
 
     /**
+     * @var string|null
+     *
+     * @Serializer\Type("string")
+     */
+    private ?string $mode = null;
+
+    /**
      * @return string
      */
     public function getClass(): string
@@ -206,6 +213,22 @@ final class Tokenizer implements \JsonSerializable
     }
 
     /**
+     * @return string|null
+     */
+    public function getMode(): ?string
+    {
+        return $this->mode;
+    }
+
+    /**
+     * @param string|null $mode
+     */
+    public function setMode(?string $mode): void
+    {
+        $this->mode = $mode;
+    }
+
+    /**
      * @return array<string, mixed>
      */
     public function jsonSerialize(): array
@@ -220,6 +243,7 @@ final class Tokenizer implements \JsonSerializable
                 'replace' => $this->replace,
                 'group' => $this->group,
                 'rule' => $this->rule,
+                'mode' => $this->mode,
             ],
             static function ($var) {
                 return null !== $var;
