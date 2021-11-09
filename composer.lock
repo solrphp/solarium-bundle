@@ -928,16 +928,16 @@
         },
         {
             "name": "solarium/solarium",
-            "version": "6.1.5",
+            "version": "6.1.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/solariumphp/solarium.git",
-                "reference": "beec496540c3d227201c556729d2c61d1c1f8ab1"
+                "reference": "65f3e338d1d76d94dee1bdc1dbb199d0262f4822"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/solariumphp/solarium/zipball/beec496540c3d227201c556729d2c61d1c1f8ab1",
-                "reference": "beec496540c3d227201c556729d2c61d1c1f8ab1",
+                "url": "https://api.github.com/repos/solariumphp/solarium/zipball/65f3e338d1d76d94dee1bdc1dbb199d0262f4822",
+                "reference": "65f3e338d1d76d94dee1bdc1dbb199d0262f4822",
                 "shasum": ""
             },
             "require": {
@@ -985,9 +985,9 @@
             ],
             "support": {
                 "issues": "https://github.com/solariumphp/solarium/issues",
-                "source": "https://github.com/solariumphp/solarium/tree/6.1.5"
+                "source": "https://github.com/solariumphp/solarium/tree/6.1.6"
             },
-            "time": "2021-08-12T15:28:32+00:00"
+            "time": "2021-11-08T13:17:20+00:00"
         },
         {
             "name": "symfony/cache",
