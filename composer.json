@@ -64,7 +64,7 @@
         "roave/security-advisories": "dev-latest",
         "symfony/runtime": "^5.3",
         "symfony/stopwatch": "5.3.*",
-        "symfony/web-profiler-bundle": "5.3.*",
+        "symfony/web-profiler-bundle": "5.4.*",
         "wickedone/muppet": "^1.0",
         "wickedone/phpcs-reporter": "^1.0",
         "wickedone/phpunit-printer": "^1.0"
