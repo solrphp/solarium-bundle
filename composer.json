@@ -39,7 +39,7 @@
         "solarium/solarium": "^6.1",
         "symfony/config": "5.3.*",
         "symfony/console": "5.3.*",
-        "symfony/dom-crawler": "^5.3",
+        "symfony/dom-crawler": "^5.4",
         "symfony/filesystem": "5.3.*",
         "symfony/framework-bundle": "5.3.*",
         "symfony/http-kernel": "^5.3",
