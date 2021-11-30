@@ -37,7 +37,7 @@
         "jms/serializer": "^3.16",
         "laminas/laminas-code": "^4.4",
         "solarium/solarium": "^6.1",
-        "symfony/config": "5.3.*",
+        "symfony/config": "5.4.*",
         "symfony/console": "5.4.*",
         "symfony/dom-crawler": "^5.4",
         "symfony/filesystem": "5.4.*",
