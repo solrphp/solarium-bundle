@@ -62,7 +62,7 @@
         "phpunit/phpunit": "^9.5",
         "roave/better-reflection": "^4.12",
         "roave/security-advisories": "dev-latest",
-        "symfony/runtime": "^5.3",
+        "symfony/runtime": "^5.4",
         "symfony/stopwatch": "5.3.*",
         "symfony/web-profiler-bundle": "5.4.*",
         "wickedone/muppet": "^1.0",
