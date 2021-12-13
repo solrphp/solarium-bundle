@@ -48,7 +48,7 @@
     },
     "require-dev": {
         "escapestudios/symfony2-coding-standard": "^3.12",
-        "friendsofphp/php-cs-fixer": "^3.3",
+        "friendsofphp/php-cs-fixer": "^3.4",
         "icanhazstring/composer-unused": "^0.7.8",
         "infection/infection": "^0.25.4",
         "matthiasnoback/symfony-dependency-injection-test": "^4.2",
