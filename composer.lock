@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "754dbc457ce56ad6e25057a12eeecdd8",
+    "content-hash": "f37599ec7ed4f0eaef6928a4450f64f3",
     "packages": [
         {
             "name": "doctrine/annotations",
@@ -4117,16 +4117,16 @@
         },
         {
             "name": "icanhazstring/composer-unused",
-            "version": "0.7.8",
+            "version": "0.7.9",
             "source": {
                 "type": "git",
                 "url": "https://github.com/composer-unused/composer-unused.git",
-                "reference": "ad5aa8db5e4ab5d5f91214fd71dff9f5dcda2681"
+                "reference": "ab9e0341b30a10cd5f40e7675d04238c3dc8dd89"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/composer-unused/composer-unused/zipball/ad5aa8db5e4ab5d5f91214fd71dff9f5dcda2681",
-                "reference": "ad5aa8db5e4ab5d5f91214fd71dff9f5dcda2681",
+                "url": "https://api.github.com/repos/composer-unused/composer-unused/zipball/ab9e0341b30a10cd5f40e7675d04238c3dc8dd89",
+                "reference": "ab9e0341b30a10cd5f40e7675d04238c3dc8dd89",
                 "shasum": ""
             },
             "require": {
@@ -4193,7 +4193,7 @@
                     "type": "other"
                 }
             ],
-            "time": "2021-11-23T17:09:18+00:00"
+            "time": "2021-12-14T16:53:51+00:00"
         },
         {
             "name": "infection/abstract-testframework-adapter",
