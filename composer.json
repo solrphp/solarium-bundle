@@ -49,7 +49,7 @@
     "require-dev": {
         "escapestudios/symfony2-coding-standard": "^3.12",
         "friendsofphp/php-cs-fixer": "^3.4",
-        "icanhazstring/composer-unused": "^0.7.9",
+        "icanhazstring/composer-unused": "^0.7.10",
         "infection/infection": "^0.25.5",
         "matthiasnoback/symfony-dependency-injection-test": "^4.2",
         "phpmetrics/phpmetrics": "^2.7",
