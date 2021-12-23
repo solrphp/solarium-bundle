@@ -36,7 +36,7 @@
         "doctrine/collections": "^1.6",
         "jms/serializer": "^3.17",
         "laminas/laminas-code": "^4.5",
-        "solarium/solarium": "^6.1",
+        "solarium/solarium": "^6.2",
         "symfony/config": "5.4.*",
         "symfony/console": "5.4.*",
         "symfony/dom-crawler": "^5.4",
