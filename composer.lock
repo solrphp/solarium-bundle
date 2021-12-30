@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "b9ac88b98d81b2f5f4c154de6e3b9c6a",
+    "content-hash": "b56b2868ec8219319f0a2d4d45282b38",
     "packages": [
         {
             "name": "doctrine/annotations",
@@ -4118,16 +4118,16 @@
         },
         {
             "name": "icanhazstring/composer-unused",
-            "version": "0.7.11",
+            "version": "0.7.12",
             "source": {
                 "type": "git",
                 "url": "https://github.com/composer-unused/composer-unused.git",
-                "reference": "6eac3f3f94c4523ac856bf1860ee1507d591b2de"
+                "reference": "be7163de7e9e78f284aab6c04d00a1a50ce1c610"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/composer-unused/composer-unused/zipball/6eac3f3f94c4523ac856bf1860ee1507d591b2de",
-                "reference": "6eac3f3f94c4523ac856bf1860ee1507d591b2de",
+                "url": "https://api.github.com/repos/composer-unused/composer-unused/zipball/be7163de7e9e78f284aab6c04d00a1a50ce1c610",
+                "reference": "be7163de7e9e78f284aab6c04d00a1a50ce1c610",
                 "shasum": ""
             },
             "require": {
@@ -4138,7 +4138,7 @@
                 "php": ">=7.3 || ^8.0",
                 "psr/container": "^1.0 || ^2.0",
                 "psr/log": "^1.1 || ^2 || ^3",
-                "symfony/finder": "^4.2 || ^5.0"
+                "symfony/finder": "^4.2 || ^5.0 || ^6.0"
             },
             "require-dev": {
                 "ext-ds": "*",
@@ -4194,7 +4194,7 @@
                     "type": "other"
                 }
             ],
-            "time": "2021-12-22T23:29:48+00:00"
+            "time": "2021-12-29T13:29:21+00:00"
         },
         {
             "name": "infection/abstract-testframework-adapter",
