@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "b9ac88b98d81b2f5f4c154de6e3b9c6a",
+    "content-hash": "b56b2868ec8219319f0a2d4d45282b38",
     "packages": [
         {
             "name": "doctrine/annotations",
@@ -1167,16 +1167,16 @@
         },
         {
             "name": "symfony/config",
-            "version": "v5.4.0",
+            "version": "v5.4.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/config.git",
-                "reference": "e39cf688c80fd79ab0a6a2d05a9facac9b2d534b"
+                "reference": "2e082dae50da563c639119b7b52347a2a3db4ba5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/config/zipball/e39cf688c80fd79ab0a6a2d05a9facac9b2d534b",
-                "reference": "e39cf688c80fd79ab0a6a2d05a9facac9b2d534b",
+                "url": "https://api.github.com/repos/symfony/config/zipball/2e082dae50da563c639119b7b52347a2a3db4ba5",
+                "reference": "2e082dae50da563c639119b7b52347a2a3db4ba5",
                 "shasum": ""
             },
             "require": {
@@ -1226,7 +1226,7 @@
             "description": "Helps you find, load, combine, autofill and validate configuration values of any kind",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/config/tree/v5.4.0"
+                "source": "https://github.com/symfony/config/tree/v5.4.2"
             },
             "funding": [
                 {
@@ -1242,7 +1242,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-11-28T15:25:38+00:00"
+            "time": "2021-12-15T11:06:13+00:00"
         },
         {
             "name": "symfony/console",
@@ -4118,16 +4118,16 @@
         },
         {
             "name": "icanhazstring/composer-unused",
-            "version": "0.7.11",
+            "version": "0.7.12",
             "source": {
                 "type": "git",
                 "url": "https://github.com/composer-unused/composer-unused.git",
-                "reference": "6eac3f3f94c4523ac856bf1860ee1507d591b2de"
+                "reference": "be7163de7e9e78f284aab6c04d00a1a50ce1c610"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/composer-unused/composer-unused/zipball/6eac3f3f94c4523ac856bf1860ee1507d591b2de",
-                "reference": "6eac3f3f94c4523ac856bf1860ee1507d591b2de",
+                "url": "https://api.github.com/repos/composer-unused/composer-unused/zipball/be7163de7e9e78f284aab6c04d00a1a50ce1c610",
+                "reference": "be7163de7e9e78f284aab6c04d00a1a50ce1c610",
                 "shasum": ""
             },
             "require": {
@@ -4138,7 +4138,7 @@
                 "php": ">=7.3 || ^8.0",
                 "psr/container": "^1.0 || ^2.0",
                 "psr/log": "^1.1 || ^2 || ^3",
-                "symfony/finder": "^4.2 || ^5.0"
+                "symfony/finder": "^4.2 || ^5.0 || ^6.0"
             },
             "require-dev": {
                 "ext-ds": "*",
@@ -4194,7 +4194,7 @@
                     "type": "other"
                 }
             ],
-            "time": "2021-12-22T23:29:48+00:00"
+            "time": "2021-12-29T13:29:21+00:00"
         },
         {
             "name": "infection/abstract-testframework-adapter",
