@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "b56b2868ec8219319f0a2d4d45282b38",
+    "content-hash": "0f9ff6a1ceac7a2d9554ceb55b265d19",
     "packages": [
         {
             "name": "doctrine/annotations",
@@ -4371,16 +4371,16 @@
         },
         {
             "name": "infection/infection",
-            "version": "0.25.5",
+            "version": "0.25.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/infection/infection.git",
-                "reference": "6844063ee1347c7942734b85ead95ad6226a4a02"
+                "reference": "bded7581329766616bf35f1018326c9b3912df0b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/infection/infection/zipball/6844063ee1347c7942734b85ead95ad6226a4a02",
-                "reference": "6844063ee1347c7942734b85ead95ad6226a4a02",
+                "url": "https://api.github.com/repos/infection/infection/zipball/bded7581329766616bf35f1018326c9b3912df0b",
+                "reference": "bded7581329766616bf35f1018326c9b3912df0b",
                 "shasum": ""
             },
             "require": {
@@ -4481,7 +4481,7 @@
             ],
             "support": {
                 "issues": "https://github.com/infection/infection/issues",
-                "source": "https://github.com/infection/infection/tree/0.25.5"
+                "source": "https://github.com/infection/infection/tree/0.25.6"
             },
             "funding": [
                 {
@@ -4493,7 +4493,7 @@
                     "type": "open_collective"
                 }
             ],
-            "time": "2021-12-16T05:06:28+00:00"
+            "time": "2022-01-08T13:06:28+00:00"
         },
         {
             "name": "jetbrains/phpstorm-stubs",
