@@ -50,7 +50,7 @@
         "escapestudios/symfony2-coding-standard": "^3.12",
         "friendsofphp/php-cs-fixer": "^3.6",
         "icanhazstring/composer-unused": "^0.8.0",
-        "infection/infection": "^0.26.4",
+        "infection/infection": "^0.26.5",
         "matthiasnoback/symfony-dependency-injection-test": "^4.2",
         "phpmetrics/phpmetrics": "^2.7",
         "phpstan/phpstan": "^1.4",
