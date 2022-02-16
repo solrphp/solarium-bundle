@@ -3478,16 +3478,16 @@
         },
         {
             "name": "composer-unused/symbol-parser",
-            "version": "0.1.6",
+            "version": "0.1.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/composer-unused/symbol-parser.git",
-                "reference": "23913cddc04f43749e45dda39ff0964ea631b0f7"
+                "reference": "a3b045d1090cb0bac2680c85f0e53bbb2a597b69"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/composer-unused/symbol-parser/zipball/23913cddc04f43749e45dda39ff0964ea631b0f7",
-                "reference": "23913cddc04f43749e45dda39ff0964ea631b0f7",
+                "url": "https://api.github.com/repos/composer-unused/symbol-parser/zipball/a3b045d1090cb0bac2680c85f0e53bbb2a597b69",
+                "reference": "a3b045d1090cb0bac2680c85f0e53bbb2a597b69",
                 "shasum": ""
             },
             "require": {
@@ -3543,7 +3543,7 @@
                     "type": "other"
                 }
             ],
-            "time": "2022-02-08T12:00:04+00:00"
+            "time": "2022-02-15T20:12:38+00:00"
         },
         {
             "name": "composer/pcre",
