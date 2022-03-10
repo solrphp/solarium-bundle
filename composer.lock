@@ -3478,16 +3478,16 @@
         },
         {
             "name": "composer-unused/symbol-parser",
-            "version": "0.1.7",
+            "version": "0.1.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/composer-unused/symbol-parser.git",
-                "reference": "a3b045d1090cb0bac2680c85f0e53bbb2a597b69"
+                "reference": "605be0cb0049341c8f35b94a11f1cba68c8f930b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/composer-unused/symbol-parser/zipball/a3b045d1090cb0bac2680c85f0e53bbb2a597b69",
-                "reference": "a3b045d1090cb0bac2680c85f0e53bbb2a597b69",
+                "url": "https://api.github.com/repos/composer-unused/symbol-parser/zipball/605be0cb0049341c8f35b94a11f1cba68c8f930b",
+                "reference": "605be0cb0049341c8f35b94a11f1cba68c8f930b",
                 "shasum": ""
             },
             "require": {
@@ -3501,7 +3501,7 @@
             "require-dev": {
                 "ext-ds": "*",
                 "phpstan/phpstan": "^1.4",
-                "phpunit/phpunit": "^9.5.13",
+                "phpunit/phpunit": "^9.5.18",
                 "roave/security-advisories": "dev-master",
                 "squizlabs/php_codesniffer": "^3.6.2",
                 "symfony/serializer": "^5.4"
@@ -3543,7 +3543,7 @@
                     "type": "other"
                 }
             ],
-            "time": "2022-02-15T20:12:38+00:00"
+            "time": "2022-03-09T17:46:04+00:00"
         },
         {
             "name": "composer/pcre",
