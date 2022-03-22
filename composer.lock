@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "c710a4cc4269de0dda90db19afd77368",
+    "content-hash": "0eeda8a919d7aed05567bb297140483e",
     "packages": [
         {
             "name": "doctrine/annotations",
@@ -3911,21 +3911,21 @@
         },
         {
             "name": "icanhazstring/composer-unused",
-            "version": "0.8.1",
+            "version": "0.8.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/composer-unused/composer-unused.git",
-                "reference": "4e49276c9682ea32b9c4cf6186185c7c69b7ffd6"
+                "reference": "5fff0a9943973a29b6babd6aad2a342230f09200"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/composer-unused/composer-unused/zipball/4e49276c9682ea32b9c4cf6186185c7c69b7ffd6",
-                "reference": "4e49276c9682ea32b9c4cf6186185c7c69b7ffd6",
+                "url": "https://api.github.com/repos/composer-unused/composer-unused/zipball/5fff0a9943973a29b6babd6aad2a342230f09200",
+                "reference": "5fff0a9943973a29b6babd6aad2a342230f09200",
                 "shasum": ""
             },
             "require": {
                 "composer-unused/contracts": "^0.2",
-                "composer-unused/symbol-parser": "^0.1.7",
+                "composer-unused/symbol-parser": "^0.1.8",
                 "nikic/php-parser": "^4.13",
                 "ondram/ci-detector": "^4.1",
                 "php": "^7.4 || ^8.0",
@@ -3945,7 +3945,7 @@
                 "jangregor/phpstan-prophecy": "^0.8.1",
                 "phpspec/prophecy-phpunit": "^2.0.1",
                 "phpstan/phpstan": "^0.12.99",
-                "phpunit/phpunit": "^9.5.13",
+                "phpunit/phpunit": "^9.5.19",
                 "roave/security-advisories": "dev-master",
                 "squizlabs/php_codesniffer": "^3.6"
             },
@@ -3989,7 +3989,7 @@
                     "type": "other"
                 }
             ],
-            "time": "2022-02-15T20:22:44+00:00"
+            "time": "2022-03-21T19:58:22+00:00"
         },
         {
             "name": "infection/abstract-testframework-adapter",
