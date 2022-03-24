@@ -52,7 +52,7 @@
         "icanhazstring/composer-unused": "^0.8.2",
         "infection/infection": "^0.26.6",
         "matthiasnoback/symfony-dependency-injection-test": "^4.2",
-        "phpmetrics/phpmetrics": "^2.7",
+        "phpmetrics/phpmetrics": "^2.8",
         "phpstan/phpstan": "^1.4",
         "phpstan/phpstan-deprecation-rules": "^1.0",
         "phpstan/phpstan-php-parser": "^1.1",
