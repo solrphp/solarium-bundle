@@ -5203,16 +5203,16 @@
         },
         {
             "name": "phpmetrics/phpmetrics",
-            "version": "v2.8.0",
+            "version": "v2.8.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpmetrics/PhpMetrics.git",
-                "reference": "6e1b0d6ec42df5faf49b9e8e8cd57637490b2118"
+                "reference": "e279f7317390f642339941b693359e9a181817a7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpmetrics/PhpMetrics/zipball/6e1b0d6ec42df5faf49b9e8e8cd57637490b2118",
-                "reference": "6e1b0d6ec42df5faf49b9e8e8cd57637490b2118",
+                "url": "https://api.github.com/repos/phpmetrics/PhpMetrics/zipball/e279f7317390f642339941b693359e9a181817a7",
+                "reference": "e279f7317390f642339941b693359e9a181817a7",
                 "shasum": ""
             },
             "require": {
@@ -5265,9 +5265,9 @@
             ],
             "support": {
                 "issues": "https://github.com/PhpMetrics/PhpMetrics/issues",
-                "source": "https://github.com/phpmetrics/PhpMetrics/tree/v2.8.0"
+                "source": "https://github.com/phpmetrics/PhpMetrics/tree/v2.8.1"
             },
-            "time": "2022-03-23T21:01:22+00:00"
+            "time": "2022-03-24T10:19:51+00:00"
         },
         {
             "name": "phpspec/prophecy",
