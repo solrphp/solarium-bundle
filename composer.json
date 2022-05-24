@@ -53,7 +53,7 @@
         "infection/infection": "^0.26.6",
         "matthiasnoback/symfony-dependency-injection-test": "^4.2",
         "phpmetrics/phpmetrics": "^2.8",
-        "phpstan/phpstan": "^1.6",
+        "phpstan/phpstan": "^1.7",
         "phpstan/phpstan-deprecation-rules": "^1.0",
         "phpstan/phpstan-php-parser": "^1.1",
         "phpstan/phpstan-phpunit": "^1.1",
