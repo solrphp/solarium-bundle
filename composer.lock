@@ -8282,16 +8282,16 @@
         },
         {
             "name": "symfony/twig-bridge",
-            "version": "v5.4.8",
+            "version": "v5.4.9",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/twig-bridge.git",
-                "reference": "f68dbdb80c9ce425f503512dfa8c8c01cf789e43"
+                "reference": "fd13c89a1abdbaa7ee2e655d9a11405adcb7a6cf"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/twig-bridge/zipball/f68dbdb80c9ce425f503512dfa8c8c01cf789e43",
-                "reference": "f68dbdb80c9ce425f503512dfa8c8c01cf789e43",
+                "url": "https://api.github.com/repos/symfony/twig-bridge/zipball/fd13c89a1abdbaa7ee2e655d9a11405adcb7a6cf",
+                "reference": "fd13c89a1abdbaa7ee2e655d9a11405adcb7a6cf",
                 "shasum": ""
             },
             "require": {
@@ -8383,7 +8383,7 @@
             "description": "Provides integration for Twig with various Symfony components",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/twig-bridge/tree/v5.4.8"
+                "source": "https://github.com/symfony/twig-bridge/tree/v5.4.9"
             },
             "funding": [
                 {
@@ -8399,7 +8399,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2022-04-12T15:48:08+00:00"
+            "time": "2022-05-21T10:24:18+00:00"
         },
         {
             "name": "symfony/twig-bundle",
