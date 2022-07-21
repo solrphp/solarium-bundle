@@ -922,19 +922,20 @@
         },
         {
             "name": "solarium/solarium",
-            "version": "6.2.4",
+            "version": "6.2.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/solariumphp/solarium.git",
-                "reference": "fcec5684ee3f2d73a8f06a9fbd0e25d2537e1ab2"
+                "reference": "b3de12c7c5bba3f9a5955729ff5f7938c2b79789"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/solariumphp/solarium/zipball/fcec5684ee3f2d73a8f06a9fbd0e25d2537e1ab2",
-                "reference": "fcec5684ee3f2d73a8f06a9fbd0e25d2537e1ab2",
+                "url": "https://api.github.com/repos/solariumphp/solarium/zipball/b3de12c7c5bba3f9a5955729ff5f7938c2b79789",
+                "reference": "b3de12c7c5bba3f9a5955729ff5f7938c2b79789",
                 "shasum": ""
             },
             "require": {
+                "composer-runtime-api": ">=2.0",
                 "ext-json": "*",
                 "php": "^7.3 || ^8.0",
                 "psr/event-dispatcher": "^1.0",
@@ -979,9 +980,9 @@
             ],
             "support": {
                 "issues": "https://github.com/solariumphp/solarium/issues",
-                "source": "https://github.com/solariumphp/solarium/tree/6.2.4"
+                "source": "https://github.com/solariumphp/solarium/tree/6.2.5"
             },
-            "time": "2022-06-30T10:48:47+00:00"
+            "time": "2022-07-20T11:51:35+00:00"
         },
         {
             "name": "symfony/cache",
