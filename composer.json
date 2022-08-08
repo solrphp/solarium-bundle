@@ -34,7 +34,7 @@
         "ext-dom": "*",
         "ext-json": "*",
         "doctrine/collections": "^1.6",
-        "jms/serializer": "^3.17",
+        "jms/serializer": "^3.18",
         "laminas/laminas-code": "^4.6",
         "solarium/solarium": "^6.2",
         "symfony/config": "5.4.*",
