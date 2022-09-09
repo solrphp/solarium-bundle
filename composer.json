@@ -47,7 +47,7 @@
         "symfony/yaml": "5.4.*"
     },
     "require-dev": {
-        "escapestudios/symfony2-coding-standard": "^3.12",
+        "escapestudios/symfony2-coding-standard": "^3.13",
         "friendsofphp/php-cs-fixer": "^3.11",
         "icanhazstring/composer-unused": "^0.8.2",
         "infection/infection": "^0.26.6",
