@@ -33,7 +33,7 @@
         "php": ">=7.4 || ^8.0",
         "ext-dom": "*",
         "ext-json": "*",
-        "doctrine/collections": "^1.7",
+        "doctrine/collections": "^1.8",
         "jms/serializer": "^3.18",
         "laminas/laminas-code": "^4.7",
         "solarium/solarium": "^6.2",
