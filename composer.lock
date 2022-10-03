@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "78a4d016f38c0053bdde0b1174b646b2",
+    "content-hash": "2de0021b4faf6c6547cebf8dfa4924a8",
     "packages": [
         {
             "name": "doctrine/annotations",
@@ -1386,16 +1386,16 @@
         },
         {
             "name": "symfony/dependency-injection",
-            "version": "v5.4.11",
+            "version": "v5.4.13",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/dependency-injection.git",
-                "reference": "a8b9251016e9476db73e25fa836904bc0bf74c62"
+                "reference": "24cf522668845391c0542bc1de496366072a6d0e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/dependency-injection/zipball/a8b9251016e9476db73e25fa836904bc0bf74c62",
-                "reference": "a8b9251016e9476db73e25fa836904bc0bf74c62",
+                "url": "https://api.github.com/repos/symfony/dependency-injection/zipball/24cf522668845391c0542bc1de496366072a6d0e",
+                "reference": "24cf522668845391c0542bc1de496366072a6d0e",
                 "shasum": ""
             },
             "require": {
@@ -1455,7 +1455,7 @@
             "description": "Allows you to standardize and centralize the way objects are constructed in your application",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/dependency-injection/tree/v5.4.11"
+                "source": "https://github.com/symfony/dependency-injection/tree/v5.4.13"
             },
             "funding": [
                 {
@@ -1471,7 +1471,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2022-07-20T13:00:38+00:00"
+            "time": "2022-08-30T19:10:13+00:00"
         },
         {
             "name": "symfony/deprecation-contracts",
@@ -1852,16 +1852,16 @@
         },
         {
             "name": "symfony/filesystem",
-            "version": "v5.4.12",
+            "version": "v5.4.13",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/filesystem.git",
-                "reference": "2d67c1f9a1937406a9be3171b4b22250c0a11447"
+                "reference": "ac09569844a9109a5966b9438fc29113ce77cf51"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/filesystem/zipball/2d67c1f9a1937406a9be3171b4b22250c0a11447",
-                "reference": "2d67c1f9a1937406a9be3171b4b22250c0a11447",
+                "url": "https://api.github.com/repos/symfony/filesystem/zipball/ac09569844a9109a5966b9438fc29113ce77cf51",
+                "reference": "ac09569844a9109a5966b9438fc29113ce77cf51",
                 "shasum": ""
             },
             "require": {
@@ -1896,7 +1896,7 @@
             "description": "Provides basic utilities for the filesystem",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/filesystem/tree/v5.4.12"
+                "source": "https://github.com/symfony/filesystem/tree/v5.4.13"
             },
             "funding": [
                 {
@@ -1912,7 +1912,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2022-08-02T13:48:16+00:00"
+            "time": "2022-09-21T19:53:16+00:00"
         },
         {
             "name": "symfony/finder",
@@ -3958,43 +3958,43 @@
         },
         {
             "name": "icanhazstring/composer-unused",
-            "version": "0.8.2",
+            "version": "0.8.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/composer-unused/composer-unused.git",
-                "reference": "5fff0a9943973a29b6babd6aad2a342230f09200"
+                "reference": "d1d0c6707215767ca423c44b6ea954025c0feab3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/composer-unused/composer-unused/zipball/5fff0a9943973a29b6babd6aad2a342230f09200",
-                "reference": "5fff0a9943973a29b6babd6aad2a342230f09200",
+                "url": "https://api.github.com/repos/composer-unused/composer-unused/zipball/d1d0c6707215767ca423c44b6ea954025c0feab3",
+                "reference": "d1d0c6707215767ca423c44b6ea954025c0feab3",
                 "shasum": ""
             },
             "require": {
                 "composer-unused/contracts": "^0.2",
-                "composer-unused/symbol-parser": "^0.1.8",
-                "nikic/php-parser": "^4.13",
+                "composer-unused/symbol-parser": "^0.1.9",
+                "nikic/php-parser": "^4.15",
                 "ondram/ci-detector": "^4.1",
                 "php": "^7.4 || ^8.0",
                 "psr/container": "^1.0 || ^2.0",
                 "psr/log": "^1.1 || ^2 || ^3",
                 "symfony/config": "^4.4 || ^5.4 || ^6.0",
                 "symfony/console": "^4.4 || ^5.4 || ^6.0",
-                "symfony/dependency-injection": "^4.4 || ^5.4 || ^6.0",
+                "symfony/dependency-injection": "^4.4.8 || ^5.4 || ^6.0",
                 "symfony/serializer": "^4.4 || ^5.4 || ^6.0",
                 "webmozart/assert": "^1.10",
                 "webmozart/glob": "^4.4"
             },
             "require-dev": {
-                "dg/bypass-finals": "^1.3",
+                "dg/bypass-finals": "^1.4",
                 "ext-ds": "*",
                 "ext-zend-opcache": "*",
                 "jangregor/phpstan-prophecy": "^0.8.1",
                 "phpspec/prophecy-phpunit": "^2.0.1",
                 "phpstan/phpstan": "^0.12.99",
-                "phpunit/phpunit": "^9.5.19",
+                "phpunit/phpunit": "^9.5.25",
                 "roave/security-advisories": "dev-master",
-                "squizlabs/php_codesniffer": "^3.6"
+                "squizlabs/php_codesniffer": "^3.7"
             },
             "bin": [
                 "bin/composer-unused"
@@ -4036,7 +4036,7 @@
                     "type": "other"
                 }
             ],
-            "time": "2022-03-21T19:58:22+00:00"
+            "time": "2022-09-30T12:49:24+00:00"
         },
         {
             "name": "infection/abstract-testframework-adapter",
@@ -7969,16 +7969,16 @@
         },
         {
             "name": "symfony/serializer",
-            "version": "v5.4.12",
+            "version": "v5.4.13",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/serializer.git",
-                "reference": "776fa3010f62b97a7119757a66596a654cd244d4"
+                "reference": "f8c32e94c8656c17a7360d88d6d486bc8ce23b2d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/serializer/zipball/776fa3010f62b97a7119757a66596a654cd244d4",
-                "reference": "776fa3010f62b97a7119757a66596a654cd244d4",
+                "url": "https://api.github.com/repos/symfony/serializer/zipball/f8c32e94c8656c17a7360d88d6d486bc8ce23b2d",
+                "reference": "f8c32e94c8656c17a7360d88d6d486bc8ce23b2d",
                 "shasum": ""
             },
             "require": {
@@ -8052,7 +8052,7 @@
             "description": "Handles serializing and deserializing data structures, including object graphs, into array structures or other formats like XML and JSON.",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/serializer/tree/v5.4.12"
+                "source": "https://github.com/symfony/serializer/tree/v5.4.13"
             },
             "funding": [
                 {
@@ -8068,7 +8068,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2022-08-26T10:32:10+00:00"
+            "time": "2022-09-29T09:26:59+00:00"
         },
         {
             "name": "symfony/stopwatch",
