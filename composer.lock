@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "25276a1ae9fe949ff3f59b3ef2c8a440",
+    "content-hash": "49c7895fc2e0506a482cf2b410396d59",
     "packages": [
         {
             "name": "doctrine/annotations",
@@ -3959,24 +3959,26 @@
         },
         {
             "name": "icanhazstring/composer-unused",
-            "version": "0.8.3",
+            "version": "0.8.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/composer-unused/composer-unused.git",
-                "reference": "d1d0c6707215767ca423c44b6ea954025c0feab3"
+                "reference": "af9085d2058333d26559b334c536c40fb04e28d3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/composer-unused/composer-unused/zipball/d1d0c6707215767ca423c44b6ea954025c0feab3",
-                "reference": "d1d0c6707215767ca423c44b6ea954025c0feab3",
+                "url": "https://api.github.com/repos/composer-unused/composer-unused/zipball/af9085d2058333d26559b334c536c40fb04e28d3",
+                "reference": "af9085d2058333d26559b334c536c40fb04e28d3",
                 "shasum": ""
             },
             "require": {
                 "composer-unused/contracts": "^0.2",
-                "composer-unused/symbol-parser": "^0.1.9",
+                "composer-unused/symbol-parser": "^0.1.10",
+                "ext-json": "*",
                 "nikic/php-parser": "^4.15",
                 "ondram/ci-detector": "^4.1",
                 "php": "^7.4 || ^8.0",
+                "phpstan/phpdoc-parser": "^1.10",
                 "psr/container": "^1.0 || ^2.0",
                 "psr/log": "^1.1 || ^2 || ^3",
                 "symfony/config": "^4.4 || ^5.4 || ^6.0",
@@ -4037,7 +4039,7 @@
                     "type": "other"
                 }
             ],
-            "time": "2022-09-30T12:49:24+00:00"
+            "time": "2022-10-13T05:46:37+00:00"
         },
         {
             "name": "infection/abstract-testframework-adapter",
